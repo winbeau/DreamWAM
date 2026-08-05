@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+
+cache/**
+outputs/**
+data/**
+checkpoints/**
+pretrained/**
+third_party/**
+
+!data/.gitkeep
+!checkpoints/.gitkeep

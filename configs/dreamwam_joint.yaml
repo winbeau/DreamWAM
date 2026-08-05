@@ -1,0 +1,100 @@
+name: dreamwam-joint
+setting: joint
+
+paths:
+  dataset_root: data/libero
+  dataset_stats: configs/libero_stats.json
+  cache_root: cache/libero_2cam224
+  checkpoint: checkpoints/dreamwam_joint.pt
+  output_dir: outputs/joint
+  libero_plus_root: third_party/LIBERO-Plus
+  libero_plus_data_root: data/libero-plus
+
+initialization:
+  wan_dit_root: pretrained/Wan2.2-TI2V-5B
+  action_dit_checkpoint: pretrained/ActionDiT_linear_interp_Wan22_alphascale_1024hdim.pt
+  flow_channel_init_scale: 0.1
+
+model:
+  video_latent_dim: 48
+  flow_latent_dim: 48
+  dino_latent_dim: 8
+  depth_latent_dim: 8
+  action_dim: 7
+  proprio_dim: 8
+  text_dim: 4096
+  freq_dim: 256
+  video_hidden_dim: 3072
+  video_ffn_dim: 14336
+  action_hidden_dim: 1024
+  action_ffn_dim: 4096
+  num_heads: 24
+  attn_head_dim: 128
+  num_layers: 30
+  patch_size: [1, 2, 2]
+
+routing:
+  fusion: parallel
+  order: [dino, depth]
+  dino_layers: [21, 22, 23, 24, 25, 26, 27, 28]
+  depth_layers: [21, 22, 23, 24, 25, 26, 27, 28]
+  local_preview:
+    enabled: true
+    loss_weight: 0.2
+    delta_scale: 0.5
+    layer_weighting: cosine_ramp
+    min_layer_weight: 0.25
+
+loss:
+  video: 1.0
+  action: 1.0
+  flow: 0.5
+  dino: {initial: 0.5, final: 0.025}
+  depth: {initial: 0.5, final: 0.05}
+  gate_l1: 0.0001
+
+preprocessing:
+  frame_span: 33
+  video_stride: 4
+  image_size: 224
+  sample_stride: 1
+  precompute_batch_size: 16
+  context_length: 128
+  wan_vae_checkpoint: pretrained/Wan2.2-TI2V-5B/Wan2.2_VAE.pth
+  wan_text_checkpoint: pretrained/Wan2.2-TI2V-5B/models_t5_umt5-xxl-enc-bf16.pth
+  wan_tokenizer: pretrained/Wan2.2-TI2V-5B/google/umt5-xxl
+  raft_source: third_party/RAFT
+  raft_checkpoint: pretrained/raft-things.pth
+  raft_video_batch_size: 4
+  flow_vae_batch_size: 1
+  dino_source: third_party/dinov2
+  dino_checkpoint: pretrained/dinov2_vitb14_reg4_pretrain.pth
+  dino_projection: configs/projections/dino_libero_2cam224_rank8.pt
+  depth_source: third_party/Depth-Anything-3
+  depth_checkpoint: pretrained/da3-base
+  depth_model_name: da3-base
+  depth_video_batch_size: 8
+  depth_forward_group_batch_size: 64
+  depth_projection: configs/projections/da3d8_libero_2cam224_rank8.pt
+
+training:
+  batch_size: 16
+  num_workers: 8
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  max_grad_norm: 1.0
+  gradient_accumulation_steps: 1
+  seed: 42
+  steps: 21700
+
+evaluation:
+  action_horizon: 32
+  video_frames: 9
+  denoising_steps: 10
+  replan_steps: 10
+  wait_steps: 30
+  resolution: 256
+  seed: 42
+  rand_device: cpu
+  binarize_gripper: true

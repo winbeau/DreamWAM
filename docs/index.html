@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DreamWAM: Beyond RGB Future Prediction for World Action Models.">
+  <meta name="theme-color" content="#f4f6f8">
+  <title>DreamWAM</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top">DreamWAM</a>
+      <nav aria-label="Primary navigation">
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#simulation">Simulation</a>
+        <a href="#real-robot">Real</a>
+        <a href="https://github.com/hustvl/DreamWAM">Code</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="paper-header">
+      <div class="container paper-header-content">
+        <p class="eyebrow">World Action Models</p>
+        <h1>DreamWAM</h1>
+        <p class="paper-title">Beyond RGB Future Prediction for World Action Models</p>
+        <p class="hero-lede">DreamWAM learns future appearance, motion, geometry, and semantics during training while preserving RGB-only action inference.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="https://github.com/hustvl/DreamWAM">Paper</a>
+          <a class="button secondary" href="https://github.com/hustvl/DreamWAM">Code</a>
+        </div>
+        <div class="showreel" aria-label="DreamWAM real-robot demo">
+          <video autoplay muted loop playsinline controls preload="metadata" poster="assets/dreamwam-30s-demo-pro.jpg" aria-label="DreamWAM real-robot manipulation demo">
+            <source src="assets/dreamwam-30s-demo-pro.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="metric-strip" aria-label="Headline results">
+      <div class="container metric-grid">
+        <div><strong>98.90%</strong><span>LIBERO Average</span></div>
+        <div><strong>75.47%</strong><span>LIBERO-Plus Average</span></div>
+        <div><strong>74.40%</strong><span>Real Robot Average under perturbations</span></div>
+      </div>
+    </section>
+
+    <section id="abstract" class="section abstract-section">
+      <div class="container abstract-grid">
+        <div class="section-intro">
+          <p class="eyebrow">01 / Abstract</p>
+          <h2>Future prediction should preserve what matters for action.</h2>
+        </div>
+        <div class="abstract-copy">
+          <p>World Action Models (WAMs) learn action-relevant representations by predicting how the observed world will evolve. Most existing WAMs define this future in RGB space, where task-relevant state transitions are entangled with nuisance variations in texture, illumination, background, and viewpoint. We argue that WAMs should explicitly predict action-relevant future state rather than relying on RGB prediction alone.</p>
+          <p>We introduce DreamWAM, which reformulates future prediction as structured world modeling beyond RGB, representing future states through complementary views of appearance, motion, geometry, and semantics. During training, DreamWAM combines joint latent denoising of RGB and motion with lightweight gated residual branches for geometry and semantics. Shared attention between VideoDiT and ActionDiT allows the action branch to learn from these future-state predictions, while all beyond-RGB supervision branches are disabled at inference and deployment remains RGB-only.</p>
+          <p>Across no-rollout and joint video-action inference, DreamWAM improves matched RGB-only baselines on LIBERO from 97.30% to 98.40% and from 98.00% to 98.90%. Under unseen LIBERO-Plus perturbations, performance rises from 51.36% to 63.44% and from 69.16% to 75.47%. The same robustness extends to real-world manipulation, where DreamWAM reaches 74.40% across unseen lighting, background, and object-layout changes, compared with 55.6% for Fast-WAM-Joint.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="section method-section">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">02 / Method</p><h2>Structured future views shape a shared world-action representation.</h2></div>
+          <p>RGB and Flow are jointly denoised by VideoDiT. DINO and Depth provide gated residual corrections between selected VideoDiT blocks. Video and action tokens exchange information through shared attention.</p>
+        </div>
+
+        <figure class="paper-figure">
+          <a href="assets/dreamwam-architecture.png" target="_blank" rel="noopener" aria-label="Open the DreamWAM architecture figure at full resolution">
+            <img src="assets/dreamwam-architecture.png" alt="DreamWAM architecture overview and gated world residual prediction" width="2250" height="968">
+          </a>
+        </figure>
+
+        <div class="view-grid">
+          <article><span>Appearance</span><strong>RGB future</strong><p>Provides future appearance and scene-evolution cues.</p></article>
+          <article><span>Motion</span><strong>Optical Flow</strong><p>Provides motion and temporal-change cues.</p></article>
+          <article><span>Geometry</span><strong>DA3 Depth</strong><p>Provides geometric and spatial-structure cues.</p></article>
+          <article><span>Semantics</span><strong>DINO features</strong><p>Provides semantic and object-level cues.</p></article>
+        </div>
+
+        <div class="deployment-band">
+          <div><span>Training</span><strong>RGB + Flow + Depth + DINO</strong></div>
+          <b aria-hidden="true">&gt;</b>
+          <div><span>Deploy</span><strong>RGB observation to action</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="simulation" class="section simulation-section">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">03 / Simulation</p><h2>Performance gains in-domain.<br><span>Larger gains under visual&nbsp;perturbations.</span></h2></div>
+          <p>Matched joint video-action comparisons use the same backbone, training data, and evaluation protocol. DreamWAM improves the average on both LIBERO and LIBERO-Plus.</p>
+        </div>
+
+        <div class="table-wrap" tabindex="0" aria-label="LIBERO results by suite">
+          <table class="data-table suite-table">
+            <caption>LIBERO success rates (%)</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">Spatial</th><th scope="col">Object</th><th scope="col">Goal</th><th scope="col">Long</th><th scope="col">Average</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Fast-WAM-Joint</th><td>99.40</td><td>98.20</td><td class="result-best">98.80</td><td>95.60</td><td>98.00</td></tr>
+              <tr class="dream-row"><th scope="row">DreamWAM</th><td class="result-best">99.60</td><td class="result-best">99.80</td><td>98.60</td><td class="result-best">97.60</td><td class="result-best">98.90</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-wrap shift-table-wrap" tabindex="0" aria-label="LIBERO-Plus results by perturbation">
+          <table class="data-table wide-table">
+            <caption>LIBERO-Plus success rates (%)</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">Camera</th><th scope="col">Robot</th><th scope="col">Language</th><th scope="col">Light</th><th scope="col">Background</th><th scope="col">Noise</th><th scope="col">Layout</th><th scope="col">Average</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Fast-WAM-Joint</th><td>39.59</td><td>60.90</td><td>92.32</td><td>94.57</td><td>57.62</td><td>58.59</td><td>80.52</td><td>69.16</td></tr>
+              <tr class="dream-row"><th scope="row">DreamWAM</th><td class="result-best">53.78</td><td class="result-best">63.61</td><td class="result-best">94.80</td><td class="result-best">96.67</td><td class="result-best">71.56</td><td class="result-best">67.15</td><td class="result-best">80.72</td><td class="result-best">75.47</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="protocol-note">Both tables report two-seed joint video-action inference. LIBERO uses 2,000 rollouts per seed; LIBERO-Plus uses 10,030 episodes per seed and no LIBERO-Plus training data.</p>
+      </div>
+    </section>
+
+    <section id="real-robot" class="section real-section">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">04 / Real Robot</p><h2>Robustness gains transfer from simulation to hardware.</h2></div>
+          <p>Four standard tabletop tasks and three unseen visual shifts are evaluated with 30 trials per setting. The perturbation tasks retain the same instruction and success criterion.</p>
+        </div>
+
+        <div class="real-summary">
+          <div><span>Standard-task average</span><p><s>90.8%</s><strong>96.7%</strong></p></div>
+          <div><span>Visual-shift average</span><p><s>55.6%</s><strong>74.40%</strong></p></div>
+        </div>
+
+        <div class="table-wrap" tabindex="0" aria-label="Standard real-robot task results">
+          <table class="data-table real-table">
+            <caption>Standard-task success rates (%)</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">Dish stack</th><th scope="col">Dual-object</th><th scope="col">Strawberries</th><th scope="col">Block stack</th><th scope="col">Average</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Fast-WAM-Joint</th><td>96.7</td><td>86.7</td><td>86.7</td><td class="result-best">93.3</td><td>90.8</td></tr>
+              <tr class="dream-row"><th scope="row">DreamWAM</th><td class="result-best">100.0</td><td class="result-best">96.7</td><td class="result-best">96.7</td><td class="result-best">93.3</td><td class="result-best">96.7</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-wrap shift-table-wrap" tabindex="0" aria-label="Real-robot visual perturbation results">
+          <table class="data-table perturbation-table">
+            <caption>Visual-perturbation success rates (%)</caption>
+            <thead><tr><th scope="col">Method</th><th scope="col">Light</th><th scope="col">Background</th><th scope="col">Distractors</th><th scope="col">Average</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Fast-WAM-Joint</th><td>60.0</td><td>56.7</td><td>50.0</td><td>55.6</td></tr>
+              <tr class="dream-row"><th scope="row">DreamWAM</th><td class="result-best">76.7</td><td class="result-best">76.7</td><td class="result-best">70.0</td><td class="result-best">74.40</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="rollout-heading">
+          <div><p class="eyebrow">Representative rollouts</p><h3>Real-robot task comparisons</h3></div>
+          <p>Fast-WAM-Joint and DreamWAM performing the same manipulation task.</p>
+        </div>
+
+        <div class="task-tabs" role="tablist" aria-label="Real-robot demo task">
+          <button class="active" role="tab" aria-selected="true" data-demo="strawberry">Select strawberries</button>
+          <button role="tab" aria-selected="false" data-demo="dish">Stack dish</button>
+          <button role="tab" aria-selected="false" data-demo="dual">Dual-object pick</button>
+          <button role="tab" aria-selected="false" data-demo="blocks">Stack blocks</button>
+        </div>
+
+        <div class="demo-title-row">
+          <div><span id="demo-index">01 / 04</span><h3 id="demo-title">Select strawberries</h3></div>
+          <button id="sync-play" class="sync-button" type="button">Play both</button>
+        </div>
+
+        <div class="demo-grid">
+          <figure class="rollout baseline">
+            <figcaption><span>Fast-WAM-Joint</span><strong>Baseline</strong></figcaption>
+            <video id="fastwam-video" controls muted playsinline preload="metadata" poster="assets/demos/fastwam-select-strawberry.jpg">
+              <source src="assets/demos/fastwam-select-strawberry.mp4" type="video/mp4">
+            </video>
+          </figure>
+          <figure class="rollout ours">
+            <figcaption><span>DreamWAM</span><strong>Ours</strong></figcaption>
+            <video id="dreamwam-video" controls muted playsinline preload="metadata" poster="assets/demos/dreamwam-select-strawberry.jpg">
+              <source src="assets/demos/dreamwam-select-strawberry.mp4" type="video/mp4">
+            </video>
+          </figure>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div><strong>DreamWAM</strong><span>Beyond RGB Future Prediction for World Action Models</span></div>
+      <p>Built on <a href="https://github.com/yuantianyuan01/FastWAM">FastWAM</a></p>
+    </div>
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
