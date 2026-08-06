@@ -3,7 +3,7 @@
 Official implementation of **DreamWAM: Beyond RGB Future Prediction for World
 Action Models**.
 
-[Project Page](https://hustvl.github.io/DreamWAM/) | [Paper](https://github.com/hustvl/DreamWAM) | [Models](https://huggingface.co/hustvl/DreamWAM)
+[Project Page](https://hustvl.github.io/DreamWAM/) | [Paper](https://arxiv.org/abs/2608.04996) | [Models](https://huggingface.co/hustvl/DreamWAM)
 
 ## Installation
 
