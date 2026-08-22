@@ -2,7 +2,30 @@
 
 <h2>DreamWAM: Beyond RGB Future Prediction<br>for World Action Models</h2>
 
-Official implementation of DreamWAM.
+<p>
+  <b>Shanglin Yuan</b><sup>1,2,*</sup> &middot;
+  <b>Weiheng Zhao</b><sup>1,2,*</sup> &middot;
+  <b>Xin Shi</b><sup>2</sup> &middot;
+  <b>Haoyi Jiang</b><sup>1,2</sup> &middot;
+  <b>Xianda Guo</b><sup>3</sup> &middot;
+  <b>Liu Liu</b><sup>4</sup> &middot;
+  <b>Wenyu Liu</b><sup>1</sup> &middot;
+  <b>Wei Sui</b><sup>2,&dagger;</sup> &middot;
+  <b>Xinggang Wang</b><sup>1,&Dagger;</sup>
+</p>
+
+<p>
+  <sup>1</sup>Huazhong University of Science and Technology &middot;
+  <sup>2</sup>D-Robotics &middot;
+  <sup>3</sup>Wuhan University &middot;
+  <sup>4</sup>Horizon Robotics
+</p>
+
+<p>
+  <sup>*</sup>Equal contribution &middot;
+  <sup>&dagger;</sup>Project Lead &middot;
+  <sup>&Dagger;</sup>Corresponding Author
+</p>
 
 <a href="https://hustvl.github.io/DreamWAM/"><img src="https://img.shields.io/badge/Project-Page-087f79" alt="Project Page"></a>
 <a href="https://arxiv.org/abs/2608.04996"><img src="https://img.shields.io/badge/Paper-arXiv-b31b1b" alt="Paper arXiv"></a>
@@ -11,9 +34,10 @@ Official implementation of DreamWAM.
 
 </div>
 
-DreamWAM moves world action modeling beyond RGB by learning future appearance,
-motion, geometry, and semantics as complementary views of action-relevant state.
-It combines joint RGB-flow latent denoising with gated depth and DINO residual
+This repository provides the official implementation of DreamWAM, which moves
+world action modeling beyond RGB by learning future appearance, motion,
+geometry, and semantics as complementary views of action-relevant state. It
+combines joint RGB-flow latent denoising with gated depth and DINO residual
 supervision, transferring structured future cues to action prediction through
 shared VideoDiT-ActionDiT attention. These beyond-RGB signals are used only
 during training, preserving RGB-only inference while improving robustness to
