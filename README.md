@@ -52,7 +52,6 @@ visual perturbations.
 - [Evaluation](#evaluation)
 - [Acknowledgments](#acknowledgments)
 - [Citation](#citation)
-- [License](#license)
 
 
 ## Installation
@@ -216,11 +215,3 @@ If you find this repository useful, please consider citing our paper:
   year={2026}
 }
 ```
-
-## License
-
-DreamWAM is released under the [Apache License 2.0](LICENSE). Portions derived
-from [FastWAM](https://github.com/yuantianyuan01/FastWAM) retain its MIT
-license notice in [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES). External
-repositories, model weights, and datasets are subject to their respective
-licenses.
