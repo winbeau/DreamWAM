@@ -124,7 +124,7 @@ def main() -> None:
         unwrapped = accelerator.unwrap_model(model)
         torch.save(
             {"model": unwrapped.model.state_dict(), "metrics": metrics},
-            config.paths.output_dir / "final.pt",
+            config.paths.output_dir / "checkpoint.pt",
         )
         print(metrics)
 
