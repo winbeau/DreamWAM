@@ -1,3 +1,5 @@
+> **Evaluation fork — `main`**: [paper-evaluation plan and status](docs/action-eval/README.md), [agent rules](AGENTS.md). Current scope is repository preparation and documentation only; implementation and GPU evaluation are deferred. Upstream instructions below are preserved for reference and do not override server-only, version-locked installation rules.
+
 <div align="center">
 
 <h2>DreamWAM: Beyond RGB Future Prediction<br>for World Action Models</h2>
