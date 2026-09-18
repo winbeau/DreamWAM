@@ -1,6 +1,6 @@
 # DreamWAM evaluation fork guidance
 
-This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. Current status: plan only; the user deferred implementation.
+This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. FINAL STATUS: planning only; the user paused implementation again. Future priority is DreamWAM and RLinf DreamZero-5B single-GPU LIBERO evaluation; FastWAM-Joint remains shelved. Wait for an explicit request to resume a stage.
 
 - Install and execute only on the evaluation server, never locally. Only GPU5 is authorized; do not touch other workloads.
 - Preserve verified pyproject.toml and uv.lock byte-for-byte when compatible. Record source hashes and justify every necessary version change. Pin added dependencies and build tools exactly; lock on server, then use `uv sync --locked`. Never upgrade implicitly.

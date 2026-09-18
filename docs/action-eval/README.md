@@ -6,7 +6,7 @@ This page records the planned DreamWAM Joint integration with [action-eval](http
 
 Upstream: hustvl/DreamWAM, reference commit `7c35d7d094b86fc65721cd26dfbc3194addb8fd0`. Earlier server pilot: Spatial tasks 0/1/2 × 10 initial states, 30/30 success; six native aborts required recovery. This is not four-suite evidence. See action-eval `docs/verification/P3-DREAMWAM-PILOT-COMPLETE.md`.
 
-The existing adapter was copied locally for review but remains untracked reference material, not part of this documentation-only change. No new adapter, environment, checkpoint or GPU validation is claimed.
+During a briefly authorized execution phase, the original server adapter was committed on main (40a3688) and pulled on the server. It has not received the planned fixes or new correctness validation. The action-eval server reused its original lock and passed 170 platform tests; this is not model/GPU validation. The user subsequently paused implementation again. See the [authoritative handoff](https://github.com/winbeau/action-eval/blob/main/docs/plan/00-current-handoff.md).
 
 ## Future stages
 
