@@ -11,4 +11,8 @@ This fork maintains paper-evaluation integration on **main**, also the GitHub de
 - README states identity, status and entrypoints; docs/action-eval indexes environment, protocol and evidence. Every verification record includes status, timestamp/timezone, commit and checkpoint hashes, command, exit code, artifacts, limitations and next step.
 - Pilot is not benchmark. Errors are not task failures. Incomplete coverage must never yield a complete SR.
 
+## Required development and deployment workflow
+
+All projects: local clone/edit → local `git add`, `git commit`, `git push` on main → server `git pull --ff-only` → `uv sync --locked` → explicitly authorized training/evaluation. Never modify application code on the compute server or bypass Git with copied deployments. Check for server edits before pulling; never discard them. Weights/data/cache are external to Git. If a lock must be generated on the server, return it for local review/commit/push and pull the committed version before execution. This documentation task does not authorize running that workflow beyond local documentation commits.
+
 Start with [the handoff plan](docs/action-eval/README.md).
