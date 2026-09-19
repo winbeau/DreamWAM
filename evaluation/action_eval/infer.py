@@ -347,17 +347,12 @@ class DreamWAMPolicy:
         if self.policy.sparse_config.enabled:
             # Executed density, not the requested one: a budget can be clamped by the
             # structural floor or replaced by a fallback route.
-            counters = self.policy.model.mot.sparse_diagnostics
-            calls = counters.get("calls", 0.0)
+            counters = self.policy.model.mot.sparse_stats()
             diagnostics.update(
                 {
-                    "sparse_density": (
-                        counters.get("density_sum", 0.0) / calls if calls else None
-                    ),
-                    "sparse_fallback_fraction": (
-                        counters.get("fallback_sum", 0.0) / calls if calls else None
-                    ),
-                    "sparse_layer_calls": calls,
+                    "sparse_density": counters.get("mean_density"),
+                    "sparse_fallback_fraction": counters.get("mean_fallback_fraction"),
+                    "sparse_layer_calls": counters.get("calls"),
                 }
             )
         return Prediction(

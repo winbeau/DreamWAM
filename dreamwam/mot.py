@@ -38,12 +38,14 @@ class JointMoT(nn.Module):
         self.sparse_diagnostics: dict[str, float] = {}
 
     def reset_sparse_diagnostics(self) -> None:
+        # ``fallback_sum`` is an accumulator tensor: converting it to a Python float on every
+        # layer-step would synchronise the device 300 times per request for a diagnostic.
         self.sparse_diagnostics = {
             "calls": 0.0,
             "density_sum": 0.0,
-            "fallback_sum": 0.0,
             "anchor_builds": 0.0,
         }
+        self._fallback_accumulator: torch.Tensor | None = None
         # Routes are valid only inside one sampling call: token positions depend on the
         # layout, and the anchor signal depends on the current hidden states.
         self._route_cache = {}
@@ -60,6 +62,17 @@ class JointMoT(nn.Module):
             )
             self._layout_cache = {key: layout}
         return layout
+
+    def sparse_stats(self) -> dict:
+        """Materialise the accumulated diagnostics once, at the end of a request."""
+        counters = dict(self.sparse_diagnostics)
+        calls = counters.get("calls", 0.0)
+        counters["mean_density"] = counters.pop("density_sum", 0.0) / calls if calls else None
+        accumulator = getattr(self, "_fallback_accumulator", None)
+        counters["mean_fallback_fraction"] = (
+            float(accumulator) / calls if calls and accumulator is not None else None
+        )
+        return counters
 
     def _joint_self_attention(
         self,
@@ -124,8 +137,11 @@ class JointMoT(nn.Module):
         diagnostics = self.sparse_diagnostics
         diagnostics["calls"] = diagnostics.get("calls", 0.0) + 1
         diagnostics["density_sum"] = diagnostics.get("density_sum", 0.0) + stats["density"]
-        diagnostics["fallback_sum"] = (
-            diagnostics.get("fallback_sum", 0.0) + stats["fallback_fraction"]
+        fallback = route.fallback.to(torch.float32).sum().detach()
+        self._fallback_accumulator = (
+            fallback
+            if self._fallback_accumulator is None
+            else self._fallback_accumulator + fallback
         )
         if stats.get("anchors_recomputed"):
             diagnostics["anchor_builds"] = diagnostics.get("anchor_builds", 0.0) + 1

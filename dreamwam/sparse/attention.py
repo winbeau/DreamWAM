@@ -148,6 +148,7 @@ def sparse_joint_attention(
 
     stats = route.describe()
     stats["backend"] = config.backend
-    stats["av_mass_mean"] = float(av_mass.mean()) if av_mass is not None else None
+    # No reduction over av_mass here: materialising a mean would synchronise once per
+    # layer-step, and the anchor magnitude is a diagnostic rather than a decision input.
     stats["anchors_recomputed"] = not reused
     return video_output, action_output, stats, route

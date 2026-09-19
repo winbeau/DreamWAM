@@ -956,20 +956,23 @@ def test_routing_does_not_synchronise_the_device():
     import ast
     from pathlib import Path
 
+    import dreamwam.sparse.attention as attention
+    import dreamwam.sparse.reuse as reuse
     import dreamwam.sparse.routing as routing
 
-    tree = ast.parse(Path(routing.__file__).read_text())
     offenders = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
-            if node.func.attr in {"item", "cpu", "numpy", "tolist"}:
-                offenders.append((node.lineno, node.func.attr))
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
-            if node.func.id == "bool":
-                offenders.append((node.lineno, "bool"))
+    for module in (routing, attention, reuse):
+        tree = ast.parse(Path(module.__file__).read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+                if node.func.attr in {"item", "cpu", "numpy", "tolist"}:
+                    offenders.append((module.__name__, node.lineno, node.func.attr))
+            if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+                if node.func.id in {"bool", "float", "int"}:
+                    offenders.append((module.__name__, node.lineno, node.func.id))
     assert not offenders, (
-        "routing must not read device tensors into Python; found "
-        f"{offenders} (describe() may report scalars, but no path on the hot loop may)"
+        "the sparse hot path must not read device tensors into Python; found "
+        f"{offenders}. Each of these synchronises once per layer-step, so 300 per request."
     )
 
 

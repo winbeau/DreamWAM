@@ -37,21 +37,25 @@ class Route:
     density: float  # kept / legal video query-key pairs, averaged over heads
     selection: str
     stage: int
+    #: The per-head budget as Python ints; the tensor copy exists for gathering, but reporting
+    #: must not read the device.
+    budget_per_head: tuple[int, ...] = ()
 
     def describe(self) -> dict:
+        """Sync-free summary, safe to call on every layer-step.
+
+        Every value here is Python-level: the budget tuple, the shape, and the density that
+        was already computed from Python numbers. Tensor-derived means used to live here and
+        cost two device synchronisations per layer-step, which is exactly the overhead this
+        work exists to remove.
+        """
+        budgets = list(self.budget_per_head)
         return {
             "selection": self.selection,
             "stage": self.stage,
             "kmax": int(self.keys.shape[-1]),
-            "blocks_mean": float(self.blocks.float().mean()),
-            "blocks_min": int(self.blocks.min().item()) if self.blocks.numel() else 0,
-            "blocks_max": int(self.blocks.max().item()) if self.blocks.numel() else 0,
-            "fallback_fraction": (
-                float(self.fallback.float().mean()) if self.fallback.numel() else 0.0
-            ),
-            "concentration_mean": (
-                float(self.concentration.mean()) if self.concentration.numel() else 0.0
-            ),
+            "blocks_min": min(budgets) if budgets else 0,
+            "blocks_max": max(budgets) if budgets else 0,
             "density": self.density,
         }
 
@@ -284,4 +288,5 @@ def build_route(
         density=density,
         selection=config.selection,
         stage=stage,
+        budget_per_head=tuple(int(value) for value in blocks_per_head),
     )
