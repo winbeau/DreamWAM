@@ -10,7 +10,7 @@ are fatal: an eager fallback must never be timed as graph replay.
 
 ``graph_enabled=False`` is an explicit buffering control, useful on CPU as well.
 Graphs persist across context entries; ``close_graphs`` releases their buffers.
-This experimental class does not change the production policy configuration.
+The policy enables this class only through an explicit visual_cache graph option.
 """
 
 from __future__ import annotations
