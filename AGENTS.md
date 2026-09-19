@@ -1,11 +1,11 @@
 # DreamWAM evaluation fork guidance
 
-This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. FINAL STATUS: planning only; the user paused implementation again. Future priority is DreamWAM and RLinf DreamZero-5B single-GPU LIBERO evaluation; FastWAM-Joint remains shelved. Wait for an explicit request to resume a stage.
+This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. CURRENT STATUS: execution resumed. The full four-suite LIBERO evaluation (Spatial/Object/Goal/Long, 10 tasks x 50 initial states each) is running on three lanes on physical GPUs 4/5/7. FastWAM-Joint remains shelved.
 
-- Install and execute only on the evaluation server, never locally. Only GPU5 is authorized; do not touch other workloads.
+- Install and execute only on the evaluation server, never locally. Physical GPUs **4, 5 and 7** are authorized for the current three-lane run; never touch another card or another user's process.
 - Preserve verified pyproject.toml and uv.lock byte-for-byte when compatible. Record source hashes and justify every necessary version change. Pin added dependencies and build tools exactly; lock on server, then use `uv sync --locked`. Never upgrade implicitly.
 - The reference model environment reports torch 2.7.1+cu126, Python 3.10.20; do not silently replace it with cu128. A model lockfile has not yet been recovered/generated.
-- Do not modify live environments, download weights, implement adapters or run GPU work until the user resumes execution.
+- The adapter at [`evaluation/action_eval/infer.py`](evaluation/action_eval/infer.py) loads the checkpoint the platform injects, applies option overrides to the policy's own evaluation dict, and refuses to fall back to CPU. Re-read it before changing model wiring.
 - No new GitHub workflow CI. No force pushes or destructive resets. main is the normal entrypoint; upstream revisions are provenance, not permission to overwrite existing history.
 - Before adapter/config work, read the corresponding skills in winbeau/action-eval (`skills/action-eval-adapter/SKILL.md`, `skills/action-eval-config/SKILL.md`). The evaluator owns success; the model only returns actions.
 - README states identity, status and entrypoints; docs/action-eval indexes environment, protocol and evidence. Every verification record includes status, timestamp/timezone, commit and checkpoint hashes, command, exit code, artifacts, limitations and next step.
