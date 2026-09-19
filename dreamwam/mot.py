@@ -7,6 +7,7 @@ from torch.utils.checkpoint import checkpoint
 from .experts import ActionDiT, VideoDiT
 from .layers import apply_rope, modulate, scaled_dot_product_attention
 from .sparse import SparseConfig, build_token_layout, sparse_joint_attention
+from .sparse.runtime import is_dense_prefix, route_scope_key
 
 
 class JointMoT(nn.Module):
@@ -91,13 +92,17 @@ class JointMoT(nn.Module):
         # prescribes, and it matters: extracting the action-anchor mass costs more per
         # layer-step than the attention it guides, so recomputing it in every layer loses
         # more than the sparsity saves (measured in docs/analysis).
-        cached_route = None
-        if sparse.anchor_refresh != "layer":
-            scope = step_index if sparse.anchor_refresh == "step" else 0
-            cache_key = (scope,)
-            cached_route = self._route_cache.get(cache_key)
-            if layer_index == sparse.anchor_layer:
-                cached_route = None  # the anchor layer always rebuilds
+        cache_key = route_scope_key(sparse, step_index)
+        if is_dense_prefix(sparse, layer_index):
+            # Before the anchor layer there is no route yet; run the shipped dense path.
+            return scaled_dot_product_attention(
+                torch.cat([video_io[0], action_io[0]], dim=1),
+                torch.cat([video_io[1], action_io[1]], dim=1),
+                torch.cat([video_io[2], action_io[2]], dim=1),
+                self.num_heads,
+                attention_mask,
+            )
+        cached_route = None if cache_key is None else self._route_cache.get(cache_key)
         video_output, action_output, stats, route = sparse_joint_attention(
             query_video=video_io[0],
             key_video=video_io[1],
@@ -113,10 +118,8 @@ class JointMoT(nn.Module):
             action_mask=attention_mask[video_length:],
             route=cached_route,
         )
-        if sparse.anchor_refresh != "layer" and cached_route is None:
-            self._route_cache[(step_index if sparse.anchor_refresh == "step" else 0,)] = (
-                route
-            )
+        if cache_key is not None and cached_route is None:
+            self._route_cache[cache_key] = route
         diagnostics = self.sparse_diagnostics
         diagnostics["calls"] = diagnostics.get("calls", 0.0) + 1
         diagnostics["density_sum"] = diagnostics.get("density_sum", 0.0) + stats["density"]

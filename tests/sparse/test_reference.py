@@ -702,3 +702,49 @@ def test_anchor_refresh_is_validated_and_defaults_to_per_layer():
             ).anchor_refresh
             == scope
         )
+
+
+# --- route lifetime (M3 amortization) ---------------------------------------------
+
+
+def test_route_scope_key_matches_the_declared_refresh():
+    from dreamwam.sparse.runtime import route_scope_key
+
+    per_layer = SparseConfig.from_mapping({"enabled": True, "anchor_refresh": "layer"})
+    per_step = SparseConfig.from_mapping({"enabled": True, "anchor_refresh": "step"})
+    per_request = SparseConfig.from_mapping({"enabled": True, "anchor_refresh": "request"})
+    assert route_scope_key(per_layer, 3) is None
+    assert route_scope_key(per_step, 3) == (3,)
+    assert route_scope_key(per_step, 4) == (4,)
+    # A request-scoped route must be the SAME key for every step, otherwise it silently
+    # degrades to step scope - the bug this test exists to prevent.
+    assert route_scope_key(per_request, 0) == route_scope_key(per_request, 7)
+
+
+def test_dense_prefix_covers_layers_before_the_anchor_layer():
+    from dreamwam.sparse.runtime import is_dense_prefix
+
+    late = SparseConfig.from_mapping(
+        {"enabled": True, "anchor_refresh": "step", "anchor_layer": 2}
+    )
+    assert is_dense_prefix(late, 0) and is_dense_prefix(late, 1)
+    assert not is_dense_prefix(late, 2)
+    # Per-layer routing has no prefix: every layer builds its own route.
+    per_layer = SparseConfig.from_mapping({"enabled": True, "anchor_refresh": "layer"})
+    assert not is_dense_prefix(per_layer, 0)
+
+
+def test_route_is_built_once_per_scope_and_reused():
+    from dreamwam.sparse.runtime import should_build_route
+
+    config = SparseConfig.from_mapping({"enabled": True, "anchor_refresh": "step"})
+    assert should_build_route(config, 0, None) is True
+    assert should_build_route(config, 1, object()) is False
+    assert should_build_route(config, 29, object()) is False
+    per_layer = SparseConfig.from_mapping({"enabled": True, "anchor_refresh": "layer"})
+    assert should_build_route(per_layer, 0, object()) is True
+    late = SparseConfig.from_mapping(
+        {"enabled": True, "anchor_refresh": "step", "anchor_layer": 2}
+    )
+    assert should_build_route(late, 0, None) is False  # dense prefix, not a build
+    assert should_build_route(late, 2, None) is True
