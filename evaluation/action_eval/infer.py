@@ -10,15 +10,19 @@ Where each responsibility lives:
 ===========================================  ==========================
 concern                                      owner
 ===========================================  ==========================
-image flip, camera concatenation, resize     DreamWAM ``policy.py``
+image flip                                   action-eval ``libero/backend.py``
+center-crop, resize, camera concatenation    DreamWAM ``policy.py``
 prompt template, proprio/action normalisation DreamWAM ``policy.py``
 gripper sign and binarisation                DreamWAM ``policy.py``
 which GPU, timeouts, episode loop, success   action-eval
 ===========================================  ==========================
 
-The adapter must therefore *not* preprocess images again: the observation arrives
-already in the profile DreamWAM expects, and applying the flip a second time would
-silently feed the model an upside-down view.
+The flip belongs to the benchmark because it owns the observation profile, so this
+adapter must *not* flip again: ``action_eval/benchmarks/libero/backend.py`` already applies the same
+``[::-1, ::-1]`` that DreamWAM's own ``evaluation/rollout.py`` applies, and doing it a
+second time would silently feed the model an upside-down view. The center-crop/resize
+and the ``agentview|wrist`` concatenation are the model's own and happen inside
+``DreamWAMPolicy.predict_action``; the adapter does not repeat them either.
 
 The runner injects three fully resolved paths into the adapter options, so this file
 never has to guess how a relative path should be interpreted:
@@ -26,6 +30,11 @@ never has to guess how a relative path should be interpreted:
 ``model_root``     the fork checkout (``policy.repo_root``)
 ``model_config``   the DreamWAM release YAML (``policy.model_config``)
 ``checkpoint``     the checkpoint path (``policy.checkpoint``)
+
+The injected ``checkpoint`` is authoritative. DreamWAM's release YAML also carries its
+own ``paths.checkpoint``; when both exist and disagree the injected path is loaded and
+the disagreement is recorded in the fingerprint, so the report can never claim a
+checkpoint that did not run.
 
 Options (``policy.options`` in the experiment YAML), all optional:
 ``action_horizon`` number of actions returned per chunk. Must be >= the protocol's
@@ -36,6 +45,8 @@ Options (``policy.options`` in the experiment YAML), all optional:
                    ``sample_action`` receives a fixed seed from its config) or
                    ``episode_stream``. Declared honestly because it changes what a
                    repeated episode means.
+``hash_checkpoint`` default ``True``. Set ``false`` to skip the SHA-256 of the
+                   checkpoint when a run is already covered by a recorded hash.
 """
 
 from __future__ import annotations
@@ -79,7 +90,7 @@ def _import_dreamwam(model_root: Path):
     return _DREAMWAM
 
 
-def _sha256(path: Path, *, chunk: int = 1 << 20) -> str | None:
+def _sha256(path: Path, *, chunk: int = 1 << 22) -> str | None:
     try:
         digest = hashlib.sha256()
         with path.open("rb") as handle:
@@ -91,6 +102,22 @@ def _sha256(path: Path, *, chunk: int = 1 << 20) -> str | None:
         return digest.hexdigest()
     except OSError:
         return None
+
+
+#: ``describe()`` is called once per worker at startup, but hashing a 12 GiB checkpoint
+#: costs real time, so the digest is cached per (path, size, mtime).
+_CHECKPOINT_DIGESTS: dict[tuple[str, int, int], str | None] = {}
+
+
+def _cached_sha256(path: Path) -> str | None:
+    try:
+        stat = path.stat()
+    except OSError:
+        return None
+    key = (str(path), stat.st_size, stat.st_mtime_ns)
+    if key not in _CHECKPOINT_DIGESTS:
+        _CHECKPOINT_DIGESTS[key] = _sha256(path)
+    return _CHECKPOINT_DIGESTS[key]
 
 
 class DreamWAMPolicy:
@@ -117,16 +144,39 @@ class DreamWAMPolicy:
 
         release = load_release_config(model_config_path)
         self.release_config_path = model_config_path
-        self.checkpoint_path = Path(release.paths.checkpoint)
 
-        # Everything below comes from the model's own config; the platform does not
-        # reimplement any of it.
-        self._evaluation = dict(release.evaluation)
-        options = self.config
-        if options.get("action_horizon") is not None:
-            self._evaluation["action_horizon"] = int(options["action_horizon"])
-        if options.get("denoising_steps") is not None:
-            self._evaluation["denoising_steps"] = int(options["denoising_steps"])
+        # The injected path is authoritative; the release YAML's own path is only a
+        # default. Loading the YAML path while reporting the injected one would make
+        # the fingerprint describe a checkpoint that never ran, so the injected path
+        # is carried into the ReleaseConfig that build_policy actually consumes.
+        declared_checkpoint = Path(release.paths.checkpoint)
+        injected_checkpoint = self.config.get("checkpoint")
+        if injected_checkpoint:
+            candidate = Path(injected_checkpoint).expanduser()
+            if not candidate.is_absolute():
+                candidate = self.model_root / candidate
+            if not candidate.is_file():
+                raise FileNotFoundError(
+                    f"policy.checkpoint does not exist: {candidate}"
+                )
+            self.checkpoint_path = candidate
+            self._checkpoint_source = "policy.checkpoint"
+            self._checkpoint_conflict = (
+                None
+                if candidate.resolve() == declared_checkpoint.resolve()
+                else {
+                    "model_config_checkpoint": str(declared_checkpoint),
+                    "policy_checkpoint": str(candidate),
+                }
+            )
+            release = dataclasses.replace(
+                release,
+                paths=dataclasses.replace(release.paths, checkpoint=candidate),
+            )
+        else:
+            self.checkpoint_path = declared_checkpoint
+            self._checkpoint_source = "model_config"
+            self._checkpoint_conflict = None
 
         # torch is imported here rather than at module import so a contract test can
         # inspect this file without a GPU environment.
@@ -134,16 +184,29 @@ class DreamWAMPolicy:
 
         self._torch = torch
         if device.startswith("cuda") and not torch.cuda.is_available():
-            # Fall back explicitly and visibly rather than crashing with a CUDA
-            # error deep inside the model.
-            print(
-                "[dreamwam-adapter] CUDA was requested but is not available; "
-                "falling back to CPU",
-                flush=True,
+            # Never fall back to CPU silently: a CPU rollout is orders of magnitude
+            # slower, changes the numerics and would burn the whole evaluation budget
+            # while still producing a success rate that looks legitimate.
+            raise RuntimeError(
+                "DreamWAM adapter was given a CUDA device but torch reports that no "
+                "CUDA device is available; refusing to fall back to CPU. Check that "
+                "CUDA_VISIBLE_DEVICES selects a working GPU."
             )
-            device = "cpu"
         self.device = device
         self.policy = build_policy(release, device=device)
+
+        # ``build_policy`` gives the policy its own reference to the release YAML's
+        # ``evaluation`` dict. Reading and writing that same dict is what makes the
+        # options below change the model instead of only changing the report.
+        options = self.config
+        self._evaluation = self.policy.evaluation
+        if options.get("action_horizon") is not None:
+            self._evaluation["action_horizon"] = int(options["action_horizon"])
+        if options.get("denoising_steps") is not None:
+            self._evaluation["denoising_steps"] = int(options["denoising_steps"])
+        for key in ("action_horizon", "video_frames", "denoising_steps"):
+            if int(self._evaluation[key]) <= 0:
+                raise ValueError(f"evaluation.{key} must be positive")
 
         self._action_horizon = int(self._evaluation["action_horizon"])
         self._rng_mode = str(options.get("rng_mode") or RNG_MODE_FIXED_PER_PREDICT)
@@ -153,6 +216,7 @@ class DreamWAMPolicy:
                 f"{RNG_MODE_EPISODE_STREAM!r}, got {self._rng_mode!r}"
             )
         self._episode_seed = int(self._evaluation.get("seed", 0))
+        self._hash_checkpoint = bool(options.get("hash_checkpoint", True))
         self.predict_calls = 0
         self._fingerprint: dict[str, object] = {}
 
@@ -164,21 +228,30 @@ class DreamWAMPolicy:
             "release_config": str(self.release_config_path),
             "release_config_sha256": _sha256(self.release_config_path),
             "checkpoint": str(self.checkpoint_path),
+            "checkpoint_source": self._checkpoint_source,
             "checkpoint_size_bytes": (
                 self.checkpoint_path.stat().st_size if self.checkpoint_path.is_file() else None
             ),
+            "checkpoint_sha256": (
+                _cached_sha256(self.checkpoint_path)
+                if self._hash_checkpoint
+                else None
+            ),
+            "checkpoint_conflict": self._checkpoint_conflict,
             "setting": getattr(self.policy.config, "setting", None),
             "action_horizon": self._action_horizon,
             "denoising_steps": int(evaluation.get("denoising_steps", 0)),
             "video_frames": int(evaluation.get("video_frames", 0)),
+            "replan_steps": int(evaluation.get("replan_steps", 0)),
+            "wait_steps": int(evaluation.get("wait_steps", 0)),
             "binarize_gripper": bool(evaluation.get("binarize_gripper", False)),
             "model_seed": self._episode_seed,
             "rng_mode": self._rng_mode,
         }
         notes = (
-            "DreamWAM released checkpoint through its own build_policy; images arrive "
-            "already flipped and concatenated by the benchmark, so this adapter applies "
-            "no preprocessing of its own"
+            "DreamWAM released checkpoint through its own build_policy; the benchmark "
+            "flips the images and DreamWAM center-crops, resizes and concatenates them "
+            "inside predict_action, so this adapter applies no preprocessing of its own"
         )
         if self._rng_mode == RNG_MODE_FIXED_PER_PREDICT:
             notes += (
@@ -211,9 +284,9 @@ class DreamWAMPolicy:
             import zlib
 
             mixed = zlib.crc32(str(self._episode_id).encode()) ^ self._episode_seed
+            # ``self._evaluation`` is the policy's own evaluation dict, so writing the
+            # seed here is what makes the next sample_action call use it.
             self._evaluation["seed"] = mixed % (2**31 - 1)
-            if hasattr(self.policy, "evaluation"):
-                self.policy.evaluation["seed"] = self._evaluation["seed"]
 
     def predict(self, observation: dict) -> Prediction:
         images = observation.get("images") or {}
