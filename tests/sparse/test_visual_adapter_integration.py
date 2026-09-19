@@ -8,7 +8,7 @@ import numpy as np
 import torch
 
 import dreamwam.policy as policy_module
-from dreamwam.sparse import config_hash
+from dreamwam.sparse.config import config_hash
 from test_visual_step_cache import model_and_inputs
 
 
