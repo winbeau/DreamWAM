@@ -52,6 +52,34 @@ class VisualStepCache(VisualFFNContextCache):
         self.video_output = None
         self._capture = False
 
+    def _refresh(self, forward, **kwargs):
+        self._capture = True
+        try:
+            result = forward(**kwargs)
+        finally:
+            self._capture = False
+        self.video_output = result["video"]
+        self._stats["dense_video_steps"] += 1
+        self._stats["video_layer_updates"] += self.model.mot.num_layers
+        if len(self.video_kv) != self.model.mot.num_layers:
+            raise RuntimeError("dense refresh did not capture all visual layers")
+        return result
+
+    def _reuse(self, *, video_state, action_state):
+        if self.video_output is None:
+            raise RuntimeError("visual cache has no current-request dense anchor")
+        if self.video_output.shape != video_state["tokens"].shape:
+            raise ValueError("visual layout changed within a request")
+        mot = self.model.mot
+        action = mot.forward_action_with_video_cache(
+            action_state=action_state,
+            video_kv_cache=[self.video_kv[layer] for layer in range(mot.num_layers)],
+            video_length=self.video_output.shape[1],
+            video_tokens_per_frame=video_state["tokens_per_frame"],
+        )
+        self._stats["reused_video_steps"] += 1
+        return {"video": self.video_output, "action": action}
+
     def __enter__(self):
         if self._originals or getattr(self.model, "_visual_ffn_context_cache", None):
             raise RuntimeError("another visual cache is already installed")
@@ -78,31 +106,10 @@ class VisualStepCache(VisualFFNContextCache):
                 raise ValueError("visual-step factor must be measured without sparse attention")
             self._stats["action_layer_updates"] += mot.num_layers
             if step_index % self.refresh_every == 0:
-                self._capture = True
-                try:
-                    result = forward(video_state=video_state, action_state=action_state,
+                return self._refresh(forward, video_state=video_state, action_state=action_state,
                                      residual_injection=residual_injection, sparse=sparse,
                                      step_index=step_index, num_steps=num_steps)
-                finally:
-                    self._capture = False
-                self.video_output = result["video"]
-                self._stats["dense_video_steps"] += 1
-                self._stats["video_layer_updates"] += mot.num_layers
-                if len(self.video_kv) != mot.num_layers:
-                    raise RuntimeError("dense refresh did not capture all visual layers")
-                return result
-            if self.video_output is None:
-                raise RuntimeError("visual cache has no current-request dense anchor")
-            if self.video_output.shape != video_state["tokens"].shape:
-                raise ValueError("visual layout changed within a request")
-            action = mot.forward_action_with_video_cache(
-                action_state=action_state,
-                video_kv_cache=[self.video_kv[layer] for layer in range(mot.num_layers)],
-                video_length=self.video_output.shape[1],
-                video_tokens_per_frame=video_state["tokens_per_frame"],
-            )
-            self._stats["reused_video_steps"] += 1
-            return {"video": self.video_output, "action": action}
+            return self._reuse(video_state=video_state, action_state=action_state)
 
         sample = self.model.sample_action
 

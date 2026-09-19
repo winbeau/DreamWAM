@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Matched full-request measurement of ONE factor: visual FFN recompute ratio.
+"""Matched full-request measurement of one visual reuse/selection factor.
 
 Every request calls the released policy, including text/VAE encoding, all ten
 denoising steps, cache anchors/selection/reconstruction, and CPU action output.
@@ -32,6 +32,7 @@ from dreamwam.sparse.action_guided_neuron_cache import ActionGuidedFFNNeuronCach
 from dreamwam.sparse.ffn_context_cache import VisualFFNContextCache
 from dreamwam.sparse.ffn_neuron_cache import VisualFFNNeuronCache
 from dreamwam.sparse.visual_step_cache import VisualStepCache
+from dreamwam.sparse.visual_token_cache import VisualTokenRefreshCache
 
 
 def sha256(path):
@@ -74,7 +75,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="configs/dreamwam_joint.yaml")
     parser.add_argument("--keep-ratio", type=float, default=0.1)
-    parser.add_argument("--cache-kind", choices=("tokens", "neurons", "guided_neurons", "visual_steps"), default="tokens")
+    parser.add_argument("--cache-kind", choices=("tokens", "neurons", "guided_neurons", "visual_steps", "visual_tokens"), default="tokens")
     parser.add_argument("--guidance-weight", type=float, default=1.0)
     parser.add_argument("--refresh-every", type=int, default=5, help="visual-step refresh interval; action always runs all steps")
     parser.add_argument("--group-size", type=int, default=10, help="neuron-mask group size; dense anchor at each group start")
@@ -97,18 +98,20 @@ def main():
                     processes_before=command("nvidia-smi", "--query-compute-apps=gpu_uuid,pid,used_memory", "--format=csv"),
                     checkpoint=dict(path=str(release.paths.checkpoint), sha256=sha256(release.paths.checkpoint)),
                     source_sha256={name: sha256(name) for name in (
-                        "dreamwam/sparse/ffn_context_cache.py", "dreamwam/sparse/ffn_neuron_cache.py", "dreamwam/sparse/action_guided_neuron_cache.py", "dreamwam/sparse/visual_step_cache.py", "scripts/sparse/benchmark_ffn_context_cache.py",
+                        "dreamwam/sparse/ffn_context_cache.py", "dreamwam/sparse/ffn_neuron_cache.py", "dreamwam/sparse/action_guided_neuron_cache.py", "dreamwam/sparse/visual_step_cache.py", "dreamwam/sparse/visual_token_cache.py", "scripts/sparse/benchmark_ffn_context_cache.py",
                         "pyproject.toml", "requirements.txt", args.config)},
                     environment="existing .venv; no install/sync or dependency changes; model uv.lock absent",
-                    factor=dict(name=f"visual FFN {args.cache_kind} recompute fraction" if args.cache_kind != "visual_steps" else "whole visual layer refresh interval",
+                    factor=dict(name=("whole-transformer visual token refresh budget at fixed cadence" if args.cache_kind == "visual_tokens" else
+                                      f"visual FFN {args.cache_kind} recompute fraction" if args.cache_kind != "visual_steps" else "whole visual layer refresh interval"),
                                 keep_ratio=args.keep_ratio if args.cache_kind != "visual_steps" else None,
                                 cache_kind=args.cache_kind,
                                 group_size=args.group_size if args.cache_kind in ("neurons", "guided_neurons") else None,
-                                refresh_every=args.refresh_every if args.cache_kind == "visual_steps" else None,
+                                refresh_every=args.refresh_every if args.cache_kind in ("visual_steps", "visual_tokens") else None,
                                 reference="per-row latest computed input/output" if args.cache_kind == "tokens" else "dense current-request group anchor",
                                 first_step="dense for every layer", action_guidance=args.cache_kind == "guided_neurons",
                                 guidance_weight=args.guidance_weight if args.cache_kind == "guided_neurons" else None,
-                                additional_control="unguided neuron cache with identical keep ratio and group size" if args.cache_kind == "guided_neurons" else None),
+                                additional_control=("all-token refresh at the identical temporal cadence" if args.cache_kind == "visual_tokens" else
+                                                    "unguided neuron cache with identical keep ratio and group size" if args.cache_kind == "guided_neurons" else None)),
                     latency_boundary="full predict_action, synchronized wall clock, includes CPU action output",
                     sr=None)
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
@@ -125,10 +128,16 @@ def main():
     manifest["reps_per_variant"] = args.reps
     manifest["parameter_versions"] = {name: parameter._version for name, parameter in policy.model.named_parameters()}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    candidate = {"tokens": "context_cache", "neurons": "neuron_cache", "guided_neurons": "guided_neuron_cache", "visual_steps": "visual_step_cache"}[args.cache_kind]
+    candidate = {"tokens": "context_cache", "neurons": "neuron_cache", "guided_neurons": "guided_neuron_cache", "visual_steps": "visual_step_cache", "visual_tokens": "visual_token_cache"}[args.cache_kind]
     if args.cache_kind == "visual_steps":
         caches = {"matched_dense": VisualStepCache(policy.model, refresh_every=1),
                   candidate: VisualStepCache(policy.model, refresh_every=args.refresh_every)}
+    elif args.cache_kind == "visual_tokens":
+        caches = {
+            "matched_dense": VisualTokenRefreshCache(policy.model, keep_ratio=1, refresh_every=1),
+            "temporal_only": VisualTokenRefreshCache(policy.model, keep_ratio=1, refresh_every=args.refresh_every),
+            candidate: VisualTokenRefreshCache(policy.model, keep_ratio=args.keep_ratio, refresh_every=args.refresh_every),
+        }
     elif args.cache_kind == "guided_neurons":
         caches = {
             "matched_dense": ActionGuidedFFNNeuronCache(policy.model, keep_ratio=1.0, group_size=args.group_size,
@@ -174,6 +183,14 @@ def main():
         if not np.array_equal(actual, expected):
             raise AssertionError(f"full-budget parity failed for input {input_id}")
     manifest["full_budget_bitwise_parity"] = True
+    if args.cache_kind == "visual_tokens":
+        for input_id, (images, state, instruction) in enumerate(inputs):
+            with VisualStepCache(policy.model, refresh_every=args.refresh_every):
+                expected = policy.predict_action(images=images, state=state, instruction=instruction)
+            _, actual, _ = predict("temporal_only", input_id)
+            if not np.array_equal(actual, expected):
+                raise AssertionError(f"temporal control parity failed for input {input_id}")
+        manifest["temporal_control_bitwise_parity"] = True
     for variant in variants:
         for index in range(args.warmup):
             predict(variant, index % len(inputs))
@@ -216,6 +233,9 @@ def main():
                                        f"Only {args.cache_kind} reuse enabled; no attention restriction, other cache factors, or public operator changes."])
     if args.cache_kind == "guided_neurons":
         result["speedup_vs_unguided_mean"] = statistics.fmean(samples["unguided_neurons"]) / statistics.fmean(samples[candidate])
+    if args.cache_kind == "visual_tokens":
+        result["speedup_vs_temporal_only_mean"] = statistics.fmean(samples["temporal_only"]) / statistics.fmean(samples[candidate])
+        result["temporal_control_bitwise_parity"] = True
     (out / "summary.json").write_text(json.dumps(result, indent=2) + "\n")
     manifest.update(status="MEASURED", exit_code=0, end_utc=result["end_utc"], full_budget_bitwise_parity=True)
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
