@@ -28,6 +28,7 @@ import torch
 
 from dreamwam.config import load_release_config
 from dreamwam.policy import build_policy
+from dreamwam.sparse.action_guided_neuron_cache import ActionGuidedFFNNeuronCache
 from dreamwam.sparse.ffn_context_cache import VisualFFNContextCache
 from dreamwam.sparse.ffn_neuron_cache import VisualFFNNeuronCache
 from dreamwam.sparse.visual_step_cache import VisualStepCache
@@ -73,7 +74,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="configs/dreamwam_joint.yaml")
     parser.add_argument("--keep-ratio", type=float, default=0.1)
-    parser.add_argument("--cache-kind", choices=("tokens", "neurons", "visual_steps"), default="tokens")
+    parser.add_argument("--cache-kind", choices=("tokens", "neurons", "guided_neurons", "visual_steps"), default="tokens")
+    parser.add_argument("--guidance-weight", type=float, default=1.0)
     parser.add_argument("--refresh-every", type=int, default=5, help="visual-step refresh interval; action always runs all steps")
     parser.add_argument("--group-size", type=int, default=10, help="neuron-mask group size; dense anchor at each group start")
     parser.add_argument("--warmup", type=int, default=2)
@@ -95,16 +97,18 @@ def main():
                     processes_before=command("nvidia-smi", "--query-compute-apps=gpu_uuid,pid,used_memory", "--format=csv"),
                     checkpoint=dict(path=str(release.paths.checkpoint), sha256=sha256(release.paths.checkpoint)),
                     source_sha256={name: sha256(name) for name in (
-                        "dreamwam/sparse/ffn_context_cache.py", "dreamwam/sparse/ffn_neuron_cache.py", "dreamwam/sparse/visual_step_cache.py", "scripts/sparse/benchmark_ffn_context_cache.py",
+                        "dreamwam/sparse/ffn_context_cache.py", "dreamwam/sparse/ffn_neuron_cache.py", "dreamwam/sparse/action_guided_neuron_cache.py", "dreamwam/sparse/visual_step_cache.py", "scripts/sparse/benchmark_ffn_context_cache.py",
                         "pyproject.toml", "requirements.txt", args.config)},
                     environment="existing .venv; no install/sync or dependency changes; model uv.lock absent",
                     factor=dict(name=f"visual FFN {args.cache_kind} recompute fraction" if args.cache_kind != "visual_steps" else "whole visual layer refresh interval",
                                 keep_ratio=args.keep_ratio if args.cache_kind != "visual_steps" else None,
                                 cache_kind=args.cache_kind,
-                                group_size=args.group_size if args.cache_kind == "neurons" else None,
+                                group_size=args.group_size if args.cache_kind in ("neurons", "guided_neurons") else None,
                                 refresh_every=args.refresh_every if args.cache_kind == "visual_steps" else None,
                                 reference="per-row latest computed input/output" if args.cache_kind == "tokens" else "dense current-request group anchor",
-                                first_step="dense for every layer", action_guidance=False),
+                                first_step="dense for every layer", action_guidance=args.cache_kind == "guided_neurons",
+                                guidance_weight=args.guidance_weight if args.cache_kind == "guided_neurons" else None,
+                                additional_control="unguided neuron cache with identical keep ratio and group size" if args.cache_kind == "guided_neurons" else None),
                     latency_boundary="full predict_action, synchronized wall clock, includes CPU action output",
                     sr=None)
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
@@ -121,19 +125,29 @@ def main():
     manifest["reps_per_variant"] = args.reps
     manifest["parameter_versions"] = {name: parameter._version for name, parameter in policy.model.named_parameters()}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    candidate = {"tokens": "context_cache", "neurons": "neuron_cache", "visual_steps": "visual_step_cache"}[args.cache_kind]
+    candidate = {"tokens": "context_cache", "neurons": "neuron_cache", "guided_neurons": "guided_neuron_cache", "visual_steps": "visual_step_cache"}[args.cache_kind]
     if args.cache_kind == "visual_steps":
         caches = {"matched_dense": VisualStepCache(policy.model, refresh_every=1),
                   candidate: VisualStepCache(policy.model, refresh_every=args.refresh_every)}
+    elif args.cache_kind == "guided_neurons":
+        caches = {
+            "matched_dense": ActionGuidedFFNNeuronCache(policy.model, keep_ratio=1.0, group_size=args.group_size,
+                                                       guidance_weight=args.guidance_weight),
+            "unguided_neurons": VisualFFNNeuronCache(policy.model, keep_ratio=args.keep_ratio, group_size=args.group_size),
+            candidate: ActionGuidedFFNNeuronCache(policy.model, keep_ratio=args.keep_ratio, group_size=args.group_size,
+                                                 guidance_weight=args.guidance_weight),
+        }
     else:
         cache_class = VisualFFNContextCache if args.cache_kind == "tokens" else VisualFFNNeuronCache
         extra = {} if args.cache_kind == "tokens" else {"group_size": args.group_size}
         caches = {"matched_dense": cache_class(policy.model, keep_ratio=1.0, **extra),
                   candidate: cache_class(policy.model, keep_ratio=args.keep_ratio, **extra)}
-    if args.cache_kind == "neurons":
-        caches[candidate].prepare()
+    if args.cache_kind in ("neurons", "guided_neurons"):
+        for cache in caches.values():
+            cache.prepare()
         manifest["static_weight_norm_setup_seconds"] = caches[candidate].setup_seconds
-    variants = ("native_dense", "matched_dense", candidate)
+        manifest["weight_norm_setup_seconds_per_variant"] = {name: cache.setup_seconds for name, cache in caches.items()}
+    variants = ("native_dense", *caches)
     dense_actions = {}
     samples = {name: [] for name in variants}
     comparisons = []
@@ -167,12 +181,12 @@ def main():
     with (out / "requests.jsonl").open("w", buffering=1) as raw:
         for repeat in range(args.reps):
             # Rotate order to balance GPU clock and host-load drift.
-            order = variants[repeat % 3:] + variants[:repeat % 3]
+            order = variants[repeat % len(variants):] + variants[:repeat % len(variants)]
             input_id = repeat % len(inputs)
             for variant in order:
                 elapsed, actual, stats = predict(variant, input_id)
                 expected = dense_actions[input_id]
-                if variant != candidate and not np.array_equal(actual, expected):
+                if variant in ("native_dense", "matched_dense") and not np.array_equal(actual, expected):
                     raise AssertionError(f"Dense/request isolation parity failed: {variant} input {input_id}")
                 difference = actual.astype(np.float64) - expected.astype(np.float64)
                 row = dict(repeat=repeat, order=list(order), variant=variant, input_id=input_id,
@@ -199,7 +213,9 @@ def main():
                   gpu_after=command("nvidia-smi", "--query-gpu=index,uuid,name,utilization.gpu,memory.used", "--format=csv"),
                   processes_after=command("nvidia-smi", "--query-compute-apps=gpu_uuid,pid,used_memory", "--format=csv"),
                   sr=None, limitations=["No closed-loop SR; action error is a diagnostic, not a success criterion.",
-                                       f"Only {args.cache_kind} reuse enabled; no action guidance, attention restriction, or other cache factor."])
+                                       f"Only {args.cache_kind} reuse enabled; no attention restriction, other cache factors, or public operator changes."])
+    if args.cache_kind == "guided_neurons":
+        result["speedup_vs_unguided_mean"] = statistics.fmean(samples["unguided_neurons"]) / statistics.fmean(samples[candidate])
     (out / "summary.json").write_text(json.dumps(result, indent=2) + "\n")
     manifest.update(status="MEASURED", exit_code=0, end_utc=result["end_utc"], full_budget_bitwise_parity=True)
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

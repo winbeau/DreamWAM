@@ -53,6 +53,9 @@ class VisualFFNNeuronCache(VisualFFNContextCache):
         self._stats.update(mask_builds=0, computed_neurons=0, total_neurons=0,
                            gathered_weight_elements=0)
 
+    def _neuron_score(self, layer, hidden):
+        return hidden.float().abs().sum(dim=(0, 1)) * self.weight_norms[layer]
+
     def _forward(self, layer, original, current):
         if not self._active:
             raise RuntimeError("visual neuron cache must run inside sample_action")
@@ -82,7 +85,7 @@ class VisualFFNNeuronCache(VisualFFNContextCache):
                 return output
             if layer not in self.weight_norms:
                 raise RuntimeError("call prepare() before measuring the neuron cache")
-            score = hidden.float().abs().sum(dim=(0, 1)) * self.weight_norms[layer]
+            score = self._neuron_score(layer, hidden)
             index = score.argsort(descending=True, stable=True)[:keep]
             selected_up = up.weight.index_select(0, index)
             selected_bias = None if up.bias is None else up.bias.index_select(0, index)
