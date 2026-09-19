@@ -43,6 +43,7 @@ class DreamWAMPolicy:
         sparse: dict | None = None,
     ):
         self.config = config
+        self.evaluation = config.evaluation
         self.device = torch.device(device)
         if self.device.type == "cuda" and not torch.cuda.is_available():
             raise RuntimeError("CUDA policy requested but no CUDA device is available.")
@@ -75,7 +76,6 @@ class DreamWAMPolicy:
         )
         self.normalizer = LiberoNormalizer(config.paths.dataset_stats)
         self.image_size = int(config.preprocessing["image_size"])
-        self.evaluation = config.evaluation
         required = {
             "action_horizon",
             "video_frames",
