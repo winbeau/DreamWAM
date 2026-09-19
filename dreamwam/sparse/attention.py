@@ -30,7 +30,7 @@ import torch.nn.functional as F
 from .av import action_attention_with_mass
 from .config import SparseConfig
 from .layout import TokenLayout, video_legality
-from .routing import build_route
+from .routing import Route, build_route
 
 NEEDS_ANCHORS = ("av", "av_context")
 
@@ -54,14 +54,23 @@ def sparse_joint_attention(
     step_index: int,
     num_steps: int,
     action_mask: torch.Tensor | None = None,
-) -> tuple[torch.Tensor, torch.Tensor, dict[str, Any]]:
-    """Return ``(video_output, action_output, stats)`` for one layer."""
+    route: Route | None = None,
+) -> tuple[torch.Tensor, torch.Tensor, dict[str, Any], Route]:
+    """Return ``(video_output, action_output, stats, route)`` for one layer.
+
+    ``route`` may be supplied by the caller to amortize anchor extraction and routing over
+    several layers; the returned route is the one actually executed, so the caller can cache
+    it.  When a route is supplied the action branch falls back to the fused kernel, because
+    the action-anchor signal it would produce is no longer needed - and that extraction is
+    the single most expensive part of the routed path.
+    """
     if not config.enabled:
         raise ValueError("sparse_joint_attention called with sparse disabled")
 
-    # Anchor extraction reuses the action rows' own computation when the selection policy
-    # needs it; otherwise the action rows keep the shipped fused kernel untouched.
-    if config.selection in NEEDS_ANCHORS:
+    reused = route is not None
+    # Anchor extraction reuses the action rows' own computation, but only for the layer that
+    # actually builds the route; later layers reuse the cached route and skip it entirely.
+    if config.selection in NEEDS_ANCHORS and not reused:
         action_output, av_mass = action_attention_with_mass(
             query_action=query_action,
             key_video=key_video,
@@ -80,16 +89,17 @@ def sparse_joint_attention(
             attn_mask=action_mask,
         ).transpose(1, 2).reshape(query_action.shape)
 
-    route = build_route(
-        layout=layout,
-        config=config,
-        num_heads=num_heads,
-        step_index=step_index,
-        num_steps=num_steps,
-        av_mass=av_mass,
-        query_video=query_video,
-        key_video=key_video,
-    )
+    if route is None:
+        route = build_route(
+            layout=layout,
+            config=config,
+            num_heads=num_heads,
+            step_index=step_index,
+            num_steps=num_steps,
+            av_mass=av_mass,
+            query_video=query_video,
+            key_video=key_video,
+        )
 
     if config.backend == "masked":
         mask = route.membership.unsqueeze(2) & video_legality(layout).view(
@@ -131,4 +141,5 @@ def sparse_joint_attention(
     stats = route.describe()
     stats["backend"] = config.backend
     stats["av_mass_mean"] = float(av_mass.mean()) if av_mass is not None else None
-    return video_output, action_output, stats
+    stats["anchors_recomputed"] = not reused
+    return video_output, action_output, stats, route

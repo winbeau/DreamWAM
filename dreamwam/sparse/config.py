@@ -24,6 +24,10 @@ BACKENDS = ("masked", "gather")
 
 FALLBACKS = ("recency", "uniform", "all")
 
+#: Route/anchor refresh scope. ``layer`` keeps the original per-layer behaviour; the other
+#: two amortize the anchor extraction over a denoising step or a whole request.
+ANCHOR_REFRESH = ("layer", "step", "request")
+
 
 @dataclass(frozen=True)
 class SparseConfig:
@@ -38,6 +42,14 @@ class SparseConfig:
     min_anchor_mass: float = 0.0
     fallback: str = "recency"
     num_stages: int = 1
+    #: How often the anchor signal and the route are recomputed.  ``layer`` recomputes at
+    #: every layer, ``step`` computes once per denoising step and reuses, ``request``
+    #: computes once for the whole sampling call.  Measured cost matters: the action-anchor
+    #: extraction is more expensive per layer-step than the attention it guides, so
+    #: amortizing it over layers is what turns a loss into a gain (see docs/analysis).
+    anchor_refresh: str = "layer"
+    #: Layer that builds the route when ``anchor_refresh`` is not ``layer``.
+    anchor_layer: int = 0
     #: Per-head kept future blocks; length must equal the model's head count.  ``None``
     #: derives the count from ``future_ratio``.  Produced by M1 calibration.
     head_blocks: tuple[int, ...] | None = None
@@ -75,6 +87,15 @@ class SparseConfig:
             )
         if self.backend not in BACKENDS:
             raise ValueError(f"backend must be one of {BACKENDS}, got {self.backend!r}")
+        if self.anchor_refresh not in ANCHOR_REFRESH:
+            raise ValueError(
+                f"anchor_refresh must be one of {ANCHOR_REFRESH}, got "
+                f"{self.anchor_refresh!r}"
+            )
+        if self.anchor_layer < 0:
+            raise ValueError(
+                f"anchor_layer must be non-negative, got {self.anchor_layer}"
+            )
         if self.fallback not in FALLBACKS:
             raise ValueError(
                 f"fallback must be one of {FALLBACKS}, got {self.fallback!r}"
@@ -155,6 +176,8 @@ class SparseConfig:
             "min_anchor_mass": self.min_anchor_mass,
             "fallback": self.fallback,
             "num_stages": self.num_stages,
+            "anchor_refresh": self.anchor_refresh,
+            "anchor_layer": self.anchor_layer,
             "head_blocks": None if self.head_blocks is None else list(self.head_blocks),
             "stage_blocks": (
                 None

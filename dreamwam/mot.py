@@ -33,10 +33,19 @@ class JointMoT(nn.Module):
         self.use_gradient_checkpointing = bool(use_gradient_checkpointing)
         #: Sparse-WAM inference state.  Populated per request; empty when sparse is off.
         self._layout_cache: dict[tuple, object] = {}
+        self._route_cache: dict[tuple, object] = {}
         self.sparse_diagnostics: dict[str, float] = {}
 
     def reset_sparse_diagnostics(self) -> None:
-        self.sparse_diagnostics = {"calls": 0.0, "density_sum": 0.0, "fallback_sum": 0.0}
+        self.sparse_diagnostics = {
+            "calls": 0.0,
+            "density_sum": 0.0,
+            "fallback_sum": 0.0,
+            "anchor_builds": 0.0,
+        }
+        # Routes are valid only inside one sampling call: token positions depend on the
+        # layout, and the anchor signal depends on the current hidden states.
+        self._route_cache = {}
 
     def _token_layout(self, *, video_length: int, tokens_per_frame: int, block_size: int):
         key = (video_length, tokens_per_frame, block_size)
@@ -62,6 +71,7 @@ class JointMoT(nn.Module):
         sparse: SparseConfig,
         step_index: int,
         num_steps: int,
+        layer_index: int,
     ) -> torch.Tensor:
         """Dense joint self-attention, or the Sparse-WAM VV-restricted equivalent."""
         if sparse is None or not sparse.enabled:
@@ -77,7 +87,18 @@ class JointMoT(nn.Module):
             tokens_per_frame=tokens_per_frame,
             block_size=sparse.block_size,
         )
-        video_output, action_output, stats = sparse_joint_attention(
+        # Amortizing the anchor signal and the route over layers is what the method's own M3
+        # prescribes, and it matters: extracting the action-anchor mass costs more per
+        # layer-step than the attention it guides, so recomputing it in every layer loses
+        # more than the sparsity saves (measured in docs/analysis).
+        cached_route = None
+        if sparse.anchor_refresh != "layer":
+            scope = step_index if sparse.anchor_refresh == "step" else 0
+            cache_key = (scope,)
+            cached_route = self._route_cache.get(cache_key)
+            if layer_index == sparse.anchor_layer:
+                cached_route = None  # the anchor layer always rebuilds
+        video_output, action_output, stats, route = sparse_joint_attention(
             query_video=video_io[0],
             key_video=video_io[1],
             value_video=video_io[2],
@@ -90,13 +111,20 @@ class JointMoT(nn.Module):
             step_index=step_index,
             num_steps=num_steps,
             action_mask=attention_mask[video_length:],
+            route=cached_route,
         )
+        if sparse.anchor_refresh != "layer" and cached_route is None:
+            self._route_cache[(step_index if sparse.anchor_refresh == "step" else 0,)] = (
+                route
+            )
         diagnostics = self.sparse_diagnostics
         diagnostics["calls"] = diagnostics.get("calls", 0.0) + 1
         diagnostics["density_sum"] = diagnostics.get("density_sum", 0.0) + stats["density"]
         diagnostics["fallback_sum"] = (
             diagnostics.get("fallback_sum", 0.0) + stats["fallback_fraction"]
         )
+        if stats.get("anchors_recomputed"):
+            diagnostics["anchor_builds"] = diagnostics.get("anchor_builds", 0.0) + 1
         diagnostics["last"] = stats
         return torch.cat([video_output, action_output], dim=1)
 
@@ -375,6 +403,7 @@ class JointMoT(nn.Module):
                     sparse=sparse,
                     step_index=step_index,
                     num_steps=num_steps,
+                    layer_index=layer_index,
                 )
                 next_video = self._post_attention(
                     video_block,

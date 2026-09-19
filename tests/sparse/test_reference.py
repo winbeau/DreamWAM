@@ -387,7 +387,7 @@ def test_backends_agree_with_the_reference(backend, selection):
         query_video=query_video,
         key_video=key_video,
     )
-    video_out, action_out, stats = sparse_joint_attention(
+    video_out, action_out, stats, _ = sparse_joint_attention(
         query_video=query_video,
         key_video=key_video,
         value_video=value_video,
@@ -427,7 +427,7 @@ def test_masked_and_gather_backends_agree_on_the_same_config():
         query_video, key_video, value_video, query_action, key_action, value_action = (
             tensors()
         )
-        video_out, action_out, stats = sparse_joint_attention(
+        video_out, action_out, stats, _ = sparse_joint_attention(
             query_video=query_video,
             key_video=key_video,
             value_video=value_video,
@@ -460,7 +460,7 @@ def test_gather_backend_skips_future_keys_when_budget_is_zero():
         }
     )
     query_video, key_video, value_video, query_action, key_action, value_action = tensors()
-    video_out, _, stats = sparse_joint_attention(
+    video_out, _, stats, _ = sparse_joint_attention(
         query_video=query_video,
         key_video=key_video,
         value_video=value_video,
@@ -504,7 +504,7 @@ def test_action_rows_ignore_the_video_route():
         query_video, key_video, value_video, query_action, key_action, value_action = (
             tensors()
         )
-        _, action_out, _ = sparse_joint_attention(
+        _, action_out, _, _ = sparse_joint_attention(
             query_video=query_video,
             key_video=key_video,
             value_video=value_video,
@@ -550,7 +550,7 @@ def test_batch_elements_get_independent_routes():
     assert set(route.keys[0, 0, TOKENS_PER_FRAME:].tolist()) != set(
         route.keys[1, 0, TOKENS_PER_FRAME:].tolist()
     )
-    video_out, _, _ = sparse_joint_attention(
+    video_out, _, _, _ = sparse_joint_attention(
         query_video=query_video,
         key_video=key_video,
         value_video=value_video,
@@ -576,4 +576,129 @@ def test_disabled_config_raises_rather_than_running_dense():
             num_heads=NUM_HEADS,
             step_index=0,
             num_steps=10,
+        )
+
+
+# --- route amortization (M3) ------------------------------------------------------
+
+
+def test_reused_route_is_the_one_executed():
+    """Passing a route must execute it verbatim, and skip anchor extraction."""
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {
+            "enabled": True,
+            "selection": "av",
+            "backend": "masked",
+            "block_size": BLOCK_SIZE,
+            "head_blocks": [1, 2],
+        }
+    )
+    query_video, key_video, value_video, query_action, key_action, value_action = tensors()
+    _, av_mass = action_attention_with_mass(
+        query_action=query_action,
+        key_video=key_video,
+        value_video=value_video,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+    )
+    first = build_route(
+        layout=layout,
+        config=config,
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=av_mass,
+        query_video=query_video,
+        key_video=key_video,
+    )
+    video_out, action_out, stats, returned = sparse_joint_attention(
+        query_video=query_video,
+        key_video=key_video,
+        value_video=value_video,
+        query_action=query_action,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+        layout=layout,
+        config=config,
+        step_index=0,
+        num_steps=10,
+        route=first,
+    )
+    assert returned is first
+    assert stats["anchors_recomputed"] is False, "a reused route must not rebuild anchors"
+    expected = reference_video_attention(
+        query_video, key_video, value_video, first.membership, layout
+    )
+    assert torch.allclose(video_out, expected, atol=1e-5)
+
+
+def test_reused_route_matches_the_freshly_built_one():
+    """Amortizing the route across layers must not change what that layer computes."""
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {
+            "enabled": True,
+            "selection": "av",
+            "backend": "masked",
+            "block_size": BLOCK_SIZE,
+            "head_blocks": [1, 2],
+        }
+    )
+    query_video, key_video, value_video, query_action, key_action, value_action = tensors()
+    _, av_mass = action_attention_with_mass(
+        query_action=query_action,
+        key_video=key_video,
+        value_video=value_video,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+    )
+    route = build_route(
+        layout=layout,
+        config=config,
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=av_mass,
+        query_video=query_video,
+        key_video=key_video,
+    )
+    common = dict(
+        query_video=query_video,
+        key_video=key_video,
+        value_video=value_video,
+        query_action=query_action,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+        layout=layout,
+        config=config,
+        step_index=0,
+        num_steps=10,
+    )
+    fresh_video, fresh_action, _, built = sparse_joint_attention(**common)
+    reused_video, reused_action, _, _ = sparse_joint_attention(**common, route=route)
+    # The rebuilt route must equal the reused one, and the outputs must agree with it.
+    assert torch.equal(built.keys, route.keys)
+    assert torch.equal(built.membership, route.membership)
+    assert torch.allclose(fresh_video, reused_video, atol=1e-5)
+    # The action branch differs only by kernel (manual vs fused), so allow bf16-level slack.
+    assert torch.allclose(fresh_action, reused_action, atol=1e-4)
+
+
+def test_anchor_refresh_is_validated_and_defaults_to_per_layer():
+    assert SparseConfig().anchor_refresh == "layer"
+    with pytest.raises(ValueError, match="anchor_refresh"):
+        SparseConfig.from_mapping({"enabled": True, "anchor_refresh": "sometimes"})
+    with pytest.raises(ValueError, match="anchor_layer"):
+        SparseConfig.from_mapping({"enabled": True, "anchor_layer": -1})
+    for scope in ("layer", "step", "request"):
+        assert (
+            SparseConfig.from_mapping(
+                {"enabled": True, "anchor_refresh": scope}
+            ).anchor_refresh
+            == scope
         )
