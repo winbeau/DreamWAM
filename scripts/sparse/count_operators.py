@@ -55,8 +55,11 @@ def _originating_frame(depth: int = 24) -> str:
     import traceback
 
     for frame in reversed(traceback.extract_stack()[:-2][-depth:]):
-        if "dreamwam" in frame.filename and "python_dispatch" not in frame.filename:
-            return f"{frame.filename.split('dreamwam/')[-1]}:{frame.lineno}"
+        if "python_dispatch" in frame.filename:
+            continue
+        for marker in ("/dreamwam/", "/scripts/sparse/"):
+            if marker in frame.filename:
+                return f"{frame.filename.split(marker)[-1]}:{frame.lineno}"
     return "?"
 
 
