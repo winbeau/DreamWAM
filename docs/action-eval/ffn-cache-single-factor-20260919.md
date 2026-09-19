@@ -168,11 +168,68 @@ actual FFN wrapper execution, selective rows, accumulated drift, request/error
 isolation, dense parity, selected neuron delta reconstruction, compact weight sizes,
 group boundaries, and unchanged action FFN entry points.
 
+## Factor N2: action-guided neuron importance
+
+Implementation: [`action_guided_neuron_cache.py`](../../dreamwam/sparse/action_guided_neuron_cache.py),
+commit **cd9d94e**. This changes the N1 ranking only, keeping its 10% neuron
+budget, one ten-step group, compact weights, anchors and reconstruction. At each
+dense anchor, extract A→V probability mass from the joint A→[V,A] normalization,
+sum action queries and average heads. Normalize this mass to mean one over visual
+tokens, then score each neuron by
+`sum_r |h[r,n]| * (1 + mass[r]) * ||W_down[:,n]||_2`.
+The native attention output is still computed by the original kernel; mass
+extraction is an additional computation, included in request timing. There is no
+future-step lookahead. Exactly 30 mass extractions and 30 guided mask builds occur
+per request; masks and compact weights are reused for the other 270 layer-steps.
+
+The isolated fixed-revision worktree completed at **21:22:23 UTC**, exit 0,
+on H200 NVL GPU 1 (`GPU-b9157129-ac58-501d-c93d-b1cf622ff61b`). Same checkpoint,
+precision, inputs, thread limits and request boundary as N1; two warmups and
+24 requests for each of four variants. The additional unguided control runs in
+the same process. GPU 1 was empty at launch; a small foreign process (106 MiB)
+was visible at the end. It was not signalled. Telemetry and all samples are retained.
+
+| Variant | Mean ms | p50 ms | p95 ms |
+|---|---:|---:|---:|
+| Native Dense | 467.09 | 466.20 | 471.63 |
+| Matched Dense, full neuron budget | 474.03 | 473.15 | 478.22 |
+| Unguided 10% neurons | 490.34 | 487.85 | 493.16 |
+| Action-guided 10% neurons | 497.58 | 497.17 | 501.89 |
+
+**Negative result:** guided caching is **0.953×** matched Dense (4.97% slower).
+Guidance adds 7.24 ms to the unguided mean and 9.32 ms to its p50. The unguided
+samples include one 541.68 ms outlier; it is retained, not discarded. Full-budget
+bitwise parity and unchanged parameter versions pass. Maximum synthetic action
+relative L2 is 0.06536; this does not establish SR or an accuracy improvement.
+This candidate is not promoted to closed-loop evaluation because its measured
+speed already misses the objective.
+
+Server correctness checks: **28 passed in 2.44 s**, exit 0. In addition to existing
+cache tests, they cover action-key competition in the normalization, legal visibility,
+zero-guidance equivalence, changed selection under action relevance, causal group
+anchors, native full-budget parity, and exceptional request cleanup.
+
+Evidence: [manifest](evidence/guided-neuron-cache-20260919/manifest.json),
+[96 requests](evidence/guided-neuron-cache-20260919/requests.jsonl),
+[summary](evidence/guided-neuron-cache-20260919/summary.json),
+[GPU telemetry](evidence/guided-neuron-cache-20260919/gpu.csv).
+Server worktree: `dreamwam-sr/DreamWAM-guided-cd9d94e`.
+
+```bash
+PYTHONPATH="$PWD" CUDA_VISIBLE_DEVICES=1 \
+  OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
+  .venv/bin/python scripts/sparse/benchmark_ffn_context_cache.py \
+  --cache-kind guided_neurons --keep-ratio 0.1 --group-size 10 \
+  --guidance-weight 1 --warmup 2 --reps 24 \
+  --out-dir outputs/guided-20260919/guided010
+```
+
 ## Remaining work
 
-The measured FFN-only candidates are insufficient. Proceed to one separately measured
-factor that removes broader visual token computation, accounting for projection,
-attention, FFN and reuse costs. Add action guidance only as its own ablation.
+The measured FFN-only candidates remain insufficient, including action-guided ranking.
+The separately measured [temporal visual-cache factor](visual-cache-single-factor-20260919.md)
+reaches 1.655× by also removing visual projections, attention and other transformer
+work on reused steps. Its official SR still requires complete paired validation.
 Any candidate promoted to quality evaluation needs complete official episode
 pairing; errors remain errors and incomplete coverage produces no SR. No result
 here supports changing denoising steps, horizon, replan, RNG, weights, or protocol.

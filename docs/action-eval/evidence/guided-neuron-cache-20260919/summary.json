@@ -1,0 +1,64 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-19T21:22:23.366347+00:00",
+  "latency_seconds": {
+    "native_dense": {
+      "samples": 24,
+      "mean": 0.4670861988949279,
+      "p50": 0.4661989454180002,
+      "p95": 0.47162995114922523,
+      "min": 0.46241250820457935,
+      "max": 0.473331356421113,
+      "stdev": 0.0026954009602621776
+    },
+    "matched_dense": {
+      "samples": 24,
+      "mean": 0.47403001443793374,
+      "p50": 0.47315373085439205,
+      "p95": 0.4782205835916102,
+      "min": 0.47022997587919235,
+      "max": 0.4789993464946747,
+      "stdev": 0.0023390911259009296
+    },
+    "unguided_neurons": {
+      "samples": 24,
+      "mean": 0.4903428979838888,
+      "p50": 0.48785266280174255,
+      "p95": 0.49316385509446264,
+      "min": 0.4853231664747,
+      "max": 0.5416791886091232,
+      "stdev": 0.011179261937346231
+    },
+    "guided_neuron_cache": {
+      "samples": 24,
+      "mean": 0.4975788805944224,
+      "p50": 0.49717254377901554,
+      "p95": 0.501889513619244,
+      "min": 0.4936524033546448,
+      "max": 0.5038866568356752,
+      "stdev": 0.002692826718218453
+    }
+  },
+  "speedup_vs_matched_mean": 0.9526730995327686,
+  "speedup_vs_matched_p50": 0.9516891806975981,
+  "native_vs_matched_mean": 0.9853515276849311,
+  "full_budget_bitwise_parity": true,
+  "unchanged_parameter_versions": true,
+  "max_action_relative_l2": 0.0653596688837402,
+  "gpu_after": {
+    "exit_code": 0,
+    "stdout": "index, uuid, name, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, NVIDIA H200 NVL, 0 %, 5 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, NVIDIA H200 NVL, 0 %, 25251 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, NVIDIA H200 NVL, 17 %, 25697 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, NVIDIA H200 NVL, 1 %, 25879 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, NVIDIA H200 NVL, 0 %, 29835 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, NVIDIA H200 NVL, 0 %, 33535 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, NVIDIA H200 NVL, 10 %, 33535 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, NVIDIA H200 NVL, 0 %, 32645 MiB",
+    "stderr": ""
+  },
+  "processes_after": {
+    "exit_code": 0,
+    "stdout": "gpu_uuid, pid, used_gpu_memory [MiB]\nGPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, 86781, 20 MiB\nGPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 85518, 25222 MiB\nGPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 86782, 106 MiB\nGPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 83974, 24732 MiB\nGPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 86783, 28 MiB\nGPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 84194, 24732 MiB\nGPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 86784, 14 MiB\nGPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 86329, 29824 MiB\nGPU-7d459912-b567-59fb-8abf-57c18713cb84, 86329, 33524 MiB\nGPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 86329, 33524 MiB\nGPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 86329, 32634 MiB",
+    "stderr": ""
+  },
+  "sr": null,
+  "limitations": [
+    "No closed-loop SR; action error is a diagnostic, not a success criterion.",
+    "Only guided_neurons reuse enabled; no attention restriction, other cache factors, or public operator changes."
+  ],
+  "speedup_vs_unguided_mean": 0.9854576170879896
+}
