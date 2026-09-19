@@ -244,6 +244,71 @@ def main() -> None:
         )
     results["block_sweep"] = sweep
 
+    # Isolate *why* the gathered variants lose. A contiguous key prefix needs no gather
+    # and no index tensor, so if a prefix is fast while gather is slow, the cost is the
+    # copy rather than the reduced key count; if both are slow, splitting the single
+    # fused call is itself the cost and no mask policy can pay for it at this shape.
+    prefix_sweep = []
+    for keep in [0, 2, 4, 7]:
+        kmax = P + keep * args.block_size
+        if kmax > Nv:
+            continue
+
+        def prefix(kmax=kmax):
+            video = F.scaled_dot_product_attention(
+                split_last(q_video[:P]).unsqueeze(0),
+                split_last(k_video[:P]).unsqueeze(0),
+                split_last(v_video[:P]).unsqueeze(0),
+            )
+            rest = F.scaled_dot_product_attention(
+                split_last(q_video[P:]).unsqueeze(0),
+                split_last(k_video[:kmax]).unsqueeze(0),
+                split_last(v_video[:kmax]).unsqueeze(0),
+            )
+            action, _ = manual_action()
+            return torch.cat([video, rest], dim=2), action
+
+        per_call = time_call(prefix, warmup=args.warmup, iters=args.iters)
+        saving = baseline_ms - per_call * layer_steps
+        prefix_sweep.append(
+            {
+                "kept_blocks": keep,
+                "kmax": kmax,
+                "video_density": kmax / Nv,
+                "ms_per_request": per_call * layer_steps,
+                "saving_ms_per_request": saving,
+                "saving_fraction_of_request": saving / args.request_ms,
+                "speedup_bound": args.request_ms / (args.request_ms - saving),
+            }
+        )
+    results["contiguous_prefix_sweep"] = prefix_sweep
+
+    # Cost of the gather itself, with no attention attached.
+    gather_index = torch.arange(P, device=device).view(1, 1, P, 1).expand(1, H, P, D)
+    key_head = split_last(k_video).unsqueeze(0)
+    value_head = split_last(v_video).unsqueeze(0)
+    results["gather_only_ms_per_layer_step"] = time_call(
+        lambda: (
+            key_head.gather(2, gather_index),
+            value_head.gather(2, gather_index),
+        ),
+        warmup=args.warmup,
+        iters=args.iters,
+    )
+    results["manual_action_ms_per_layer_step"] = time_call(
+        manual_action, warmup=args.warmup, iters=args.iters
+    )
+    results["dense_video_only_ms_per_layer_step"] = time_call(
+        lambda: F.scaled_dot_product_attention(
+            split_last(q_video).unsqueeze(0),
+            split_last(k_video).unsqueeze(0),
+            split_last(v_video).unsqueeze(0),
+            attn_mask=mask,
+        ),
+        warmup=args.warmup,
+        iters=args.iters,
+    )
+
     text = json.dumps(results, indent=2, sort_keys=True)
     print(text)
     if args.out:
