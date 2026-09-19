@@ -29,6 +29,7 @@ import torch
 from dreamwam.config import load_release_config
 from dreamwam.policy import build_policy
 from dreamwam.sparse.ffn_context_cache import VisualFFNContextCache
+from dreamwam.sparse.ffn_neuron_cache import VisualFFNNeuronCache
 
 
 def sha256(path):
@@ -71,6 +72,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="configs/dreamwam_joint.yaml")
     parser.add_argument("--keep-ratio", type=float, default=0.1)
+    parser.add_argument("--cache-kind", choices=("tokens", "neurons"), default="tokens")
+    parser.add_argument("--group-size", type=int, default=10, help="neuron-mask group size; dense anchor at each group start")
     parser.add_argument("--warmup", type=int, default=2)
     parser.add_argument("--reps", type=int, default=12)
     parser.add_argument("--inputs-npz", action="append")
@@ -90,11 +93,13 @@ def main():
                     processes_before=command("nvidia-smi", "--query-compute-apps=gpu_uuid,pid,used_memory", "--format=csv"),
                     checkpoint=dict(path=str(release.paths.checkpoint), sha256=sha256(release.paths.checkpoint)),
                     source_sha256={name: sha256(name) for name in (
-                        "dreamwam/sparse/ffn_context_cache.py", "scripts/sparse/benchmark_ffn_context_cache.py",
+                        "dreamwam/sparse/ffn_context_cache.py", "dreamwam/sparse/ffn_neuron_cache.py", "scripts/sparse/benchmark_ffn_context_cache.py",
                         "pyproject.toml", "requirements.txt", args.config)},
                     environment="existing .venv; no install/sync or dependency changes; model uv.lock absent",
-                    factor=dict(name="visual FFN recompute fraction", keep_ratio=args.keep_ratio,
-                                reference="per-row latest actual recomputation within this request",
+                    factor=dict(name=f"visual FFN {args.cache_kind} recompute fraction", keep_ratio=args.keep_ratio,
+                                cache_kind=args.cache_kind,
+                                group_size=args.group_size if args.cache_kind == "neurons" else None,
+                                reference="per-row latest computed input/output" if args.cache_kind == "tokens" else "dense current-request group anchor",
                                 first_step="dense for every layer", action_guidance=False),
                     latency_boundary="full predict_action, synchronized wall clock, includes CPU action output",
                     sr=None)
@@ -112,14 +117,21 @@ def main():
     manifest["reps_per_variant"] = args.reps
     manifest["parameter_versions"] = {name: parameter._version for name, parameter in policy.model.named_parameters()}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    variants = ("native_dense", "matched_dense", "context_cache")
+    candidate = "context_cache" if args.cache_kind == "tokens" else "neuron_cache"
+    cache_class = VisualFFNContextCache if args.cache_kind == "tokens" else VisualFFNNeuronCache
+    extra = {} if args.cache_kind == "tokens" else {"group_size": args.group_size}
+    caches = {"matched_dense": cache_class(policy.model, keep_ratio=1.0, **extra),
+              candidate: cache_class(policy.model, keep_ratio=args.keep_ratio, **extra)}
+    if args.cache_kind == "neurons":
+        caches[candidate].prepare()
+        manifest["static_weight_norm_setup_seconds"] = caches[candidate].setup_seconds
+    variants = ("native_dense", "matched_dense", candidate)
     dense_actions = {}
     samples = {name: [] for name in variants}
     comparisons = []
 
     def predict(variant, input_id):
-        manager = nullcontext(None) if variant == "native_dense" else VisualFFNContextCache(
-            policy.model, keep_ratio=1.0 if variant == "matched_dense" else args.keep_ratio)
+        manager = nullcontext(None) if variant == "native_dense" else caches[variant]
         images, state, instruction = inputs[input_id]
         with manager as cache:
             torch.cuda.synchronize()
@@ -152,7 +164,7 @@ def main():
             for variant in order:
                 elapsed, actual, stats = predict(variant, input_id)
                 expected = dense_actions[input_id]
-                if variant != "context_cache" and not np.array_equal(actual, expected):
+                if variant != candidate and not np.array_equal(actual, expected):
                     raise AssertionError(f"Dense/request isolation parity failed: {variant} input {input_id}")
                 difference = actual.astype(np.float64) - expected.astype(np.float64)
                 row = dict(repeat=repeat, order=list(order), variant=variant, input_id=input_id,
@@ -171,15 +183,15 @@ def main():
         raise AssertionError("model parameter version changed")
     result = dict(status="MEASURED", end_utc=datetime.now(timezone.utc).isoformat(),
                   latency_seconds={name: summary(values) for name, values in samples.items()},
-                  speedup_vs_matched_mean=statistics.fmean(samples["matched_dense"]) / statistics.fmean(samples["context_cache"]),
-                  speedup_vs_matched_p50=statistics.median(samples["matched_dense"]) / statistics.median(samples["context_cache"]),
+                  speedup_vs_matched_mean=statistics.fmean(samples["matched_dense"]) / statistics.fmean(samples[candidate]),
+                  speedup_vs_matched_p50=statistics.median(samples["matched_dense"]) / statistics.median(samples[candidate]),
                   native_vs_matched_mean=statistics.fmean(samples["native_dense"]) / statistics.fmean(samples["matched_dense"]),
                   full_budget_bitwise_parity=True, unchanged_parameter_versions=True,
-                  max_action_relative_l2=max(row["action_relative_l2"] for row in comparisons if row["variant"] == "context_cache"),
+                  max_action_relative_l2=max(row["action_relative_l2"] for row in comparisons if row["variant"] == candidate),
                   gpu_after=command("nvidia-smi", "--query-gpu=index,uuid,name,utilization.gpu,memory.used", "--format=csv"),
                   processes_after=command("nvidia-smi", "--query-compute-apps=gpu_uuid,pid,used_memory", "--format=csv"),
                   sr=None, limitations=["No closed-loop SR; action error is a diagnostic, not a success criterion.",
-                                       "Pure input-drift factor, no action guidance or neuron cache enabled."])
+                                       f"Only {args.cache_kind} reuse enabled; no action guidance, attention restriction, or other cache factor."])
     (out / "summary.json").write_text(json.dumps(result, indent=2) + "\n")
     manifest.update(status="MEASURED", exit_code=0, end_utc=result["end_utc"], full_budget_bitwise_parity=True)
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
