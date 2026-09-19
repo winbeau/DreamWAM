@@ -894,6 +894,25 @@ class DreamWAMJoint(nn.Module):
         components["depth_weight"] = total.new_tensor(depth_weight)
         return total, components
 
+    def enable_fast_ops(self, *, dtype: torch.dtype = torch.float32) -> None:
+        """Switch the whole model to the fused RMSNorm and real-arithmetic RoPE.
+
+        Explicit, per-instance and reversible: the real RoPE tables live on each expert, and
+        ``fused`` is set on each RMSNorm module, so nothing depends on process-global state and
+        a fingerprint can state which path ran.
+        """
+        from .layers import RMSNorm
+
+        self.video_expert.enable_fast_ops(dtype=dtype)
+        self.action_expert.enable_fast_ops(dtype=dtype)
+        for module in self.modules():
+            if isinstance(module, RMSNorm):
+                module.fused = True
+
+    @property
+    def fast_ops_enabled(self) -> bool:
+        return bool(self.video_expert.rope_is_real and self.action_expert.rope_is_real)
+
     @torch.no_grad()
     def sample_action(
         self,

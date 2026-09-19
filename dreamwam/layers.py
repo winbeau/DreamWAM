@@ -5,6 +5,8 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
+from .sparse.fastops import apply_rope_real, rms_norm
+
 
 def scaled_dot_product_attention(
     query: torch.Tensor,
@@ -68,9 +70,18 @@ def precompute_rope(dim: int, length: int = 1024) -> torch.Tensor:
 
 def apply_rope(
     tokens: torch.Tensor,
-    frequencies: torch.Tensor,
+    frequencies: torch.Tensor | tuple[torch.Tensor, torch.Tensor],
     num_heads: int,
 ) -> torch.Tensor:
+    """Apply RoPE from either the shipped complex table or a real ``(cos, sin)`` pair.
+
+    Dispatching on the argument keeps the choice explicit at the call site instead of hiding
+    it in global state: a complex tensor takes the original float64/complex128 path, a pair of
+    real tables takes the fused path, and nothing depends on which mode a process happens to
+    be in.
+    """
+    if isinstance(frequencies, tuple):
+        return apply_rope_real(tokens, frequencies[0], frequencies[1], num_heads)
     batch, sequence, width = tokens.shape
     if width % num_heads != 0:
         raise ValueError(f"token width {width} is not divisible by {num_heads} heads.")
@@ -93,8 +104,13 @@ class RMSNorm(nn.Module):
         super().__init__()
         self.eps = float(eps)
         self.weight = nn.Parameter(torch.ones(dim))
+        #: Opt-in per instance, default off.  A module-level switch would make a run's
+        #: behaviour depend on process history rather than on its configuration.
+        self.fused = False
 
     def forward(self, tokens: torch.Tensor) -> torch.Tensor:
+        if self.fused:
+            return rms_norm(tokens, self.weight, self.eps)
         dtype = tokens.dtype
         normalized = tokens.float() * torch.rsqrt(
             tokens.float().pow(2).mean(dim=-1, keepdim=True) + self.eps

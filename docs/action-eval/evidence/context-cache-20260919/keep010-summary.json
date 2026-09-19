@@ -1,0 +1,54 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-19T20:36:33.892414+00:00",
+  "latency_seconds": {
+    "native_dense": {
+      "samples": 15,
+      "mean": 0.46303903957208,
+      "p50": 0.4615462366491556,
+      "p95": 0.473280861787498,
+      "min": 0.45410149171948433,
+      "max": 0.4741834048181772,
+      "stdev": 0.005985752640659593
+    },
+    "matched_dense": {
+      "samples": 15,
+      "mean": 0.4664534209916989,
+      "p50": 0.4645703136920929,
+      "p95": 0.4756076008081436,
+      "min": 0.4594686012715101,
+      "max": 0.47601463459432125,
+      "stdev": 0.006139725181880874
+    },
+    "context_cache": {
+      "samples": 15,
+      "mean": 0.5209895870337884,
+      "p50": 0.5177387837320566,
+      "p95": 0.5331368973478675,
+      "min": 0.5122466459870338,
+      "max": 0.5370640736073256,
+      "stdev": 0.007135947505427297
+    }
+  },
+  "speedup_vs_matched_mean": 0.8953219653533064,
+  "speedup_vs_matched_p50": 0.8973063797602618,
+  "native_vs_matched_mean": 0.9926801235322493,
+  "full_budget_bitwise_parity": true,
+  "unchanged_parameter_versions": true,
+  "max_action_relative_l2": 0.057808431297465414,
+  "gpu_after": {
+    "exit_code": 0,
+    "stdout": "index, uuid, name, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, NVIDIA H200 NVL, 0 %, 1 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, NVIDIA H200 NVL, 0 %, 1 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, NVIDIA H200 NVL, 0 %, 1 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, NVIDIA H200 NVL, 0 %, 1 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, NVIDIA H200 NVL, 0 %, 1 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, NVIDIA H200 NVL, 18 %, 1119 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, NVIDIA H200 NVL, 0 %, 1 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, NVIDIA H200 NVL, 0 %, 24777 MiB",
+    "stderr": ""
+  },
+  "processes_after": {
+    "exit_code": 0,
+    "stdout": "gpu_uuid, pid, used_gpu_memory [MiB]\nGPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 44944, 24766 MiB",
+    "stderr": ""
+  },
+  "sr": null,
+  "limitations": [
+    "No closed-loop SR; action error is a diagnostic, not a success criterion.",
+    "Pure input-drift factor, no action guidance or neuron cache enabled."
+  ]
+}

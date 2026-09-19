@@ -3,6 +3,7 @@ from typing import Any, Optional
 import torch
 from torch import nn
 
+from .sparse.fastops import rope_tables
 from .layers import (
     DiTBlock,
     PatchHead,
@@ -87,6 +88,33 @@ class VideoDiT(nn.Module):
         self.frame_freqs = precompute_rope(frame_dim)
         self.height_freqs = precompute_rope(spatial_dim)
         self.width_freqs = precompute_rope(spatial_dim)
+        #: Whether ``pre_dit`` builds real (cos, sin) tables instead of complex ones.  Off by
+        #: default so the shipped numerics are untouched; :meth:`enable_fast_ops` turns it on.
+        self._rope_real = False
+        self.frame_cos: torch.Tensor | None = None
+        self.frame_sin: torch.Tensor | None = None
+        self.height_cos: torch.Tensor | None = None
+        self.height_sin: torch.Tensor | None = None
+        self.width_cos: torch.Tensor | None = None
+        self.width_sin: torch.Tensor | None = None
+
+    def enable_fast_ops(self, *, dtype: torch.dtype = torch.float32) -> None:
+        """Build real RoPE tables so rotation avoids float64 and complex128.
+
+        Explicit and per-instance on purpose: a global switch is how a run ends up mislabelled
+        about what it executed.  Both ``pre_dit`` and the shared ``apply_rope`` accept either
+        representation, so calling this changes only the cost, not the computation.
+        """
+        frame_dim = self.attn_head_dim - 2 * (self.attn_head_dim // 3)
+        spatial_dim = self.attn_head_dim // 3
+        self.frame_cos, self.frame_sin = rope_tables(frame_dim, dtype=dtype)
+        self.height_cos, self.height_sin = rope_tables(spatial_dim, dtype=dtype)
+        self.width_cos, self.width_sin = rope_tables(spatial_dim, dtype=dtype)
+        self._rope_real = True
+
+    @property
+    def rope_is_real(self) -> bool:
+        return self._rope_real
 
     def _validate_inputs(
         self,
@@ -195,20 +223,48 @@ class VideoDiT(nn.Module):
             raise ValueError(f"frame token grid exceeds RoPE cache: {frames}.")
         if height > self.height_freqs.shape[0] or width > self.width_freqs.shape[0]:
             raise ValueError(f"spatial token grid exceeds RoPE cache: {(height, width)}.")
-        frequencies = torch.cat(
-            [
-                self.frame_freqs[:frames]
-                .view(frames, 1, 1, -1)
-                .expand(frames, height, width, -1),
-                self.height_freqs[:height]
-                .view(1, height, 1, -1)
-                .expand(frames, height, width, -1),
-                self.width_freqs[:width]
-                .view(1, 1, width, -1)
-                .expand(frames, height, width, -1),
-            ],
-            dim=-1,
-        ).reshape(frames * height * width, 1, -1)
+
+        def expand(table: torch.Tensor, axis: int, size: int) -> torch.Tensor:
+            shape = [1, 1, 1, -1]
+            shape[axis] = size
+            return table[:size].view(shape).expand(frames, height, width, -1)
+
+        if self._rope_real:
+            frame_cos, height_cos, width_cos = self.frame_cos, self.height_cos, self.width_cos
+            frame_sin, height_sin, width_sin = self.frame_sin, self.height_sin, self.width_sin
+            frequencies = (
+                torch.cat(
+                    [
+                        expand(frame_cos, 0, frames),
+                        expand(height_cos, 1, height),
+                        expand(width_cos, 2, width),
+                    ],
+                    dim=-1,
+                ).reshape(frames * height * width, 1, -1),
+                torch.cat(
+                    [
+                        expand(frame_sin, 0, frames),
+                        expand(height_sin, 1, height),
+                        expand(width_sin, 2, width),
+                    ],
+                    dim=-1,
+                ).reshape(frames * height * width, 1, -1),
+            )
+        else:
+            frequencies = torch.cat(
+                [
+                    self.frame_freqs[:frames]
+                    .view(frames, 1, 1, -1)
+                    .expand(frames, height, width, -1),
+                    self.height_freqs[:height]
+                    .view(1, height, 1, -1)
+                    .expand(frames, height, width, -1),
+                    self.width_freqs[:width]
+                    .view(1, 1, width, -1)
+                    .expand(frames, height, width, -1),
+                ],
+                dim=-1,
+            ).reshape(frames * height * width, 1, -1)
 
         return {
             "tokens": tokens,
@@ -346,6 +402,18 @@ class ActionDiT(nn.Module):
         )
         self.head = nn.Linear(hidden_dim, action_dim)
         self.freqs = precompute_rope(attn_head_dim)
+        self._rope_real = False
+        self.cos: torch.Tensor | None = None
+        self.sin: torch.Tensor | None = None
+
+    def enable_fast_ops(self, *, dtype: torch.dtype = torch.float32) -> None:
+        """Build real RoPE tables so rotation avoids float64 and complex128."""
+        self.cos, self.sin = rope_tables(self.attn_head_dim, dtype=dtype)
+        self._rope_real = True
+
+    @property
+    def rope_is_real(self) -> bool:
+        return self._rope_real
 
     def pre_dit(
         self,
@@ -387,7 +455,11 @@ class ActionDiT(nn.Module):
         )
         return {
             "tokens": self.action_embedding(action_tokens),
-            "freqs": self.freqs[:sequence].view(sequence, 1, -1),
+            "freqs": (
+                (self.cos[:sequence], self.sin[:sequence])
+                if self._rope_real
+                else self.freqs[:sequence].view(sequence, 1, -1)
+            ),
             "time_modulation": time_modulation,
             "context": context,
             "context_mask": context_mask,

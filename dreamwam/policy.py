@@ -57,6 +57,10 @@ class DreamWAMPolicy:
         )
         load_model_checkpoint(self.model, config.paths.checkpoint, strict=True)
         self.model.eval()
+        # Explicit configuration, not a default: enabling fused operators changes the numerics
+        # slightly, so it must be visible in the run's identity and separable in comparisons.
+        if bool(self.evaluation.get("fast_ops", False)):
+            self.model.enable_fast_ops(dtype=self.dtype)
         self.vae = load_wan_vae(
             config.preprocessing["wan_vae_checkpoint"],
             device=self.device,
