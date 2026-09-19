@@ -76,3 +76,31 @@ def test_invalid_refresh_interval(interval):
     model, _ = model_and_inputs()
     with pytest.raises(ValueError):
         VisualStepCache(model, refresh_every=interval)
+
+
+def test_policy_option_installs_real_sampling_cache_and_close_restores_dense(monkeypatch):
+    from types import SimpleNamespace
+    import dreamwam.policy as policy_module
+
+    model, inputs = model_and_inputs()
+    dense = model.sample_action(**inputs)
+    monkeypatch.setattr(policy_module, "build_model", lambda *args, **kwargs: model)
+    monkeypatch.setattr(policy_module, "load_model_checkpoint", lambda *args, **kwargs: None)
+    monkeypatch.setattr(policy_module, "load_wan_vae", lambda *args, **kwargs: object())
+    monkeypatch.setattr(policy_module, "WanContextEncoder", lambda *args, **kwargs: object())
+    monkeypatch.setattr(policy_module, "LiberoNormalizer", lambda *args, **kwargs: object())
+    config = SimpleNamespace(
+        evaluation=dict(action_horizon=32, video_frames=9, denoising_steps=10,
+                        seed=42, rand_device="cpu", binarize_gripper=True),
+        paths=SimpleNamespace(checkpoint="unused", dataset_stats="unused"),
+        preprocessing=dict(wan_vae_checkpoint="unused", wan_text_checkpoint="unused",
+                           wan_tokenizer="unused", image_size=224),
+    )
+    policy = policy_module.DreamWAMPolicy(config, device="cpu", visual_cache={"refresh_every": 2})
+    policy.model.sample_action(**inputs)
+    assert policy._visual_cache_runtime.last_stats["dense_video_steps"] == 2
+    assert policy._visual_cache_runtime.last_stats["action_layer_updates"] == 8
+    assert policy.visual_cache_config == {"refresh_every": 2}
+    policy.close()
+    assert policy._visual_cache_runtime is None
+    assert torch.equal(policy.model.sample_action(**inputs), dense)

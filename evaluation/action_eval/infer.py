@@ -346,6 +346,9 @@ class DreamWAMPolicy:
             "predict_call_index": self.predict_calls,
             "sparse_config_hash": self._sparse_hash,
         }
+        visual_cache = self.policy._visual_cache_runtime
+        if visual_cache is not None:
+            diagnostics["visual_cache"] = dict(visual_cache.last_stats)
         if self.policy.sparse_config.enabled:
             # Executed density, not the requested one: a budget can be clamped by the
             # structural floor or replaced by a fallback route.
