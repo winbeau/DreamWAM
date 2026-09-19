@@ -90,14 +90,17 @@ def test_real_rope_preserves_the_pairing_the_checkpoint_was_trained_with():
     assert torch.allclose(before, after, atol=1e-5)
 
 
-def test_swapping_the_pairing_would_change_the_result():
-    """Guards against silently switching to the half-split convention."""
+def test_the_half_split_convention_would_give_a_different_answer():
+    """Guards against silently implementing the common `rotate_half` variant, which pairs
+    feature i with feature i + head_dim/2 while the trained checkpoint pairs 2i with 2i+1."""
+    torch.manual_seed(2)
     tokens = torch.randn(1, SEQUENCE, WIDTH)
     cos, sin = rope_tables(HEAD_DIM, length=SEQUENCE)
     correct = apply_rope_real(tokens, cos, sin, HEADS)
-    half = tokens[..., : HEAD_DIM // 2]
-    swapped = torch.cat([-tokens[..., HEAD_DIM // 2 :], half], dim=-1)
-    wrong = tokens * cos + swapped * sin
+    head = tokens.view(1, SEQUENCE, HEADS, HEAD_DIM)
+    half = HEAD_DIM // 2
+    rotate_half = torch.cat([-head[..., half:], head[..., :half]], dim=-1)
+    wrong = (head * cos + rotate_half * sin).reshape(1, SEQUENCE, WIDTH)
     assert not torch.allclose(correct, wrong, atol=1e-4), (
         "the two RoPE conventions must not coincide, or this test proves nothing"
     )

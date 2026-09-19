@@ -135,9 +135,16 @@ def complex_tables(
     dim: int,
     length: int = 1024,
 ) -> torch.Tensor:
-    """Complex frequency table in the shipped layout, for oracle comparisons."""
+    """Complex frequency table in the shipped layout, ``[length, 1, dim // 2]``.
+
+    The trailing singleton is the model's own convention (``experts.py`` reshapes the
+    concatenated frame/height/width tables to ``[tokens, 1, head_dim // 2]``), so an oracle
+    built here is shaped like the table the model actually passes.
+    """
+    if dim <= 0 or dim % 2 != 0:
+        raise ValueError(f"RoPE dim must be positive and even, got {dim}")
     frequency = 1.0 / (
         10000.0 ** (torch.arange(0, dim, 2, dtype=torch.float64)[: dim // 2] / dim)
     )
     phase = torch.outer(torch.arange(length), frequency)
-    return torch.polar(torch.ones_like(phase), phase)
+    return torch.polar(torch.ones_like(phase), phase).view(length, 1, dim // 2)
