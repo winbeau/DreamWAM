@@ -45,18 +45,38 @@ RELEASED_LAYERS = 30
 RELEASED_STEPS = 10
 
 
+def _originating_frame(depth: int = 24) -> str:
+    """The innermost DreamWAM frame that asked for the operator.
+
+    Metadata operators are cheap individually and only matter in aggregate, so the question is
+    never "is this view expensive" but "which line emits sixty of them per layer". The
+    innermost frame inside this repository is the answer.
+    """
+    import traceback
+
+    for frame in reversed(traceback.extract_stack()[:-2][-depth:]):
+        if "dreamwam" in frame.filename and "python_dispatch" not in frame.filename:
+            return f"{frame.filename.split('dreamwam/')[-1]}:{frame.lineno}"
+    return "?"
+
+
 class CountingMode(torch.utils._python_dispatch.TorchDispatchMode):
     """Count ATen operators, ignoring the ones the counting itself performs."""
 
-    def __init__(self) -> None:
+    def __init__(self, trace: str | None = None) -> None:
         super().__init__()
         self.counts: Counter[str] = Counter()
+        self.origins: Counter[str] = Counter()
+        self.trace = trace
         self._depth = 0
 
     def __torch_dispatch__(self, func, types, args=(), kwargs=None):
         # Nested dispatches would double-count decomposed operators.
+        name = str(func)
         if self._depth == 0:
-            self.counts[str(func)] += 1
+            self.counts[name] += 1
+            if self.trace and self.trace in name:
+                self.origins[_originating_frame()] += 1
         self._depth += 1
         try:
             return func(*args, **(kwargs or {}))
@@ -101,6 +121,11 @@ def build(device: torch.device):
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--sparse-json", default=None)
+    parser.add_argument(
+        "--trace",
+        default=None,
+        help="substring of an operator name to attribute to source lines, e.g. 'view'",
+    )
     parser.add_argument(
         "--fast-ops",
         action="store_true",
@@ -154,7 +179,7 @@ def main() -> None:
         else SparseConfig()
     )
 
-    mode = CountingMode()
+    mode = CountingMode(args.trace)
     with torch.no_grad(), mode:
         mot(
             video_state=video_state,
@@ -186,6 +211,11 @@ def main() -> None:
         "operators_per_layer": per_layer,
         "operators_per_request_estimate": per_request,
         "profiled_operators_per_request_s1": 80000,
+        "trace": args.trace,
+        "traced_origins": [
+            {"origin": origin, "per_layer": count / LAYERS, "share": count / total}
+            for origin, count in mode.origins.most_common(20)
+        ],
         "top_operators": [
             {"operator": name, "per_layer": count / LAYERS, "share": count / total}
             for name, count in counts.most_common(25)
