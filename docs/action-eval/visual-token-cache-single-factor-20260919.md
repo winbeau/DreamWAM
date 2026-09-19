@@ -3,6 +3,15 @@
 Status: **MEASURED latency; official quality validation in progress**.
 Date: 2026-09-19 UTC. The SR-constrained acceleration goal remains unproven.
 
+Update at **23:36:39 UTC**: the full guided run has **95/500** terminal outcomes
+(93 successes, two official task failures). Dense and the temporal-only control
+succeeded on both failed identities. Guided is now inactive after a bounded
+recovery batch; temporal-only full evaluation has resumed from 118 outcomes.
+[Separate graph factors](visual-graph-dispatch-single-factor-20260919.md) reach
+2.064× against equally graphed Dense with bitwise eager parity, but do not repair
+these task failures or establish SR preservation. See that record for the
+accepted result hashes, new graph pilot and current allocation.
+
 These are two successive factors on the [interval-5 temporal cache](visual-cache-single-factor-20260919.md).
 V3 changes only the number of visual tokens recomputed at the second refresh.
 V4 adds current-action guidance to that selection, holding cadence and budget fixed.

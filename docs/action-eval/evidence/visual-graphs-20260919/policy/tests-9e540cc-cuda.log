@@ -1,0 +1,164 @@
+.FF                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_adapter_executes_guided_tokens_and_publishes_effective_options[dense_action] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x724a4916d360>
+tmp_path = PosixPath('/tmp/pytest-of-chenjiayu/pytest-343/test_adapter_executes_guided_t1')
+graph_mode = 'dense_action'
+
+    @pytest.mark.parametrize("graph_mode", [None, "dense_action", "all_transformers"])
+    def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypatch, tmp_path, graph_mode):
+        if graph_mode and not torch.cuda.is_available():
+            pytest.skip("actual graph/adapter execution requires CUDA on the evaluation server")
+        device = "cuda" if graph_mode else "cpu"
+        dtype = torch.bfloat16 if graph_mode else torch.float32
+        model, inputs = model_and_inputs()
+        model.to(device=device, dtype=dtype)
+        inputs = {key: value.to(device=device, dtype=dtype if value.is_floating_point() else value.dtype)
+                  if isinstance(value, torch.Tensor) else value for key, value in inputs.items()}
+        with ActionGuidedVisualTokenCache(model, keep_ratio=0.25, refresh_every=2):
+>           expected = model.sample_action(**inputs).squeeze(0).float().cpu().numpy()
+
+tests/sparse/test_visual_adapter_integration.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+dreamwam/sparse/visual_step_cache.py:142: in sample_action
+    return sample(*args, **kwargs)
+.venv/lib/python3.10/site-packages/torch/utils/_contextlib.py:116: in decorate_context
+    return func(*args, **kwargs)
+dreamwam/model.py:1062: in sample_action
+    prediction = self._forward_conditioned(
+dreamwam/model.py:539: in _forward_conditioned
+    tokens = self.mot(
+.venv/lib/python3.10/site-packages/torch/nn/modules/module.py:1751: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+.venv/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: in _call_impl
+    return forward_call(*args, **kwargs)
+dreamwam/sparse/visual_step_cache.py:131: in joint_forward
+    return self._refresh(forward, video_state=video_state, action_state=action_state,
+dreamwam/sparse/action_guided_visual_token_cache.py:61: in _refresh
+    return super()._refresh(forward, **kwargs)
+dreamwam/sparse/visual_token_cache.py:80: in _refresh
+    action, video = self._partial_refresh(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <dreamwam.sparse.action_guided_visual_token_cache.ActionGuidedVisualTokenCache object at 0x724a491f9ea0>
+video_state = {'tokens': tensor([[[-6.4062e-01,  6.0938e-01,  8.3984e-02,  5.1562e-01,  4.3164e-01,
+          -1.9043e-01,  3.5547e-...   [ 0.0219,  0.1211,  0.0105,  ..., -0.0098,  0.2217, -0.1514]]]],
+       device='cuda:0', dtype=torch.bfloat16), ...}
+action_state = {'tokens': tensor([[[-0.5664, -0.3105, -0.2461,  0.5234,  0.2676, -0.3027, -0.6055,
+          -0.5781, -0.0437,  0.217...0.1934, -0.0659,  0.1445,  0.2051, -0.1924,
+           0.2754, -0.1719]]], device='cuda:0', dtype=torch.bfloat16), ...}
+residual_injection = GatedWorldRouter(
+  (heads): ModuleDict(
+    (dino): PatchHead(
+      (norm): LayerNorm((16,), eps=1e-06, elementwise_...bias=True)
+      (2): GELU(approximate='none')
+      (3): Linear(in_features=4, out_features=16, bias=True)
+    )
+  )
+)
+index = tensor([4, 5, 9], device='cuda:0')
+video = tensor([[[ 3.6523e-01, -1.0449e-01,  1.8945e-01,  3.5156e-02, -4.8242e-01,
+          -2.2852e-01, -4.2578e-01,  1.1816...1, -1.2012e-01, -9.7656e-04, -1.3281e-01, -2.1875e-01,
+          -2.2852e-01]]], device='cuda:0', dtype=torch.bfloat16)
+
+    def _partial_refresh(self, video_state, action_state, residual_injection, index, video):
+        mot = self.model.mot
+        length = video_state["tokens"].shape[1]
+        keep = index.numel()
+        action = action_state["tokens"]
+        full_mask = mot.build_attention_mask(
+            video_length=length, action_length=action.shape[1],
+            video_tokens_per_frame=video_state["tokens_per_frame"], device=action.device,
+        )
+        # Query rows are gathered; key columns remain in their original positions.
+        mask = torch.cat((full_mask.index_select(0, index), full_mask[length:]), dim=0)
+        freqs = video_state["freqs"]
+        freqs = (tuple(part.index_select(0, index) for part in freqs)
+>                if isinstance(freqs, tuple) else freqs.index_select(0, index))
+E       RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cpu and cuda:0! (when checking argument for argument index in method wrapper_CUDA__index_select)
+
+dreamwam/sparse/visual_token_cache.py:103: RuntimeError
+_ test_adapter_executes_guided_tokens_and_publishes_effective_options[all_transformers] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x724a44170910>
+tmp_path = PosixPath('/tmp/pytest-of-chenjiayu/pytest-343/test_adapter_executes_guided_t2')
+graph_mode = 'all_transformers'
+
+    @pytest.mark.parametrize("graph_mode", [None, "dense_action", "all_transformers"])
+    def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypatch, tmp_path, graph_mode):
+        if graph_mode and not torch.cuda.is_available():
+            pytest.skip("actual graph/adapter execution requires CUDA on the evaluation server")
+        device = "cuda" if graph_mode else "cpu"
+        dtype = torch.bfloat16 if graph_mode else torch.float32
+        model, inputs = model_and_inputs()
+        model.to(device=device, dtype=dtype)
+        inputs = {key: value.to(device=device, dtype=dtype if value.is_floating_point() else value.dtype)
+                  if isinstance(value, torch.Tensor) else value for key, value in inputs.items()}
+        with ActionGuidedVisualTokenCache(model, keep_ratio=0.25, refresh_every=2):
+>           expected = model.sample_action(**inputs).squeeze(0).float().cpu().numpy()
+
+tests/sparse/test_visual_adapter_integration.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+dreamwam/sparse/visual_step_cache.py:142: in sample_action
+    return sample(*args, **kwargs)
+.venv/lib/python3.10/site-packages/torch/utils/_contextlib.py:116: in decorate_context
+    return func(*args, **kwargs)
+dreamwam/model.py:1062: in sample_action
+    prediction = self._forward_conditioned(
+dreamwam/model.py:539: in _forward_conditioned
+    tokens = self.mot(
+.venv/lib/python3.10/site-packages/torch/nn/modules/module.py:1751: in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+.venv/lib/python3.10/site-packages/torch/nn/modules/module.py:1762: in _call_impl
+    return forward_call(*args, **kwargs)
+dreamwam/sparse/visual_step_cache.py:131: in joint_forward
+    return self._refresh(forward, video_state=video_state, action_state=action_state,
+dreamwam/sparse/action_guided_visual_token_cache.py:61: in _refresh
+    return super()._refresh(forward, **kwargs)
+dreamwam/sparse/visual_token_cache.py:80: in _refresh
+    action, video = self._partial_refresh(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <dreamwam.sparse.action_guided_visual_token_cache.ActionGuidedVisualTokenCache object at 0x724a44172e00>
+video_state = {'tokens': tensor([[[ 0.1953, -0.1719,  0.3652,  0.0574,  0.6953, -0.2656, -0.1807,
+           0.1187, -0.1787, -0.031...   [-0.0056,  0.0337, -0.0981,  ..., -0.0371,  0.2832,  0.1787]]]],
+       device='cuda:0', dtype=torch.bfloat16), ...}
+action_state = {'tokens': tensor([[[ 1.0000, -0.0238,  0.6953, -0.7422, -1.2031,  1.0234, -1.2891,
+           0.5469,  0.3770,  0.010...0.2168,  0.1748, -0.0752, -0.3281, -0.1855,
+           0.2217, -0.1826]]], device='cuda:0', dtype=torch.bfloat16), ...}
+residual_injection = GatedWorldRouter(
+  (heads): ModuleDict(
+    (dino): PatchHead(
+      (norm): LayerNorm((16,), eps=1e-06, elementwise_...bias=True)
+      (2): GELU(approximate='none')
+      (3): Linear(in_features=4, out_features=16, bias=True)
+    )
+  )
+)
+index = tensor([ 7,  8, 10], device='cuda:0')
+video = tensor([[[-0.2031, -1.0000, -0.7578,  0.6406, -0.3594,  0.1045,  0.6875,
+           0.0625, -0.3203, -0.6875, -0.5195,...592, -0.2812,  0.1260,  0.3203,  1.0234, -0.8281,
+          -0.3574, -0.4082]]], device='cuda:0', dtype=torch.bfloat16)
+
+    def _partial_refresh(self, video_state, action_state, residual_injection, index, video):
+        mot = self.model.mot
+        length = video_state["tokens"].shape[1]
+        keep = index.numel()
+        action = action_state["tokens"]
+        full_mask = mot.build_attention_mask(
+            video_length=length, action_length=action.shape[1],
+            video_tokens_per_frame=video_state["tokens_per_frame"], device=action.device,
+        )
+        # Query rows are gathered; key columns remain in their original positions.
+        mask = torch.cat((full_mask.index_select(0, index), full_mask[length:]), dim=0)
+        freqs = video_state["freqs"]
+        freqs = (tuple(part.index_select(0, index) for part in freqs)
+>                if isinstance(freqs, tuple) else freqs.index_select(0, index))
+E       RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cpu and cuda:0! (when checking argument for argument index in method wrapper_CUDA__index_select)
+
+dreamwam/sparse/visual_token_cache.py:103: RuntimeError
+=========================== short test summary info ============================
+FAILED tests/sparse/test_visual_adapter_integration.py::test_adapter_executes_guided_tokens_and_publishes_effective_options[dense_action]
+FAILED tests/sparse/test_visual_adapter_integration.py::test_adapter_executes_guided_tokens_and_publishes_effective_options[all_transformers]
+2 failed, 1 passed in 8.71s

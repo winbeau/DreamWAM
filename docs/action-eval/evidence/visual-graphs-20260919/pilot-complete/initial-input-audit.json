@@ -1,0 +1,1232 @@
+{
+  "utc": "2026-09-19T23:44:02.506801+00:00",
+  "reference": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-pilot-20260919/matched/run-20260919T210051Z-93e56600",
+  "candidate": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-graph-pilot-20260919/guided-gpu2/run-20260919T233514Z-a1a810b6",
+  "reference_planned": 15,
+  "candidate_planned": 15,
+  "reference_recorded": 15,
+  "candidate_recorded": 15,
+  "pairs": 15,
+  "state_equal": 15,
+  "agentview_equal": 0,
+  "wrist_equal": 0,
+  "rows": [
+    {
+      "identity": [
+        0,
+        0,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t000-i000-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "f889ea5124cb9052406b5b7b6c9e97fc9f2f00650a9c1ef52aa0233ed2297a81",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "7541a23396f82df5be05157cb3e0b3f4aa57a8f3b444192aa7c4d81e44757e5e",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "7efb50fd885e98a8db714b1288d315d9a00d518d0c87c92ff53eb57b65be08eb",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "52d464ada386021aa142360d19707a020714f57ae6e71cb995728e5d22ce4ebd"
+      },
+      "candidate": {
+        "episode_id": "t000-i000-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "64e55800a8059ca02e547c5fa81c5c61b952c769263c4242d8ebff30770ddfe7",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "8b81dac1169c102e7af772db71d6231a8f0480001fb4d9c6f07ccaa5895f32c8",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "7efb50fd885e98a8db714b1288d315d9a00d518d0c87c92ff53eb57b65be08eb",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "71fbcf9e5b16047fbb5c953a08e67828a448fd3ccc1d9c01315f4eaefba2e134"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        0,
+        1,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t000-i001-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "1ce5ccf1a18734e3f6693be96601b477887811e0f89159bb4a6ed3a9f3bb6153",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "652efbe2df6707eddeee880f449f7981cff475d6a0807f204368be49c51a66a8",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "1d1292e0ebad0fbcead6a83e12fa04a7d25566310d0cc6f23adbe978a08fc141",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "80242b79e189de59ce6eb52cf8beffee100fb6b044877ff13ab89c7b687d284d"
+      },
+      "candidate": {
+        "episode_id": "t000-i001-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "670da3eedbc50368cb3ee3fdacd6fab4bc6fd0114e9231b8383ffefd6b6781ad",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "73a0425638ca568db20544618afda6d888eca46dcf5a84c5e2a730cbe4754abc",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "1d1292e0ebad0fbcead6a83e12fa04a7d25566310d0cc6f23adbe978a08fc141",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "1de1c735c005896b450e1810d686dd9e840b687e582c4feb6d26f7fbeaf9a1c1"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        0,
+        2,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t000-i002-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "ad97cb9590315360b963cf23744f78ffdbfe5a6a8d68d14fadb12324e0fe5fd7",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "fcb0f66a43dee789bef4488e25dd58273537b55bba3f0e70e4e73c848f88388f",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "4909aaa0ab2817dcfc935e5013a8ef95f11d26a989ef12b9db506a53dabb697c",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "3b74870687b07ed2073dc25f107ab2489649e0b0279b8f90c0e2cf98decff77a"
+      },
+      "candidate": {
+        "episode_id": "t000-i002-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "1e81a69b99a617a7405e51548f4dac42711ed9243ec27632fc900318e8fd956f",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "030193be2cbb283c254d92af77c9e06e2d5c84488f32c7efe55cb903442e056e",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "4909aaa0ab2817dcfc935e5013a8ef95f11d26a989ef12b9db506a53dabb697c",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "5475df4f4c02b32d7333854c39a878bff04d48a3e0d8eee0a34d784482aed449"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        0,
+        3,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t000-i003-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "40a2df8f55e0daf3e1a1495c93dbefcd8f71a9f0275b2c974ee116c9ff3a4c57",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "9a2ca6be98a42f11b4766383a38762629241f8aebe35e5191f90c6a904ad1b85",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "2e1fb201c85257b43332f712355459a8adcb9fbc11bd16e31e4da44e8adf461d",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "3aaf96b6539ca8798af2dfd3a433f0fb1b968796efad2f7148e1725d752cbd89"
+      },
+      "candidate": {
+        "episode_id": "t000-i003-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "d8e3f6d483ca3495d16f0e19b3152658249369b2dd761801b9bd0d986aae1344",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "f146e061c077c0a6f01948181daf4e46f03f124fe122384532ab0694bf6d923c",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "2e1fb201c85257b43332f712355459a8adcb9fbc11bd16e31e4da44e8adf461d",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "75676c8e73a8d1579fe7de4bae25b2581a6b4980e22a471af064f62ae8701d64"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        0,
+        4,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t000-i004-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "44ab59f4d366863ed4790d9107aea0f38f755afe193cc7a2726196e999f0ab2e",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "e939db11b46c5a9380a0aa41ab281925c92b97250580c7a70b1859baa0baa997",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "71a025bce57491e055e4a78fbefdc0db1f1001602271e3fe761f482313d6d0e2",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "36abdb89c9601b3b748b0a984dff9b695482fff92c79d1284f2aa762bc85c924"
+      },
+      "candidate": {
+        "episode_id": "t000-i004-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "f7891a549791a036e4cb91515d29b4780aa5fa1dc4a220d1d7524bc618b52bb0",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "b3f470648ad12c80e3dc9c6ffddff2e6399d2285ae94f360e900865b23ac1ae7",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "71a025bce57491e055e4a78fbefdc0db1f1001602271e3fe761f482313d6d0e2",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "e2970d45ab0e24d289b9a8a31f8f27ecd553d88e069e98899153830890fdf377"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        1,
+        0,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t001-i000-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "bfe6bf25eed0beee9371b37a3b58141e5c3075c81d319570bd96a1e6f0002310",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "1180c7aaa86de8dffa362df3589de39acb381678320120994f3fa1700579cfbb",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "555ea4652dd6ceef0af080e143556c9f74ed1630d479116aa4781e1ca5bee666",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "0bc2d576abfb028d811ce8915f0d3debf227fe38c06a725b61f0c63dec4598c4"
+      },
+      "candidate": {
+        "episode_id": "t001-i000-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "c8e14a2826d742c404a2b2cc17c27e25b77697d6cbeb306803f91026c792cc02",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "8810f05aaf794c0adf8471ef323a05e0d90e7f469ce70865140bde346ee46bf0",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "555ea4652dd6ceef0af080e143556c9f74ed1630d479116aa4781e1ca5bee666",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "5e1691b0dc2f7274ae8b578aa706217303cc6884ddb80fc266823cdd0d0de7bc"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        1,
+        1,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t001-i001-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "7d1c17f81d40a102b6b14ce2ccb71bf1810587315c6b901edb63cc43a3acf860",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "6697f4b2224c61da9ccee86043c4ae692da2e0309811936fca3b9ce9c33558c6",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "f396ae1c5b788807568fd493c64ff67b9e3d494a0365e1e2311d840af89aff27",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "1ba5e2138ed4fcb47a2dcb3e05f63dec69e8dc15aeed2eb057a4c195679f4a2e"
+      },
+      "candidate": {
+        "episode_id": "t001-i001-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "918b571b3d408bd61b9a7ce4ec05c8b4f37573b5a85d2b642897992300badb64",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "17946c867af242e0013e35961abc590fecf6ce90b6726e43ecd9c0a02784cbaf",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "f396ae1c5b788807568fd493c64ff67b9e3d494a0365e1e2311d840af89aff27",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "6505353cb2f873e5668a338851e3a660054cab5a435c7746b19dcf3bbeaef886"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        1,
+        2,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t001-i002-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "b14ea7943da46fd8248c68b49c29413ea15447c478fee93da9a586b20ee8ff5a",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "2f4087112dc241c3f083b746f3f119212c1cfd6ef418f410fac2222ca4f072ca",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "1ebdf0ca84769a69fe1720f9d82d8c91d0a5e33d3c2388cc62d8a9018172b36b",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "b139b49c3079ad875fa102f373e7bafac9bde146284c3935f75480684ddd5cc6"
+      },
+      "candidate": {
+        "episode_id": "t001-i002-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "b6d3557c943505c9d3ee3131cd56273da32c20593ecbde85307b8b1723d24161",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "f3acb246a6622b0c02367482e9650b9f61bafdf3911367e09d808df151b8856a",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "1ebdf0ca84769a69fe1720f9d82d8c91d0a5e33d3c2388cc62d8a9018172b36b",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "ee0a0a82d20a3b2646a0db853c2ee8e521bc866f4d05e79aaa8edb7e0e02b3c6"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        1,
+        3,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t001-i003-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "fe370627c72dfe704c72b23459d6ac68416d595ca1dfa14f9ab3641f206525a0",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "f60cbbfa6d23d07dbfde64b7c2c7ceafd8ddb843e01db7ead39d49ae90c463ef",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "8de3360da9c03f9f385fbb85c6b9a705bc61e2f4cf0c6963e06b3625a0829872",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "378179d3554abb65d6cdaba2097ef4c53c5490b041bc253e477c6ad4d3470796"
+      },
+      "candidate": {
+        "episode_id": "t001-i003-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "488dd1cafe2947358a08b3b8c765f3b95a6076f177eae1b122027d7a701f3ae9",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "5b219bdd7934acacc0bfd4219efc0aeb0a222e662104e15f150abd1806797c8a",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "8de3360da9c03f9f385fbb85c6b9a705bc61e2f4cf0c6963e06b3625a0829872",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "1592ebee2393a3597752992cdc9bd69cb674907d21c702f9af40882918fe229a"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        1,
+        4,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t001-i004-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "8da34579de4c54eccace85a79441ae4d89485fe7e52698de4af03c384fb6a253",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "9e9ae7a22dc16fbedbe214e87a9ca9348449fca85380ac4efd43cff66e893445",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "3ae06452244d55a061ab82ff1e414bcfa869beee2f23f5abf0622ef8d480f4d5",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "c0bf313b76ed9f0e02cf8d197161581ef4b075afe34cdfd8539e95f6d243e4e3"
+      },
+      "candidate": {
+        "episode_id": "t001-i004-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "36e601f7b4badeb9a843c720e19d3b779644f3a13f45090a670295b4111ad8b3",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "10a0408387fcf167da29e550824348bf5003faeb2e517cfb905ed6c271b94f19",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "3ae06452244d55a061ab82ff1e414bcfa869beee2f23f5abf0622ef8d480f4d5",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "13824cfa4dba61a85fb96978e7d95b0f258a40cdb2e259c55afb267bb2761ab2"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        2,
+        0,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t002-i000-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "f5a32dd0606093cc86da02b562a446472baffec58442671f41b9e1665dbd3ba9",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "047e79e54714a9e298a938b3425e7cdacf50d5fac35acf8e19bc852ebf78855b",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "e322c8b9145d0517eb395c336b71984ab498c114014dceb3bb2e6f18d8fb7d67",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "4af6cc5f90cf4338fbb870a6f45a86c8ce0424aa737883e13c83051c91220a24"
+      },
+      "candidate": {
+        "episode_id": "t002-i000-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "9fc9528b9d142274c48c57b97fe03279b014fe93ebfbd4ad32a44211f3bd969f",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "c971aa8e606c4865ea0ff8bc76c8ee18042757d741c8c8be730de538a949b25e",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "e322c8b9145d0517eb395c336b71984ab498c114014dceb3bb2e6f18d8fb7d67",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "7b5848811fd151410d213372e6630ffa35f17925630c484f27ed2f160f6b33ce"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        2,
+        1,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t002-i001-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "ac8f3b45de433a93d9bd518139b4815d94e95963f7a1bf9dde306269927447d1",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "59ad93096c9bd6a11f4349ff1e84974d8ec8a5b5e4ce2ef4c4f6ccd2acbd9b54",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "52e2222e514661f03bb54829e711ce98620a3a69bbfe8b55b0cbed6c3deab1e2",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "4f8f74f76a31e56d7fd4bf4a835dbc65dff18eb5273572902b3f0a2a964b0f6f"
+      },
+      "candidate": {
+        "episode_id": "t002-i001-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "9bead684721c5c07c0359f302fc5838689cb9499722a75d894bb8024fa4ccda1",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "d307f2db6c9d25b5c2cd1eab82f6d1e9dc92ed7e5a6093aabd6f3c07003b87f7",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "52e2222e514661f03bb54829e711ce98620a3a69bbfe8b55b0cbed6c3deab1e2",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "3b06a34487f80bdfc61d271f0e7c3f4b95cc48a4ad6ab95641bd530cbb658589"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        2,
+        2,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t002-i002-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "e15fe32942419369ea5ef03c27e69d1b47813fad552396bdfde927aedb5864dc",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "3cb2e93296f08dd278a7dd0263ff39b83bd5516e2039ab457fe4664930a5a167",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "e4f4ebb7d5bf8c97e1907475003f4b22148d1667e20bc7395d5283209a680665",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "68a90bf29e6be220c1a6a841fbb4ab547c9a17096f59171108faaa4fae09460c"
+      },
+      "candidate": {
+        "episode_id": "t002-i002-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "0962d755821b4cf7e9642c790dcf5771dcbe7f67f84d59a0c097c1a5f155f5d7",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "86794baf82ccf7555a5923604370f97bb944962c4b545ae208dff46a4bafd702",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "e4f4ebb7d5bf8c97e1907475003f4b22148d1667e20bc7395d5283209a680665",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "4ca18261061df661879d4e8927717b7ecd9cc920b5eb3066685da9592def1eca"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        2,
+        3,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t002-i003-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "0c33d8739ddcda24eddc16381ee6d1711226eedee8637214e5f493c4ee6c9715",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "eca34fb4819c97a6c12b8ad740f40d3cd9319389b035da39d3463d3912494537",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "a5d8a28158b3d49b3f9e27e5887c99a920f125a397158ecb4e5b06670cb93554",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "849c2f24c14f212f999144e94b570c7fc3feb884f46077235318c148667aee8c"
+      },
+      "candidate": {
+        "episode_id": "t002-i003-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "b7b2594b6a8f6e4188ab3db2d48fed9437c02a314943bff028bfe11f3a30d359",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "3f75b92975d2193fb04e6076f2a1c2c0f91e88f8e7917b741e087c9a57cbbd66",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "a5d8a28158b3d49b3f9e27e5887c99a920f125a397158ecb4e5b06670cb93554",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "042d06ec7acb14a3b908a36c24d3cd7340b89d9632afac7d5c656baaafd7b8da"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    },
+    {
+      "identity": [
+        2,
+        4,
+        0,
+        42
+      ],
+      "reference": {
+        "episode_id": "t002-i004-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "9afd800bf07a7be56c86ad740ef83e89bfdef1e0053cb6e8e9118c7d4dc0978d",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "3e941e597c54a25964672f037071719c5d148e70d2665b454aa0f893f5130b16",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "c77d73673de1a88915eca4365664be8bd992686762b2f218e679683ac2a03073",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "de785a722d22bd0ee609c3935da0cd139b0e5ba195579f6dda5b132d7e7195a7"
+      },
+      "candidate": {
+        "episode_id": "t002-i004-r00-s42",
+        "first": {
+          "images": {
+            "agentview": {
+              "dtype": "|u1",
+              "sha256": "8f91493593c8dd328d0db0eb84f15ffdb48ed8007dcc50019b2a6d008500ff32",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            },
+            "wrist": {
+              "dtype": "|u1",
+              "sha256": "83efb10c3a581b58724c350d440ac01f3df49a0a59e7da2318ec95dc512db7ae",
+              "shape": [
+                256,
+                256,
+                3
+              ]
+            }
+          },
+          "instruction": "pick up the black bowl from table center and place it on the plate",
+          "state": {
+            "dtype": "<f4",
+            "sha256": "c77d73673de1a88915eca4365664be8bd992686762b2f218e679683ac2a03073",
+            "shape": [
+              8
+            ]
+          },
+          "step_index": 30
+        },
+        "trace_sha256": "1a556b32031911178acb67ea13dd63464d3320ebf97ea5bcba3cb765b3ccb5c0"
+      },
+      "state_equal": true,
+      "agentview_equal": false,
+      "wrist_equal": false
+    }
+  ],
+  "sr": null,
+  "limitation": "Hashes detect non-identity, not image-error magnitude or cause. Intersection is for input auditing only, never an SR denominator."
+}

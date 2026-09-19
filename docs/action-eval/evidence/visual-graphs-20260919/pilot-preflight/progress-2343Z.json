@@ -1,0 +1,348 @@
+{
+  "utc": "2026-09-19T23:43:30.522149+00:00",
+  "runs": {
+    "dense": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0",
+      "planned": 500,
+      "completed": 221,
+      "successes": 221,
+      "task_failures": 0,
+      "manifest_sha256": "343a536e8af2273d4e942ed8a99e4b9df9db1cf32d734105ea3f44de4aaa8081",
+      "resolved_sha256": "25021eb8960d7b0ca0ccf7289b3fb1200b377d8479dff4a5af5907c0da780c88",
+      "worker_alive": false,
+      "worker": {
+        "stage": "started",
+        "simulator_env": {
+          "OMP_NUM_THREADS": "1 (preserved: already set in the environment)"
+        }
+      },
+      "sr": null
+    },
+    "guided": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/guided-visual-token-spatial-20260919/guided-gpu1/run-20260919T225943Z-b4cfcb70",
+      "planned": 500,
+      "completed": 95,
+      "successes": 93,
+      "task_failures": 2,
+      "manifest_sha256": "829208c595a4098c9916ee07af412a693a8aa8b44758b61d2073df66469e6f3a",
+      "resolved_sha256": "010e9e38aaaf9866dd175ad0009c03ddadf43718cab7b9c162b4c28c841e80a8",
+      "worker_alive": false,
+      "worker": {
+        "startup": {
+          "protocol_version": "action-eval-proto/v1",
+          "adapter_target": "evaluation/action_eval/infer.py:create_policy",
+          "device": "cuda:0",
+          "python": "3.10.20",
+          "pid": 168664
+        },
+        "description": {
+          "observation_profile": "dreamwam-libero-2cam-v1",
+          "action_profile": "libero-osc-pose-v1",
+          "rng_mode": "fixed_per_predict",
+          "action_horizon": 32,
+          "fingerprint": {
+            "adapter": "dreamwam",
+            "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-guided-policy-8390f6a/configs/dreamwam_joint.yaml",
+            "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+            "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-guided-policy-8390f6a/checkpoints/dreamwam_joint.pt",
+            "checkpoint_source": "policy.checkpoint",
+            "checkpoint_size_bytes": 12063469113,
+            "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+            "checkpoint_conflict": null,
+            "setting": "joint",
+            "action_horizon": 32,
+            "denoising_steps": 10,
+            "video_frames": 9,
+            "replan_steps": 10,
+            "wait_steps": 30,
+            "binarize_gripper": true,
+            "model_seed": 42,
+            "rng_mode": "fixed_per_predict",
+            "sparse": {
+              "enabled": false,
+              "selection": "av_context",
+              "backend": "masked",
+              "block_size": 14,
+              "future_ratio": 1.0,
+              "conditional_keep_ratio": 1.0,
+              "context_weight": 1.0,
+              "min_anchor_mass": 0.0,
+              "fallback": "recency",
+              "num_stages": 1,
+              "anchor_refresh": "layer",
+              "anchor_layer": 0,
+              "sparse_layers": null,
+              "head_blocks": null,
+              "stage_blocks": null
+            },
+            "sparse_config_hash": "10d80b7ca00e97b5",
+            "visual_cache": {
+              "refresh_every": 5,
+              "token_keep_ratio": 0.1,
+              "action_guidance_weight": 1.0
+            }
+          },
+          "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+        },
+        "worker_index": 0,
+        "requested_gpu_uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+        "cuda_visible_devices": "1",
+        "gpu": {
+          "index": 1,
+          "uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+          "name": "NVIDIA H200 NVL",
+          "memory_total_mib": 143771,
+          "memory_used_mib": 1
+        },
+        "gpu_resolved": true,
+        "stage": "policy_ready",
+        "simulator_env": {
+          "OMP_NUM_THREADS": "1 (preserved: already set in the environment)"
+        }
+      },
+      "sr": null
+    },
+    "temporal_preserved": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1/run-20260919T215351Z-7f224961",
+      "planned": 500,
+      "completed": 132,
+      "successes": 132,
+      "task_failures": 0,
+      "manifest_sha256": "220ab29833458a81817e3e3c953d7c5532e4913f91e2fe37aea5ee8c10631215",
+      "resolved_sha256": "9f621deb83a7843555efb69c28ee45ffe168df6ac41fbd3c5a63e8ff7ddd904c",
+      "worker_alive": false,
+      "worker": {
+        "stage": "started",
+        "simulator_env": {
+          "OMP_NUM_THREADS": "1 (preserved: already set in the environment)"
+        }
+      },
+      "sr": null
+    },
+    "graph_pilot": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-graph-pilot-20260919/guided-gpu2/run-20260919T233514Z-a1a810b6",
+      "planned": 15,
+      "completed": 15,
+      "successes": 15,
+      "task_failures": 0,
+      "manifest_sha256": "e38ec7f5ff4492b206890c5a7c033ead3c444dcebee15a0c63262830ba526b53",
+      "resolved_sha256": "2f8dc7fa8fc5ad76eec904c0dabd0f4bd9b68921347f79a2c1bb5b93c61b465c",
+      "worker_alive": false,
+      "worker": {
+        "startup": {
+          "protocol_version": "action-eval-proto/v1",
+          "adapter_target": "evaluation/action_eval/infer.py:create_policy",
+          "device": "cuda:0",
+          "python": "3.10.20",
+          "pid": 174229
+        },
+        "description": {
+          "observation_profile": "dreamwam-libero-2cam-v1",
+          "action_profile": "libero-osc-pose-v1",
+          "rng_mode": "fixed_per_predict",
+          "action_horizon": 32,
+          "fingerprint": {
+            "adapter": "dreamwam",
+            "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/configs/dreamwam_joint.yaml",
+            "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+            "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/checkpoints/dreamwam_joint.pt",
+            "checkpoint_source": "policy.checkpoint",
+            "checkpoint_size_bytes": 12063469113,
+            "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+            "checkpoint_conflict": null,
+            "setting": "joint",
+            "action_horizon": 32,
+            "denoising_steps": 10,
+            "video_frames": 9,
+            "replan_steps": 10,
+            "wait_steps": 30,
+            "binarize_gripper": true,
+            "model_seed": 42,
+            "rng_mode": "fixed_per_predict",
+            "sparse": {
+              "enabled": false,
+              "selection": "av_context",
+              "backend": "masked",
+              "block_size": 14,
+              "future_ratio": 1.0,
+              "conditional_keep_ratio": 1.0,
+              "context_weight": 1.0,
+              "min_anchor_mass": 0.0,
+              "fallback": "recency",
+              "num_stages": 1,
+              "anchor_refresh": "layer",
+              "anchor_layer": 0,
+              "sparse_layers": null,
+              "head_blocks": null,
+              "stage_blocks": null
+            },
+            "sparse_config_hash": "10d80b7ca00e97b5",
+            "visual_cache": {
+              "refresh_every": 5,
+              "token_keep_ratio": 0.1,
+              "action_guidance_weight": 1.0,
+              "graph_dispatch": "all_transformers"
+            }
+          },
+          "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+        },
+        "worker_index": 0,
+        "requested_gpu_uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+        "cuda_visible_devices": "2",
+        "gpu": {
+          "index": 2,
+          "uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+          "name": "NVIDIA H200 NVL",
+          "memory_total_mib": 143771,
+          "memory_used_mib": 1
+        },
+        "gpu_resolved": true,
+        "predict_calls": 28,
+        "simulator_env": {
+          "OMP_NUM_THREADS": "1 (preserved: already set in the environment)"
+        },
+        "stage": "finished"
+      },
+      "sr": null
+    }
+  },
+  "sr": null,
+  "guided_task_failures": [
+    {
+      "episode_id": "t000-i048-r00-s42",
+      "guided": {
+        "attempt": 1,
+        "status": "failed",
+        "sha256": "7a5b0dbb27414ec22f33817518fdef255779240405b04465816d786e3964bbeb",
+        "termination_reason": "max_steps",
+        "steps": null,
+        "policy_calls": 40
+      },
+      "dense": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "e223f421aad9d0e5ac4d2a9fae307c1855fbbc0c1309b05a2f0a6bc3f213a8fe",
+        "termination_reason": "success",
+        "steps": null,
+        "policy_calls": 7
+      },
+      "temporal_preserved": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "6a7ed1af7398ec38921cd7f16dd78242a77900c4890eb4a5c0b41b7bb470b129",
+        "termination_reason": "success",
+        "steps": null,
+        "policy_calls": 8
+      }
+    },
+    {
+      "episode_id": "t001-i036-r00-s42",
+      "guided": {
+        "attempt": 1,
+        "status": "failed",
+        "sha256": "859d133397a89ac134e0191668ac633309f09eadb826e298ca47e961372120fd",
+        "termination_reason": "max_steps",
+        "steps": null,
+        "policy_calls": 40
+      },
+      "dense": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "88e4dcb0b6860a3bf52f60ea483dc1a2d6cb869912642439447afeff692da272",
+        "termination_reason": "success",
+        "steps": null,
+        "policy_calls": 12
+      },
+      "temporal_preserved": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "0b20991437eb8d4474fe271acec1185f9a968c6180a173b549b3d98c21851565",
+        "termination_reason": "success",
+        "steps": null,
+        "policy_calls": 12
+      }
+    }
+  ],
+  "controllers": {
+    "dense": {
+      "directory": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched-recovery-04",
+      "metadata": {
+        "start_utc": "2026-09-19T23:27:20.849312+00:00",
+        "supervisor_pid": 164212,
+        "command": [
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2/.venv/bin/python",
+          "-m",
+          "action_eval.cli",
+          "resume",
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0"
+        ],
+        "evaluator_root": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+        "script_sha256": "eb26dd9f276c5fa87bed6658b64c81cb040320f551eb99896e08b7af67e177c2",
+        "max_attempts": 20,
+        "max_stagnant": 3,
+        "policy_gpu_uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+        "max_gpu_utilization": 20,
+        "min_free_mib": 35000,
+        "evaluator_commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b"
+      },
+      "alive": true,
+      "summary": null
+    },
+    "temporal": {
+      "directory": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1-recovery-03",
+      "metadata": {
+        "start_utc": "2026-09-19T23:38:49.075183+00:00",
+        "supervisor_pid": 171891,
+        "command": [
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2/.venv/bin/python",
+          "-m",
+          "action_eval.cli",
+          "resume",
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1/run-20260919T215351Z-7f224961"
+        ],
+        "evaluator_root": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+        "script_sha256": "eb26dd9f276c5fa87bed6658b64c81cb040320f551eb99896e08b7af67e177c2",
+        "max_attempts": 20,
+        "max_stagnant": 3,
+        "policy_gpu_uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+        "max_gpu_utilization": 20,
+        "min_free_mib": 35000,
+        "evaluator_commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b"
+      },
+      "alive": true,
+      "summary": null
+    },
+    "graph_pilot": {
+      "directory": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-graph-pilot-20260919/guided-gpu2-recovery-01",
+      "metadata": {
+        "start_utc": "2026-09-19T23:38:49.246974+00:00",
+        "supervisor_pid": 171902,
+        "command": [
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2/.venv/bin/python",
+          "-m",
+          "action_eval.cli",
+          "resume",
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-graph-pilot-20260919/guided-gpu2/run-20260919T233514Z-a1a810b6"
+        ],
+        "evaluator_root": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+        "script_sha256": "eb26dd9f276c5fa87bed6658b64c81cb040320f551eb99896e08b7af67e177c2",
+        "max_attempts": 10,
+        "max_stagnant": 3,
+        "policy_gpu_uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+        "max_gpu_utilization": 20,
+        "min_free_mib": 35000,
+        "evaluator_commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b"
+      },
+      "alive": false,
+      "summary": {
+        "reason": "complete_coverage",
+        "attempts": 3,
+        "planned": 15,
+        "completed": 15,
+        "sr": null,
+        "successes": 15,
+        "task_failures": 0
+      }
+    }
+  }
+}

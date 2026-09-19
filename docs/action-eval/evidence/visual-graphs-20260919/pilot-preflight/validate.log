@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-graph-pilot-05d97df/configs/experiments/dreamwam-guided-visual-graph-pilot.yaml
+experiment  : dreamwam-guided-visual-graph-pilot (DreamWAM Joint guided visual cache with transformer graphs (pilot))
+fingerprint : a1a810b66ac52d1a127fe8a2d2b96de0c11f75cbbbba7df8e39f562f21463185
+benchmark   : libero_spatial tasks=[0, 1, 2] inits=[0, 1, 2, 3, 4]
+episodes    : 15 planned (3 tasks x 5 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

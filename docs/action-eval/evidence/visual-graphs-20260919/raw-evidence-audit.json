@@ -1,0 +1,29 @@
+{
+  "utc": "2026-09-19T23:43:30.497872+00:00",
+  "runs": {
+    "62ce404": {
+      "timed_requests": 210,
+      "mean_recomputed": true,
+      "balanced_inputs": true,
+      "bitwise_own_eager_all": true,
+      "executed_work_counts_checked": true,
+      "source_sha256": {
+        "manifest.json": "67970b4316ae0ad1c20a478e0cec784ed139b83c29200b93eb19c3f7b9e3d6e8",
+        "summary.json": "3602e5f3f0e9ff4a8a30a6ad2c3d198ab8cdfff1ff2deae5e865b3e4b8ead598",
+        "requests.jsonl": "48e25675f8532c2b182458a4e5ee5f0b41a387c4371ea46130be996cc28c3489"
+      }
+    },
+    "e9c50e3": {
+      "timed_requests": 270,
+      "mean_recomputed": true,
+      "balanced_inputs": true,
+      "bitwise_own_eager_all": true,
+      "executed_work_counts_checked": true,
+      "source_sha256": {
+        "manifest.json": "af2d0b6ee16b6bdb0a5dea4068015eeebaeb83ab2f22c0e8b86e512dbcd47232",
+        "summary.json": "6fdc7545dc446eb0f7b52295b7dc83eaea34be45adaaab6adebabe25ffd59df1",
+        "requests.jsonl": "e82660cacbfaf17679a2ff63ee3e841b87a8e5f1b728a720330a0dc9769d7c61"
+      }
+    }
+  }
+}
