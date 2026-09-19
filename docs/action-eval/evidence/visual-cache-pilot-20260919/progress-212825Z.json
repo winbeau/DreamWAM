@@ -1,0 +1,143 @@
+{
+  "kind": "paired plumbing pilot progress, not benchmark SR",
+  "snapshot_utc": "2026-09-19T21:28:25.085277+00:00",
+  "sr": null,
+  "lanes": {
+    "refresh5": {
+      "run_id": "run-20260919T210051Z-69b63480",
+      "planned": 15,
+      "completed": 15,
+      "succeeded": 15,
+      "failed": 0,
+      "completed_ids": [
+        "t000-i000-r00-s42",
+        "t000-i001-r00-s42",
+        "t000-i002-r00-s42",
+        "t000-i003-r00-s42",
+        "t000-i004-r00-s42",
+        "t001-i000-r00-s42",
+        "t001-i001-r00-s42",
+        "t001-i002-r00-s42",
+        "t001-i003-r00-s42",
+        "t001-i004-r00-s42",
+        "t002-i000-r00-s42",
+        "t002-i001-r00-s42",
+        "t002-i002-r00-s42",
+        "t002-i003-r00-s42",
+        "t002-i004-r00-s42"
+      ],
+      "native_process_exits": {
+        "refresh5.exit": 134,
+        "refresh5.resume1.exit": 134,
+        "refresh5.resume2.exit": 134,
+        "refresh5.resume3.exit": 0
+      },
+      "worker_stage": "finished",
+      "executed_fingerprint": {
+        "adapter": "dreamwam",
+        "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/configs/dreamwam_joint.yaml",
+        "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+        "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/checkpoints/dreamwam_joint.pt",
+        "checkpoint_source": "policy.checkpoint",
+        "checkpoint_size_bytes": 12063469113,
+        "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+        "checkpoint_conflict": null,
+        "setting": "joint",
+        "action_horizon": 32,
+        "denoising_steps": 10,
+        "video_frames": 9,
+        "replan_steps": 10,
+        "wait_steps": 30,
+        "binarize_gripper": true,
+        "model_seed": 42,
+        "rng_mode": "fixed_per_predict",
+        "sparse": {
+          "enabled": false,
+          "selection": "av_context",
+          "backend": "masked",
+          "block_size": 14,
+          "future_ratio": 1.0,
+          "conditional_keep_ratio": 1.0,
+          "context_weight": 1.0,
+          "min_anchor_mass": 0.0,
+          "fallback": "recency",
+          "num_stages": 1,
+          "anchor_refresh": "layer",
+          "anchor_layer": 0,
+          "sparse_layers": null,
+          "head_blocks": null,
+          "stage_blocks": null
+        },
+        "sparse_config_hash": "10d80b7ca00e97b5",
+        "visual_cache": {
+          "refresh_every": 5
+        }
+      }
+    },
+    "matched": {
+      "run_id": "run-20260919T210051Z-93e56600",
+      "planned": 15,
+      "completed": 9,
+      "succeeded": 9,
+      "failed": 0,
+      "completed_ids": [
+        "t000-i000-r00-s42",
+        "t000-i001-r00-s42",
+        "t000-i002-r00-s42",
+        "t000-i003-r00-s42",
+        "t000-i004-r00-s42",
+        "t001-i000-r00-s42",
+        "t001-i001-r00-s42",
+        "t001-i002-r00-s42",
+        "t001-i003-r00-s42"
+      ],
+      "native_process_exits": {
+        "matched.exit": 134,
+        "matched.resume1.exit": 134,
+        "matched.resume2.exit": 134,
+        "matched.resume3.exit": 134
+      },
+      "worker_stage": "policy_ready",
+      "executed_fingerprint": {
+        "adapter": "dreamwam",
+        "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/configs/dreamwam_joint.yaml",
+        "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+        "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/checkpoints/dreamwam_joint.pt",
+        "checkpoint_source": "policy.checkpoint",
+        "checkpoint_size_bytes": 12063469113,
+        "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+        "checkpoint_conflict": null,
+        "setting": "joint",
+        "action_horizon": 32,
+        "denoising_steps": 10,
+        "video_frames": 9,
+        "replan_steps": 10,
+        "wait_steps": 30,
+        "binarize_gripper": true,
+        "model_seed": 42,
+        "rng_mode": "fixed_per_predict",
+        "sparse": {
+          "enabled": false,
+          "selection": "av_context",
+          "backend": "masked",
+          "block_size": 14,
+          "future_ratio": 1.0,
+          "conditional_keep_ratio": 1.0,
+          "context_weight": 1.0,
+          "min_anchor_mass": 0.0,
+          "fallback": "recency",
+          "num_stages": 1,
+          "anchor_refresh": "layer",
+          "anchor_layer": 0,
+          "sparse_layers": null,
+          "head_blocks": null,
+          "stage_blocks": null
+        },
+        "sparse_config_hash": "10d80b7ca00e97b5",
+        "visual_cache": {
+          "refresh_every": 1
+        }
+      }
+    }
+  }
+}

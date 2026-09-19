@@ -2,7 +2,7 @@
 
 This page records DreamWAM Joint integration with [action-eval](https://github.com/winbeau/action-eval). **main** is the maintained evaluation branch and default. Execution has resumed under the current user goal: preserve official paired SR while targeting ≥1.5× full-request acceleration.
 
-Current continuation: [temporal visual-cache measurement and paired pilot](visual-cache-single-factor-20260919.md), with a measured 1.655× policy-request speedup and SR still unproven. The preceding [FFN-only negative results](ffn-cache-single-factor-20260919.md) are preserved. Older pause and GPU-7-only notes below are historical; the current user allows idle or lightly occupied GPUs.
+Current continuation: [temporal visual-cache measurements and SR status](visual-cache-single-factor-20260919.md). Two visual refreshes measure 1.655× and one refresh measures 1.803×, retaining all ten action steps. The two-refresh candidate completed its 15-episode pilot; matched pilot and full Spatial evaluation remain incomplete after native renderer aborts, so official paired SR is unproven. [FFN-only and action-guided neuron negative results](ffn-cache-single-factor-20260919.md) are preserved. Older pause and GPU-7-only notes below are historical; the current user allows idle or lightly occupied GPUs.
 
 ## Current evidence
 

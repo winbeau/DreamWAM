@@ -1,0 +1,8 @@
+{
+  "status": "CANCELLED",
+  "utc": "2026-09-19T21:33:13.872037+00:00",
+  "pids": [
+    93656
+  ],
+  "reason": "GPU 1 launch snapshot reported 100% utilization before our benchmark started; stop only our invocation."
+}

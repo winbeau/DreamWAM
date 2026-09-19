@@ -1,0 +1,34 @@
+{
+  "snapshot_utc": "2026-09-19T21:38:03.439064+00:00",
+  "sr": null,
+  "recovery_limit": "stop after 3 consecutive attempts without additional terminal outcomes",
+  "lanes": {
+    "pilot_matched": {
+      "run_id": "run-20260919T210051Z-93e56600",
+      "planned": 15,
+      "terminal": 9,
+      "successes": 9,
+      "task_failures": 0,
+      "native_exits": {
+        "matched.exit": 134,
+        "matched.resume1.exit": 134,
+        "matched.resume2.exit": 134,
+        "matched.resume3.exit": 134,
+        "matched.resume4.exit": 134,
+        "matched.resume5.exit": 134
+      }
+    },
+    "formal_refresh5": {
+      "run_id": "run-20260919T212757Z-30c49703",
+      "planned": 500,
+      "terminal": 0,
+      "successes": 0,
+      "task_failures": 0,
+      "native_exits": {
+        "refresh5.exit": 134,
+        "refresh5.resume1.exit": 134,
+        "refresh5.resume2.exit": 134
+      }
+    }
+  }
+}

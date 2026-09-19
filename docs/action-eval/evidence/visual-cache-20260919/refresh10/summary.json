@@ -1,0 +1,54 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-19T21:36:10.075183+00:00",
+  "latency_seconds": {
+    "native_dense": {
+      "samples": 24,
+      "mean": 0.4599623150813083,
+      "p50": 0.45950631238520145,
+      "p95": 0.46506794085726144,
+      "min": 0.4564008507877588,
+      "max": 0.46657088957726955,
+      "stdev": 0.0026250314438396646
+    },
+    "matched_dense": {
+      "samples": 24,
+      "mean": 0.4644670272246003,
+      "p50": 0.46339496597647667,
+      "p95": 0.46963721411302684,
+      "min": 0.4609435983002186,
+      "max": 0.4724483508616686,
+      "stdev": 0.003036423487674373
+    },
+    "visual_step_cache": {
+      "samples": 24,
+      "mean": 0.25754829480623204,
+      "p50": 0.2568055456504226,
+      "p95": 0.2610569367185235,
+      "min": 0.2550394907593727,
+      "max": 0.2629357539117336,
+      "stdev": 0.0022989594616863716
+    }
+  },
+  "speedup_vs_matched_mean": 1.8034172098636676,
+  "speedup_vs_matched_p50": 1.8044585633959582,
+  "native_vs_matched_mean": 0.9903013306020673,
+  "full_budget_bitwise_parity": true,
+  "unchanged_parameter_versions": true,
+  "max_action_relative_l2": 0.13163878901451997,
+  "gpu_after": {
+    "exit_code": 0,
+    "stdout": "index, uuid, name, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, NVIDIA H200 NVL, 0 %, 71721 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, NVIDIA H200 NVL, 0 %, 71721 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, NVIDIA H200 NVL, 0 %, 71715 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, NVIDIA H200 NVL, 0 %, 71841 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, NVIDIA H200 NVL, 0 %, 75327 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, NVIDIA H200 NVL, 0 %, 51205 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, NVIDIA H200 NVL, 0 %, 76679 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, NVIDIA H200 NVL, 0 %, 50381 MiB",
+    "stderr": ""
+  },
+  "processes_after": {
+    "exit_code": 0,
+    "stdout": "gpu_uuid, pid, used_gpu_memory [MiB]\nGPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, 92877, 71710 MiB\nGPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 92878, 71710 MiB\nGPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 92879, 71704 MiB\nGPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 92880, 71830 MiB\nGPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 86329, 50542 MiB\nGPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 95479, 24766 MiB\nGPU-7d459912-b567-59fb-8abf-57c18713cb84, 86329, 51978 MiB\nGPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 86329, 51978 MiB\nGPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 95538, 24730 MiB\nGPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 86329, 51152 MiB",
+    "stderr": ""
+  },
+  "sr": null,
+  "limitations": [
+    "No closed-loop SR; action error is a diagnostic, not a success criterion.",
+    "Only visual_steps reuse enabled; no action guidance, attention restriction, or other cache factor."
+  ]
+}

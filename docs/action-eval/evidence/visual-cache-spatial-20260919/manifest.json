@@ -1,0 +1,4528 @@
+{
+  "schema_version": "action-eval/manifest/v1",
+  "run_id": "run-20260919T212757Z-30c49703",
+  "fingerprint": "30c497033db1a4f0d987568e905a60529f84b0f72bb25f611341b977073581d6",
+  "created_at": "2026-09-19T21:27:58.325684+00:00",
+  "episodes": [
+    {
+      "episode_id": "t000-i000-r00-s42",
+      "task_id": 0,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i001-r00-s42",
+      "task_id": 0,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i002-r00-s42",
+      "task_id": 0,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i003-r00-s42",
+      "task_id": 0,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i004-r00-s42",
+      "task_id": 0,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i005-r00-s42",
+      "task_id": 0,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i006-r00-s42",
+      "task_id": 0,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i007-r00-s42",
+      "task_id": 0,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i008-r00-s42",
+      "task_id": 0,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i009-r00-s42",
+      "task_id": 0,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i010-r00-s42",
+      "task_id": 0,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i011-r00-s42",
+      "task_id": 0,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i012-r00-s42",
+      "task_id": 0,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i013-r00-s42",
+      "task_id": 0,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i014-r00-s42",
+      "task_id": 0,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i015-r00-s42",
+      "task_id": 0,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i016-r00-s42",
+      "task_id": 0,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i017-r00-s42",
+      "task_id": 0,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i018-r00-s42",
+      "task_id": 0,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i019-r00-s42",
+      "task_id": 0,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i020-r00-s42",
+      "task_id": 0,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i021-r00-s42",
+      "task_id": 0,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i022-r00-s42",
+      "task_id": 0,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i023-r00-s42",
+      "task_id": 0,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i024-r00-s42",
+      "task_id": 0,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i025-r00-s42",
+      "task_id": 0,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i026-r00-s42",
+      "task_id": 0,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i027-r00-s42",
+      "task_id": 0,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i028-r00-s42",
+      "task_id": 0,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i029-r00-s42",
+      "task_id": 0,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i030-r00-s42",
+      "task_id": 0,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i031-r00-s42",
+      "task_id": 0,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i032-r00-s42",
+      "task_id": 0,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i033-r00-s42",
+      "task_id": 0,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i034-r00-s42",
+      "task_id": 0,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i035-r00-s42",
+      "task_id": 0,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i036-r00-s42",
+      "task_id": 0,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i037-r00-s42",
+      "task_id": 0,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i038-r00-s42",
+      "task_id": 0,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i039-r00-s42",
+      "task_id": 0,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i040-r00-s42",
+      "task_id": 0,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i041-r00-s42",
+      "task_id": 0,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i042-r00-s42",
+      "task_id": 0,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i043-r00-s42",
+      "task_id": 0,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i044-r00-s42",
+      "task_id": 0,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i045-r00-s42",
+      "task_id": 0,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i046-r00-s42",
+      "task_id": 0,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i047-r00-s42",
+      "task_id": 0,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i048-r00-s42",
+      "task_id": 0,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i049-r00-s42",
+      "task_id": 0,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i000-r00-s42",
+      "task_id": 1,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i001-r00-s42",
+      "task_id": 1,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i002-r00-s42",
+      "task_id": 1,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i003-r00-s42",
+      "task_id": 1,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i004-r00-s42",
+      "task_id": 1,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i005-r00-s42",
+      "task_id": 1,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i006-r00-s42",
+      "task_id": 1,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i007-r00-s42",
+      "task_id": 1,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i008-r00-s42",
+      "task_id": 1,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i009-r00-s42",
+      "task_id": 1,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i010-r00-s42",
+      "task_id": 1,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i011-r00-s42",
+      "task_id": 1,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i012-r00-s42",
+      "task_id": 1,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i013-r00-s42",
+      "task_id": 1,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i014-r00-s42",
+      "task_id": 1,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i015-r00-s42",
+      "task_id": 1,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i016-r00-s42",
+      "task_id": 1,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i017-r00-s42",
+      "task_id": 1,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i018-r00-s42",
+      "task_id": 1,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i019-r00-s42",
+      "task_id": 1,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i020-r00-s42",
+      "task_id": 1,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i021-r00-s42",
+      "task_id": 1,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i022-r00-s42",
+      "task_id": 1,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i023-r00-s42",
+      "task_id": 1,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i024-r00-s42",
+      "task_id": 1,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i025-r00-s42",
+      "task_id": 1,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i026-r00-s42",
+      "task_id": 1,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i027-r00-s42",
+      "task_id": 1,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i028-r00-s42",
+      "task_id": 1,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i029-r00-s42",
+      "task_id": 1,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i030-r00-s42",
+      "task_id": 1,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i031-r00-s42",
+      "task_id": 1,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i032-r00-s42",
+      "task_id": 1,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i033-r00-s42",
+      "task_id": 1,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i034-r00-s42",
+      "task_id": 1,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i035-r00-s42",
+      "task_id": 1,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i036-r00-s42",
+      "task_id": 1,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i037-r00-s42",
+      "task_id": 1,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i038-r00-s42",
+      "task_id": 1,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i039-r00-s42",
+      "task_id": 1,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i040-r00-s42",
+      "task_id": 1,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i041-r00-s42",
+      "task_id": 1,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i042-r00-s42",
+      "task_id": 1,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i043-r00-s42",
+      "task_id": 1,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i044-r00-s42",
+      "task_id": 1,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i045-r00-s42",
+      "task_id": 1,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i046-r00-s42",
+      "task_id": 1,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i047-r00-s42",
+      "task_id": 1,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i048-r00-s42",
+      "task_id": 1,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i049-r00-s42",
+      "task_id": 1,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i000-r00-s42",
+      "task_id": 2,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i001-r00-s42",
+      "task_id": 2,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i002-r00-s42",
+      "task_id": 2,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i003-r00-s42",
+      "task_id": 2,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i004-r00-s42",
+      "task_id": 2,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i005-r00-s42",
+      "task_id": 2,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i006-r00-s42",
+      "task_id": 2,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i007-r00-s42",
+      "task_id": 2,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i008-r00-s42",
+      "task_id": 2,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i009-r00-s42",
+      "task_id": 2,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i010-r00-s42",
+      "task_id": 2,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i011-r00-s42",
+      "task_id": 2,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i012-r00-s42",
+      "task_id": 2,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i013-r00-s42",
+      "task_id": 2,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i014-r00-s42",
+      "task_id": 2,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i015-r00-s42",
+      "task_id": 2,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i016-r00-s42",
+      "task_id": 2,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i017-r00-s42",
+      "task_id": 2,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i018-r00-s42",
+      "task_id": 2,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i019-r00-s42",
+      "task_id": 2,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i020-r00-s42",
+      "task_id": 2,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i021-r00-s42",
+      "task_id": 2,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i022-r00-s42",
+      "task_id": 2,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i023-r00-s42",
+      "task_id": 2,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i024-r00-s42",
+      "task_id": 2,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i025-r00-s42",
+      "task_id": 2,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i026-r00-s42",
+      "task_id": 2,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i027-r00-s42",
+      "task_id": 2,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i028-r00-s42",
+      "task_id": 2,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i029-r00-s42",
+      "task_id": 2,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i030-r00-s42",
+      "task_id": 2,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i031-r00-s42",
+      "task_id": 2,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i032-r00-s42",
+      "task_id": 2,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i033-r00-s42",
+      "task_id": 2,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i034-r00-s42",
+      "task_id": 2,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i035-r00-s42",
+      "task_id": 2,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i036-r00-s42",
+      "task_id": 2,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i037-r00-s42",
+      "task_id": 2,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i038-r00-s42",
+      "task_id": 2,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i039-r00-s42",
+      "task_id": 2,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i040-r00-s42",
+      "task_id": 2,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i041-r00-s42",
+      "task_id": 2,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i042-r00-s42",
+      "task_id": 2,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i043-r00-s42",
+      "task_id": 2,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i044-r00-s42",
+      "task_id": 2,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i045-r00-s42",
+      "task_id": 2,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i046-r00-s42",
+      "task_id": 2,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i047-r00-s42",
+      "task_id": 2,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i048-r00-s42",
+      "task_id": 2,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i049-r00-s42",
+      "task_id": 2,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i000-r00-s42",
+      "task_id": 3,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i001-r00-s42",
+      "task_id": 3,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i002-r00-s42",
+      "task_id": 3,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i003-r00-s42",
+      "task_id": 3,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i004-r00-s42",
+      "task_id": 3,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i005-r00-s42",
+      "task_id": 3,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i006-r00-s42",
+      "task_id": 3,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i007-r00-s42",
+      "task_id": 3,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i008-r00-s42",
+      "task_id": 3,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i009-r00-s42",
+      "task_id": 3,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i010-r00-s42",
+      "task_id": 3,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i011-r00-s42",
+      "task_id": 3,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i012-r00-s42",
+      "task_id": 3,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i013-r00-s42",
+      "task_id": 3,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i014-r00-s42",
+      "task_id": 3,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i015-r00-s42",
+      "task_id": 3,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i016-r00-s42",
+      "task_id": 3,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i017-r00-s42",
+      "task_id": 3,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i018-r00-s42",
+      "task_id": 3,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i019-r00-s42",
+      "task_id": 3,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i020-r00-s42",
+      "task_id": 3,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i021-r00-s42",
+      "task_id": 3,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i022-r00-s42",
+      "task_id": 3,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i023-r00-s42",
+      "task_id": 3,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i024-r00-s42",
+      "task_id": 3,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i025-r00-s42",
+      "task_id": 3,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i026-r00-s42",
+      "task_id": 3,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i027-r00-s42",
+      "task_id": 3,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i028-r00-s42",
+      "task_id": 3,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i029-r00-s42",
+      "task_id": 3,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i030-r00-s42",
+      "task_id": 3,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i031-r00-s42",
+      "task_id": 3,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i032-r00-s42",
+      "task_id": 3,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i033-r00-s42",
+      "task_id": 3,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i034-r00-s42",
+      "task_id": 3,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i035-r00-s42",
+      "task_id": 3,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i036-r00-s42",
+      "task_id": 3,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i037-r00-s42",
+      "task_id": 3,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i038-r00-s42",
+      "task_id": 3,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i039-r00-s42",
+      "task_id": 3,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i040-r00-s42",
+      "task_id": 3,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i041-r00-s42",
+      "task_id": 3,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i042-r00-s42",
+      "task_id": 3,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i043-r00-s42",
+      "task_id": 3,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i044-r00-s42",
+      "task_id": 3,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i045-r00-s42",
+      "task_id": 3,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i046-r00-s42",
+      "task_id": 3,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i047-r00-s42",
+      "task_id": 3,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i048-r00-s42",
+      "task_id": 3,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t003-i049-r00-s42",
+      "task_id": 3,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i000-r00-s42",
+      "task_id": 4,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i001-r00-s42",
+      "task_id": 4,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i002-r00-s42",
+      "task_id": 4,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i003-r00-s42",
+      "task_id": 4,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i004-r00-s42",
+      "task_id": 4,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i005-r00-s42",
+      "task_id": 4,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i006-r00-s42",
+      "task_id": 4,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i007-r00-s42",
+      "task_id": 4,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i008-r00-s42",
+      "task_id": 4,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i009-r00-s42",
+      "task_id": 4,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i010-r00-s42",
+      "task_id": 4,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i011-r00-s42",
+      "task_id": 4,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i012-r00-s42",
+      "task_id": 4,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i013-r00-s42",
+      "task_id": 4,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i014-r00-s42",
+      "task_id": 4,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i015-r00-s42",
+      "task_id": 4,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i016-r00-s42",
+      "task_id": 4,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i017-r00-s42",
+      "task_id": 4,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i018-r00-s42",
+      "task_id": 4,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i019-r00-s42",
+      "task_id": 4,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i020-r00-s42",
+      "task_id": 4,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i021-r00-s42",
+      "task_id": 4,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i022-r00-s42",
+      "task_id": 4,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i023-r00-s42",
+      "task_id": 4,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i024-r00-s42",
+      "task_id": 4,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i025-r00-s42",
+      "task_id": 4,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i026-r00-s42",
+      "task_id": 4,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i027-r00-s42",
+      "task_id": 4,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i028-r00-s42",
+      "task_id": 4,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i029-r00-s42",
+      "task_id": 4,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i030-r00-s42",
+      "task_id": 4,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i031-r00-s42",
+      "task_id": 4,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i032-r00-s42",
+      "task_id": 4,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i033-r00-s42",
+      "task_id": 4,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i034-r00-s42",
+      "task_id": 4,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i035-r00-s42",
+      "task_id": 4,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i036-r00-s42",
+      "task_id": 4,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i037-r00-s42",
+      "task_id": 4,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i038-r00-s42",
+      "task_id": 4,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i039-r00-s42",
+      "task_id": 4,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i040-r00-s42",
+      "task_id": 4,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i041-r00-s42",
+      "task_id": 4,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i042-r00-s42",
+      "task_id": 4,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i043-r00-s42",
+      "task_id": 4,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i044-r00-s42",
+      "task_id": 4,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i045-r00-s42",
+      "task_id": 4,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i046-r00-s42",
+      "task_id": 4,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i047-r00-s42",
+      "task_id": 4,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i048-r00-s42",
+      "task_id": 4,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t004-i049-r00-s42",
+      "task_id": 4,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i000-r00-s42",
+      "task_id": 5,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i001-r00-s42",
+      "task_id": 5,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i002-r00-s42",
+      "task_id": 5,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i003-r00-s42",
+      "task_id": 5,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i004-r00-s42",
+      "task_id": 5,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i005-r00-s42",
+      "task_id": 5,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i006-r00-s42",
+      "task_id": 5,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i007-r00-s42",
+      "task_id": 5,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i008-r00-s42",
+      "task_id": 5,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i009-r00-s42",
+      "task_id": 5,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i010-r00-s42",
+      "task_id": 5,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i011-r00-s42",
+      "task_id": 5,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i012-r00-s42",
+      "task_id": 5,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i013-r00-s42",
+      "task_id": 5,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i014-r00-s42",
+      "task_id": 5,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i015-r00-s42",
+      "task_id": 5,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i016-r00-s42",
+      "task_id": 5,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i017-r00-s42",
+      "task_id": 5,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i018-r00-s42",
+      "task_id": 5,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i019-r00-s42",
+      "task_id": 5,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i020-r00-s42",
+      "task_id": 5,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i021-r00-s42",
+      "task_id": 5,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i022-r00-s42",
+      "task_id": 5,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i023-r00-s42",
+      "task_id": 5,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i024-r00-s42",
+      "task_id": 5,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i025-r00-s42",
+      "task_id": 5,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i026-r00-s42",
+      "task_id": 5,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i027-r00-s42",
+      "task_id": 5,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i028-r00-s42",
+      "task_id": 5,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i029-r00-s42",
+      "task_id": 5,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i030-r00-s42",
+      "task_id": 5,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i031-r00-s42",
+      "task_id": 5,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i032-r00-s42",
+      "task_id": 5,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i033-r00-s42",
+      "task_id": 5,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i034-r00-s42",
+      "task_id": 5,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i035-r00-s42",
+      "task_id": 5,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i036-r00-s42",
+      "task_id": 5,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i037-r00-s42",
+      "task_id": 5,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i038-r00-s42",
+      "task_id": 5,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i039-r00-s42",
+      "task_id": 5,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i040-r00-s42",
+      "task_id": 5,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i041-r00-s42",
+      "task_id": 5,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i042-r00-s42",
+      "task_id": 5,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i043-r00-s42",
+      "task_id": 5,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i044-r00-s42",
+      "task_id": 5,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i045-r00-s42",
+      "task_id": 5,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i046-r00-s42",
+      "task_id": 5,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i047-r00-s42",
+      "task_id": 5,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i048-r00-s42",
+      "task_id": 5,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t005-i049-r00-s42",
+      "task_id": 5,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i000-r00-s42",
+      "task_id": 6,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i001-r00-s42",
+      "task_id": 6,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i002-r00-s42",
+      "task_id": 6,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i003-r00-s42",
+      "task_id": 6,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i004-r00-s42",
+      "task_id": 6,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i005-r00-s42",
+      "task_id": 6,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i006-r00-s42",
+      "task_id": 6,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i007-r00-s42",
+      "task_id": 6,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i008-r00-s42",
+      "task_id": 6,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i009-r00-s42",
+      "task_id": 6,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i010-r00-s42",
+      "task_id": 6,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i011-r00-s42",
+      "task_id": 6,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i012-r00-s42",
+      "task_id": 6,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i013-r00-s42",
+      "task_id": 6,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i014-r00-s42",
+      "task_id": 6,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i015-r00-s42",
+      "task_id": 6,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i016-r00-s42",
+      "task_id": 6,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i017-r00-s42",
+      "task_id": 6,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i018-r00-s42",
+      "task_id": 6,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i019-r00-s42",
+      "task_id": 6,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i020-r00-s42",
+      "task_id": 6,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i021-r00-s42",
+      "task_id": 6,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i022-r00-s42",
+      "task_id": 6,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i023-r00-s42",
+      "task_id": 6,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i024-r00-s42",
+      "task_id": 6,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i025-r00-s42",
+      "task_id": 6,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i026-r00-s42",
+      "task_id": 6,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i027-r00-s42",
+      "task_id": 6,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i028-r00-s42",
+      "task_id": 6,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i029-r00-s42",
+      "task_id": 6,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i030-r00-s42",
+      "task_id": 6,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i031-r00-s42",
+      "task_id": 6,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i032-r00-s42",
+      "task_id": 6,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i033-r00-s42",
+      "task_id": 6,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i034-r00-s42",
+      "task_id": 6,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i035-r00-s42",
+      "task_id": 6,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i036-r00-s42",
+      "task_id": 6,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i037-r00-s42",
+      "task_id": 6,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i038-r00-s42",
+      "task_id": 6,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i039-r00-s42",
+      "task_id": 6,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i040-r00-s42",
+      "task_id": 6,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i041-r00-s42",
+      "task_id": 6,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i042-r00-s42",
+      "task_id": 6,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i043-r00-s42",
+      "task_id": 6,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i044-r00-s42",
+      "task_id": 6,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i045-r00-s42",
+      "task_id": 6,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i046-r00-s42",
+      "task_id": 6,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i047-r00-s42",
+      "task_id": 6,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i048-r00-s42",
+      "task_id": 6,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t006-i049-r00-s42",
+      "task_id": 6,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the cookie box and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i000-r00-s42",
+      "task_id": 7,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i001-r00-s42",
+      "task_id": 7,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i002-r00-s42",
+      "task_id": 7,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i003-r00-s42",
+      "task_id": 7,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i004-r00-s42",
+      "task_id": 7,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i005-r00-s42",
+      "task_id": 7,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i006-r00-s42",
+      "task_id": 7,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i007-r00-s42",
+      "task_id": 7,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i008-r00-s42",
+      "task_id": 7,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i009-r00-s42",
+      "task_id": 7,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i010-r00-s42",
+      "task_id": 7,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i011-r00-s42",
+      "task_id": 7,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i012-r00-s42",
+      "task_id": 7,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i013-r00-s42",
+      "task_id": 7,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i014-r00-s42",
+      "task_id": 7,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i015-r00-s42",
+      "task_id": 7,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i016-r00-s42",
+      "task_id": 7,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i017-r00-s42",
+      "task_id": 7,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i018-r00-s42",
+      "task_id": 7,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i019-r00-s42",
+      "task_id": 7,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i020-r00-s42",
+      "task_id": 7,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i021-r00-s42",
+      "task_id": 7,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i022-r00-s42",
+      "task_id": 7,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i023-r00-s42",
+      "task_id": 7,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i024-r00-s42",
+      "task_id": 7,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i025-r00-s42",
+      "task_id": 7,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i026-r00-s42",
+      "task_id": 7,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i027-r00-s42",
+      "task_id": 7,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i028-r00-s42",
+      "task_id": 7,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i029-r00-s42",
+      "task_id": 7,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i030-r00-s42",
+      "task_id": 7,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i031-r00-s42",
+      "task_id": 7,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i032-r00-s42",
+      "task_id": 7,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i033-r00-s42",
+      "task_id": 7,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i034-r00-s42",
+      "task_id": 7,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i035-r00-s42",
+      "task_id": 7,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i036-r00-s42",
+      "task_id": 7,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i037-r00-s42",
+      "task_id": 7,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i038-r00-s42",
+      "task_id": 7,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i039-r00-s42",
+      "task_id": 7,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i040-r00-s42",
+      "task_id": 7,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i041-r00-s42",
+      "task_id": 7,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i042-r00-s42",
+      "task_id": 7,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i043-r00-s42",
+      "task_id": 7,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i044-r00-s42",
+      "task_id": 7,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i045-r00-s42",
+      "task_id": 7,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i046-r00-s42",
+      "task_id": 7,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i047-r00-s42",
+      "task_id": 7,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i048-r00-s42",
+      "task_id": 7,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t007-i049-r00-s42",
+      "task_id": 7,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the stove and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i000-r00-s42",
+      "task_id": 8,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i001-r00-s42",
+      "task_id": 8,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i002-r00-s42",
+      "task_id": 8,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i003-r00-s42",
+      "task_id": 8,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i004-r00-s42",
+      "task_id": 8,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i005-r00-s42",
+      "task_id": 8,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i006-r00-s42",
+      "task_id": 8,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i007-r00-s42",
+      "task_id": 8,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i008-r00-s42",
+      "task_id": 8,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i009-r00-s42",
+      "task_id": 8,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i010-r00-s42",
+      "task_id": 8,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i011-r00-s42",
+      "task_id": 8,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i012-r00-s42",
+      "task_id": 8,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i013-r00-s42",
+      "task_id": 8,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i014-r00-s42",
+      "task_id": 8,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i015-r00-s42",
+      "task_id": 8,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i016-r00-s42",
+      "task_id": 8,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i017-r00-s42",
+      "task_id": 8,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i018-r00-s42",
+      "task_id": 8,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i019-r00-s42",
+      "task_id": 8,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i020-r00-s42",
+      "task_id": 8,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i021-r00-s42",
+      "task_id": 8,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i022-r00-s42",
+      "task_id": 8,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i023-r00-s42",
+      "task_id": 8,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i024-r00-s42",
+      "task_id": 8,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i025-r00-s42",
+      "task_id": 8,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i026-r00-s42",
+      "task_id": 8,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i027-r00-s42",
+      "task_id": 8,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i028-r00-s42",
+      "task_id": 8,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i029-r00-s42",
+      "task_id": 8,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i030-r00-s42",
+      "task_id": 8,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i031-r00-s42",
+      "task_id": 8,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i032-r00-s42",
+      "task_id": 8,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i033-r00-s42",
+      "task_id": 8,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i034-r00-s42",
+      "task_id": 8,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i035-r00-s42",
+      "task_id": 8,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i036-r00-s42",
+      "task_id": 8,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i037-r00-s42",
+      "task_id": 8,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i038-r00-s42",
+      "task_id": 8,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i039-r00-s42",
+      "task_id": 8,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i040-r00-s42",
+      "task_id": 8,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i041-r00-s42",
+      "task_id": 8,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i042-r00-s42",
+      "task_id": 8,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i043-r00-s42",
+      "task_id": 8,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i044-r00-s42",
+      "task_id": 8,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i045-r00-s42",
+      "task_id": 8,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i046-r00-s42",
+      "task_id": 8,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i047-r00-s42",
+      "task_id": 8,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i048-r00-s42",
+      "task_id": 8,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t008-i049-r00-s42",
+      "task_id": 8,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl next to the plate and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i000-r00-s42",
+      "task_id": 9,
+      "init_index": 0,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i001-r00-s42",
+      "task_id": 9,
+      "init_index": 1,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i002-r00-s42",
+      "task_id": 9,
+      "init_index": 2,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i003-r00-s42",
+      "task_id": 9,
+      "init_index": 3,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i004-r00-s42",
+      "task_id": 9,
+      "init_index": 4,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i005-r00-s42",
+      "task_id": 9,
+      "init_index": 5,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i006-r00-s42",
+      "task_id": 9,
+      "init_index": 6,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i007-r00-s42",
+      "task_id": 9,
+      "init_index": 7,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i008-r00-s42",
+      "task_id": 9,
+      "init_index": 8,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i009-r00-s42",
+      "task_id": 9,
+      "init_index": 9,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i010-r00-s42",
+      "task_id": 9,
+      "init_index": 10,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i011-r00-s42",
+      "task_id": 9,
+      "init_index": 11,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i012-r00-s42",
+      "task_id": 9,
+      "init_index": 12,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i013-r00-s42",
+      "task_id": 9,
+      "init_index": 13,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i014-r00-s42",
+      "task_id": 9,
+      "init_index": 14,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i015-r00-s42",
+      "task_id": 9,
+      "init_index": 15,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i016-r00-s42",
+      "task_id": 9,
+      "init_index": 16,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i017-r00-s42",
+      "task_id": 9,
+      "init_index": 17,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i018-r00-s42",
+      "task_id": 9,
+      "init_index": 18,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i019-r00-s42",
+      "task_id": 9,
+      "init_index": 19,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i020-r00-s42",
+      "task_id": 9,
+      "init_index": 20,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i021-r00-s42",
+      "task_id": 9,
+      "init_index": 21,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i022-r00-s42",
+      "task_id": 9,
+      "init_index": 22,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i023-r00-s42",
+      "task_id": 9,
+      "init_index": 23,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i024-r00-s42",
+      "task_id": 9,
+      "init_index": 24,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i025-r00-s42",
+      "task_id": 9,
+      "init_index": 25,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i026-r00-s42",
+      "task_id": 9,
+      "init_index": 26,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i027-r00-s42",
+      "task_id": 9,
+      "init_index": 27,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i028-r00-s42",
+      "task_id": 9,
+      "init_index": 28,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i029-r00-s42",
+      "task_id": 9,
+      "init_index": 29,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i030-r00-s42",
+      "task_id": 9,
+      "init_index": 30,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i031-r00-s42",
+      "task_id": 9,
+      "init_index": 31,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i032-r00-s42",
+      "task_id": 9,
+      "init_index": 32,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i033-r00-s42",
+      "task_id": 9,
+      "init_index": 33,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i034-r00-s42",
+      "task_id": 9,
+      "init_index": 34,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i035-r00-s42",
+      "task_id": 9,
+      "init_index": 35,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i036-r00-s42",
+      "task_id": 9,
+      "init_index": 36,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i037-r00-s42",
+      "task_id": 9,
+      "init_index": 37,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i038-r00-s42",
+      "task_id": 9,
+      "init_index": 38,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i039-r00-s42",
+      "task_id": 9,
+      "init_index": 39,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i040-r00-s42",
+      "task_id": 9,
+      "init_index": 40,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i041-r00-s42",
+      "task_id": 9,
+      "init_index": 41,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i042-r00-s42",
+      "task_id": 9,
+      "init_index": 42,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i043-r00-s42",
+      "task_id": 9,
+      "init_index": 43,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i044-r00-s42",
+      "task_id": 9,
+      "init_index": 44,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i045-r00-s42",
+      "task_id": 9,
+      "init_index": 45,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i046-r00-s42",
+      "task_id": 9,
+      "init_index": 46,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i047-r00-s42",
+      "task_id": 9,
+      "init_index": 47,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i048-r00-s42",
+      "task_id": 9,
+      "init_index": 48,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    },
+    {
+      "episode_id": "t009-i049-r00-s42",
+      "task_id": 9,
+      "init_index": 49,
+      "repeat": 0,
+      "seed": 42,
+      "task_name": "pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate",
+      "instruction": "pick up the black bowl on the wooden cabinet and place it on the plate"
+    }
+  ],
+  "benchmark": {
+    "backend": "libero",
+    "suite": "libero_spatial"
+  },
+  "protocol": {
+    "id": "dreamwam-release-v1",
+    "max_steps": 400,
+    "wait_steps": 30,
+    "replan_steps": 10,
+    "resolution": [
+      256,
+      256
+    ],
+    "seed": 42,
+    "observation_profile": "dreamwam-libero-2cam-v1",
+    "action_profile": "libero-osc-pose-v1",
+    "success_mode": "first_success_after_wait",
+    "repeats": 1
+  },
+  "planned_episodes": 500
+}
