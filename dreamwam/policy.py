@@ -10,6 +10,7 @@ from .normalization import LiberoNormalizer
 from .preprocessing.libero import PROMPT_TEMPLATE
 from .runtime import build_model, load_model_checkpoint
 from .sparse import SparseConfig
+from .sparse.visual_step_cache import VisualStepCache, visual_cache_options
 
 
 def _center_crop_resize(image: np.ndarray, size: int) -> np.ndarray:
@@ -41,6 +42,7 @@ class DreamWAMPolicy:
         *,
         device: str | torch.device = "cuda",
         sparse: dict | None = None,
+        visual_cache: dict | None = None,
     ):
         self.config = config
         self.evaluation = config.evaluation
@@ -51,6 +53,10 @@ class DreamWAMPolicy:
         # Validated here rather than at first use, so a typo in an experiment YAML fails
         # the run at startup instead of silently producing a dense result.
         self.sparse_config = SparseConfig.from_mapping(sparse)
+        self.visual_cache_config = visual_cache_options(visual_cache)
+        self._visual_cache_runtime = None
+        if self.visual_cache_config is not None and self.sparse_config.enabled:
+            raise ValueError("visual-cache and sparse-attention factors must be measured separately")
         self.model = build_model(
             config,
             device=self.device,
@@ -87,6 +93,15 @@ class DreamWAMPolicy:
         missing = sorted(required - self.evaluation.keys())
         if missing:
             raise KeyError(f"Evaluation config is missing: {missing}")
+        if self.visual_cache_config is not None:
+            self._visual_cache_runtime = VisualStepCache(self.model, **self.visual_cache_config)
+            self._visual_cache_runtime.__enter__()
+
+    def close(self) -> None:
+        """Remove inference wrappers before the adapter releases model modules."""
+        if self._visual_cache_runtime is not None:
+            self._visual_cache_runtime.__exit__(None, None, None)
+            self._visual_cache_runtime = None
 
     @torch.no_grad()
     def _encode_first_frame(self, images: dict[str, np.ndarray]) -> torch.Tensor:
@@ -171,8 +186,9 @@ def build_policy(
     *,
     device: str | torch.device = "cuda",
     sparse: dict | None = None,
+    visual_cache: dict | None = None,
 ) -> DreamWAMPolicy:
     checkpoint = Path(config.paths.checkpoint)
     if not checkpoint.is_file():
         raise FileNotFoundError(f"Missing DreamWAM checkpoint: {checkpoint}")
-    return DreamWAMPolicy(config, device=device, sparse=sparse)
+    return DreamWAMPolicy(config, device=device, sparse=sparse, visual_cache=visual_cache)

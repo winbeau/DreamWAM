@@ -202,7 +202,8 @@ class DreamWAMPolicy:
         # mapping keeps the adapter free of modelling decisions, and an unknown key fails
         # at startup instead of silently running dense.
         self._sparse_options = options.get("sparse")
-        self.policy = build_policy(release, device=device, sparse=self._sparse_options)
+        self.policy = build_policy(release, device=device, sparse=self._sparse_options,
+                                   visual_cache=options.get("visual_cache"))
         self._sparse_hash = config_hash(self.policy.sparse_config)
 
         # ``build_policy`` gives the policy its own reference to the release YAML's
@@ -258,6 +259,7 @@ class DreamWAMPolicy:
             "rng_mode": self._rng_mode,
             "sparse": self.policy.sparse_config.describe(),
             "sparse_config_hash": self._sparse_hash,
+            "visual_cache": self.policy.visual_cache_config,
         }
         notes = (
             "DreamWAM released checkpoint through its own build_policy; the benchmark "
@@ -364,6 +366,7 @@ class DreamWAMPolicy:
     def close(self) -> None:
         policy = getattr(self, "policy", None)
         if policy is not None:
+            policy.close()
             # Drop the model and free the cache so a long run does not accumulate
             # fragmentation across episodes.
             for attribute in ("model", "vae", "text_encoder"):

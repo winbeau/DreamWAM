@@ -11,8 +11,21 @@ by action relevance, and it must not be reported as changing denoising steps.
 from __future__ import annotations
 
 from functools import wraps
+from collections.abc import Mapping
 
 from .ffn_context_cache import VisualFFNContextCache
+
+
+def visual_cache_options(payload):
+    """Strict adapter/policy configuration; omission retains native Dense."""
+    if payload is None:
+        return None
+    if not isinstance(payload, Mapping) or set(payload) != {"refresh_every"}:
+        raise ValueError("visual_cache must contain exactly refresh_every")
+    interval = payload["refresh_every"]
+    if isinstance(interval, bool) or not isinstance(interval, int) or interval < 1:
+        raise ValueError("visual_cache.refresh_every must be a positive integer")
+    return {"refresh_every": interval}
 
 
 class VisualStepCache(VisualFFNContextCache):
