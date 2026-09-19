@@ -367,7 +367,16 @@ def test_backends_agree_with_the_reference(backend, selection):
         }
     )
     query_video, key_video, value_video, query_action, key_action, value_action = tensors()
-    av_mass = torch.rand(1, NUM_HEADS, layout.video_length)
+    # Use the same anchor mass the implementation derives, so the independently built
+    # reference route and the executed route are the same object of comparison.
+    _, av_mass = action_attention_with_mass(
+        query_action=query_action,
+        key_video=key_video,
+        value_video=value_video,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+    )
     route = build_route(
         layout=layout,
         config=config,
@@ -399,6 +408,44 @@ def test_backends_agree_with_the_reference(backend, selection):
         f"{backend}/{selection} diverged from the routed reference"
     )
     assert stats["density"] <= 1.0
+
+
+def test_masked_and_gather_backends_agree_on_the_same_config():
+    """The two execution backends must be interchangeable for identical routing."""
+    layout = make_layout()
+    outputs = {}
+    for backend in ("masked", "gather"):
+        config = SparseConfig.from_mapping(
+            {
+                "enabled": True,
+                "selection": "av",
+                "backend": backend,
+                "block_size": BLOCK_SIZE,
+                "future_ratio": 0.5,
+            }
+        )
+        query_video, key_video, value_video, query_action, key_action, value_action = (
+            tensors()
+        )
+        video_out, action_out, stats = sparse_joint_attention(
+            query_video=query_video,
+            key_video=key_video,
+            value_video=value_video,
+            query_action=query_action,
+            key_action=key_action,
+            value_action=value_action,
+            num_heads=NUM_HEADS,
+            layout=layout,
+            config=config,
+            step_index=0,
+            num_steps=10,
+        )
+        outputs[backend] = (video_out, action_out, stats)
+    assert torch.allclose(outputs["masked"][0], outputs["gather"][0], atol=1e-5)
+    assert torch.allclose(outputs["masked"][1], outputs["gather"][1], atol=1e-6)
+    assert outputs["masked"][2]["density"] == pytest.approx(
+        outputs["gather"][2]["density"]
+    )
 
 
 def test_gather_backend_skips_future_keys_when_budget_is_zero():
