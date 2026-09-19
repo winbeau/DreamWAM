@@ -195,6 +195,11 @@ def main() -> None:
     parser.add_argument("--warmup", type=int, default=2)
     parser.add_argument("--iters", type=int, default=5)
     parser.add_argument("--out", default=None)
+    parser.add_argument(
+        "--compile",
+        action="store_true",
+        help="also time a torch.compile reduce-overhead build of the same block",
+    )
     args = parser.parse_args()
 
     device = torch.device(args.device)
@@ -287,6 +292,32 @@ def main() -> None:
         device=device,
     )
     record("block_full_294_again", dense_again, "repeat of the dense reference")
+
+    if args.compile:
+        # If the block is launch-bound rather than FLOP-bound, then the lever is fewer,
+        # larger kernels - not fewer tokens. reduce-overhead adds CUDA graphs on top of
+        # fusion, which is exactly that lever. Nothing about the model changes.
+        try:
+            compiled = torch.compile(runner.block_full, mode="reduce-overhead")
+            timing = time_call(
+                lambda: compiled(dense_tokens),
+                warmup=2,
+                iters=args.iters,
+                device=device,
+            )
+            record(
+                "block_full_294_compiled",
+                timing,
+                "torch.compile reduce-overhead: same math, far fewer launches",
+            )
+            compiled_small = torch.compile(runner.block_full, mode="reduce-overhead")
+            small = torch.full((1, 49, HIDDEN), 0.02, device=device, dtype=dtype)
+            timing_small = time_call(
+                lambda: compiled_small(small), warmup=2, iters=args.iters, device=device
+            )
+            record("block_full_49_compiled", timing_small, "compiled, 49 tokens")
+        except Exception as error:  # noqa: BLE001 - report, never hide
+            report["compile_error"] = f"{type(error).__name__}: {error}"
 
     for entry in report["variants"]:
         saving = dense_request - entry["ms_per_request"]
