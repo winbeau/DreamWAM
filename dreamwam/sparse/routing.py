@@ -201,11 +201,13 @@ def build_route(
     ) if bool(fallback.any()) else order
 
     maximum = int(keep.max().item()) if keep.numel() else 0
+    # `rank` counts blocks, `keep` counts per head: compare on different axes.
     rank = torch.arange(maximum, device=device).view(1, 1, -1)
+    budget = keep.view(1, -1, 1)
     if maximum > 0:
         chosen = selected[:, :, :maximum]
         chosen = torch.where(
-            rank < keep.view(1, 1, -1), chosen, torch.full_like(chosen, -1)
+            rank < budget, chosen, torch.full_like(chosen, -1)
         )
     else:
         chosen = torch.full((batch, num_heads, 0), -1, device=device, dtype=torch.long)

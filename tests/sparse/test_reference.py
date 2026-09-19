@@ -129,9 +129,12 @@ def test_action_attention_matches_joint_softmax():
         + probs[..., key_video.shape[1] :] @ va.float()
     ).to(output.dtype)
     assert torch.allclose(output, reference.transpose(1, 2).reshape_as(output), atol=1e-5)
-    # Mass over the video keys only; the action keys carry the rest.
+    # Mass over the video keys only; the action keys carry the rest.  The mass is
+    # aggregated over action queries, so the per-head total is bounded by the number of
+    # action queries rather than by 1.
     assert torch.allclose(mass, probs[..., : key_video.shape[1]].sum(-2), atol=1e-5)
-    assert float(mass.sum(-1).max()) <= 1.0 + 1e-5
+    assert float(mass.amax(dim=-1).max()) <= 1.0 + 1e-5
+    assert float(mass.sum(-1).max()) <= ACTION_TOKENS + 1e-4
 
 
 def test_action_mass_uses_action_keys_in_the_denominator():

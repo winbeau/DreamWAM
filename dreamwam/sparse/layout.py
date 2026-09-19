@@ -124,7 +124,8 @@ def block_hit_mask(layout: TokenLayout, block_ids: torch.Tensor) -> torch.Tensor
     saver = block_ids.clamp(min=0).reshape(batch, heads, -1)
     valid = (block_ids >= 0).reshape(batch, heads, -1)
     tokens = layout.future_block_keys[saver]  # [B, H, m*block_size]
-    tokens = torch.where(valid.repeat_interleave(layout.block_size, dim=-1), tokens, -1)
+    keep = valid.unsqueeze(-1).expand_as(tokens)
+    tokens = torch.where(keep, tokens, torch.full_like(tokens, -1))
     membership = torch.zeros(
         batch,
         heads,
