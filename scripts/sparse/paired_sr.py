@@ -10,8 +10,9 @@ Rules this tool enforces, from the evaluation protocol:
 
 * an episode only counts as an outcome when it reached a terminal state; ``error`` rows are
   reported separately and excluded from the rate, never folded into a failure;
-* pairing is by ``(task_id, init_index, repeat)`` and only pairs present in both runs with a
-  terminal outcome are used;
+* pairing includes the episode seed; equal benchmark/protocol manifests are required;
+* rates and inference statistics are null unless BOTH complete planned manifests have
+  terminal outcomes. Errors and missing rows never shrink the SR denominator;
 * the interval is a task-stratified paired bootstrap over episodes, so the estimate is
   explicitly benchmark-conditional rather than a claim about new tasks;
 * exact McNemar on the discordant pairs is reported alongside, since with one or two
@@ -39,16 +40,39 @@ def load_episodes(run_dir: Path) -> dict[tuple, dict]:
     episodes: dict[tuple, dict] = {}
     with path.open(newline="") as handle:
         for row in csv.DictReader(handle):
-            key = (int(row["task_id"]), int(row["init_index"]), int(row["repeat"]))
+            key = (int(row["task_id"]), int(row["init_index"]), int(row["repeat"]), int(row["seed"]))
+            if key in episodes:
+                raise ValueError(f"duplicate episode row in {path}: {key}")
+            success = row["success"].strip().lower() == "true"
+            if row["status"] in TERMINAL and success != (row["status"] == "succeeded"):
+                raise ValueError(f"status/success disagree in {path}: {key}")
             episodes[key] = {
                 "status": row["status"],
-                "success": row["success"].strip().lower() == "true",
+                "success": success,
                 "wall_seconds": float(row["wall_seconds"] or 0.0),
                 "policy_calls": int(row["policy_calls"] or 0),
                 "task_name": row["task_name"],
                 "error_type": row.get("error_type") or "",
             }
     return episodes
+
+
+def load_manifest(run_dir: Path) -> tuple[dict, set[tuple]]:
+    """CSV intersection alone cannot establish coverage of the planned benchmark."""
+    path = run_dir / "manifest.json"
+    manifest = json.loads(path.read_text())
+    if manifest.get("schema_version") != "action-eval/manifest/v1":
+        raise ValueError(f"unsupported or missing manifest schema: {path}")
+    entries = manifest.get("episodes", [])
+    keys = {(int(row["task_id"]), int(row["init_index"]), int(row["repeat"]), int(row["seed"]))
+            for row in entries}
+    if not keys or len(keys) != len(entries):
+        raise ValueError(f"empty or duplicate planned episode identities: {path}")
+    if manifest.get("planned_episodes") != len(keys):
+        raise ValueError(f"planned_episodes disagrees with manifest entries: {path}")
+    if not manifest.get("protocol") or not manifest.get("benchmark", {}).get("suite"):
+        raise ValueError(f"manifest lacks benchmark/protocol identity: {path}")
+    return manifest, keys
 
 
 def wilson(successes: int, total: int, z: float = 1.96) -> tuple[float, float]:
@@ -73,7 +97,9 @@ def mcnemar_exact(b: int, c: int) -> tuple[float, float]:
     k = min(b, c)
     tail = sum(comb(n, i) for i in range(0, k + 1)) / (2**n)
     two_sided = min(1.0, 2 * tail)
-    one_sided = sum(comb(n, i) for i in range(0, b + 1)) / (2**n)
+    # b counts Dense wins / Sparse losses: evidence that Sparse is worse is the
+    # UPPER tail for b, not its lower tail (which would approach one as b grows).
+    one_sided = sum(comb(n, i) for i in range(b, n + 1)) / (2**n)
     return (two_sided, one_sided)
 
 
@@ -134,6 +160,14 @@ def main() -> None:
 
     dense = load_episodes(args.dense)
     sparse = load_episodes(args.sparse)
+    dense_manifest, dense_expected = load_manifest(args.dense)
+    sparse_manifest, sparse_expected = load_manifest(args.sparse)
+    if dense_manifest["benchmark"] != sparse_manifest["benchmark"]:
+        raise ValueError("cannot pair different benchmark identities")
+    if dense_manifest["protocol"] != sparse_manifest["protocol"]:
+        raise ValueError("cannot pair different protocol identities")
+    if set(dense) - dense_expected or set(sparse) - sparse_expected:
+        raise ValueError("CSV contains episodes outside its planned manifest")
     shared = sorted(set(dense) & set(sparse))
 
     paired = [key for key in shared if dense[key]["status"] in TERMINAL and sparse[key]["status"] in TERMINAL]
@@ -159,10 +193,14 @@ def main() -> None:
         sparse_wall.append(sparse[key]["wall_seconds"])
 
     n = len(paired)
+    complete = (dense_expected == sparse_expected and set(dense) == dense_expected
+                and set(sparse) == sparse_expected and n == len(dense_expected))
     dense_success = sum(1 for key in paired if dense[key]["success"])
     sparse_success = sum(1 for key in paired if sparse[key]["success"])
-    two_sided, one_sided = mcnemar_exact(b, c)
-    bootstrap = stratified_bootstrap(per_task, resamples=args.resamples, seed=args.seed)
+    two_sided, one_sided = mcnemar_exact(b, c) if complete else (None, None)
+    bootstrap = (stratified_bootstrap(per_task, resamples=args.resamples, seed=args.seed)
+                 if complete else dict(delta_ci95=None, dense_sr_ci95=None,
+                                       sparse_sr_ci95=None, resamples=0))
 
     report = {
         "tool": "scripts/sparse/paired_sr.py",
@@ -170,6 +208,12 @@ def main() -> None:
         "dense_run": str(args.dense),
         "sparse_run": str(args.sparse),
         "coverage": {
+            "complete": complete,
+            "expected_dense_episodes": len(dense_expected),
+            "expected_sparse_episodes": len(sparse_expected),
+            "planned_identity_difference": len(dense_expected ^ sparse_expected),
+            "missing_dense_rows": len(dense_expected - set(dense)),
+            "missing_sparse_rows": len(sparse_expected - set(sparse)),
             "dense_episodes": len(dense),
             "sparse_episodes": len(sparse),
             "shared_episodes": len(shared),
@@ -185,11 +229,12 @@ def main() -> None:
             },
         },
         "success_rate": {
-            "dense": dense_success / n if n else None,
-            "sparse": sparse_success / n if n else None,
-            "delta_absolute": (sparse_success - dense_success) / n if n else None,
-            "dense_wilson95": wilson(dense_success, n),
-            "sparse_wilson95": wilson(sparse_success, n),
+            "dense": dense_success / n if complete else None,
+            "sparse": sparse_success / n if complete else None,
+            "delta_absolute": (sparse_success - dense_success) / n if complete else None,
+            "dense_wilson95": wilson(dense_success, n) if complete else None,
+            "sparse_wilson95": wilson(sparse_success, n) if complete else None,
+            "withheld_reason": None if complete else "incomplete or different planned episode coverage",
         },
         "paired": {
             "dense_win_sparse_loss": b,
@@ -219,7 +264,7 @@ def main() -> None:
         },
     }
 
-    text = json.dumps(report, indent=2, sort_keys=True)
+    text = json.dumps(report, indent=2, sort_keys=True, allow_nan=False)
     print(text)
     if args.json:
         args.json.write_text(text + "\n")
