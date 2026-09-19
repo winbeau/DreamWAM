@@ -35,6 +35,8 @@ from pathlib import Path
 import numpy as np
 import torch
 
+from dreamwam.sparse import SparseConfig
+
 
 class EventTimer:
     """Record CUDA-event elapsed time for wrapped calls, bucketed by kind."""
@@ -158,6 +160,11 @@ def main() -> None:
     parser.add_argument("--profile-kernels", action="store_true")
     parser.add_argument("--out", default=None)
     parser.add_argument(
+        "--sparse-json",
+        default=None,
+        help="JSON sparse configuration applied to the loaded model",
+    )
+    parser.add_argument(
         "--denoising-steps",
         type=int,
         default=None,
@@ -169,12 +176,17 @@ def main() -> None:
     from dreamwam.policy import build_policy
 
     config = load_release_config(args.config)
+    # Build dense, then attach the sparse configuration.  The sparse path adds no checkpoint
+    # parameters, so the same loaded model serves every variant and the comparison isolates
+    # the attention policy rather than the weights.
     policy = build_policy(config, device=args.device)
     evaluation = policy.evaluation
     if args.denoising_steps is not None:
         # Same weights, same inputs, same sampler - only the number of steps changes, so
         # the difference is the cost of one step repeated, not a different model.
         evaluation["denoising_steps"] = int(args.denoising_steps)
+    if args.sparse_json:
+        policy.sparse_config = SparseConfig.from_mapping(json.loads(args.sparse_json))
 
     timer = EventTimer()
     phases = PhaseTimer()
@@ -237,6 +249,7 @@ def main() -> None:
         "dtype": str(policy.dtype),
         "config": str(args.config),
         "setting": config.setting,
+        "sparse": policy.sparse_config.describe(),
         "checkpoint": str(config.paths.checkpoint),
         "geometry": {
             "image_size": image_size,
