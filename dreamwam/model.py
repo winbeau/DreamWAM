@@ -9,6 +9,7 @@ from .experts import ActionDiT, VideoDiT
 from .layers import PatchHead
 from .mot import JointMoT
 from .scheduler import ContinuousFlowMatchScheduler
+from .sparse import SparseConfig
 
 
 @dataclass(frozen=True)
@@ -513,6 +514,9 @@ class DreamWAMJoint(nn.Module):
         context_mask: torch.Tensor,
         apply_world_residual: bool = True,
         predict_world_targets: bool = True,
+        sparse: "SparseConfig | None" = None,
+        step_index: int = 0,
+        num_steps: int = 1,
     ) -> dict:
         if predict_world_targets and not apply_world_residual:
             raise ValueError(
@@ -536,6 +540,9 @@ class DreamWAMJoint(nn.Module):
             video_state=video_state,
             action_state=action_state,
             residual_injection=self.world_residual if apply_world_residual else None,
+            sparse=sparse,
+            step_index=step_index,
+            num_steps=num_steps,
         )
         pred_video, pred_flow = self.video_expert.post_dit(
             tokens["video"],
@@ -900,6 +907,7 @@ class DreamWAMJoint(nn.Module):
         num_steps: int = 10,
         seed: int | None = None,
         rand_device: str | torch.device = "cpu",
+        sparse: SparseConfig | None = None,
     ) -> torch.Tensor:
         if first_frame_latents.ndim != 5 or first_frame_latents.shape[2] != 1:
             raise ValueError(
@@ -916,6 +924,14 @@ class DreamWAMJoint(nn.Module):
             raise ValueError("Joint inference requires more than one video latent frame.")
         if num_steps <= 0:
             raise ValueError("num_steps must be positive.")
+        if sparse is not None and sparse.enabled:
+            if self.config.setting != "joint":
+                raise ValueError(
+                    "Sparse-WAM is implemented for the joint setting only; the "
+                    f"'{self.config.setting}' path has no routed VV computation to restrict."
+                )
+            sparse.validate()
+            self.mot.reset_sparse_diagnostics()
 
         batch, _, _, height, width = first_frame_latents.shape
         device = first_frame_latents.device
@@ -1021,11 +1037,8 @@ class DreamWAMJoint(nn.Module):
             device,
             dtype,
         )
-        for video_step, video_delta, action_step, action_delta in zip(
-            video_steps,
-            video_deltas,
-            action_steps,
-            action_deltas,
+        for step_index, (video_step, video_delta, action_step, action_delta) in enumerate(
+            zip(video_steps, video_deltas, action_steps, action_deltas)
         ):
             prediction = self._forward_conditioned(
                 video_latents=video,
@@ -1037,6 +1050,9 @@ class DreamWAMJoint(nn.Module):
                 context_mask=context_mask,
                 apply_world_residual=True,
                 predict_world_targets=False,
+                sparse=sparse,
+                step_index=step_index,
+                num_steps=num_steps,
             )
             video = self.video_scheduler.step(
                 prediction["video"],

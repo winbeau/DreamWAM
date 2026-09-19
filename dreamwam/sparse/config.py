@@ -1,0 +1,183 @@
+"""Strict configuration schema for Sparse-WAM inference.
+
+Unknown keys are rejected rather than ignored: a typo in an experiment YAML must not
+silently produce a dense run that is then reported as a sparse one.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, replace
+from typing import Any, Mapping, Sequence
+
+#: How the future-key part of the route is chosen (M2).
+#: ``all``       keep every future block (full-budget control)
+#: ``av``        top blocks by action-query attention mass (A->V anchors only)
+#: ``av_context`` anchors re-ranked with a cheap VV affinity term
+#: ``recency``   most recent blocks only, no action information (visual-only baseline)
+#: ``uniform``   evenly spaced blocks, no action information (visual-only baseline)
+SELECTIONS = ("all", "av", "av_context", "recency", "uniform")
+
+#: ``masked`` keeps the shipped full-length attention call and only restricts the mask,
+#: which is numerically exact but buys no speed; ``gather`` selects keys into a shorter
+#: tensor.  The measured cost of both is recorded in docs/implementation/.
+BACKENDS = ("masked", "gather")
+
+FALLBACKS = ("recency", "uniform", "all")
+
+
+@dataclass(frozen=True)
+class SparseConfig:
+    """Validated, frozen sparse-attention configuration for one evaluation."""
+
+    enabled: bool = False
+    selection: str = "av_context"
+    backend: str = "masked"
+    block_size: int = 14
+    future_ratio: float = 1.0
+    context_weight: float = 1.0
+    min_anchor_mass: float = 0.0
+    fallback: str = "recency"
+    num_stages: int = 1
+    #: Per-head kept future blocks; length must equal the model's head count.  ``None``
+    #: derives the count from ``future_ratio``.  Produced by M1 calibration.
+    head_blocks: tuple[int, ...] | None = None
+    #: ``[num_stages][num_heads]`` kept future blocks, overriding ``head_blocks``.
+    stage_blocks: tuple[tuple[int, ...], ...] | None = None
+
+    @classmethod
+    def from_mapping(cls, payload: Mapping[str, Any] | None) -> "SparseConfig":
+        if payload is None:
+            return cls()
+        if not isinstance(payload, Mapping):
+            raise TypeError(
+                f"sparse options must be a mapping, got {type(payload).__name__}"
+            )
+        fields = {field for field in cls.__dataclass_fields__}
+        unknown = sorted(set(payload) - fields)
+        if unknown:
+            raise ValueError(
+                f"unknown sparse option(s): {unknown}; known options are {sorted(fields)}"
+            )
+        normalized: dict[str, Any] = {}
+        for key, value in payload.items():
+            if key in {"head_blocks", "stage_blocks"}:
+                normalized[key] = _nested_int_tuple(value, key)
+            else:
+                normalized[key] = value
+        config = replace(cls(), **normalized)
+        config.validate()
+        return config
+
+    def validate(self) -> None:
+        if self.selection not in SELECTIONS:
+            raise ValueError(
+                f"selection must be one of {SELECTIONS}, got {self.selection!r}"
+            )
+        if self.backend not in BACKENDS:
+            raise ValueError(f"backend must be one of {BACKENDS}, got {self.backend!r}")
+        if self.fallback not in FALLBACKS:
+            raise ValueError(
+                f"fallback must be one of {FALLBACKS}, got {self.fallback!r}"
+            )
+        if self.block_size < 1:
+            raise ValueError(f"block_size must be positive, got {self.block_size}")
+        if not 0.0 <= self.future_ratio <= 1.0:
+            raise ValueError(
+                f"future_ratio must be in [0, 1], got {self.future_ratio}"
+            )
+        if self.context_weight < 0.0:
+            raise ValueError(
+                f"context_weight must be non-negative, got {self.context_weight}"
+            )
+        if not 0.0 <= self.min_anchor_mass <= 1.0:
+            raise ValueError(
+                f"min_anchor_mass must be in [0, 1], got {self.min_anchor_mass}"
+            )
+        if self.num_stages < 1:
+            raise ValueError(f"num_stages must be positive, got {self.num_stages}")
+        if self.head_blocks is not None and any(
+            value < 0 for value in self.head_blocks
+        ):
+            raise ValueError("head_blocks entries must be non-negative")
+        if self.stage_blocks is not None:
+            if len(self.stage_blocks) != self.num_stages:
+                raise ValueError(
+                    "stage_blocks must have num_stages rows, got "
+                    f"{len(self.stage_blocks)} for num_stages={self.num_stages}"
+                )
+            widths = {len(row) for row in self.stage_blocks}
+            if len(widths) > 1 or (widths and 0 in widths):
+                raise ValueError("every stage_blocks row must be non-empty and equal")
+            for row in self.stage_blocks:
+                if any(value < 0 for value in row):
+                    raise ValueError("stage_blocks entries must be non-negative")
+        if self.head_blocks is not None and self.stage_blocks is not None:
+            if len(self.head_blocks) != len(self.stage_blocks[0]):
+                raise ValueError(
+                    "head_blocks and stage_blocks must agree on the head count"
+                )
+
+    def stage_of(self, step_index: int, num_steps: int) -> int:
+        """Map a denoising step to its stage bucket."""
+        if num_steps <= 0:
+            raise ValueError(f"num_steps must be positive, got {num_steps}")
+        if step_index < 0 or step_index >= num_steps:
+            raise ValueError(
+                f"step_index {step_index} outside [0, {num_steps}) for {num_steps} steps"
+            )
+        if self.num_stages == 1:
+            return 0
+        return min(self.num_stages - 1, step_index * self.num_stages // num_steps)
+
+    def blocks_for(self, *, num_heads: int, stage: int, num_future_blocks: int) -> tuple[int, ...]:
+        """Kept future-block count per head, clamped to the available blocks."""
+        if self.stage_blocks is not None:
+            row = self.stage_blocks[stage]
+        elif self.head_blocks is not None:
+            row = self.head_blocks
+        else:
+            keep = int(round(self.future_ratio * num_future_blocks))
+            row = (keep,) * num_heads
+        if len(row) != num_heads:
+            raise ValueError(
+                f"budget has {len(row)} entries but the model has {num_heads} heads"
+            )
+        return tuple(min(int(value), num_future_blocks) for value in row)
+
+    def describe(self) -> dict[str, Any]:
+        return {
+            "enabled": self.enabled,
+            "selection": self.selection,
+            "backend": self.backend,
+            "block_size": self.block_size,
+            "future_ratio": self.future_ratio,
+            "context_weight": self.context_weight,
+            "min_anchor_mass": self.min_anchor_mass,
+            "fallback": self.fallback,
+            "num_stages": self.num_stages,
+            "head_blocks": None if self.head_blocks is None else list(self.head_blocks),
+            "stage_blocks": (
+                None
+                if self.stage_blocks is None
+                else [list(row) for row in self.stage_blocks]
+            ),
+        }
+
+
+def _nested_int_tuple(value: Any, name: str) -> tuple:
+    if value is None:
+        return None
+    if isinstance(value, (list, tuple)):
+        if value and isinstance(value[0], (list, tuple)):
+            return tuple(tuple(int(item) for item in row) for row in value)
+        return tuple(int(item) for item in value)
+    raise TypeError(f"{name} must be a sequence of integers")
+
+
+def config_hash(config: SparseConfig) -> str:
+    """Stable digest of the effective sparse configuration."""
+    import hashlib
+    import json
+
+    payload = json.dumps(config.describe(), sort_keys=True).encode()
+    return hashlib.sha256(payload).hexdigest()[:16]

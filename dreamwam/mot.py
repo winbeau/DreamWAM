@@ -6,6 +6,7 @@ from torch.utils.checkpoint import checkpoint
 
 from .experts import ActionDiT, VideoDiT
 from .layers import apply_rope, modulate, scaled_dot_product_attention
+from .sparse import SparseConfig, build_token_layout, sparse_joint_attention
 
 
 class JointMoT(nn.Module):
@@ -30,6 +31,74 @@ class JointMoT(nn.Module):
         self.num_heads = video_expert.num_heads
         self.action_attends_all_video = bool(action_attends_all_video)
         self.use_gradient_checkpointing = bool(use_gradient_checkpointing)
+        #: Sparse-WAM inference state.  Populated per request; empty when sparse is off.
+        self._layout_cache: dict[tuple, object] = {}
+        self.sparse_diagnostics: dict[str, float] = {}
+
+    def reset_sparse_diagnostics(self) -> None:
+        self.sparse_diagnostics = {"calls": 0.0, "density_sum": 0.0, "fallback_sum": 0.0}
+
+    def _token_layout(self, *, video_length: int, tokens_per_frame: int, block_size: int):
+        key = (video_length, tokens_per_frame, block_size)
+        layout = self._layout_cache.get(key)
+        if layout is None:
+            layout = build_token_layout(
+                video_length=video_length,
+                tokens_per_frame=tokens_per_frame,
+                block_size=block_size,
+                device=self.video_expert.blocks[0].self_attn.q.weight.device,
+            )
+            self._layout_cache = {key: layout}
+        return layout
+
+    def _joint_self_attention(
+        self,
+        *,
+        video_io: tuple,
+        action_io: tuple,
+        attention_mask: torch.Tensor,
+        video_length: int,
+        tokens_per_frame: int,
+        sparse: SparseConfig,
+        step_index: int,
+        num_steps: int,
+    ) -> torch.Tensor:
+        """Dense joint self-attention, or the Sparse-WAM VV-restricted equivalent."""
+        if sparse is None or not sparse.enabled:
+            return scaled_dot_product_attention(
+                torch.cat([video_io[0], action_io[0]], dim=1),
+                torch.cat([video_io[1], action_io[1]], dim=1),
+                torch.cat([video_io[2], action_io[2]], dim=1),
+                self.num_heads,
+                attention_mask,
+            )
+        layout = self._token_layout(
+            video_length=video_length,
+            tokens_per_frame=tokens_per_frame,
+            block_size=sparse.block_size,
+        )
+        video_output, action_output, stats = sparse_joint_attention(
+            query_video=video_io[0],
+            key_video=video_io[1],
+            value_video=video_io[2],
+            query_action=action_io[0],
+            key_action=action_io[1],
+            value_action=action_io[2],
+            num_heads=self.num_heads,
+            layout=layout,
+            config=sparse,
+            step_index=step_index,
+            num_steps=num_steps,
+            action_mask=attention_mask[video_length:],
+        )
+        diagnostics = self.sparse_diagnostics
+        diagnostics["calls"] = diagnostics.get("calls", 0.0) + 1
+        diagnostics["density_sum"] = diagnostics.get("density_sum", 0.0) + stats["density"]
+        diagnostics["fallback_sum"] = (
+            diagnostics.get("fallback_sum", 0.0) + stats["fallback_fraction"]
+        )
+        diagnostics["last"] = stats
+        return torch.cat([video_output, action_output], dim=1)
 
     @staticmethod
     def _split_modulation(
@@ -259,6 +328,9 @@ class JointMoT(nn.Module):
             torch.Tensor,
         ]
         | None,
+        sparse: SparseConfig | None = None,
+        step_index: int = 0,
+        num_steps: int = 1,
     ) -> dict[str, torch.Tensor]:
         video_tokens = video_state["tokens"]
         action_tokens = action_state["tokens"]
@@ -268,6 +340,7 @@ class JointMoT(nn.Module):
             video_tokens_per_frame=video_state["tokens_per_frame"],
             device=video_tokens.device,
         )
+        tokens_per_frame = int(video_state["tokens_per_frame"])
 
         for layer_index in range(self.num_layers):
             video_block = self.video_expert.blocks[layer_index]
@@ -293,12 +366,15 @@ class JointMoT(nn.Module):
                     action_state["time_modulation"],
                 )
                 video_length = current_video.shape[1]
-                mixed_attention = scaled_dot_product_attention(
-                    torch.cat([video_io[0], action_io[0]], dim=1),
-                    torch.cat([video_io[1], action_io[1]], dim=1),
-                    torch.cat([video_io[2], action_io[2]], dim=1),
-                    self.num_heads,
-                    attention_mask,
+                mixed_attention = self._joint_self_attention(
+                    video_io=video_io,
+                    action_io=action_io,
+                    attention_mask=attention_mask,
+                    video_length=video_length,
+                    tokens_per_frame=tokens_per_frame,
+                    sparse=sparse,
+                    step_index=step_index,
+                    num_steps=num_steps,
                 )
                 next_video = self._post_attention(
                     video_block,

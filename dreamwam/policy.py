@@ -9,6 +9,7 @@ from .config import ReleaseConfig
 from .normalization import LiberoNormalizer
 from .preprocessing.libero import PROMPT_TEMPLATE
 from .runtime import build_model, load_model_checkpoint
+from .sparse import SparseConfig
 
 
 def _center_crop_resize(image: np.ndarray, size: int) -> np.ndarray:
@@ -39,12 +40,16 @@ class DreamWAMPolicy:
         config: ReleaseConfig,
         *,
         device: str | torch.device = "cuda",
+        sparse: dict | None = None,
     ):
         self.config = config
         self.device = torch.device(device)
         if self.device.type == "cuda" and not torch.cuda.is_available():
             raise RuntimeError("CUDA policy requested but no CUDA device is available.")
         self.dtype = torch.bfloat16 if self.device.type == "cuda" else torch.float32
+        # Validated here rather than at first use, so a typo in an experiment YAML fails
+        # the run at startup instead of silently producing a dense result.
+        self.sparse_config = SparseConfig.from_mapping(sparse)
         self.model = build_model(
             config,
             device=self.device,
@@ -146,6 +151,7 @@ class DreamWAMPolicy:
             num_steps=int(self.evaluation["denoising_steps"]),
             seed=int(self.evaluation["seed"]),
             rand_device=str(self.evaluation["rand_device"]),
+            sparse=self.sparse_config,
         )
         action = self.normalizer.denormalize_action(action.float().cpu())[0]
         action[:, -1] = -(action[:, -1] * 2.0 - 1.0)
@@ -160,8 +166,9 @@ def build_policy(
     config: ReleaseConfig,
     *,
     device: str | torch.device = "cuda",
+    sparse: dict | None = None,
 ) -> DreamWAMPolicy:
     checkpoint = Path(config.paths.checkpoint)
     if not checkpoint.is_file():
         raise FileNotFoundError(f"Missing DreamWAM checkpoint: {checkpoint}")
-    return DreamWAMPolicy(config, device=device)
+    return DreamWAMPolicy(config, device=device, sparse=sparse)

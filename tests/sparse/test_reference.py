@@ -1,0 +1,529 @@
+"""Correctness tests for the Sparse-WAM operator reference.
+
+These run without a checkpoint: they exercise mask semantics, the AV normalisation, route
+construction and the masked/gather backends against explicit references on small tensors.
+The full-model parity control (dense vs split vs full budget) lives in
+``scripts/sparse/check_parity.py`` because it needs the released weights.
+
+    .venv/bin/python -m pytest tests/sparse -q
+"""
+
+from __future__ import annotations
+
+import pytest
+import torch
+import torch.nn.functional as F
+
+from dreamwam.sparse import (
+    SparseConfig,
+    build_route,
+    build_token_layout,
+    sparse_joint_attention,
+    video_legality,
+)
+from dreamwam.sparse.av import action_attention_with_mass
+from dreamwam.sparse.layout import block_hit_mask
+
+TOKENS_PER_FRAME = 4
+NUM_FRAMES = 3
+NUM_HEADS = 2
+HEAD_DIM = 4
+WIDTH = NUM_HEADS * HEAD_DIM
+ACTION_TOKENS = 3
+BLOCK_SIZE = 2
+
+
+def make_layout(device="cpu"):
+    return build_token_layout(
+        video_length=TOKENS_PER_FRAME * NUM_FRAMES,
+        tokens_per_frame=TOKENS_PER_FRAME,
+        block_size=BLOCK_SIZE,
+        device=torch.device(device),
+    )
+
+
+def tensors(batch=1, seed=0, device="cpu"):
+    generator = torch.Generator(device=device).manual_seed(seed)
+    video_length = TOKENS_PER_FRAME * NUM_FRAMES
+
+    def rand(length):
+        return torch.randn(
+            batch, length, WIDTH, generator=generator, device=device, dtype=torch.float32
+        )
+
+    return rand(video_length), rand(video_length), rand(video_length), rand(
+        ACTION_TOKENS
+    ), rand(ACTION_TOKENS), rand(ACTION_TOKENS)
+
+
+# --- mask semantics ---------------------------------------------------------------
+
+
+def test_legality_matches_native_mask():
+    """Frame 0 sees only frame 0; every other frame sees the whole video."""
+    layout = make_layout()
+    mask = video_legality(layout)
+    frame = torch.arange(layout.video_length) // TOKENS_PER_FRAME
+    for query in range(layout.video_length):
+        for key in range(layout.video_length):
+            expected = (frame[query].item() != 0) or (frame[key].item() == 0)
+            assert bool(mask[query, key]) is expected
+
+
+def test_frame_zero_rows_always_have_a_legal_key():
+    layout = make_layout()
+    mask = video_legality(layout)
+    assert bool(mask[:TOKENS_PER_FRAME, :TOKENS_PER_FRAME].all())
+    assert not bool(mask[:TOKENS_PER_FRAME, TOKENS_PER_FRAME:].any())
+
+
+def test_block_hit_mask_marks_exactly_the_selected_tokens():
+    layout = make_layout()
+    ids = torch.tensor([[[0, 2]]])  # [B=1, H=1, m=2]
+    membership = block_hit_mask(layout, ids)
+    expected = torch.zeros(layout.video_length, dtype=torch.bool)
+    for block in (0, 2):
+        expected[layout.future_block_keys[block]] = True
+    assert torch.equal(membership[0, 0], expected)
+    assert not bool(membership[0, 0, :TOKENS_PER_FRAME].any())
+
+
+def test_block_hit_mask_ignores_padding():
+    layout = make_layout()
+    ids = torch.tensor([[[1, -1]]])
+    membership = block_hit_mask(layout, ids)
+    selected = membership[0, 0].nonzero().flatten().tolist()
+    assert selected == layout.future_block_keys[1].tolist()
+
+
+# --- AV mass ----------------------------------------------------------------------
+
+
+def test_action_attention_matches_joint_softmax():
+    """The manual action branch must reproduce the fused joint computation."""
+    query_action, key_video, value_video, key_action, value_action = (
+        tensors()[3],
+        tensors()[1],
+        tensors()[2],
+        tensors()[4],
+        tensors()[5],
+    )
+    output, mass = action_attention_with_mass(
+        query_action=query_action,
+        key_video=key_video,
+        value_video=value_video,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+    )
+    scale = HEAD_DIM**-0.5
+    q = query_action.view(1, ACTION_TOKENS, NUM_HEADS, HEAD_DIM).transpose(1, 2)
+    kv = key_video.view(1, -1, NUM_HEADS, HEAD_DIM).transpose(1, 2)
+    ka = key_action.view(1, ACTION_TOKENS, NUM_HEADS, HEAD_DIM).transpose(1, 2)
+    vv = value_video.view(1, -1, NUM_HEADS, HEAD_DIM).transpose(1, 2)
+    va = value_action.view(1, ACTION_TOKENS, NUM_HEADS, HEAD_DIM).transpose(1, 2)
+    logits = torch.cat([q @ kv.transpose(-1, -2), q @ ka.transpose(-1, -2)], dim=-1) * scale
+    probs = torch.softmax(logits.float(), dim=-1)
+    reference = (
+        probs[..., : key_video.shape[1]] @ vv.float()
+        + probs[..., key_video.shape[1] :] @ va.float()
+    ).to(output.dtype)
+    assert torch.allclose(output, reference.transpose(1, 2).reshape_as(output), atol=1e-5)
+    # Mass over the video keys only; the action keys carry the rest.
+    assert torch.allclose(mass, probs[..., : key_video.shape[1]].sum(-2), atol=1e-5)
+    assert float(mass.sum(-1).max()) <= 1.0 + 1e-5
+
+
+def test_action_mass_uses_action_keys_in_the_denominator():
+    """A degenerate action key must reduce the video mass, proving no renormalisation."""
+    query_action, key_video, value_video, key_action, value_action = (
+        tensors()[3],
+        tensors()[1],
+        tensors()[2],
+        tensors()[4],
+        tensors()[5],
+    )
+    _, mass = action_attention_with_mass(
+        query_action=query_action,
+        key_video=key_video,
+        value_video=value_video,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+    )
+    peaked = key_action.clone()
+    peaked[:, 0, :] += 50.0
+    _, mass_peaked = action_attention_with_mass(
+        query_action=query_action,
+        key_video=key_video,
+        value_video=value_video,
+        key_action=peaked,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+    )
+    assert float(mass_peaked.mean()) < float(mass.mean())
+    assert not torch.allclose(mass, mass_peaked)
+
+
+# --- config -----------------------------------------------------------------------
+
+
+def test_unknown_option_is_rejected():
+    with pytest.raises(ValueError, match="unknown sparse option"):
+        SparseConfig.from_mapping({"enable": True})
+
+
+def test_stage_mapping_covers_every_step():
+    config = SparseConfig.from_mapping({"enabled": True, "num_stages": 3})
+    seen = {config.stage_of(step, 10) for step in range(10)}
+    assert seen == {0, 1, 2}
+
+
+def test_blocks_for_clamps_to_available_blocks():
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {"enabled": True, "future_ratio": 1.0, "block_size": BLOCK_SIZE}
+    )
+    blocks = config.blocks_for(
+        num_heads=NUM_HEADS, stage=0, num_future_blocks=layout.num_future_blocks
+    )
+    assert blocks == (layout.num_future_blocks,) * NUM_HEADS
+
+
+def test_per_head_blocks_are_validated():
+    with pytest.raises(ValueError, match="budget has"):
+        SparseConfig.from_mapping({"enabled": True, "head_blocks": [1, 2, 3]}).blocks_for(
+            num_heads=NUM_HEADS, stage=0, num_future_blocks=4
+        )
+
+
+# --- routing ----------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("selection", ["all", "av", "av_context", "recency", "uniform"])
+def test_route_always_keeps_the_conditioning_frame(selection):
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {
+            "enabled": True,
+            "selection": selection,
+            "block_size": BLOCK_SIZE,
+            "future_ratio": 0.5,
+        }
+    )
+    query_video, key_video, _, _, _, _ = tensors()
+    av_mass = torch.rand(1, NUM_HEADS, layout.video_length)
+    route = build_route(
+        layout=layout,
+        config=config,
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=av_mass,
+        query_video=query_video,
+        key_video=key_video,
+    )
+    assert bool(route.membership[:, :, :TOKENS_PER_FRAME].all())
+    assert bool(route.valid[:, :, :TOKENS_PER_FRAME].all())
+
+
+def test_route_respects_the_budget_per_head():
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {
+            "enabled": True,
+            "selection": "av",
+            "block_size": BLOCK_SIZE,
+            "head_blocks": [0, 2],
+        }
+    )
+    query_video, key_video, _, _, _, _ = tensors()
+    route = build_route(
+        layout=layout,
+        config=config,
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=torch.rand(1, NUM_HEADS, layout.video_length),
+        query_video=query_video,
+        key_video=key_video,
+    )
+    assert int(route.blocks[0, 0]) == 0
+    assert int(route.blocks[0, 1]) == 2
+    head0_keys = route.valid[0, 0].sum().item()
+    assert head0_keys == TOKENS_PER_FRAME
+
+
+def test_av_selection_prefers_the_high_mass_block():
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {
+            "enabled": True,
+            "selection": "av",
+            "block_size": BLOCK_SIZE,
+            "head_blocks": [1, 1],
+        }
+    )
+    query_video, key_video, _, _, _, _ = tensors()
+    av_mass = torch.zeros(1, NUM_HEADS, layout.video_length)
+    wanted = layout.future_block_keys[2]
+    av_mass[:, :, wanted] = 1.0
+    route = build_route(
+        layout=layout,
+        config=config,
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=av_mass,
+        query_video=query_video,
+        key_video=key_video,
+    )
+    for head in range(NUM_HEADS):
+        assert int(route.blocks[0, head]) == 1
+        chosen = set(route.keys[0, head, TOKENS_PER_FRAME:].tolist())
+        assert chosen == set(wanted.tolist())
+
+
+def test_low_anchor_confidence_triggers_the_declared_fallback():
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {
+            "enabled": True,
+            "selection": "av",
+            "block_size": BLOCK_SIZE,
+            "head_blocks": [1, 1],
+            "min_anchor_mass": 0.99,
+            "fallback": "recency",
+        }
+    )
+    query_video, key_video, _, _, _, _ = tensors()
+    av_mass = torch.full((1, NUM_HEADS, layout.video_length), 1.0 / layout.video_length)
+    route = build_route(
+        layout=layout,
+        config=config,
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=av_mass,
+        query_video=query_video,
+        key_video=key_video,
+    )
+    assert bool(route.fallback.all())
+    last_block = layout.future_block_keys[-1]
+    for head in range(NUM_HEADS):
+        assert set(route.keys[0, head, TOKENS_PER_FRAME:].tolist()) == set(
+            last_block.tolist()
+        )
+
+
+def test_full_budget_route_keeps_every_legal_pair():
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {"enabled": True, "selection": "all", "block_size": BLOCK_SIZE}
+    )
+    route = build_route(
+        layout=layout,
+        config=config,
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+    )
+    future = layout.video_length - TOKENS_PER_FRAME
+    assert bool(route.membership[:, :, TOKENS_PER_FRAME:].all())
+    assert route.density == pytest.approx(1.0)
+    assert future > 0
+
+
+# --- execution backends -----------------------------------------------------------
+
+
+def reference_video_attention(query, key, value, membership, layout):
+    """Dense attention over exactly the routed keys, high precision."""
+    mask = membership.unsqueeze(2) & video_legality(layout).view(
+        1, 1, layout.video_length, layout.video_length
+    )
+    return F.scaled_dot_product_attention(
+        query.view(1, -1, NUM_HEADS, HEAD_DIM).transpose(1, 2),
+        key.view(1, -1, NUM_HEADS, HEAD_DIM).transpose(1, 2),
+        value.view(1, -1, NUM_HEADS, HEAD_DIM).transpose(1, 2),
+        attn_mask=mask,
+    ).transpose(1, 2).reshape_as(query)
+
+
+@pytest.mark.parametrize("backend", ["masked", "gather"])
+@pytest.mark.parametrize("selection", ["all", "av", "recency", "uniform"])
+def test_backends_agree_with_the_reference(backend, selection):
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {
+            "enabled": True,
+            "selection": selection,
+            "backend": backend,
+            "block_size": BLOCK_SIZE,
+            "future_ratio": 0.5,
+        }
+    )
+    query_video, key_video, value_video, query_action, key_action, value_action = tensors()
+    av_mass = torch.rand(1, NUM_HEADS, layout.video_length)
+    route = build_route(
+        layout=layout,
+        config=config,
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=av_mass,
+        query_video=query_video,
+        key_video=key_video,
+    )
+    video_out, action_out, stats = sparse_joint_attention(
+        query_video=query_video,
+        key_video=key_video,
+        value_video=value_video,
+        query_action=query_action,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+        layout=layout,
+        config=config,
+        step_index=0,
+        num_steps=10,
+        action_mask=None,
+    )
+    expected = reference_video_attention(
+        query_video, key_video, value_video, route.membership, layout
+    )
+    assert torch.allclose(video_out, expected, atol=1e-5), (
+        f"{backend}/{selection} diverged from the routed reference"
+    )
+    assert stats["density"] <= 1.0
+
+
+def test_gather_backend_skips_future_keys_when_budget_is_zero():
+    layout = make_layout()
+    config = SparseConfig.from_mapping(
+        {
+            "enabled": True,
+            "selection": "all",
+            "backend": "gather",
+            "block_size": BLOCK_SIZE,
+            "future_ratio": 0.0,
+        }
+    )
+    query_video, key_video, value_video, query_action, key_action, value_action = tensors()
+    video_out, _, stats = sparse_joint_attention(
+        query_video=query_video,
+        key_video=key_video,
+        value_video=value_video,
+        query_action=query_action,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+        layout=layout,
+        config=config,
+        step_index=0,
+        num_steps=10,
+    )
+    assert stats["kmax"] == TOKENS_PER_FRAME
+    # Frame-0 rows are unaffected by dropping future keys because they cannot see them.
+    dense = reference_video_attention(
+        query_video,
+        key_video,
+        value_video,
+        torch.zeros(1, NUM_HEADS, layout.video_length, dtype=torch.bool).index_fill_(
+            2, layout.first_frame_keys, True
+        ),
+        layout,
+    )
+    assert torch.allclose(video_out[:, :TOKENS_PER_FRAME], dense[:, :TOKENS_PER_FRAME], atol=1e-5)
+
+
+def test_action_rows_ignore_the_video_route():
+    """A->V is dense regardless of how the VV route is restricted."""
+    layout = make_layout()
+    outputs = []
+    for ratio in (1.0, 0.0):
+        config = SparseConfig.from_mapping(
+            {
+                "enabled": True,
+                "selection": "all",
+                "backend": "masked",
+                "block_size": BLOCK_SIZE,
+                "future_ratio": ratio,
+            }
+        )
+        query_video, key_video, value_video, query_action, key_action, value_action = (
+            tensors()
+        )
+        _, action_out, _ = sparse_joint_attention(
+            query_video=query_video,
+            key_video=key_video,
+            value_video=value_video,
+            query_action=query_action,
+            key_action=key_action,
+            value_action=value_action,
+            num_heads=NUM_HEADS,
+            layout=layout,
+            config=config,
+            step_index=0,
+            num_steps=10,
+        )
+        outputs.append(action_out)
+    assert torch.allclose(outputs[0], outputs[1], atol=1e-6)
+
+
+def test_batch_elements_get_independent_routes():
+    layout = make_layout()
+    batch = 2
+    config = SparseConfig.from_mapping(
+        {
+            "enabled": True,
+            "selection": "av",
+            "block_size": BLOCK_SIZE,
+            "head_blocks": [1, 1],
+        }
+    )
+    query_video, key_video, _, query_action, key_action, value_action = tensors(batch=batch)
+    value_video = tensors(batch=batch)[2]
+    av_mass = torch.zeros(batch, NUM_HEADS, layout.video_length)
+    av_mass[0, :, layout.future_block_keys[0]] = 1.0
+    av_mass[1, :, layout.future_block_keys[2]] = 1.0
+    route = build_route(
+        layout=layout,
+        config=config,
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=av_mass,
+        query_video=query_video,
+        key_video=key_video,
+    )
+    assert set(route.keys[0, 0, TOKENS_PER_FRAME:].tolist()) != set(
+        route.keys[1, 0, TOKENS_PER_FRAME:].tolist()
+    )
+    video_out, _, _ = sparse_joint_attention(
+        query_video=query_video,
+        key_video=key_video,
+        value_video=value_video,
+        query_action=query_action,
+        key_action=key_action,
+        value_action=value_action,
+        num_heads=NUM_HEADS,
+        layout=layout,
+        config=config,
+        step_index=0,
+        num_steps=10,
+    )
+    assert video_out.shape == query_video.shape
+    assert torch.isfinite(video_out).all()
+
+
+def test_disabled_config_raises_rather_than_running_dense():
+    layout = make_layout()
+    with pytest.raises(ValueError, match="disabled"):
+        build_route(
+            layout=layout,
+            config=SparseConfig(),
+            num_heads=NUM_HEADS,
+            step_index=0,
+            num_steps=10,
+        )
