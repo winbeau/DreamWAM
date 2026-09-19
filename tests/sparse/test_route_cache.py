@@ -201,3 +201,74 @@ def test_disabled_sparse_never_touches_the_cache():
         call(mot, config, step=0, layer=layer, data=data)
     assert mot._route_cache == {}
     assert mot.sparse_diagnostics["calls"] == 0
+
+
+# --- per-layer intervention (M1 calibration) --------------------------------------
+
+
+def test_layers_outside_the_allow_list_run_dense():
+    """A layer excluded by sparse_layers must be bit-identical to sparse switched off."""
+    config = step_config(sparse_layers=(1,))
+    mot = make_mot(config)
+    video, action, mask = inputs()
+    excluded = mot._joint_self_attention(
+        video_io=video,
+        action_io=action,
+        attention_mask=mask,
+        video_length=VIDEO_TOKENS,
+        tokens_per_frame=TOKENS_PER_FRAME,
+        sparse=config,
+        step_index=0,
+        num_steps=10,
+        layer_index=0,
+    )
+    dense = mot._joint_self_attention(
+        video_io=video,
+        action_io=action,
+        attention_mask=mask,
+        video_length=VIDEO_TOKENS,
+        tokens_per_frame=TOKENS_PER_FRAME,
+        sparse=SparseConfig(),
+        step_index=0,
+        num_steps=10,
+        layer_index=0,
+    )
+    assert torch.equal(excluded, dense)
+    assert mot.sparse_diagnostics["calls"] == 0.0
+    assert mot._route_cache == {}
+
+
+def test_allow_listed_layer_routes_and_others_stay_dense():
+    config = step_config(sparse_layers=(2,))
+    mot = make_mot(config)
+    data = inputs()
+    for layer in (0, 1):
+        call(mot, config, step=0, layer=layer, data=data)
+    assert mot.sparse_diagnostics["calls"] == 0.0
+    call(mot, config, step=0, layer=2, data=data)
+    assert mot.sparse_diagnostics["calls"] == 1.0
+    assert mot.sparse_diagnostics["anchor_builds"] == 1.0
+
+
+def test_allow_list_combines_with_every_refresh_scope():
+    from dreamwam.sparse.runtime import layer_runs_dense
+
+    for scope in ("layer", "step", "request"):
+        config = step_config(anchor_refresh=scope, sparse_layers=(1, 3))
+        assert not layer_runs_dense(config, 1)
+        assert not layer_runs_dense(config, 3)
+        assert layer_runs_dense(config, 0)
+        assert layer_runs_dense(config, 2)
+
+
+def test_sparse_layers_is_validated():
+    with pytest.raises(ValueError, match="non-empty"):
+        SparseConfig.from_mapping({"enabled": True, "sparse_layers": []})
+    with pytest.raises(ValueError, match="non-negative"):
+        SparseConfig.from_mapping({"enabled": True, "sparse_layers": [-1]})
+    with pytest.raises(ValueError, match="repeat"):
+        SparseConfig.from_mapping({"enabled": True, "sparse_layers": [2, 2]})
+    assert SparseConfig().sparse_layers is None
+    assert SparseConfig.from_mapping(
+        {"enabled": True, "sparse_layers": [4, 7]}
+    ).sparse_layers == (4, 7)

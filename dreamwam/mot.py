@@ -7,7 +7,7 @@ from torch.utils.checkpoint import checkpoint
 from .experts import ActionDiT, VideoDiT
 from .layers import apply_rope, modulate, scaled_dot_product_attention
 from .sparse import SparseConfig, build_token_layout, sparse_joint_attention
-from .sparse.runtime import is_dense_prefix, route_scope_key
+from .sparse.runtime import layer_runs_dense, route_scope_key
 
 
 class JointMoT(nn.Module):
@@ -93,8 +93,9 @@ class JointMoT(nn.Module):
         # layer-step than the attention it guides, so recomputing it in every layer loses
         # more than the sparsity saves (measured in docs/analysis).
         cache_key = route_scope_key(sparse, step_index)
-        if is_dense_prefix(sparse, layer_index):
-            # Before the anchor layer there is no route yet; run the shipped dense path.
+        if layer_runs_dense(sparse, layer_index):
+            # Either the amortization prefix (no route exists yet) or a layer excluded by
+            # sparse_layers; both must follow the shipped dense path exactly.
             return scaled_dot_product_attention(
                 torch.cat([video_io[0], action_io[0]], dim=1),
                 torch.cat([video_io[1], action_io[1]], dim=1),

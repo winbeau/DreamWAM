@@ -37,14 +37,29 @@ def is_dense_prefix(config: SparseConfig, layer_index: int) -> bool:
     return layer_index < config.anchor_layer
 
 
+def layer_runs_dense(config: SparseConfig, layer_index: int) -> bool:
+    """Whether this layer must follow the shipped dense path.
+
+    Two independent reasons, deliberately combined in one predicate so callers cannot honour
+    one and forget the other: the amortization prefix, and an explicit ``sparse_layers``
+    allow-list.  The allow-list is what M1 calibration uses to restrict exactly one layer and
+    attribute the resulting action change to it.
+    """
+    if is_dense_prefix(config, layer_index):
+        return True
+    if config.sparse_layers is None:
+        return False
+    return layer_index not in config.sparse_layers
+
+
 def should_build_route(
     config: SparseConfig,
     layer_index: int,
     cached: object | None,
 ) -> bool:
     """Whether the route must be built here rather than reused."""
+    if layer_runs_dense(config, layer_index):
+        return False
     if config.anchor_refresh == "layer":
         return True
-    if is_dense_prefix(config, layer_index):
-        return False
     return cached is None

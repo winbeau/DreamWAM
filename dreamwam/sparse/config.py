@@ -50,6 +50,10 @@ class SparseConfig:
     anchor_refresh: str = "layer"
     #: Layer that builds the route when ``anchor_refresh`` is not ``layer``.
     anchor_layer: int = 0
+    #: Layers that execute the routed path; ``None`` means every layer.  M1 calibration
+    #: needs single-layer interventions ("what happens if only this layer is restricted"),
+    #: which is also the only way to attribute an action change to a specific layer.
+    sparse_layers: tuple[int, ...] | None = None
     #: Per-head kept future blocks; length must equal the model's head count.  ``None``
     #: derives the count from ``future_ratio``.  Produced by M1 calibration.
     head_blocks: tuple[int, ...] | None = None
@@ -72,7 +76,7 @@ class SparseConfig:
             )
         normalized: dict[str, Any] = {}
         for key, value in payload.items():
-            if key in {"head_blocks", "stage_blocks"}:
+            if key in {"head_blocks", "stage_blocks", "sparse_layers"}:
                 normalized[key] = _nested_int_tuple(value, key)
             else:
                 normalized[key] = value
@@ -96,6 +100,15 @@ class SparseConfig:
             raise ValueError(
                 f"anchor_layer must be non-negative, got {self.anchor_layer}"
             )
+        if self.sparse_layers is not None:
+            if not self.sparse_layers:
+                raise ValueError(
+                    "sparse_layers must be non-empty when set; omit it to route every layer"
+                )
+            if any(index < 0 for index in self.sparse_layers):
+                raise ValueError("sparse_layers entries must be non-negative")
+            if len(set(self.sparse_layers)) != len(self.sparse_layers):
+                raise ValueError("sparse_layers must not repeat a layer")
         if self.fallback not in FALLBACKS:
             raise ValueError(
                 f"fallback must be one of {FALLBACKS}, got {self.fallback!r}"
@@ -178,6 +191,9 @@ class SparseConfig:
             "num_stages": self.num_stages,
             "anchor_refresh": self.anchor_refresh,
             "anchor_layer": self.anchor_layer,
+            "sparse_layers": (
+                None if self.sparse_layers is None else list(self.sparse_layers)
+            ),
             "head_blocks": None if self.head_blocks is None else list(self.head_blocks),
             "stage_blocks": (
                 None
