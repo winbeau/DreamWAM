@@ -268,15 +268,15 @@ def build_route(
     membership = membership[..., : layout.video_length]
 
     blocks = keep.view(1, -1).expand(batch, num_heads).clone()
-    kept_keys = (
-        first_keep + blocks.to(torch.float32) * layout.block_size
-    )
-    future_queries = layout.video_length - layout.num_first_frame
-    # Frame-0 queries keep the whole conditioning frame to themselves, so their pairs are
-    # unaffected by conditional_keep_ratio; only the future rows shrink.
-    kept_pairs = layout.num_first_frame**2 + future_queries * kept_keys
-    legal_pairs = layout.num_first_frame**2 + future_queries * layout.video_length
-    density = float((kept_pairs / legal_pairs).mean())
+    # Density is computed from the Python budget tuple, not from the tensor: a reduction over
+    # `blocks` would synchronise the device on every layer-step just to report a diagnostic.
+    num_first = layout.num_first_frame
+    future_queries = layout.video_length - num_first
+    legal_pairs = num_first**2 + future_queries * layout.video_length
+    density = sum(
+        num_first**2 + future_queries * (first_keep + budget * layout.block_size)
+        for budget in blocks_per_head
+    ) / (len(blocks_per_head) * legal_pairs)
 
     return Route(
         keys=keys,
