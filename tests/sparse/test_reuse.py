@@ -115,13 +115,12 @@ def test_group_mask_covers_every_step_in_its_group():
     """A neuron that matters in any step of a group must survive the shared mask."""
     steps, neurons = 4, 6
     contribution = torch.zeros(steps, neurons)
-    contribution[0, 0] = 10.0  # matters only in step 0
-    contribution[3, 5] = 9.0  # matters only in step 3
+    contribution[0, 0] = 10.0  # matters only in the first step of group 0
+    contribution[3, 5] = 9.0  # matters only in the last step of group 1
     masks = group_masks(contribution, denoising_steps=steps, ratio=2 / neurons, group_size=2)
     assert masks.shape == (2, 2)
-    assert 1 in masks[0, 0].tolist() or 0 in masks[0, 0].tolist()
-    assert set(masks[0].flatten().tolist()) == {0, 1} or 0 in masks[0, 0].tolist()
-    assert 5 in masks[1, 1].tolist() or 5 in masks[1, 0].tolist()
+    assert 0 in masks[0].flatten().tolist(), "step 0's neuron must survive group 0"
+    assert 5 in masks[1].flatten().tolist(), "step 3's neuron must survive group 1"
 
 
 def test_group_mask_uses_one_mask_per_group():
@@ -160,18 +159,30 @@ def test_zero_weight_reproduces_the_pure_similarity_ranking():
 
 def test_action_relevance_can_change_the_ranking():
     """A token the action depends on must be able to outrank a more similar one."""
-    similarity = torch.tensor([[0.9, 0.1]])
-    relevance = torch.tensor([[0.0, 1.0]])
-    blended = action_guided_score(similarity, relevance, weight=1.0)
-    assert blended[0, 1] > blended[0, 0]
+    similarity = torch.tensor([[0.9, 0.5, 0.1]])
+    relevance = torch.tensor([[0.0, 1.0, 0.0]])
+    pure = action_guided_score(similarity, relevance, weight=0.0)
+    guided = action_guided_score(similarity, relevance, weight=1.0)
+    assert int(pure.argmax()) == 0, "the most similar token wins on similarity alone"
+    assert int(guided.argmax()) == 1, "the action-relevant token must be able to overtake"
 
 
 def test_action_guided_score_is_scale_invariant():
-    """A similarity signal 1000x larger must not make the weights meaningless."""
-    similarity = torch.tensor([[200.0, 100.0]])
-    relevance = torch.tensor([[0.0, 1.0]])
-    blended = action_guided_score(similarity, relevance, weight=1.0)
-    assert torch.allclose(blended, torch.tensor([[0.0, 2.0]]))
+    """Rescaling a signal must not change the blend, so `weight` keeps its meaning."""
+    relevance = torch.tensor([[0.0, 1.0, 0.4]])
+    base = action_guided_score(torch.tensor([[0.9, 0.5, 0.1]]), relevance, weight=1.0)
+    scaled = action_guided_score(
+        torch.tensor([[900.0, 500.0, 100.0]]), relevance, weight=1.0
+    )
+    assert torch.allclose(base, scaled)
+
+
+def test_blend_saturates_when_a_signal_is_binary():
+    """Documented limitation: with two items min-max maps both signals to {0, 1}."""
+    blended = action_guided_score(
+        torch.tensor([[0.9, 0.1]]), torch.tensor([[0.0, 1.0]]), weight=1.0
+    )
+    assert torch.allclose(blended, torch.ones(1, 2)), "equal weight ties on two items"
 
 
 def test_action_guided_score_validates_its_arguments():
