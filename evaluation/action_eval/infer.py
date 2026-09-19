@@ -84,6 +84,7 @@ def _import_dreamwam(model_root: Path):
         sys.path.insert(0, root)
     from dreamwam.config import load_release_config  # type: ignore
     from dreamwam.policy import build_policy  # type: ignore
+    from dreamwam.sparse.config import config_hash  # type: ignore
 
     _DREAMWAM["load_release_config"] = load_release_config
     _DREAMWAM["build_policy"] = build_policy
@@ -124,6 +125,8 @@ class DreamWAMPolicy:
     def __init__(self, config: dict, device: str):
         self.config = dict(config)
         self.device = device
+        #: ``policy.options`` from the experiment YAML; read throughout this constructor.
+        options = self.config
         self.model_root = Path(self.config.get("model_root") or os.getcwd()).expanduser()
 
         model_config_path = self.config.get("model_config")
@@ -193,12 +196,16 @@ class DreamWAMPolicy:
                 "CUDA_VISIBLE_DEVICES selects a working GPU."
             )
         self.device = device
-        self.policy = build_policy(release, device=device)
+        # Sparse-WAM options are parsed and validated by the model itself; passing the raw
+        # mapping keeps the adapter free of modelling decisions, and an unknown key fails
+        # at startup instead of silently running dense.
+        self._sparse_options = options.get("sparse")
+        self.policy = build_policy(release, device=device, sparse=self._sparse_options)
+        self._sparse_hash = config_hash(self.policy.sparse_config)
 
         # ``build_policy`` gives the policy its own reference to the release YAML's
         # ``evaluation`` dict. Reading and writing that same dict is what makes the
         # options below change the model instead of only changing the report.
-        options = self.config
         self._evaluation = self.policy.evaluation
         if options.get("action_horizon") is not None:
             self._evaluation["action_horizon"] = int(options["action_horizon"])
@@ -247,12 +254,20 @@ class DreamWAMPolicy:
             "binarize_gripper": bool(evaluation.get("binarize_gripper", False)),
             "model_seed": self._episode_seed,
             "rng_mode": self._rng_mode,
+            "sparse": self.policy.sparse_config.describe(),
+            "sparse_config_hash": self._sparse_hash,
         }
         notes = (
             "DreamWAM released checkpoint through its own build_policy; the benchmark "
             "flips the images and DreamWAM center-crops, resizes and concatenates them "
             "inside predict_action, so this adapter applies no preprocessing of its own"
         )
+        if self.policy.sparse_config.enabled:
+            notes += (
+                "; Sparse-WAM is enabled: only the VV key set is restricted, while A->V "
+                "and A->A stay dense and jointly normalised, so a run is comparable with "
+                "dense only through its measured density"
+            )
         if self._rng_mode == RNG_MODE_FIXED_PER_PREDICT:
             notes += (
                 "; note that the model seeds every sampling call from its own config, so "
@@ -321,14 +336,32 @@ class DreamWAMPolicy:
         if not np.isfinite(actions).all():
             raise ValueError("DreamWAM produced non-finite actions")
         self.predict_calls += 1
+        diagnostics = {
+            "horizon": int(actions.shape[0]),
+            "denoising_steps": int(self._evaluation.get("denoising_steps", 0)),
+            "predict_call_index": self.predict_calls,
+            "sparse_config_hash": self._sparse_hash,
+        }
+        if self.policy.sparse_config.enabled:
+            # Executed density, not the requested one: a budget can be clamped by the
+            # structural floor or replaced by a fallback route.
+            counters = self.policy.model.mot.sparse_diagnostics
+            calls = counters.get("calls", 0.0)
+            diagnostics.update(
+                {
+                    "sparse_density": (
+                        counters.get("density_sum", 0.0) / calls if calls else None
+                    ),
+                    "sparse_fallback_fraction": (
+                        counters.get("fallback_sum", 0.0) / calls if calls else None
+                    ),
+                    "sparse_layer_calls": calls,
+                }
+            )
         return Prediction(
             actions=actions,
             timing={"predict_seconds": round(elapsed, 6)},
-            diagnostics={
-                "horizon": int(actions.shape[0]),
-                "denoising_steps": int(self._evaluation.get("denoising_steps", 0)),
-                "predict_call_index": self.predict_calls,
-            },
+            diagnostics=diagnostics,
         )
 
     def close(self) -> None:
