@@ -38,6 +38,12 @@ class SparseConfig:
     backend: str = "masked"
     block_size: int = 14
     future_ratio: float = 1.0
+    #: Fraction of conditioning-frame keys kept for *future-frame* queries.  Keeping the whole
+    #: conditioning frame was the original structural floor because it is what the action
+    #: currently observes; it is a knob rather than a floor because the video branch tolerates
+    #: far more compression than the action branch does.  Frame-0 queries always retain dense
+    #: access to their own frame, which is cheap (98x98) and required by the native mask.
+    conditional_keep_ratio: float = 1.0
     context_weight: float = 1.0
     min_anchor_mass: float = 0.0
     fallback: str = "recency"
@@ -119,6 +125,11 @@ class SparseConfig:
             raise ValueError(
                 f"future_ratio must be in [0, 1], got {self.future_ratio}"
             )
+        if not 0.0 <= self.conditional_keep_ratio <= 1.0:
+            raise ValueError(
+                "conditional_keep_ratio must be in [0, 1], got "
+                f"{self.conditional_keep_ratio}"
+            )
         if self.context_weight < 0.0:
             raise ValueError(
                 f"context_weight must be non-negative, got {self.context_weight}"
@@ -185,6 +196,7 @@ class SparseConfig:
             "backend": self.backend,
             "block_size": self.block_size,
             "future_ratio": self.future_ratio,
+            "conditional_keep_ratio": self.conditional_keep_ratio,
             "context_weight": self.context_weight,
             "min_anchor_mass": self.min_anchor_mass,
             "fallback": self.fallback,

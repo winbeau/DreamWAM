@@ -149,6 +149,11 @@ def action_guided_score(
     the last axis so ``weight`` has a comparable meaning regardless of their scales.  With
     ``weight = 0`` the ranking is the pure similarity ranking, which is the ablation that
     separates "reuse what looks alike" from "reuse what the action depends on".
+
+    Known limitation of min-max here: with only two candidates each signal collapses to
+    ``{0, 1}``, so equal weights tie.  The blend is meant for the real widths (hundreds of
+    tokens or thousands of neurons), and the weight itself still has to be chosen by the
+    closed-loop quality evaluation rather than by this function.
     """
     if similarity_score.shape != action_relevance.shape:
         raise ValueError(

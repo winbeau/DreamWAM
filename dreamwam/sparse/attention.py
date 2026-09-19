@@ -102,9 +102,17 @@ def sparse_joint_attention(
         )
 
     if config.backend == "masked":
-        mask = route.membership.unsqueeze(2) & video_legality(layout).view(
+        # Frame-0 queries always keep dense access to their own frame.  The native mask already
+        # forbids them from seeing anything else, and the gather backend computes those rows
+        # densely, so applying the routed membership to them here would make the two backends
+        # disagree about the same configuration.
+        first = layout.num_first_frame
+        legality = video_legality(layout)
+        mask = (route.membership.unsqueeze(2) & legality.view(
             1, 1, layout.video_length, layout.video_length
-        )
+        ))
+        mask = mask.clone()
+        mask[:, :, :first, :first] = True
         video_output = F.scaled_dot_product_attention(
             _heads(query_video, num_heads),
             _heads(key_video, num_heads),

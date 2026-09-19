@@ -748,3 +748,152 @@ def test_route_is_built_once_per_scope_and_reused():
     )
     assert should_build_route(late, 0, None) is False  # dense prefix, not a build
     assert should_build_route(late, 2, None) is True
+
+
+# --- conditioning-frame compression (video branch budget) -------------------------
+
+
+def test_full_conditional_ratio_reproduces_the_original_route():
+    """The default must not change anything: ratio 1.0 keeps the whole conditioning frame."""
+    layout = make_layout()
+    base = {
+        "enabled": True,
+        "selection": "recency",
+        "block_size": BLOCK_SIZE,
+        "head_blocks": [1, 1],
+    }
+    default = build_route(
+        layout=layout, config=SparseConfig.from_mapping(base), num_heads=NUM_HEADS,
+        step_index=0, num_steps=10,
+    )
+    explicit = build_route(
+        layout=layout,
+        config=SparseConfig.from_mapping({**base, "conditional_keep_ratio": 1.0}),
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+    )
+    assert torch.equal(default.keys, explicit.keys)
+    assert default.density == pytest.approx(explicit.density)
+
+
+def test_conditional_ratio_shrinks_the_frame0_budget():
+    layout = make_layout()
+    route = build_route(
+        layout=layout,
+        config=SparseConfig.from_mapping(
+            {
+                "enabled": True,
+                "selection": "recency",
+                "block_size": BLOCK_SIZE,
+                "future_ratio": 0.0,
+                "conditional_keep_ratio": 0.5,
+            }
+        ),
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+    )
+    # TOKENS_PER_FRAME = 4, so half is 2 conditioning keys for future rows.
+    assert int(route.valid[0, 0].sum()) == 2
+    assert int(route.keys.shape[-1]) == 2
+
+
+def test_conditional_ratio_never_drops_every_conditioning_key():
+    """A zero ratio must still leave one key; an empty row would produce NaN attention."""
+    layout = make_layout()
+    route = build_route(
+        layout=layout,
+        config=SparseConfig.from_mapping(
+            {
+                "enabled": True,
+                "selection": "recency",
+                "block_size": BLOCK_SIZE,
+                "future_ratio": 0.0,
+                "conditional_keep_ratio": 0.0,
+            }
+        ),
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+    )
+    assert int(route.valid[0, 0].sum()) >= 1
+    assert bool(route.valid[0].any(dim=-1).all())
+
+
+def test_compressed_conditioning_frame_is_ranked_by_action_relevance():
+    """With anchors available, the kept conditioning keys are the ones the action looks at."""
+    layout = make_layout()
+    query_video, key_video, _, _, _, _ = tensors()
+    av_mass = torch.zeros(1, NUM_HEADS, layout.video_length)
+    wanted = [1, 3]
+    av_mass[:, :, wanted] = 5.0
+    route = build_route(
+        layout=layout,
+        config=SparseConfig.from_mapping(
+            {
+                "enabled": True,
+                "selection": "av",
+                "block_size": BLOCK_SIZE,
+                "future_ratio": 0.0,
+                "conditional_keep_ratio": 0.5,
+            }
+        ),
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=av_mass,
+        query_video=query_video,
+        key_video=key_video,
+    )
+    for head in range(NUM_HEADS):
+        assert set(route.keys[0, head].tolist()) == set(wanted)
+
+
+def test_frame0_rows_stay_dense_over_their_own_frame_when_it_is_compressed():
+    """Both backends must agree that frame-0 queries still see the whole conditioning frame."""
+    layout = make_layout()
+    outputs = {}
+    for backend in ("masked", "gather"):
+        config = SparseConfig.from_mapping(
+            {
+                "enabled": True,
+                "selection": "recency",
+                "backend": backend,
+                "block_size": BLOCK_SIZE,
+                "future_ratio": 0.0,
+                "conditional_keep_ratio": 0.25,
+            }
+        )
+        query_video, key_video, value_video, query_action, key_action, value_action = (
+            tensors()
+        )
+        video_out, _, _, _ = sparse_joint_attention(
+            query_video=query_video,
+            key_video=key_video,
+            value_video=value_video,
+            query_action=query_action,
+            key_action=key_action,
+            value_action=value_action,
+            num_heads=NUM_HEADS,
+            layout=layout,
+            config=config,
+            step_index=0,
+            num_steps=10,
+        )
+        outputs[backend] = video_out
+        # Frame-0 rows equal a fully dense attention over frame 0 alone.
+        dense = F.scaled_dot_product_attention(
+            query_video[:, :TOKENS_PER_FRAME].view(1, -1, NUM_HEADS, HEAD_DIM).transpose(1, 2),
+            key_video[:, :TOKENS_PER_FRAME].view(1, -1, NUM_HEADS, HEAD_DIM).transpose(1, 2),
+            value_video[:, :TOKENS_PER_FRAME].view(1, -1, NUM_HEADS, HEAD_DIM).transpose(1, 2),
+        ).transpose(1, 2).reshape(1, TOKENS_PER_FRAME, WIDTH)
+        assert torch.allclose(
+            video_out[:, :TOKENS_PER_FRAME], dense, atol=1e-5
+        ), f"{backend}: frame-0 rows must be independent of the conditioning budget"
+    assert torch.allclose(outputs["masked"], outputs["gather"], atol=1e-5)
+
+
+def test_conditional_ratio_is_validated():
+    with pytest.raises(ValueError, match="conditional_keep_ratio"):
+        SparseConfig.from_mapping({"enabled": True, "conditional_keep_ratio": 1.5})

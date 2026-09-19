@@ -175,6 +175,13 @@ def build_route(
                 affinity
             )
 
+    # Conditioning-frame relevance, available only when the selection policy already needed the
+    # anchor mass.  Without it the frame is compressed by position, which is the honest
+    # fallback: this is a budget knob, not a claim about which visual tokens matter.
+    cond_scores = (
+        None if av_mass is None else av_mass[..., : layout.num_first_frame]
+    )
+
     order = _ordering(
         kind=config.selection,
         scores=scores,
@@ -220,7 +227,20 @@ def build_route(
         token_valid, block_tokens, torch.full_like(block_tokens, -1)
     ).reshape(batch, num_heads, -1)
 
+    # Conditioning-frame keys kept for future-frame queries.  The full frame is the default;
+    # reducing it is the knob that lets the video branch go below the old 42.86% floor.
+    first_keep = int(round(config.conditional_keep_ratio * layout.num_first_frame))
+    first_keep = max(1, min(first_keep, layout.num_first_frame))
     first_frame = layout.first_frame_keys.view(1, 1, -1).expand(batch, num_heads, -1)
+    if first_keep < layout.num_first_frame:
+        # Rank the conditioning frame with the same signal the future blocks use when one is
+        # available, so a compressed conditioning frame keeps what the action looks at.
+        if cond_scores is not None:
+            order = torch.argsort(cond_scores, dim=-1, descending=True, stable=True)
+        else:
+            order = torch.arange(layout.num_first_frame, device=device).view(1, 1, -1)
+            order = order.expand(batch, num_heads, -1)
+        first_frame = first_frame.gather(2, order[:, :, :first_keep])
     keys = torch.cat([first_frame, block_tokens], dim=-1)
     valid = keys >= 0
     keys = keys.clamp(min=0)
@@ -231,8 +251,12 @@ def build_route(
     membership.scatter_(2, keys, valid)
 
     blocks = keep.view(1, -1).expand(batch, num_heads).clone()
-    kept_keys = layout.num_first_frame + blocks.to(torch.float32) * layout.block_size
+    kept_keys = (
+        first_keep + blocks.to(torch.float32) * layout.block_size
+    )
     future_queries = layout.video_length - layout.num_first_frame
+    # Frame-0 queries keep the whole conditioning frame to themselves, so their pairs are
+    # unaffected by conditional_keep_ratio; only the future rows shrink.
     kept_pairs = layout.num_first_frame**2 + future_queries * kept_keys
     legal_pairs = layout.num_first_frame**2 + future_queries * layout.video_length
     density = float((kept_pairs / legal_pairs).mean())
