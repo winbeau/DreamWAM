@@ -1,0 +1,78 @@
+"""Exercise visual refresh through real Joint sampling and transformer layers."""
+
+import pytest
+import torch
+
+from dreamwam.model import DreamWAMConfig, DreamWAMJoint
+from dreamwam.sparse.visual_step_cache import VisualStepCache
+
+
+def model_and_inputs():
+    model = DreamWAMJoint(DreamWAMConfig(
+        video_latent_dim=4, flow_latent_dim=4, dino_latent_dim=2, depth_latent_dim=2,
+        text_dim=8, freq_dim=8, video_hidden_dim=16, video_ffn_dim=32,
+        action_hidden_dim=16, action_ffn_dim=32, num_heads=2, attn_head_dim=8,
+        num_layers=2, dino_injection_layers=(0, 1), depth_injection_layers=(0, 1),
+        use_gradient_checkpointing=False,
+    )).eval()
+    inputs = dict(first_frame_latents=torch.randn(1, 4, 1, 4, 4),
+                  context=torch.randn(1, 3, 8), context_mask=torch.ones(1, 3, dtype=torch.bool),
+                  proprio=torch.randn(1, 8), action_horizon=4,
+                  num_video_latent_frames=3, num_steps=4, seed=42)
+    return model, inputs
+
+
+def test_refresh_every_step_is_bitwise_native_dense():
+    model, inputs = model_and_inputs()
+    dense = model.sample_action(**inputs)
+    original = model.mot.forward
+    with VisualStepCache(model, refresh_every=1) as cache:
+        actual = model.sample_action(**inputs)
+        assert torch.equal(actual, dense)
+        assert cache.last_stats == dict(dense_video_steps=4, reused_video_steps=0,
+                                       video_layer_updates=8, action_layer_updates=8)
+        assert not cache.video_kv and cache.video_output is None
+    assert model.mot.forward == original
+
+
+def test_visual_reuse_keeps_every_action_step_and_both_schedulers(monkeypatch):
+    model, inputs = model_and_inputs()
+    calls = dict(video_layers=0, action_layers=0, video_scheduler=0, action_scheduler=0)
+    handles = []
+    for expert, key in ((model.video_expert, "video_layers"), (model.action_expert, "action_layers")):
+        for block in expert.blocks:
+            def hook(module, args, result, name=key):
+                calls[name] += 1
+            handles.append(block.self_attn.q.register_forward_hook(hook))
+    for scheduler, key in ((model.video_scheduler, "video_scheduler"), (model.action_scheduler, "action_scheduler")):
+        original = scheduler.step
+        def step(*args, _original=original, _key=key, **kwargs):
+            calls[_key] += 1
+            return _original(*args, **kwargs)
+        monkeypatch.setattr(scheduler, "step", step)
+    with VisualStepCache(model, refresh_every=2) as cache:
+        actual = model.sample_action(**inputs)
+        assert torch.isfinite(actual).all()
+        assert calls == dict(video_layers=4, action_layers=8, video_scheduler=4, action_scheduler=4)
+        assert cache.last_stats["dense_video_steps"] == 2
+        assert cache.last_stats["reused_video_steps"] == 2
+        assert torch.equal(model.sample_action(**inputs), actual), "request-local state must be reset"
+    for handle in handles:
+        handle.remove()
+
+
+def test_failed_sampling_discards_visual_tensors():
+    model, inputs = model_and_inputs()
+    with VisualStepCache(model, refresh_every=5) as cache:
+        invalid = {**inputs, "num_steps": 0}
+        with pytest.raises(ValueError):
+            model.sample_action(**invalid)
+        assert not cache.video_kv and not cache._active
+        assert torch.isfinite(model.sample_action(**inputs)).all()
+
+
+@pytest.mark.parametrize("interval", [0, -1, True, 1.5])
+def test_invalid_refresh_interval(interval):
+    model, _ = model_and_inputs()
+    with pytest.raises(ValueError):
+        VisualStepCache(model, refresh_every=interval)

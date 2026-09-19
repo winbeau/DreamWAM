@@ -30,6 +30,7 @@ from dreamwam.config import load_release_config
 from dreamwam.policy import build_policy
 from dreamwam.sparse.ffn_context_cache import VisualFFNContextCache
 from dreamwam.sparse.ffn_neuron_cache import VisualFFNNeuronCache
+from dreamwam.sparse.visual_step_cache import VisualStepCache
 
 
 def sha256(path):
@@ -72,7 +73,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="configs/dreamwam_joint.yaml")
     parser.add_argument("--keep-ratio", type=float, default=0.1)
-    parser.add_argument("--cache-kind", choices=("tokens", "neurons"), default="tokens")
+    parser.add_argument("--cache-kind", choices=("tokens", "neurons", "visual_steps"), default="tokens")
+    parser.add_argument("--refresh-every", type=int, default=5, help="visual-step refresh interval; action always runs all steps")
     parser.add_argument("--group-size", type=int, default=10, help="neuron-mask group size; dense anchor at each group start")
     parser.add_argument("--warmup", type=int, default=2)
     parser.add_argument("--reps", type=int, default=12)
@@ -93,12 +95,14 @@ def main():
                     processes_before=command("nvidia-smi", "--query-compute-apps=gpu_uuid,pid,used_memory", "--format=csv"),
                     checkpoint=dict(path=str(release.paths.checkpoint), sha256=sha256(release.paths.checkpoint)),
                     source_sha256={name: sha256(name) for name in (
-                        "dreamwam/sparse/ffn_context_cache.py", "dreamwam/sparse/ffn_neuron_cache.py", "scripts/sparse/benchmark_ffn_context_cache.py",
+                        "dreamwam/sparse/ffn_context_cache.py", "dreamwam/sparse/ffn_neuron_cache.py", "dreamwam/sparse/visual_step_cache.py", "scripts/sparse/benchmark_ffn_context_cache.py",
                         "pyproject.toml", "requirements.txt", args.config)},
                     environment="existing .venv; no install/sync or dependency changes; model uv.lock absent",
-                    factor=dict(name=f"visual FFN {args.cache_kind} recompute fraction", keep_ratio=args.keep_ratio,
+                    factor=dict(name=f"visual FFN {args.cache_kind} recompute fraction" if args.cache_kind != "visual_steps" else "whole visual layer refresh interval",
+                                keep_ratio=args.keep_ratio if args.cache_kind != "visual_steps" else None,
                                 cache_kind=args.cache_kind,
                                 group_size=args.group_size if args.cache_kind == "neurons" else None,
+                                refresh_every=args.refresh_every if args.cache_kind == "visual_steps" else None,
                                 reference="per-row latest computed input/output" if args.cache_kind == "tokens" else "dense current-request group anchor",
                                 first_step="dense for every layer", action_guidance=False),
                     latency_boundary="full predict_action, synchronized wall clock, includes CPU action output",
@@ -117,11 +121,15 @@ def main():
     manifest["reps_per_variant"] = args.reps
     manifest["parameter_versions"] = {name: parameter._version for name, parameter in policy.model.named_parameters()}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    candidate = "context_cache" if args.cache_kind == "tokens" else "neuron_cache"
-    cache_class = VisualFFNContextCache if args.cache_kind == "tokens" else VisualFFNNeuronCache
-    extra = {} if args.cache_kind == "tokens" else {"group_size": args.group_size}
-    caches = {"matched_dense": cache_class(policy.model, keep_ratio=1.0, **extra),
-              candidate: cache_class(policy.model, keep_ratio=args.keep_ratio, **extra)}
+    candidate = {"tokens": "context_cache", "neurons": "neuron_cache", "visual_steps": "visual_step_cache"}[args.cache_kind]
+    if args.cache_kind == "visual_steps":
+        caches = {"matched_dense": VisualStepCache(policy.model, refresh_every=1),
+                  candidate: VisualStepCache(policy.model, refresh_every=args.refresh_every)}
+    else:
+        cache_class = VisualFFNContextCache if args.cache_kind == "tokens" else VisualFFNNeuronCache
+        extra = {} if args.cache_kind == "tokens" else {"group_size": args.group_size}
+        caches = {"matched_dense": cache_class(policy.model, keep_ratio=1.0, **extra),
+                  candidate: cache_class(policy.model, keep_ratio=args.keep_ratio, **extra)}
     if args.cache_kind == "neurons":
         caches[candidate].prepare()
         manifest["static_weight_norm_setup_seconds"] = caches[candidate].setup_seconds
