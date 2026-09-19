@@ -1,0 +1,54 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-19T20:46:59.975531+00:00",
+  "latency_seconds": {
+    "native_dense": {
+      "samples": 24,
+      "mean": 0.4538139606981228,
+      "p50": 0.45491212885826826,
+      "p95": 0.460016590449959,
+      "min": 0.4484518766403198,
+      "max": 0.46209878101944923,
+      "stdev": 0.003601122080204256
+    },
+    "matched_dense": {
+      "samples": 24,
+      "mean": 0.45742781390435994,
+      "p50": 0.4573529623448849,
+      "p95": 0.4608882101252675,
+      "min": 0.4534978847950697,
+      "max": 0.4655252154916525,
+      "stdev": 0.003167896115818221
+    },
+    "neuron_cache": {
+      "samples": 24,
+      "mean": 0.4735072390176356,
+      "p50": 0.4729496566578746,
+      "p95": 0.4771171477623284,
+      "min": 0.4676834512501955,
+      "max": 0.5006468761712313,
+      "stdev": 0.006480997553941511
+    }
+  },
+  "speedup_vs_matched_mean": 0.9660418600006307,
+  "speedup_vs_matched_p50": 0.9670225063208532,
+  "native_vs_matched_mean": 0.9920996207567896,
+  "full_budget_bitwise_parity": true,
+  "unchanged_parameter_versions": true,
+  "max_action_relative_l2": 0.06541534838681493,
+  "gpu_after": {
+    "exit_code": 0,
+    "stdout": "index, uuid, name, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, NVIDIA H200 NVL, 0 %, 1 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, NVIDIA H200 NVL, 0 %, 1 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, NVIDIA H200 NVL, 0 %, 1 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, NVIDIA H200 NVL, 0 %, 1 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, NVIDIA H200 NVL, 0 %, 1 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, NVIDIA H200 NVL, 5 %, 1119 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, NVIDIA H200 NVL, 0 %, 25231 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, NVIDIA H200 NVL, 100 %, 25861 MiB",
+    "stderr": ""
+  },
+  "processes_after": {
+    "exit_code": 0,
+    "stdout": "gpu_uuid, pid, used_gpu_memory [MiB]\nGPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 51300, 25220 MiB\nGPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 50004, 24732 MiB",
+    "stderr": ""
+  },
+  "sr": null,
+  "limitations": [
+    "No closed-loop SR; action error is a diagnostic, not a success criterion.",
+    "Only neurons reuse enabled; no action guidance, attention restriction, or other cache factor."
+  ]
+}

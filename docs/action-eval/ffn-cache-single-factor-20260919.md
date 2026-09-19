@@ -84,6 +84,38 @@ p50 ratio was 1.173×. This disagreement and the large within-run variation prev
 using that attempt as a stable estimate of the zero-recomputation boundary.
 Raw records are retained; a fixed-revision repeat on idle GPU 6 is required.
 
+The fixed-revision repeat completed at **20:44:04 UTC**, exit 0, on H200 NVL GPU 6
+(`GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5`). Commit `a1e59ab` was checked out
+as a separate detached Git worktree with the existing model environment and weights;
+`PYTHONPATH` selected that worktree. All variants used `OMP_NUM_THREADS=1`,
+`MKL_NUM_THREADS=1`, and `OPENBLAS_NUM_THREADS=1`. There were two warmups and
+24 measurements per variant; GPU telemetry was captured once per second.
+
+| Variant | Mean ms | p50 ms | p95 ms | Speedup vs matched mean |
+|---|---:|---:|---:|---:|
+| Native Dense | 453.23 | 452.93 | 456.93 | — |
+| Matched Dense | 455.42 | 455.18 | 458.21 | 1.000× |
+| First step dense, remaining visual FFNs fully reused | 447.47 | 447.75 | 451.25 | **1.018×** |
+
+Every candidate request ran 30 dense and 270 fully reused visual FFNs, computing
+8,820/88,200 rows (10% including anchors). Full-budget parity and unchanged parameter
+versions passed. This is a measured boundary of this FFN-only implementation, not a
+universal bound on broader visual reuse. It falls far short of the 1.5× objective.
+
+Evidence: [manifest](evidence/context-cache-20260919/keep000-stable-manifest.json),
+[requests](evidence/context-cache-20260919/keep000-stable-requests.jsonl),
+[summary](evidence/context-cache-20260919/keep000-stable-summary.json),
+[GPU telemetry](evidence/context-cache-20260919/keep000-stable-gpu.csv).
+The noisy first attempt is preserved as `keep000-noisy-*` in the same directory.
+
+```bash
+PYTHONPATH="$PWD" CUDA_VISIBLE_DEVICES=6 \
+  OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
+  .venv/bin/python scripts/sparse/benchmark_ffn_context_cache.py \
+  --keep-ratio 0 --warmup 2 --reps 24 \
+  --out-dir outputs/ffn-20260919/keep000
+```
+
 ## Factor N1: compact selected-neuron updates
 
 Implementation: [`ffn_neuron_cache.py`](../../dreamwam/sparse/ffn_neuron_cache.py),
@@ -108,8 +140,8 @@ group boundaries, and unchanged action FFN entry points.
 
 ## Remaining work
 
-Finish and archive the stable C1 zero-recomputation repeat and the N1 full-request
-comparison. If FFN-only reuse is insufficient, proceed to one separately measured
+Finish and archive the N1 full-request comparison. If FFN-only reuse is insufficient,
+proceed to one separately measured
 factor that removes broader visual token computation, accounting for projection,
 attention, FFN and reuse costs. Add action guidance only as its own ablation.
 Any candidate promoted to quality evaluation needs complete official episode
