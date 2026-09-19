@@ -84,7 +84,7 @@ before/after snapshots.
 | Unguided 10% token refresh | 274.68 | 274.33 | 276.51 |
 | Action-guided 10% token refresh | 275.09 | 274.38 | 277.36 |
 
-Guided refresh is **1.657×** matched Dense and **1.00065×** temporal-only.
+Guided refresh is **1.657×** matched Dense (**1.636×** native Dense) and **1.00065×** temporal-only.
 It is **0.99854×** unguided refresh: guidance adds 0.402 ms mean latency.
 Whether guidance improves decision quality is unknown. Maximum synthetic action
 relative L2 is 0.12504 and is not evidence of preserved SR. All parity and parameter
@@ -159,3 +159,149 @@ the checkpoint hash, guidance/budget/cadence and preserved scientific settings;
 2/15 terminal outcomes were present, both successes. The worker was alive then.
 This is an incomplete pilot; no SR or guidance-quality conclusion is made.
 The next gate is complete official pairing, followed by full Spatial coverage.
+
+### Native recovery and resource allocation
+
+The GPU-2 pilot stopped with **3/15 accepted successes, 0 task failures**. Its
+initial process and first recovery both aborted natively. At **22:29:33 UTC**,
+the recovery supervisor observed 75% GPU utilization after its own worker exited
+and stopped with `gpu_resource_window_closed`. The [partial bundle](evidence/visual-token-cache-20260919/gpu2-partial/summary.json)
+keeps `success_rate: null`; [recovery state](evidence/visual-token-cache-20260919/gpu2-partial/recovery-summary.json)
+and [resource checks](evidence/visual-token-cache-20260919/gpu2-partial/gpu-checks.jsonl)
+are retained. Abrupt native exits did not persist a per-episode error record, so
+the remaining bundle rows say `not_run`; the native errors remain in process logs.
+These rows must not be described as tasks that failed, or as proof no invocation
+attempted them.
+
+A separate GPU-6 pilot began **22:32:10 UTC**, run
+`guided-gpu6/run-20260919T223210Z-9d7852f8`, with identical model and scientific
+settings. It reached **5/15 accepted successes**. The initial process and five
+recoveries ended in SIGABRT; the last three recoveries added no outcome, so the
+supervisor stopped at `stagnation_limit`. No outputs were pooled across GPUs.
+
+The known productive GPU-1 allocation was then assigned to the action-guided
+candidate. The older temporal 500-episode run was requested to stop via its own
+supervisor at **22:50:46 UTC**. Its frozen config/manifest and **118 settled
+successes** were checked unchanged after exit; its policy worker was confirmed
+gone. That temporal run remains available for later resume and has no complete SR.
+
+The new GPU-1 pilot began **22:51:59 UTC**, run
+`guided-gpu1/run-20260919T225159Z-9084dbca`, after validation/doctor and a free-card
+snapshot. The initial process completed all five task-0 episodes, then exited 134.
+Bounded recovery started **22:54:25 UTC**, with ten invocations maximum and three
+consecutive no-progress invocations as the stopping limit. The original GPU-2
+and GPU-6 manifests remain separate. The full 500-episode guided config, committed
+in action-eval **d632135**, passed validation/doctor before launch.
+
+By **22:58:36 UTC**, the GPU-1 pilot had completed **15 accepted successes, 0
+task failures**; recovery 3 returned 0. The [complete paired pilot](evidence/visual-token-cache-20260919/gpu1-pilot/paired-pilot.json)
+contains all 15 planned pairs, each successful on both sides. The same first-input
+audit still finds differing image hashes on every pair, with identical state
+vectors. This is a successful plumbing pilot with the repeatability limitation
+below, not evidence of non-inferiority. [Episode records](evidence/visual-token-cache-20260919/gpu1-pilot/per_episode.csv),
+[executed provenance](evidence/visual-token-cache-20260919/gpu1-pilot/provenance.json)
+and [recovery completion](evidence/visual-token-cache-20260919/gpu1-pilot/recovery-summary.json)
+are retained.
+
+The full guided Spatial run began **22:59:43 UTC** on GPU 1, using model
+**8390f6a**, config **d632135** and evaluator **4701ac2**:
+`dreamwam-sr/outputs/guided-visual-token-spatial-20260919/guided-gpu1/run-20260919T225943Z-b4cfcb70`.
+It uses all 10 tasks × 50 initial states, repeat 0, seed 42 and the unchanged
+`dreamwam-release-v1` protocol. The complete pilot was not imported into it.
+The actual worker description was verified against the checkpoint hash,
+guidance/cadence/budget and all scientific settings.
+
+At **23:02:05 UTC**, guided coverage was **6/500**, matched Dense **126/500**,
+and the inactive temporal run retained **118/500**, with no task failures among
+these recorded terminal outcomes. The guided initial process had exited 134;
+bounded recovery started **23:02:38 UTC**. At **23:03:32 UTC**, guided supervisor
+148285 and Dense supervisor 142854 were verified alive. These are timestamped
+handles, not continuing liveness guarantees. Full SR remains null.
+Evidence: [executed coverage snapshot](evidence/visual-token-cache-20260919/full-spatial/progress-230205Z.json),
+[validation](evidence/visual-token-cache-20260919/full-spatial/validate.log),
+[doctor](evidence/visual-token-cache-20260919/full-spatial/doctor.log).
+
+### First-input repeatability is not established
+
+[`audit_initial_inputs.py`](../../scripts/sparse/audit_initial_inputs.py), commit
+**8e6ee98**, compares the first saved policy input after the prescribed 30 wait
+steps, before a policy-dependent action. It checks benchmark/protocol identity
+and never computes SR or substitutes an intersection for an SR denominator.
+Two server invocations exited 0 at **22:48:59 UTC**:
+
+| Initial-input comparison | Shared identities | Equal state hashes | Equal agentview hashes | Equal wrist hashes |
+|---|---:|---:|---:|---:|
+| Completed temporal pilot vs Dense pilot | 15 | 15 | 0 | 0 |
+| Dense pilot vs full Dense, both on GPU 0 | 10 | 10 | 0 | 0 |
+| Completed guided GPU-1 pilot vs Dense pilot | 15 | 15 | 0 | 0 |
+
+The second comparison keeps the same model **28845c6**, interval-1 control,
+physical GPU and scientific settings. Thus image non-identity also occurs without
+changing the policy method. **Hashes alone do not quantify image error or identify
+its cause.** These audits do not establish that images are corrupted, but they
+show that byte-identical initial observations cannot currently be assumed.
+The completed 15-pair pilot cannot isolate a decision-preservation effect from
+this observation variability, and cannot support a non-inferiority claim.
+Official terminal records remain intact. The independent EGL investigation has
+not yet established a production repair or repeatable reference observations.
+
+Evidence: [temporal/Dense audit](evidence/visual-token-cache-20260919/input-audit/temporal-initial-input-audit-8e6ee98.json),
+[same-Dense audit](evidence/visual-token-cache-20260919/input-audit/dense-initial-input-audit-8e6ee98.json),
+[guided/Dense audit](evidence/visual-token-cache-20260919/input-audit/guided-gpu1-initial-input-audit-8e6ee98.json)
+(the last audit ran at **22:59:41 UTC**).
+
+```bash
+.venv/bin/python scripts/sparse/audit_initial_inputs.py \
+  --reference "$DENSE_PILOT" --candidate "$TEMPORAL_PILOT" --out "$NEW_AUDIT_JSON"
+.venv/bin/python scripts/sparse/audit_initial_inputs.py \
+  --reference "$DENSE_PILOT" --candidate "$FULL_DENSE_RUN" --out "$NEW_DENSE_AUDIT_JSON"
+```
+
+## Diagnostic profile: selection leaves the operator count largely unchanged
+
+[`profile_visual_cache.py`](../../scripts/sparse/profile_visual_cache.py), measured
+commit **8a03e8a**, completed **22:37:23 UTC**, exit 0, on GPU 7. The card was shared
+with a lightly utilized foreign workload; no foreign process was signalled. It
+loaded the same real checkpoint/environment and captured one instrumented request
+per variant after two warmups. All three profiled outputs were bitwise equal to
+their own uninstrumented outputs; matched Dense was also bitwise native Dense,
+and parameter versions did not change.
+
+The profile adds considerable overhead and the first trace has additional
+profiler startup costs. **Its wall times are not speedup measurements.** PyTorch
+also emits CUDA user annotations with the same stage names; those spans contain
+stream gaps and must not be treated as kernel time or additional stage calls.
+The [interpretation](evidence/visual-token-cache-20260919/profile/interpretation.json)
+filters to CPU annotation rows and checks invocation counts. Commit **b8bb6ae**
+applies this filtering in future profiler output; its import/CLI check passed.
+Original raw summaries are retained without editing.
+
+| Instrumented scope | Calls | CPU span ms | Attributed device work ms |
+|---|---:|---:|---:|
+| Temporal-only refresh | 2 | 153.62 | 53.16 |
+| Guided-token refresh | 2 | 154.76 | 46.21 |
+| Temporal-only action reuse | 8 | 296.87 | 65.86 |
+| Guided-token action reuse | 8 | 293.23 | 65.93 |
+
+Scope totals are nested and must not be added together. The recorded
+`cudaLaunchKernel` call counts are 29,440 temporal-only and 29,509 guided;
+`cuLaunchKernelEx` counts are 3,996 and 3,999 respectively. These API counts are
+reported separately, not summed into a claimed number of unique kernels.
+Selecting fewer rows leaves nearly the same operator/launch structure, while
+all eight action reuse steps remain. This supports examining dispatch costs as
+a separate next factor; it is not evidence that a particular graph/fusion change
+will achieve 2×, and no such change is enabled in any SR run.
+
+Evidence: [manifest](evidence/visual-token-cache-20260919/profile/manifest.json),
+[matched profile](evidence/visual-token-cache-20260919/profile/matched_dense-profile.json),
+[temporal profile](evidence/visual-token-cache-20260919/profile/temporal_only-profile.json),
+[guided profile](evidence/visual-token-cache-20260919/profile/guided_tokens-profile.json).
+The three complete Chrome traces (285 MiB total) remain on the server under
+`dreamwam-sr/DreamWAM-profile-8a03e8a/outputs/visual-profile-20260919/profile/`.
+
+```bash
+PYTHONPATH="$PWD" CUDA_VISIBLE_DEVICES=7 \
+  OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
+  .venv/bin/python scripts/sparse/profile_visual_cache.py --warmup 2 \
+  --out-dir outputs/visual-profile-20260919/profile
+```

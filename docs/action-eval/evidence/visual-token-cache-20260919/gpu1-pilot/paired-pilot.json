@@ -1,0 +1,83 @@
+{
+  "coverage": {
+    "complete": true,
+    "dense_episodes": 15,
+    "excluded_non_terminal": 0,
+    "expected_dense_episodes": 15,
+    "expected_sparse_episodes": 15,
+    "missing_dense_rows": 0,
+    "missing_sparse_rows": 0,
+    "paired_terminal": 15,
+    "planned_identity_difference": 0,
+    "shared_episodes": 15,
+    "sparse_episodes": 15,
+    "sparse_non_terminal_detail": {},
+    "unpaired": 0
+  },
+  "dense_run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-pilot-20260919/matched/run-20260919T210051Z-93e56600",
+  "label": "15-episode plumbing pilot only: guided 10% visual tokens vs matched Dense",
+  "paired": {
+    "delta_ci95": [
+      0.0,
+      0.0
+    ],
+    "dense_loss_sparse_win": 0,
+    "dense_sr_ci95": [
+      1.0,
+      1.0
+    ],
+    "dense_win_sparse_loss": 0,
+    "mcnemar_one_sided_sparse_worse_p": 1.0,
+    "mcnemar_two_sided_p": 1.0,
+    "resamples": 10000,
+    "sparse_sr_ci95": [
+      1.0,
+      1.0
+    ],
+    "unchanged": 15
+  },
+  "per_task": {
+    "0": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 5,
+      "dense_win_sparse_loss": 0,
+      "pairs": 5,
+      "sparse_success": 5
+    },
+    "1": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 5,
+      "dense_win_sparse_loss": 0,
+      "pairs": 5,
+      "sparse_success": 5
+    },
+    "2": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 5,
+      "dense_win_sparse_loss": 0,
+      "pairs": 5,
+      "sparse_success": 5
+    }
+  },
+  "sparse_run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/guided-visual-token-pilot-20260919/guided-gpu1/run-20260919T225159Z-9084dbca",
+  "success_rate": {
+    "delta_absolute": 0.0,
+    "dense": 1.0,
+    "dense_wilson95": [
+      0.7961107336956521,
+      1.0
+    ],
+    "sparse": 1.0,
+    "sparse_wilson95": [
+      0.7961107336956521,
+      1.0
+    ],
+    "withheld_reason": null
+  },
+  "timing_seconds": {
+    "dense_mean": 29.502066666666668,
+    "note": "wall time includes simulator stepping and render aborts, so it is not the model's own latency; the operator-level cost is measured separately",
+    "sparse_mean": 8.393533333333332
+  },
+  "tool": "scripts/sparse/paired_sr.py"
+}

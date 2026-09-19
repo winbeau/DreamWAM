@@ -1,0 +1,65 @@
+{
+  "status": "PROFILED",
+  "start_utc": "2026-09-19T22:35:53.113039+00:00",
+  "argv": [
+    "scripts/sparse/profile_visual_cache.py",
+    "--warmup",
+    "2",
+    "--out-dir",
+    "outputs/visual-profile-20260919/profile"
+  ],
+  "pid": 130437,
+  "cwd": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-profile-8a03e8a",
+  "git": {
+    "exit_code": 0,
+    "stdout": "8a03e8a27bc39efa61457da2e0e92d0cab3bc8e8",
+    "stderr": ""
+  },
+  "dirty": {
+    "exit_code": 0,
+    "stdout": "?? .venv\n?? pretrained",
+    "stderr": ""
+  },
+  "python": "3.10.20",
+  "torch": "2.7.1+cu126",
+  "cuda_visible_devices": "7",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "script_sha256": "0344fb449b925f21806967ec9a3cb8bbb0e570b00ed8ca71cb8953393575e85f",
+  "gpu_before": {
+    "exit_code": 0,
+    "stdout": "index, uuid, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, 0 %, 25508 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 0 %, 25479 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 74 %, 24743 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 0 %, 1119 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 1 %, 42397 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, 18 %, 42741 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 18 %, 55049 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 17 %, 41559 MiB",
+    "stderr": ""
+  },
+  "sr": null,
+  "speedup": null,
+  "caveat": "Instrumented single-request traces are diagnostic, not latency samples; nested stage totals overlap.",
+  "inputs": {
+    "kind": "synthetic random images and zero proprio; latency screening only",
+    "seeds": [
+      0,
+      1,
+      2
+    ]
+  },
+  "input_id": 0,
+  "evaluation": {
+    "action_horizon": 32,
+    "video_frames": 9,
+    "denoising_steps": 10,
+    "replan_steps": 10,
+    "wait_steps": 30,
+    "resolution": 256,
+    "seed": 42,
+    "rand_device": "cpu",
+    "binarize_gripper": true
+  },
+  "dtype": "torch.bfloat16",
+  "exit_code": 0,
+  "end_utc": "2026-09-19T22:37:23.226675+00:00",
+  "gpu_after": {
+    "exit_code": 0,
+    "stdout": "index, uuid, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, 0 %, 13653 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 8 %, 25231 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 76 %, 24743 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 0 %, 1119 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 0 %, 42403 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, 0 %, 42749 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 100 %, 68225 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 0 %, 66353 MiB",
+    "stderr": ""
+  },
+  "unchanged_parameter_versions": true
+}

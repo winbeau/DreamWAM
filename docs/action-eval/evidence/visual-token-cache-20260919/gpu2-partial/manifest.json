@@ -1,0 +1,171 @@
+{
+  "schema_version": "action-eval/report-bundle/v1",
+  "run_id": "run-20260919T222045Z-aed6d97d",
+  "fingerprint": "aed6d97d30cd40c58152892592cd70be7faaddf0f81e6b57e900b39c31821a02",
+  "created_at": "2026-09-19T22:20:46.291693+00:00",
+  "benchmark": {
+    "backend": "libero",
+    "suite": "libero_spatial"
+  },
+  "protocol": {
+    "id": "dreamwam-release-v1",
+    "max_steps": 400,
+    "wait_steps": 30,
+    "replan_steps": 10,
+    "resolution": [
+      256,
+      256
+    ],
+    "seed": 42,
+    "observation_profile": "dreamwam-libero-2cam-v1",
+    "action_profile": "libero-osc-pose-v1",
+    "success_mode": "first_success_after_wait",
+    "repeats": 1
+  },
+  "planned_episodes": 15,
+  "episodes": [
+    {
+      "episode_id": "t000-i000-r00-s42",
+      "task_id": 0,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i001-r00-s42",
+      "task_id": 0,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i002-r00-s42",
+      "task_id": 0,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i003-r00-s42",
+      "task_id": 0,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t000-i004-r00-s42",
+      "task_id": 0,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i000-r00-s42",
+      "task_id": 1,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i001-r00-s42",
+      "task_id": 1,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i002-r00-s42",
+      "task_id": 1,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i003-r00-s42",
+      "task_id": 1,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t001-i004-r00-s42",
+      "task_id": 1,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl next to the ramekin and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i000-r00-s42",
+      "task_id": 2,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i001-r00-s42",
+      "task_id": 2,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i002-r00-s42",
+      "task_id": 2,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i003-r00-s42",
+      "task_id": 2,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    },
+    {
+      "episode_id": "t002-i004-r00-s42",
+      "task_id": 2,
+      "repeat": 0,
+      "seed": 42,
+      "instruction": "pick up the black bowl from table center and place it on the plate"
+    }
+  ],
+  "columns": {
+    "per_episode": [
+      "episode_id",
+      "task_id",
+      "task_name",
+      "init_index",
+      "repeat",
+      "seed",
+      "status",
+      "success",
+      "termination_reason",
+      "executed_steps",
+      "policy_calls",
+      "wall_seconds",
+      "error_type",
+      "error_message"
+    ],
+    "per_task": [
+      "task_id",
+      "task_name",
+      "planned",
+      "succeeded",
+      "failed",
+      "errors",
+      "cancelled",
+      "not_run",
+      "completed",
+      "coverage",
+      "success_rate",
+      "observed_sr",
+      "success_lower_bound",
+      "wilson_low",
+      "wilson_high"
+    ]
+  },
+  "warnings": [
+    "run is incomplete (3/15 episodes reached a task outcome); the bundle reports no success rate"
+  ]
+}

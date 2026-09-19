@@ -1,0 +1,9 @@
+{
+  "reason": "gpu_resource_window_closed",
+  "attempts": 1,
+  "planned": 15,
+  "completed": 3,
+  "sr": null,
+  "successes": 3,
+  "task_failures": 0
+}

@@ -261,6 +261,17 @@ that snapshot; this is a timestamped state, not a continuing liveness guarantee.
 Supervisor logs remain in the full Spatial output root under
 `refresh5-gpu1-recovery-01/` and `matched-recovery-01/`.
 
+Later allocation update, **23:02:05 UTC**: the temporal run retained **118/500
+settled successes** after an orderly supervisor stop requested at 22:50:46 UTC;
+its frozen config/manifest and every settled record were checked unchanged.
+[Reallocation audit](evidence/visual-cache-spatial-20260919/refresh5-gpu1-reallocation.json)
+records the before/after hashes. GPU 1 now runs the [action-guided candidate](visual-token-cache-single-factor-20260919.md),
+whose separate 15-pair pilot completed and whose 500-episode run has started.
+Full Dense reached 126/500 and continues bounded recovery on GPU 0. No complete
+Spatial SR is available. The new first-input audit also finds image non-identity
+with equal state vectors, including same-Dense comparisons; the successful pilot
+counts do not resolve that repeatability limitation or prove non-inferiority.
+
 ```bash
 # From the frozen action-eval-visual-4701ac2 checkout, using the lane's original GPU.
 PYTHONPATH="$PWD/src:$LIBERO_ROOT" CUDA_VISIBLE_DEVICES="$PHYSICAL_GPU" \
