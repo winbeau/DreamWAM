@@ -114,6 +114,7 @@ def main() -> None:
     video, action, mot = build(device)
     mot.eval()
 
+    switched_norms = 0
     if args.fast_ops:
         from dreamwam.layers import RMSNorm
 
@@ -122,6 +123,14 @@ def main() -> None:
         for module in mot.modules():
             if isinstance(module, RMSNorm):
                 module.fused = True
+                switched_norms += 1
+        # A switch that matches nothing would make this comparison silently inert, which is
+        # the failure mode this project has already hit twice. Fail loudly instead.
+        if switched_norms == 0:
+            raise RuntimeError(
+                "fast ops requested but no RMSNorm module was switched; the comparison "
+                "would be measuring the shipped path twice"
+            )
 
     height, width = 2, 2  # patch grid per frame
     video_state = video.pre_dit(
@@ -172,6 +181,7 @@ def main() -> None:
         ),
         "sparse": sparse.describe(),
         "fast_ops": bool(args.fast_ops),
+        "rms_norm_modules_switched": switched_norms,
         "layers": LAYERS,
         "operators_per_layer": per_layer,
         "operators_per_request_estimate": per_request,
