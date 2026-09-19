@@ -930,8 +930,20 @@ def test_padding_never_erases_a_legitimate_key():
                 )
 
 
-def test_block_hit_mask_is_not_erased_by_padding():
+def test_block_hit_mask_agrees_with_the_route_it_describes():
+    """The standalone helper and the route builder must produce the same membership.
+
+    Two implementations of the same table is how the padding defect survived: the helper and
+    the router were both wrong in the same way, so comparing either against the other proved
+    nothing. They are compared here against the executed route's own keys instead.
+    """
     layout = make_layout()
-    ids = torch.tensor([[[2, -1]]])  # a real block followed by padding
-    membership = block_hit_mask(layout, ids)
-    assert bool(membership[0, 0, 0]), "the padding must not clear token 0"
+    ids = torch.tensor([[[2, -1]]])  # one real block followed by padding
+    helper = block_hit_mask(layout, ids)
+    selected = layout.future_block_keys[2]
+    for token in range(layout.video_length):
+        expected = bool((selected == token).any())
+        assert bool(helper[0, 0, token]) is expected, f"token {token} membership disagrees"
+    assert not bool(helper[0, 0, :TOKENS_PER_FRAME].any()), (
+        "the helper covers future blocks only; frame 0 is the caller's addition"
+    )
