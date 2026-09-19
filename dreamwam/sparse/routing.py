@@ -245,10 +245,16 @@ def build_route(
     valid = keys >= 0
     keys = keys.clamp(min=0)
 
+    # Scatter membership with OR semantics through a scratch column.  Padding entries carry
+    # index -1 and are clamped to 0 before scattering; writing them as False directly into the
+    # real table erases the legitimate key 0 whenever a head has fewer blocks than the widest
+    # head - which is exactly the per-head-budget case M1 produces.  The scratch column absorbs
+    # every invalid entry so no real position can be cleared by padding.
     membership = torch.zeros(
-        batch, num_heads, layout.video_length, dtype=torch.bool, device=device
+        batch, num_heads, layout.video_length + 1, dtype=torch.bool, device=device
     )
-    membership.scatter_(2, keys, valid)
+    membership.scatter_(2, torch.where(valid, keys, layout.video_length), valid)
+    membership = membership[..., : layout.video_length]
 
     blocks = keep.view(1, -1).expand(batch, num_heads).clone()
     kept_keys = (

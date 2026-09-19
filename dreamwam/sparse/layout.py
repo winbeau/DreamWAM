@@ -128,13 +128,18 @@ def block_hit_mask(layout: TokenLayout, block_ids: torch.Tensor) -> torch.Tensor
     tokens = torch.where(keep, tokens, torch.full_like(tokens, -1)).reshape(
         batch, heads, -1
     )
+    # Same OR-through-a-scratch-column trick as the route membership: padding is clamped to
+    # index 0, so writing its False directly would erase the real token 0.
     membership = torch.zeros(
         batch,
         heads,
-        layout.video_length,
+        layout.video_length + 1,
         dtype=torch.bool,
         device=layout.first_frame_keys.device,
     )
-    index = tokens.clamp(min=0)
-    membership.scatter_(2, index, tokens >= 0)
-    return membership
+    membership.scatter_(
+        2,
+        torch.where(tokens >= 0, tokens.clamp(min=0), layout.video_length),
+        tokens >= 0,
+    )
+    return membership[..., : layout.video_length]

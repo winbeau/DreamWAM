@@ -897,3 +897,41 @@ def test_frame0_rows_stay_dense_over_their_own_frame_when_it_is_compressed():
 def test_conditional_ratio_is_validated():
     with pytest.raises(ValueError, match="conditional_keep_ratio"):
         SparseConfig.from_mapping({"enabled": True, "conditional_keep_ratio": 1.5})
+
+
+def test_padding_never_erases_a_legitimate_key():
+    """Regression: padding is clamped to index 0, so writing its False directly into the
+    membership table used to erase key 0 whenever a head had a smaller budget than the widest
+    head. That is the per-head-budget case M1 exists to produce, and the masked backend reads
+    membership, so the failure was silent and only visible against an independent reference."""
+    layout = make_layout()
+    route = build_route(
+        layout=layout,
+        config=SparseConfig.from_mapping(
+            {
+                "enabled": True,
+                "selection": "recency",
+                "block_size": BLOCK_SIZE,
+                "head_blocks": [0, 2],  # head 0 keeps no future block -> padding exists
+            }
+        ),
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+    )
+    assert bool(route.valid[0, 0].any()), "head 0 must keep its conditioning keys"
+    assert bool(route.membership[0, 0].any()), "membership must not be emptied by padding"
+    # Every valid gathered key must be a member.
+    for head in range(NUM_HEADS):
+        for key, ok in zip(route.keys[0, head].tolist(), route.valid[0, head].tolist()):
+            if ok:
+                assert bool(route.membership[0, head, key]), (
+                    f"head {head}: key {key} is executed but absent from membership"
+                )
+
+
+def test_block_hit_mask_is_not_erased_by_padding():
+    layout = make_layout()
+    ids = torch.tensor([[[2, -1]]])  # a real block followed by padding
+    membership = block_hit_mask(layout, ids)
+    assert bool(membership[0, 0, 0]), "the padding must not clear token 0"
