@@ -143,12 +143,15 @@ def build_route(
     if not config.enabled:
         raise ValueError("build_route called with sparse disabled")
     stage = config.stage_of(step_index, num_steps)
+    # Keep the Python tuple alongside the tensor: the widest budget is then known without
+    # reading the device, and an .item() here would synchronise once per layer-step.
+    blocks_per_head = config.blocks_for(
+        num_heads=num_heads,
+        stage=stage,
+        num_future_blocks=layout.num_future_blocks,
+    )
     keep = torch.tensor(
-        config.blocks_for(
-            num_heads=num_heads,
-            stage=stage,
-            num_future_blocks=layout.num_future_blocks,
-        ),
+        blocks_per_head,
         device=layout.first_frame_keys.device,
         dtype=torch.long,
     )
