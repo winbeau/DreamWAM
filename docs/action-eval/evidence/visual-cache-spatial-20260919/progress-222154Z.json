@@ -1,0 +1,380 @@
+{
+  "utc": "2026-09-19T22:21:54.982749+00:00",
+  "runs": {
+    "matched": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0",
+      "planned": 500,
+      "completed": 28,
+      "successes": 28,
+      "task_failures": 0,
+      "sr": null,
+      "manifest_sha256": "343a536e8af2273d4e942ed8a99e4b9df9db1cf32d734105ea3f44de4aaa8081",
+      "resolved_sha256": "25021eb8960d7b0ca0ccf7289b3fb1200b377d8479dff4a5af5907c0da780c88",
+      "worker_alive": true,
+      "worker": {
+        "startup": {
+          "protocol_version": "action-eval-proto/v1",
+          "adapter_target": "evaluation/action_eval/infer.py:create_policy",
+          "device": "cuda:0",
+          "python": "3.10.20",
+          "pid": 119765
+        },
+        "description": {
+          "observation_profile": "dreamwam-libero-2cam-v1",
+          "action_profile": "libero-osc-pose-v1",
+          "rng_mode": "fixed_per_predict",
+          "action_horizon": 32,
+          "fingerprint": {
+            "adapter": "dreamwam",
+            "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/configs/dreamwam_joint.yaml",
+            "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+            "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/checkpoints/dreamwam_joint.pt",
+            "checkpoint_source": "policy.checkpoint",
+            "checkpoint_size_bytes": 12063469113,
+            "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+            "checkpoint_conflict": null,
+            "setting": "joint",
+            "action_horizon": 32,
+            "denoising_steps": 10,
+            "video_frames": 9,
+            "replan_steps": 10,
+            "wait_steps": 30,
+            "binarize_gripper": true,
+            "model_seed": 42,
+            "rng_mode": "fixed_per_predict",
+            "sparse": {
+              "enabled": false,
+              "selection": "av_context",
+              "backend": "masked",
+              "block_size": 14,
+              "future_ratio": 1.0,
+              "conditional_keep_ratio": 1.0,
+              "context_weight": 1.0,
+              "min_anchor_mass": 0.0,
+              "fallback": "recency",
+              "num_stages": 1,
+              "anchor_refresh": "layer",
+              "anchor_layer": 0,
+              "sparse_layers": null,
+              "head_blocks": null,
+              "stage_blocks": null
+            },
+            "sparse_config_hash": "10d80b7ca00e97b5",
+            "visual_cache": {
+              "refresh_every": 1
+            }
+          },
+          "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+        },
+        "worker_index": 0,
+        "requested_gpu_uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+        "cuda_visible_devices": "0",
+        "gpu": {
+          "index": 0,
+          "uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+          "name": "NVIDIA H200 NVL",
+          "memory_total_mib": 143771,
+          "memory_used_mib": 1
+        },
+        "gpu_resolved": true,
+        "stage": "policy_ready",
+        "simulator_env": {
+          "OMP_NUM_THREADS": "1 (preserved: already set in the environment)"
+        }
+      },
+      "policy_commit": "28845c608e51b885ba18d8d918fee19f70eeea39",
+      "recovery_metadata": {
+        "start_utc": "2026-09-19T22:15:05.416931+00:00",
+        "supervisor_pid": 115888,
+        "command": [
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2/.venv/bin/python",
+          "-m",
+          "action_eval.cli",
+          "resume",
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0"
+        ],
+        "evaluator_root": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+        "script_sha256": "eb26dd9f276c5fa87bed6658b64c81cb040320f551eb99896e08b7af67e177c2",
+        "max_attempts": 20,
+        "max_stagnant": 3,
+        "policy_gpu_uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+        "max_gpu_utilization": 20,
+        "min_free_mib": 35000,
+        "evaluator_commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b"
+      },
+      "recovery_summary": null,
+      "finished_recoveries": [
+        {
+          "attempt": 1,
+          "return_code": -6,
+          "new_task_outcomes": 6,
+          "completed": 12,
+          "planned": 500,
+          "stagnant": 0
+        },
+        {
+          "attempt": 2,
+          "return_code": -6,
+          "new_task_outcomes": 6,
+          "completed": 18,
+          "planned": 500,
+          "stagnant": 0
+        },
+        {
+          "attempt": 3,
+          "return_code": -6,
+          "new_task_outcomes": 6,
+          "completed": 24,
+          "planned": 500,
+          "stagnant": 0
+        }
+      ]
+    },
+    "refresh5": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1/run-20260919T215351Z-7f224961",
+      "planned": 500,
+      "completed": 55,
+      "successes": 55,
+      "task_failures": 0,
+      "sr": null,
+      "manifest_sha256": "220ab29833458a81817e3e3c953d7c5532e4913f91e2fe37aea5ee8c10631215",
+      "resolved_sha256": "9f621deb83a7843555efb69c28ee45ffe168df6ac41fbd3c5a63e8ff7ddd904c",
+      "worker_alive": true,
+      "worker": {
+        "startup": {
+          "protocol_version": "action-eval-proto/v1",
+          "adapter_target": "evaluation/action_eval/infer.py:create_policy",
+          "device": "cuda:0",
+          "python": "3.10.20",
+          "pid": 119833
+        },
+        "description": {
+          "observation_profile": "dreamwam-libero-2cam-v1",
+          "action_profile": "libero-osc-pose-v1",
+          "rng_mode": "fixed_per_predict",
+          "action_horizon": 32,
+          "fingerprint": {
+            "adapter": "dreamwam",
+            "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/configs/dreamwam_joint.yaml",
+            "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+            "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/checkpoints/dreamwam_joint.pt",
+            "checkpoint_source": "policy.checkpoint",
+            "checkpoint_size_bytes": 12063469113,
+            "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+            "checkpoint_conflict": null,
+            "setting": "joint",
+            "action_horizon": 32,
+            "denoising_steps": 10,
+            "video_frames": 9,
+            "replan_steps": 10,
+            "wait_steps": 30,
+            "binarize_gripper": true,
+            "model_seed": 42,
+            "rng_mode": "fixed_per_predict",
+            "sparse": {
+              "enabled": false,
+              "selection": "av_context",
+              "backend": "masked",
+              "block_size": 14,
+              "future_ratio": 1.0,
+              "conditional_keep_ratio": 1.0,
+              "context_weight": 1.0,
+              "min_anchor_mass": 0.0,
+              "fallback": "recency",
+              "num_stages": 1,
+              "anchor_refresh": "layer",
+              "anchor_layer": 0,
+              "sparse_layers": null,
+              "head_blocks": null,
+              "stage_blocks": null
+            },
+            "sparse_config_hash": "10d80b7ca00e97b5",
+            "visual_cache": {
+              "refresh_every": 5
+            }
+          },
+          "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+        },
+        "worker_index": 0,
+        "requested_gpu_uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+        "cuda_visible_devices": "1",
+        "gpu": {
+          "index": 1,
+          "uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+          "name": "NVIDIA H200 NVL",
+          "memory_total_mib": 143771,
+          "memory_used_mib": 1
+        },
+        "gpu_resolved": true,
+        "stage": "policy_ready",
+        "simulator_env": {
+          "OMP_NUM_THREADS": "1 (preserved: already set in the environment)"
+        }
+      },
+      "policy_commit": "28845c608e51b885ba18d8d918fee19f70eeea39",
+      "recovery_metadata": {
+        "start_utc": "2026-09-19T22:10:25.765758+00:00",
+        "supervisor_pid": 113515,
+        "command": [
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2/.venv/bin/python",
+          "-m",
+          "action_eval.cli",
+          "resume",
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1/run-20260919T215351Z-7f224961"
+        ],
+        "evaluator_root": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+        "script_sha256": "eb26dd9f276c5fa87bed6658b64c81cb040320f551eb99896e08b7af67e177c2",
+        "max_attempts": 20,
+        "max_stagnant": 3,
+        "policy_gpu_uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+        "max_gpu_utilization": 20,
+        "min_free_mib": 35000,
+        "evaluator_commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b"
+      },
+      "recovery_summary": null,
+      "finished_recoveries": [
+        {
+          "attempt": 1,
+          "return_code": -6,
+          "new_task_outcomes": 6,
+          "completed": 17,
+          "planned": 500,
+          "stagnant": 0
+        },
+        {
+          "attempt": 2,
+          "return_code": -6,
+          "new_task_outcomes": 6,
+          "completed": 23,
+          "planned": 500,
+          "stagnant": 0
+        },
+        {
+          "attempt": 3,
+          "return_code": -6,
+          "new_task_outcomes": 6,
+          "completed": 29,
+          "planned": 500,
+          "stagnant": 0
+        },
+        {
+          "attempt": 4,
+          "return_code": -6,
+          "new_task_outcomes": 6,
+          "completed": 35,
+          "planned": 500,
+          "stagnant": 0
+        },
+        {
+          "attempt": 5,
+          "return_code": -6,
+          "new_task_outcomes": 6,
+          "completed": 41,
+          "planned": 500,
+          "stagnant": 0
+        },
+        {
+          "attempt": 6,
+          "return_code": -6,
+          "new_task_outcomes": 6,
+          "completed": 47,
+          "planned": 500,
+          "stagnant": 0
+        },
+        {
+          "attempt": 7,
+          "return_code": -6,
+          "new_task_outcomes": 5,
+          "completed": 52,
+          "planned": 500,
+          "stagnant": 0
+        }
+      ]
+    },
+    "guided_pilot": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/guided-visual-token-pilot-20260919/guided/run-20260919T222045Z-aed6d97d",
+      "planned": 15,
+      "completed": 2,
+      "successes": 2,
+      "task_failures": 0,
+      "sr": null,
+      "manifest_sha256": "c1a5e4f1da6d207686caff54154993039892dbc0b7064f6bfb0325909cb91188",
+      "resolved_sha256": "91aa957615084d2bf310653ec0704d3e641323305f75a8add44d9b14f25e65d7",
+      "worker_alive": true,
+      "worker": {
+        "startup": {
+          "protocol_version": "action-eval-proto/v1",
+          "adapter_target": "evaluation/action_eval/infer.py:create_policy",
+          "device": "cuda:0",
+          "python": "3.10.20",
+          "pid": 119906
+        },
+        "description": {
+          "observation_profile": "dreamwam-libero-2cam-v1",
+          "action_profile": "libero-osc-pose-v1",
+          "rng_mode": "fixed_per_predict",
+          "action_horizon": 32,
+          "fingerprint": {
+            "adapter": "dreamwam",
+            "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-guided-policy-8390f6a/configs/dreamwam_joint.yaml",
+            "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+            "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-guided-policy-8390f6a/checkpoints/dreamwam_joint.pt",
+            "checkpoint_source": "policy.checkpoint",
+            "checkpoint_size_bytes": 12063469113,
+            "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+            "checkpoint_conflict": null,
+            "setting": "joint",
+            "action_horizon": 32,
+            "denoising_steps": 10,
+            "video_frames": 9,
+            "replan_steps": 10,
+            "wait_steps": 30,
+            "binarize_gripper": true,
+            "model_seed": 42,
+            "rng_mode": "fixed_per_predict",
+            "sparse": {
+              "enabled": false,
+              "selection": "av_context",
+              "backend": "masked",
+              "block_size": 14,
+              "future_ratio": 1.0,
+              "conditional_keep_ratio": 1.0,
+              "context_weight": 1.0,
+              "min_anchor_mass": 0.0,
+              "fallback": "recency",
+              "num_stages": 1,
+              "anchor_refresh": "layer",
+              "anchor_layer": 0,
+              "sparse_layers": null,
+              "head_blocks": null,
+              "stage_blocks": null
+            },
+            "sparse_config_hash": "10d80b7ca00e97b5",
+            "visual_cache": {
+              "refresh_every": 5,
+              "token_keep_ratio": 0.1,
+              "action_guidance_weight": 1.0
+            }
+          },
+          "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+        },
+        "worker_index": 0,
+        "requested_gpu_uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+        "cuda_visible_devices": "2",
+        "gpu": {
+          "index": 2,
+          "uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+          "name": "NVIDIA H200 NVL",
+          "memory_total_mib": 143771,
+          "memory_used_mib": 24743
+        },
+        "gpu_resolved": true,
+        "stage": "policy_ready",
+        "simulator_env": {
+          "OMP_NUM_THREADS": "1 (preserved: already set in the environment)"
+        }
+      },
+      "policy_commit": "8390f6adf6a60abf234eb64113d27bcc145383dd"
+    }
+  }
+}

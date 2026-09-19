@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-guided-13f4a2a/configs/experiments/dreamwam-guided-visual-token-pilot.yaml
+experiment  : dreamwam-guided-visual-token-pilot (DreamWAM Joint action-guided 10% visual token refresh (pilot))
+fingerprint : aed6d97d30cd40c58152892592cd70be7faaddf0f81e6b57e900b39c31821a02
+benchmark   : libero_spatial tasks=[0, 1, 2] inits=[0, 1, 2, 3, 4]
+episodes    : 15 planned (3 tasks x 5 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

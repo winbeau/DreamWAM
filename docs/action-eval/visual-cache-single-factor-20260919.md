@@ -1,8 +1,10 @@
 # Joint temporal visual reuse: speed passed, SR not established
 
-Status: **MEASURED latency; candidate pilot complete; official SR incomplete**.
+Status: **MEASURED latency; both paired pilots complete; full Spatial SR incomplete**.
 Date: 2026-09-19 UTC. Status snapshots below include their own timestamps.
 The complete goal (SR-constrained ≥1.5×, aiming for 2×) remains active and unproven.
+Subsequent [token refresh and action-guidance factors](visual-token-cache-single-factor-20260919.md)
+are measured separately and do not change the frozen V1 full Spatial candidate.
 
 The preceding [FFN-only factors](ffn-cache-single-factor-20260919.md) did not provide
 useful speedup. This next experiment changes one broader factor: **how often all
@@ -202,7 +204,7 @@ This is a separate 500-episode experiment; the 15 pilot records are not imported
 into it. Matched-Dense full Spatial remains prepared pending pilot recovery.
 **Full Spatial SR and any non-inferiority conclusion remain null/unestablished.**
 
-Latest verified state, **21:38:03 UTC**: matched pilot remained at **9/15** after
+Historical state, **21:38:03 UTC**: matched pilot remained at **9/15** after
 three consecutive recoveries added no terminal outcomes; full candidate Spatial
 remained at **0/500** after its initial process and two recoveries all exited 134
 without an outcome. Further blind retries were stopped at that finite limit.
@@ -218,6 +220,55 @@ The active acceleration goal is not complete. The next quality gate is reliable
 official rollout execution under unchanged scientific settings. Read-only inventory
 of the alternate L40 server found available GPUs, but the limited search did not
 find an existing DreamWAM deployment; no environment migration was performed.
+
+### Continued progress after the resource window changed
+
+At **21:52:35 UTC**, the foreign training workload left GPUs 0–3. The matched
+pilot was resumed after this external-state change: resume 6 added four terminal
+successes before a native abort, and resume 7 added the remaining two and exited
+0. Both pilot sides now have **15 accepted successes, 0 task failures**, with all
+15 planned identities paired and no discordant outcomes. This is a plumbing
+pilot, not full-benchmark SR or evidence of non-inferiority. No settled outcome
+was rerun. [Complete paired report](evidence/visual-cache-pilot-20260919/paired-pilot-complete.json)
+and [Dense records](evidence/visual-cache-pilot-20260919/matched/per_episode.csv)
+retain the full pilot denominator; bootstrap intervals on this small all-success
+sample must not be interpreted as certainty.
+
+A new full candidate run started on GPU 1 at **21:53:51 UTC**:
+`refresh5-gpu1/run-20260919T215351Z-7f224961`. The earlier GPU-6 run remains
+separate at 0/500; its attempts are not pooled into the new manifest. Full matched
+Dense started on GPU 0 at **22:08:34 UTC**:
+`matched/run-20260919T220834Z-87c8f1d0`. Both keep model **28845c6** and evaluator
+**4701ac2**, the same checkpoint and all 500 official identities. Native renderer
+aborts still occur, but each lane is making terminal progress.
+
+Action-eval **f8eae67** adds a bounded recovery supervisor around the unchanged
+4701ac2 `resume` command. It hashes frozen config/manifest and settled outcome
+records, protects accepted **successes and failures**, and only continues after
+SIGABRT. It stops after 20 invocations, three consecutive invocations without new
+terminal outcomes, another error, or loss of the GPU resource window. Every
+attempt records runner PID, exit code, outcome counts and the preceding executed
+provenance. An OS lock prevents duplicate supervisors, and prior workers must exit
+before a new resume. The supervisor never edits outcomes or computes SR. Seven
+recovery-specific tests and the full evaluator suite passed; regenerated schema
+was unchanged. No dependency or rendering workaround was applied.
+
+At **22:21:54 UTC**, candidate coverage was **55/500** and Dense **28/500**, all
+observed terminal outcomes successes. Both actual policy workers were alive in
+that snapshot; this is a timestamped state, not a continuing liveness guarantee.
+**Full SR remains null.** Evidence:
+[executed coverage snapshot](evidence/visual-cache-spatial-20260919/progress-222154Z.json).
+Supervisor logs remain in the full Spatial output root under
+`refresh5-gpu1-recovery-01/` and `matched-recovery-01/`.
+
+```bash
+# From the frozen action-eval-visual-4701ac2 checkout, using the lane's original GPU.
+PYTHONPATH="$PWD/src:$LIBERO_ROOT" CUDA_VISIBLE_DEVICES="$PHYSICAL_GPU" \
+  OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
+  .venv/bin/python ../action-eval-recovery-f8eae67/scripts/recover_native_run.py \
+  "$FROZEN_RUN" --evaluator-root "$PWD" --logs "$NEW_RECOVERY_LOG_DIR" \
+  --max-attempts 20 --max-stagnant 3
+```
 
 Recovery command (same run directory, no configuration override):
 
