@@ -133,6 +133,36 @@ an online anchor approximation to the Action Cache rule, transferred to visual
 FFNs; it does not claim rMuscle's offline reference masks or cross-episode lookup.
 No token cache, attention restriction or public operator optimization is enabled.
 
+The N1 run completed **20:46:59 UTC**, exit 0, in the same fixed `a1e59ab`
+worktree on GPU 6 with the same thread settings, two warmups and 24 measured
+requests per variant.
+
+| Variant | Mean ms | p50 ms | p95 ms | Speedup vs matched mean |
+|---|---:|---:|---:|---:|
+| Native Dense | 453.81 | 454.91 | 460.02 | — |
+| Matched Dense, all neurons | 457.43 | 457.35 | 460.89 | 1.000× |
+| 10% neurons, mask shared for 10 steps | 473.51 | 472.95 | 477.12 | **0.966×** |
+
+**Negative result:** 3.52% slower despite compact weights. Every request executes
+30 dense anchors and 270 selected-neuron updates, builds 30 masks, and gathers
+264,314,880 weight elements once across its layers. Selected hidden width is
+1,434/14,336. Including anchors, 240,274,440/1,264,435,200 neuron-token evaluations
+are performed (19.00%). Full-budget parity and unchanged parameter versions pass.
+Maximum synthetic-input action relative L2 is 0.06542; SR remains unmeasured.
+
+Evidence: [manifest](evidence/context-cache-20260919/neuron010-manifest.json),
+[requests](evidence/context-cache-20260919/neuron010-requests.jsonl),
+[summary](evidence/context-cache-20260919/neuron010-summary.json),
+[GPU telemetry](evidence/context-cache-20260919/neuron010-gpu.csv).
+
+```bash
+PYTHONPATH="$PWD" CUDA_VISIBLE_DEVICES=6 \
+  OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 \
+  .venv/bin/python scripts/sparse/benchmark_ffn_context_cache.py \
+  --cache-kind neurons --keep-ratio 0.1 --group-size 10 --warmup 2 --reps 24 \
+  --out-dir outputs/ffn-20260919/neuron010
+```
+
 Server correctness checks at the fixed revision: **15 passed**, exit 0. They cover
 actual FFN wrapper execution, selective rows, accumulated drift, request/error
 isolation, dense parity, selected neuron delta reconstruction, compact weight sizes,
@@ -140,8 +170,7 @@ group boundaries, and unchanged action FFN entry points.
 
 ## Remaining work
 
-Finish and archive the N1 full-request comparison. If FFN-only reuse is insufficient,
-proceed to one separately measured
+The measured FFN-only candidates are insufficient. Proceed to one separately measured
 factor that removes broader visual token computation, accounting for projection,
 attention, FFN and reuse costs. Add action guidance only as its own ablation.
 Any candidate promoted to quality evaluation needs complete official episode

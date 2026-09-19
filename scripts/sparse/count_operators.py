@@ -114,6 +114,15 @@ def main() -> None:
     video, action, mot = build(device)
     mot.eval()
 
+    if args.fast_ops:
+        from dreamwam.layers import RMSNorm
+
+        video.enable_fast_ops()
+        action.enable_fast_ops()
+        for module in mot.modules():
+            if isinstance(module, RMSNorm):
+                module.fused = True
+
     height, width = 2, 2  # patch grid per frame
     video_state = video.pre_dit(
         video_latents=torch.randn(1, 4, FRAMES, height * 2, width * 2),
@@ -129,15 +138,6 @@ def main() -> None:
         context_mask=torch.ones(1, CONTEXT_TOKENS, dtype=torch.bool),
     )
     assert video_state["tokens"].shape[1] == VIDEO_TOKENS, video_state["tokens"].shape
-
-    if args.fast_ops:
-        from dreamwam.layers import RMSNorm
-
-        video.enable_fast_ops()
-        action.enable_fast_ops()
-        for module in mot.modules():
-            if isinstance(module, RMSNorm):
-                module.fused = True
 
     sparse = (
         SparseConfig.from_mapping(json.loads(args.sparse_json))
