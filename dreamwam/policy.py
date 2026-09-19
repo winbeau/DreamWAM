@@ -10,6 +10,7 @@ from .normalization import LiberoNormalizer
 from .preprocessing.libero import PROMPT_TEMPLATE
 from .runtime import build_model, load_model_checkpoint
 from .sparse import SparseConfig
+from .sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
 from .sparse.visual_step_cache import VisualStepCache, visual_cache_options
 
 
@@ -94,7 +95,15 @@ class DreamWAMPolicy:
         if missing:
             raise KeyError(f"Evaluation config is missing: {missing}")
         if self.visual_cache_config is not None:
-            self._visual_cache_runtime = VisualStepCache(self.model, **self.visual_cache_config)
+            options = self.visual_cache_config
+            if "token_keep_ratio" in options:
+                self._visual_cache_runtime = ActionGuidedVisualTokenCache(
+                    self.model, refresh_every=options["refresh_every"],
+                    keep_ratio=options["token_keep_ratio"],
+                    guidance_weight=options["action_guidance_weight"],
+                )
+            else:
+                self._visual_cache_runtime = VisualStepCache(self.model, **options)
             self._visual_cache_runtime.__enter__()
 
     def close(self) -> None:

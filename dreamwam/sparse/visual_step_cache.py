@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from functools import wraps
 from collections.abc import Mapping
+import math
 
 from .ffn_context_cache import VisualFFNContextCache
 
@@ -20,12 +21,28 @@ def visual_cache_options(payload):
     """Strict adapter/policy configuration; omission retains native Dense."""
     if payload is None:
         return None
-    if not isinstance(payload, Mapping) or set(payload) != {"refresh_every"}:
-        raise ValueError("visual_cache must contain exactly refresh_every")
+    allowed = {"refresh_every", "token_keep_ratio", "action_guidance_weight"}
+    if not isinstance(payload, Mapping) or "refresh_every" not in payload or set(payload) - allowed:
+        raise ValueError("visual_cache requires refresh_every; optional keys are token_keep_ratio and action_guidance_weight")
     interval = payload["refresh_every"]
     if isinstance(interval, bool) or not isinstance(interval, int) or interval < 1:
         raise ValueError("visual_cache.refresh_every must be a positive integer")
-    return {"refresh_every": interval}
+    options = {"refresh_every": interval}
+    if "token_keep_ratio" not in payload:
+        if "action_guidance_weight" in payload:
+            raise ValueError("visual_cache.action_guidance_weight requires token_keep_ratio")
+        return options  # Preserve the existing temporal-only run identity exactly.
+    ratio = payload["token_keep_ratio"]
+    weight = payload.get("action_guidance_weight", 0.0)
+    for name, value in (("token_keep_ratio", ratio), ("action_guidance_weight", weight)):
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise ValueError(f"visual_cache.{name} must be a finite number")
+    if not 0 <= ratio <= 1:
+        raise ValueError("visual_cache.token_keep_ratio must be in [0, 1]")
+    if weight < 0:
+        raise ValueError("visual_cache.action_guidance_weight must be non-negative")
+    options.update(token_keep_ratio=float(ratio), action_guidance_weight=float(weight))
+    return options
 
 
 class VisualStepCache(VisualFFNContextCache):
