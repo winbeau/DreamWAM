@@ -1,0 +1,54 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-19T20:53:36.933865+00:00",
+  "latency_seconds": {
+    "native_dense": {
+      "samples": 24,
+      "mean": 0.4498720762009422,
+      "p50": 0.4494620431214571,
+      "p95": 0.4555610830895603,
+      "min": 0.4448448270559311,
+      "max": 0.4602056834846735,
+      "stdev": 0.004006918201157589
+    },
+    "matched_dense": {
+      "samples": 24,
+      "mean": 0.45515945569301647,
+      "p50": 0.45490977726876736,
+      "p95": 0.460553842689842,
+      "min": 0.450450012460351,
+      "max": 0.463948056101799,
+      "stdev": 0.0038052838240932385
+    },
+    "visual_step_cache": {
+      "samples": 24,
+      "mean": 0.27509511238895357,
+      "p50": 0.2752557508647442,
+      "p95": 0.2780340537428856,
+      "min": 0.272185280919075,
+      "max": 0.2809676006436348,
+      "stdev": 0.002171803040077592
+    }
+  },
+  "speedup_vs_matched_mean": 1.6545530443647873,
+  "speedup_vs_matched_p50": 1.6526803739417673,
+  "native_vs_matched_mean": 0.9883834567733547,
+  "full_budget_bitwise_parity": true,
+  "unchanged_parameter_versions": true,
+  "max_action_relative_l2": 0.10035331755284842,
+  "gpu_after": {
+    "exit_code": 0,
+    "stdout": "index, uuid, name, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, NVIDIA H200 NVL, 0 %, 1 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, NVIDIA H200 NVL, 0 %, 1 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, NVIDIA H200 NVL, 25 %, 26845 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, NVIDIA H200 NVL, 0 %, 1 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, NVIDIA H200 NVL, 3 %, 1 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, NVIDIA H200 NVL, 0 %, 1 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, NVIDIA H200 NVL, 0 %, 24777 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, NVIDIA H200 NVL, 1 %, 25861 MiB",
+    "stderr": ""
+  },
+  "processes_after": {
+    "exit_code": 0,
+    "stdout": "gpu_uuid, pid, used_gpu_memory [MiB]\nGPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 56549, 25820 MiB\nGPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 58780, 24766 MiB\nGPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 50004, 24732 MiB",
+    "stderr": ""
+  },
+  "sr": null,
+  "limitations": [
+    "No closed-loop SR; action error is a diagnostic, not a success criterion.",
+    "Only visual_steps reuse enabled; no action guidance, attention restriction, or other cache factor."
+  ]
+}
