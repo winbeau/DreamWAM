@@ -36,6 +36,8 @@ def main():
     parser.add_argument("--warmup", type=int, default=2)
     parser.add_argument("--graph-warmup", type=int, default=3)
     parser.add_argument("--reps", type=int, default=30)
+    parser.add_argument("--include-partial-factor", action="store_true",
+                        help="add matched Dense and guided variants with partial-refresh capture enabled")
     parser.add_argument("--out-dir", required=True)
     args = parser.parse_args()
     if min(args.warmup, args.graph_warmup) < 1 or args.reps < 2:
@@ -55,7 +57,8 @@ def main():
                         "dreamwam/sparse/visual_token_cache.py", "dreamwam/sparse/action_guided_visual_token_cache.py",
                         "scripts/sparse/benchmark_visual_cache_graphs.py", "pyproject.toml", "requirements.txt", args.config)},
                     factor="CUDA graph dispatch for dense Joint and cached-video action transformer calls",
-                    scope="partial refresh and all policy/pre/post-DiT/RNG/scheduler logic remain eager",
+                    include_partial_factor=args.include_partial_factor,
+                    scope="selection and all policy/pre/post-DiT/RNG/scheduler logic remain eager; partial capture is a separate optional factor",
                     environment="existing .venv reused unchanged; no install or sync; uv.lock absent",
                     latency_boundary="synchronized full predict_action through CPU action output",
                     sr=None)
@@ -86,6 +89,13 @@ def main():
                     policy.model, **options, graph_enabled=enabled, graph_warmup=args.graph_warmup)
         variants = ("native_dense", "eager_dense", "eager_guided", "buffered_dense", "buffered_guided",
                     "graphed_dense", "graphed_guided")
+        if args.include_partial_factor:
+            for label, keep, interval in (("dense", 1.0, 1), ("guided", 0.1, 5)):
+                name = f"graphed_partial_{label}"
+                caches[name] = GraphedVisualTokenCache(
+                    policy.model, keep_ratio=keep, refresh_every=interval, guidance_weight=1.0,
+                    graph_warmup=args.graph_warmup, graph_partial=True)
+                variants += (name,)
 
         def predict(variant, input_id):
             images, state, instruction = inputs[input_id]
@@ -118,11 +128,13 @@ def main():
                 if input_id == 0 and len(manifest["cold_requests"]) < len(variants):
                     manifest["cold_requests"].append(dict(variant=variant, seconds=seconds, cache=stats))
                     write_manifest()
-            print(f"parity input {input_id}: all seven variants passed", flush=True)
+            print(f"parity input {input_id}: all {len(variants)} variants passed", flush=True)
         manifest["bitwise_eager_parity"] = True
-        for name in ("graphed_dense", "graphed_guided"):
+        for name in (key for key in variants if key.startswith("graphed")):
             graph_stats = caches[name].graph_stats()
             required = {"dense", "action"} if name.endswith("guided") else {"dense"}
+            if name == "graphed_partial_guided":
+                required.add("partial")
             if set(graph_stats) != required or not all(value["captured"] for value in graph_stats.values()):
                 raise AssertionError(f"required CUDA graph missing: {name}")
         for variant in variants:
@@ -163,6 +175,12 @@ def main():
                       graphs={name: cache.graph_stats() for name, cache in caches.items()
                               if isinstance(cache, GraphedVisualTokenCache)},
                       bitwise_own_eager_every_sample=True, unchanged_parameters=True, sr=None)
+        if args.include_partial_factor:
+            report["speedups"].update(
+                partial_factor_guided=mean("graphed_guided") / mean("graphed_partial_guided"),
+                partial_factor_dense_control=mean("graphed_dense") / mean("graphed_partial_dense"),
+                guided_vs_matched_all_graphed=mean("graphed_partial_dense") / mean("graphed_partial_guided"),
+                all_graphed_guided_vs_native=mean("native_dense") / mean("graphed_partial_guided"))
         (out / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
         manifest.update(status="MEASURED", exit_code=0, end_utc=report["end_utc"], gpu_after=inventory(),
                         peak_allocated_mib=torch.cuda.max_memory_allocated() / 2**20,

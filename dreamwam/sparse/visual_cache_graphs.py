@@ -1,8 +1,9 @@
 """An isolated dispatch factor on the existing action-guided visual cache.
 
-Only dense Joint transformer calls and cached-video action transformer calls are
-captured. Partial token selection/refresh, pre/post-DiT, both schedulers and the
-original CPU RNG stay eager. The full-budget control captures every dense call.
+By default, only dense Joint and cached-video action transformer calls are
+captured. ``graph_partial=True`` is a separate factor that also captures partial
+refresh math. Token selection, pre/post-DiT, both schedulers and the original CPU
+RNG stay eager. The full-budget control captures every dense call.
 All inputs are staged for every invocation, and every output (including visual
 K/V and world-router diagnostics) is copied out before reuse. Capture failures
 are fatal: an eager fallback must never be timed as graph replay.
@@ -72,6 +73,9 @@ class TensorTreeReplay:
             stream.wait_stream(torch.cuda.current_stream(self.device))
             with torch.cuda.stream(stream):
                 for _ in range(self.warmup):
+                    # Partial refresh mutates static K/V inputs. Every warmup
+                    # must start from the supplied anchor, just like replay.
+                    self._fill(request)
                     self._compute()
             torch.cuda.current_stream(self.device).wait_stream(stream)
             torch.cuda.synchronize(self.device)
@@ -80,6 +84,7 @@ class TensorTreeReplay:
                 self.output = self._compute()
             self.graph = graph
             self.capture_seconds = time.perf_counter() - started
+            self._fill(request)
         if self.graph is not None:
             self.graph.replay()
             self.replays += 1
@@ -94,17 +99,19 @@ class TensorTreeReplay:
 
 class GraphedVisualTokenCache(ActionGuidedVisualTokenCache):
     def __init__(self, model, *, keep_ratio, refresh_every=5, guidance_weight=1.0,
-                 graph_enabled=True, graph_warmup=3):
+                 graph_enabled=True, graph_warmup=3, graph_partial=False):
         super().__init__(model, keep_ratio=keep_ratio, refresh_every=refresh_every,
                          guidance_weight=guidance_weight)
         self.graph_enabled = graph_enabled
         self.graph_warmup = graph_warmup
+        self.graph_partial = graph_partial
         self.graphs = {}
 
     def _begin(self):
         super()._begin()
         self._stats.update(dense_buffered_calls=0, action_buffered_calls=0,
-                           dense_graph_replays=0, action_graph_replays=0)
+                           partial_buffered_calls=0, dense_graph_replays=0,
+                           action_graph_replays=0, partial_graph_replays=0)
 
     def _call(self, name, function, request):
         if name not in self.graphs:
@@ -174,6 +181,40 @@ class GraphedVisualTokenCache(ActionGuidedVisualTokenCache):
             return super()._reuse(video_state=video_state, action_state=action_state)
         finally:
             mot.forward_action_with_video_cache = original
+
+    def _partial_refresh(self, video_state, action_state, residual_injection, index, video):
+        if not self.graph_partial:
+            return super()._partial_refresh(video_state, action_state, residual_injection, index, video)
+        if residual_injection is not self.model.world_residual:
+            raise ValueError("graph factor requires the unchanged Joint world router")
+        original = super()._partial_refresh
+
+        def compute(video_state, action_state, index, video, kv):
+            router = self.model.world_residual
+            router.reset_runtime()
+            current_cache = self.video_kv
+            self.video_kv = dict(enumerate(kv))
+            try:
+                action, refreshed = original(video_state, action_state, router, index, video)
+                return dict(action=action, video=refreshed, kv=kv,
+                            gates={key: list(values) for key, values in router._runtime_gates.items()},
+                            previews={key: list(values) for key, values in router._runtime_local_preview_tokens.items()})
+            finally:
+                self.video_kv = current_cache
+
+        result = self._call("partial", compute, dict(
+            video_state=self._state(video_state, video=True),
+            action_state=self._state(action_state), index=index, video=video,
+            kv=[self.video_kv[layer] for layer in range(self.model.mot.num_layers)],
+        ))
+        self.video_kv = dict(enumerate(result["kv"]))
+        router = self.model.world_residual
+        router.reset_runtime()
+        for key, values in result["gates"].items():
+            router._runtime_gates[key].extend(values)
+        for key, values in result["previews"].items():
+            router._runtime_local_preview_tokens[key].extend(values)
+        return result["action"], result["video"]
 
     def graph_stats(self):
         return {name: dict(captured=replay.graph is not None,

@@ -28,15 +28,16 @@ def test_tree_buffers_refresh_all_inputs_and_do_not_alias_outputs():
 
 
 @pytest.mark.parametrize("keep,interval", [(1.0, 1), (0.25, 2), (0.0, 2)])
+@pytest.mark.parametrize("partial", [False, True])
 @torch.no_grad()
-def test_buffered_joint_matches_eager_across_changed_requests_and_reentries(keep, interval):
+def test_buffered_joint_matches_eager_across_changed_requests_and_reentries(keep, interval, partial):
     model, inputs = model_and_inputs()
     variants = [inputs, {**inputs, "context": inputs["context"] * 0.4,
                          "proprio": inputs["proprio"] * -2,
                          "first_frame_latents": inputs["first_frame_latents"] + 0.3}, inputs]
     eager = ActionGuidedVisualTokenCache(model, keep_ratio=keep, refresh_every=interval)
     buffered = GraphedVisualTokenCache(model, keep_ratio=keep, refresh_every=interval,
-                                      graph_enabled=False)
+                                      graph_enabled=False, graph_partial=partial)
     original_action = model.mot.forward_action_with_video_cache
     original_joint = model.mot.forward
     for request in variants:
