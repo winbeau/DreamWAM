@@ -1,4 +1,4 @@
-> **Evaluation fork — `main`**: [paper-evaluation plan and status](docs/action-eval/README.md), [agent rules](AGENTS.md). Current scope is repository preparation and documentation only; implementation and GPU evaluation are deferred. Upstream instructions below are preserved for reference and do not override server-only, version-locked installation rules.
+> **Evaluation fork — `main`**: [paper-evaluation status](docs/action-eval/README.md), [agent rules](AGENTS.md). Active work measures Joint visual reuse/selection under unchanged action sampling and official paired SR. Full-request latency has reached ≥1.5×; complete benchmark SR preservation remains unproven. Upstream instructions below are preserved for reference; execution remains server-only and existing dependency versions are preserved.
 
 <div align="center">
 
