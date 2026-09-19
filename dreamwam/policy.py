@@ -11,6 +11,7 @@ from .preprocessing.libero import PROMPT_TEMPLATE
 from .runtime import build_model, load_model_checkpoint
 from .sparse import SparseConfig
 from .sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
+from .sparse.visual_cache_graphs import GraphedVisualTokenCache
 from .sparse.visual_step_cache import VisualStepCache, visual_cache_options
 
 
@@ -56,6 +57,8 @@ class DreamWAMPolicy:
         self.sparse_config = SparseConfig.from_mapping(sparse)
         self.visual_cache_config = visual_cache_options(visual_cache)
         self._visual_cache_runtime = None
+        if self.visual_cache_config and "graph_dispatch" in self.visual_cache_config and self.device.type != "cuda":
+            raise ValueError("visual-cache graph dispatch requires a CUDA device")
         if self.visual_cache_config is not None and self.sparse_config.enabled:
             raise ValueError("visual-cache and sparse-attention factors must be measured separately")
         self.model = build_model(
@@ -97,10 +100,14 @@ class DreamWAMPolicy:
         if self.visual_cache_config is not None:
             options = self.visual_cache_config
             if "token_keep_ratio" in options:
-                self._visual_cache_runtime = ActionGuidedVisualTokenCache(
+                mode = options.get("graph_dispatch")
+                cache_class = GraphedVisualTokenCache if mode else ActionGuidedVisualTokenCache
+                graph_options = {"graph_partial": mode == "all_transformers"} if mode else {}
+                self._visual_cache_runtime = cache_class(
                     self.model, refresh_every=options["refresh_every"],
                     keep_ratio=options["token_keep_ratio"],
                     guidance_weight=options["action_guidance_weight"],
+                    **graph_options,
                 )
             else:
                 self._visual_cache_runtime = VisualStepCache(self.model, **options)
@@ -110,6 +117,8 @@ class DreamWAMPolicy:
         """Remove inference wrappers before the adapter releases model modules."""
         if self._visual_cache_runtime is not None:
             self._visual_cache_runtime.__exit__(None, None, None)
+            if isinstance(self._visual_cache_runtime, GraphedVisualTokenCache):
+                self._visual_cache_runtime.close_graphs()
             self._visual_cache_runtime = None
 
     @torch.no_grad()

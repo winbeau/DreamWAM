@@ -21,16 +21,16 @@ def visual_cache_options(payload):
     """Strict adapter/policy configuration; omission retains native Dense."""
     if payload is None:
         return None
-    allowed = {"refresh_every", "token_keep_ratio", "action_guidance_weight"}
+    allowed = {"refresh_every", "token_keep_ratio", "action_guidance_weight", "graph_dispatch"}
     if not isinstance(payload, Mapping) or "refresh_every" not in payload or set(payload) - allowed:
-        raise ValueError("visual_cache requires refresh_every; optional keys are token_keep_ratio and action_guidance_weight")
+        raise ValueError("visual_cache requires refresh_every; optional keys are token_keep_ratio, action_guidance_weight and graph_dispatch")
     interval = payload["refresh_every"]
     if isinstance(interval, bool) or not isinstance(interval, int) or interval < 1:
         raise ValueError("visual_cache.refresh_every must be a positive integer")
     options = {"refresh_every": interval}
     if "token_keep_ratio" not in payload:
-        if "action_guidance_weight" in payload:
-            raise ValueError("visual_cache.action_guidance_weight requires token_keep_ratio")
+        if "action_guidance_weight" in payload or "graph_dispatch" in payload:
+            raise ValueError("visual_cache.action_guidance_weight and graph_dispatch require token_keep_ratio")
         return options  # Preserve the existing temporal-only run identity exactly.
     ratio = payload["token_keep_ratio"]
     weight = payload.get("action_guidance_weight", 0.0)
@@ -42,6 +42,11 @@ def visual_cache_options(payload):
     if weight < 0:
         raise ValueError("visual_cache.action_guidance_weight must be non-negative")
     options.update(token_keep_ratio=float(ratio), action_guidance_weight=float(weight))
+    if "graph_dispatch" in payload:
+        mode = payload["graph_dispatch"]
+        if not isinstance(mode, str) or mode not in {"dense_action", "all_transformers"}:
+            raise ValueError("visual_cache.graph_dispatch must be dense_action or all_transformers")
+        options["graph_dispatch"] = mode
     return options
 
 

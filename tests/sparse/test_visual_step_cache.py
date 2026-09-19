@@ -131,6 +131,9 @@ def test_visual_option_defaults_preserve_temporal_identity_and_disable_implicit_
     {}, [], {"refresh_every": True}, {"refresh_every": 1.5}, {"refresh_every": 0},
     {"refresh_every": 5, "keep_ratio": 0.1},
     {"refresh_every": 5, "action_guidance_weight": 1.0},
+    {"refresh_every": 5, "graph_dispatch": "all_transformers"},
+    *({"refresh_every": 5, "token_keep_ratio": 0.1, "graph_dispatch": value}
+      for value in (True, None, 1, "all", "none", [])),
     *({"refresh_every": 5, "token_keep_ratio": value}
       for value in (True, "0.1", None, -0.1, 1.1, float("nan"), float("inf"))),
     *({"refresh_every": 5, "token_keep_ratio": 0.1, "action_guidance_weight": value}
@@ -146,3 +149,16 @@ def test_invalid_visual_options_fail_before_loading_weights(monkeypatch, payload
     monkeypatch.setattr(policy_module, "build_model", forbidden_load)
     with pytest.raises(ValueError, match="visual_cache"):
         policy_module.DreamWAMPolicy(SimpleNamespace(evaluation={}), device="cpu", visual_cache=payload)
+
+
+def test_valid_graph_options_require_cuda_before_loading_weights(monkeypatch):
+    import dreamwam.policy as policy_module
+    from types import SimpleNamespace
+
+    def forbidden_load(*args, **kwargs):
+        pytest.fail("CPU graph request reached model loading")
+
+    monkeypatch.setattr(policy_module, "build_model", forbidden_load)
+    options = dict(refresh_every=5, token_keep_ratio=0.1, graph_dispatch="all_transformers")
+    with pytest.raises(ValueError, match="requires a CUDA device"):
+        policy_module.DreamWAMPolicy(SimpleNamespace(evaluation={}), device="cpu", visual_cache=options)
