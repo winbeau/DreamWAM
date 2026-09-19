@@ -1,8 +1,8 @@
 # DreamWAM evaluation fork guidance
 
-This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. CURRENT STATUS: execution resumed. The full four-suite LIBERO evaluation (Spatial/Object/Goal/Long, 10 tasks x 50 initial states each) is running on three lanes on physical GPUs 4/5/7. FastWAM-Joint remains shelved.
+This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. CURRENT STATUS: the Sparse-WAM line (branch work on main) is active; the earlier four-suite LIBERO baseline run has finished for Spatial/Object/Goal and is incomplete for Long.
 
-- Install and execute only on the evaluation server, never locally. Physical GPUs **4, 5 and 7** are authorized for the current three-lane run; never touch another card or another user's process.
+- Install and execute only on the evaluation server, never locally. Physical GPU **7** is the only authorized card for Sparse-WAM work as of 2026-09-19; GPU 4 was used for two early read-only S1 measurements and must not be used again, and GPUs 0-6 plus every other user's process are off limits. GPU 7 may carry small foreign processes: coexist with them, never signal or terminate them. Re-confirm the window before each new run.
 - Preserve verified pyproject.toml and uv.lock byte-for-byte when compatible. Record source hashes and justify every necessary version change. Pin added dependencies and build tools exactly; lock on server, then use `uv sync --locked`. Never upgrade implicitly.
 - The reference model environment reports torch 2.7.1+cu126, Python 3.10.20; do not silently replace it with cu128. A model lockfile has not yet been recovered/generated.
 - The adapter at [`evaluation/action_eval/infer.py`](evaluation/action_eval/infer.py) loads the checkpoint the platform injects, applies option overrides to the policy's own evaluation dict, and refuses to fall back to CPU. Re-read it before changing model wiring.
