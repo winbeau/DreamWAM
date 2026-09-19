@@ -101,6 +101,11 @@ def build(device: torch.device):
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--sparse-json", default=None)
+    parser.add_argument(
+        "--fast-ops",
+        action="store_true",
+        help="enable the fused RMSNorm and real-arithmetic RoPE before counting",
+    )
     parser.add_argument("--out", default=None)
     args = parser.parse_args()
 
@@ -124,6 +129,15 @@ def main() -> None:
         context_mask=torch.ones(1, CONTEXT_TOKENS, dtype=torch.bool),
     )
     assert video_state["tokens"].shape[1] == VIDEO_TOKENS, video_state["tokens"].shape
+
+    if args.fast_ops:
+        from dreamwam.layers import RMSNorm
+
+        video.enable_fast_ops()
+        action.enable_fast_ops()
+        for module in mot.modules():
+            if isinstance(module, RMSNorm):
+                module.fused = True
 
     sparse = (
         SparseConfig.from_mapping(json.loads(args.sparse_json))
@@ -157,6 +171,7 @@ def main() -> None:
             "the same operators per layer as the released one"
         ),
         "sparse": sparse.describe(),
+        "fast_ops": bool(args.fast_ops),
         "layers": LAYERS,
         "operators_per_layer": per_layer,
         "operators_per_request_estimate": per_request,
