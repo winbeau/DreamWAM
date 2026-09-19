@@ -157,6 +157,12 @@ def main() -> None:
     parser.add_argument("--no-instrument", action="store_true")
     parser.add_argument("--profile-kernels", action="store_true")
     parser.add_argument("--out", default=None)
+    parser.add_argument(
+        "--denoising-steps",
+        type=int,
+        default=None,
+        help="override evaluation.denoising_steps to measure the per-step cost",
+    )
     args = parser.parse_args()
 
     from dreamwam.config import load_release_config
@@ -165,6 +171,10 @@ def main() -> None:
     config = load_release_config(args.config)
     policy = build_policy(config, device=args.device)
     evaluation = policy.evaluation
+    if args.denoising_steps is not None:
+        # Same weights, same inputs, same sampler - only the number of steps changes, so
+        # the difference is the cost of one step repeated, not a different model.
+        evaluation["denoising_steps"] = int(args.denoising_steps)
 
     timer = EventTimer()
     phases = PhaseTimer()
