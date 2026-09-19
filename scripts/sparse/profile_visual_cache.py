@@ -43,6 +43,7 @@ def annotate(owner, attribute, label):
 
 def event_summary(event):
     return dict(name=event.key, calls=event.count,
+                device_type=str(event.device_type),
                 cpu_total_us=event.cpu_time_total, cpu_self_us=event.self_cpu_time_total,
                 device_total_us=event.device_time_total, device_self_us=event.self_device_time_total)
 
@@ -112,10 +113,14 @@ def main():
                 if not np.array_equal(expected, actual):
                     raise AssertionError(f"profiling changed actions: {name}")
                 events = [event_summary(event) for event in profile.key_averages()]
+                # Kineto also emits CUDA annotations with these same stage names.
+                # Their spans include stream gaps and must not be read as kernel
+                # execution time or counted as a second invocation of the stage.
+                cpu_events = [event for event in events if event["cpu_total_us"] > 0]
                 result = dict(variant=name, bitwise_uninstrumented_parity=True, cache=cache.last_stats,
-                              stages=[event for event in events if event["name"].startswith("stage.")],
-                              top_device_self=sorted(events, key=lambda row: row["device_self_us"], reverse=True)[:40],
-                              top_cpu_self=sorted(events, key=lambda row: row["cpu_self_us"], reverse=True)[:40])
+                              stages=[event for event in cpu_events if event["name"].startswith("stage.")],
+                              top_device_self=sorted(cpu_events, key=lambda row: row["device_self_us"], reverse=True)[:40],
+                              top_cpu_self=sorted(cpu_events, key=lambda row: row["cpu_self_us"], reverse=True)[:40])
                 profile.export_chrome_trace(str(out / f"{name}-trace.json"))
                 (out / f"{name}-profile.json").write_text(json.dumps(result, indent=2) + "\n")
                 print(json.dumps(dict(variant=name, stages=result["stages"], parity=True)), flush=True)
