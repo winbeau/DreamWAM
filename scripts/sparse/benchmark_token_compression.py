@@ -158,18 +158,33 @@ class BlockRunner:
         return tokens
 
 
-def time_call(function, *, warmup: int, iters: int, device) -> float:
+def time_call(function, *, warmup: int, iters: int, device) -> dict:
+    """Timing summary for one call.
+
+    Returns min/median/mean rather than a single average: the first measurements of a
+    session differ from later ones by tens of percent on this host, and for a question as
+    consequential as "does removing FLOPs remove time" the spread has to be visible.
+    """
     for _ in range(warmup):
         function()
     torch.cuda.synchronize(device)
-    start = torch.cuda.Event(enable_timing=True)
-    end = torch.cuda.Event(enable_timing=True)
-    start.record()
+    samples = []
     for _ in range(iters):
+        start = torch.cuda.Event(enable_timing=True)
+        end = torch.cuda.Event(enable_timing=True)
+        start.record()
         function()
-    end.record()
-    torch.cuda.synchronize(device)
-    return start.elapsed_time(end) / iters
+        end.record()
+        torch.cuda.synchronize(device)
+        samples.append(start.elapsed_time(end))
+    samples.sort()
+    return {
+        "min": samples[0],
+        "median": samples[len(samples) // 2],
+        "mean": sum(samples) / len(samples),
+        "max": samples[-1],
+        "samples": len(samples),
+    }
 
 
 def main() -> None:
@@ -208,12 +223,14 @@ def main() -> None:
         "variants": [],
     }
 
-    def record(label, ms, note=None):
+    def record(label, timing, note=None):
         # One call runs all 30 layers, i.e. exactly one denoising step.
-        per_request = ms * STEPS
+        per_request = timing["median"] * STEPS
         entry = {
             "variant": label,
-            "ms_per_step_30_layers": ms,
+            "ms_per_step_30_layers": timing["median"],
+            "ms_per_step_min": timing["min"],
+            "ms_per_step_max": timing["max"],
             "ms_per_request": per_request,
             "note": note,
         }
@@ -228,15 +245,17 @@ def main() -> None:
     )
     dense_request = record("block_full_294", dense_step, "dense reference for one step")
 
-    for keep in (294, 220, 176, 147, 98, 49):
+    # Descending token counts, including sizes far below any plausible budget: if the block
+    # time is flat all the way down, the cost is weight traffic and launches, not tokens.
+    for keep in (294, 220, 147, 98, 49, 24, 8, 1):
         tokens = torch.full((1, keep, HIDDEN), 0.02, device=device, dtype=dtype)
-        ms = time_call(
+        timing = time_call(
             lambda tokens=tokens: runner.block_full(tokens),
             warmup=args.warmup,
             iters=args.iters,
             device=device,
         )
-        record(f"block_full_{keep}", ms, "whole block on fewer tokens (needs shape handling)")
+        record(f"block_full_{keep}", timing, "whole block on fewer tokens (token-dropping bound)")
 
     ffn_dense = time_call(
         lambda: runner.ffn_only(dense_tokens),
@@ -246,8 +265,8 @@ def main() -> None:
     )
     record("ffn_only_294", ffn_dense, "FFN cost alone")
 
-    for keep in (220, 176, 147, 98, 49):
-        ms = time_call(
+    for keep in (220, 147, 98, 49):
+        timing = time_call(
             lambda keep=keep: runner.block_sparse_ffn(dense_tokens, keep),
             warmup=args.warmup,
             iters=args.iters,
@@ -255,9 +274,19 @@ def main() -> None:
         )
         record(
             f"block_sparse_ffn_keep{keep}",
-            ms,
+            timing,
             "attention/projections dense, FFN on keep rows (shape preserving)",
         )
+
+    # Bracket the sweep with a second dense reference: a drift between the two says the
+    # session itself moved, and then no comparison inside the sweep is trustworthy.
+    dense_again = time_call(
+        lambda: runner.block_full(dense_tokens),
+        warmup=args.warmup,
+        iters=args.iters,
+        device=device,
+    )
+    record("block_full_294_again", dense_again, "repeat of the dense reference")
 
     for entry in report["variants"]:
         saving = dense_request - entry["ms_per_request"]
@@ -271,8 +300,17 @@ def main() -> None:
     report["representativeness"] = {
         "measured_step_ms_s1": 48.84,
         "measured_gemm_ms_per_request_s1": 195.5,
-        "block_full_294_ms_per_step": dense_step,
-        "ratio_to_measured_step": dense_step / 48.84,
+        "block_full_294_ms_per_step": dense_step["median"],
+        "ratio_to_measured_step": dense_step["median"] / 48.84,
+        "dense_reference_drift": (
+            dense_again["median"] - dense_step["median"]
+        )
+        / dense_step["median"],
+        "note": (
+            "the harness covers the video expert's block path only; the action expert, the "
+            "fused joint attention, the world residual and post_dit heads are absent, so a "
+            "saving measured here overstates what the complete request can gain"
+        ),
     }
 
     text = json.dumps(report, indent=2, sort_keys=True)
