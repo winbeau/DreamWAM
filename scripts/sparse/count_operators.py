@@ -30,7 +30,9 @@ from dreamwam.sparse import SparseConfig
 HIDDEN = 32
 FFN = 64
 HEADS = 2
-HEAD_DIM = 16
+# RoPE splits the head dimension into a frame part and two spatial parts, so the head
+# dimension must be divisible by 3 with an even quotient (the released model uses 128).
+HEAD_DIM = 24
 LAYERS = 2
 TOKENS_PER_FRAME = 4
 FRAMES = 3
