@@ -88,6 +88,7 @@ def _import_dreamwam(model_root: Path):
 
     _DREAMWAM["load_release_config"] = load_release_config
     _DREAMWAM["build_policy"] = build_policy
+    _DREAMWAM["config_hash"] = config_hash
     return _DREAMWAM
 
 
@@ -144,6 +145,7 @@ class DreamWAMPolicy:
         dreamwam = _import_dreamwam(self.model_root)
         load_release_config = dreamwam["load_release_config"]
         build_policy = dreamwam["build_policy"]
+        config_hash = dreamwam["config_hash"]
 
         release = load_release_config(model_config_path)
         self.release_config_path = model_config_path
