@@ -20,7 +20,10 @@ def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypa
         pytest.skip("actual graph/adapter execution requires CUDA on the evaluation server")
     device = "cuda" if graph_mode else "cpu"
     dtype = torch.bfloat16 if graph_mode else torch.float32
-    model, inputs = model_and_inputs()
+    # Match runtime.build_model's device context: complex RoPE tables are plain
+    # attributes, deliberately excluded from Module.to(dtype=...) conversion.
+    with torch.device(device):
+        model, inputs = model_and_inputs()
     model.to(device=device, dtype=dtype)
     inputs = {key: value.to(device=device, dtype=dtype if value.is_floating_point() else value.dtype)
               if isinstance(value, torch.Tensor) else value for key, value in inputs.items()}
