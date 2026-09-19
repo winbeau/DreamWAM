@@ -97,7 +97,9 @@ def test_enabled_video_expert_publishes_real_tables():
     video = make_video_dit()
     video.enable_fast_ops()
     state = video.pre_dit(
-        video_latents=torch.randn(1, 4, 1, 4, 4),
+        # Video and flow must share batch, time and space; the conditioning frame is the
+        # first latent frame, so T >= 2 is required for the joint path.
+        video_latents=torch.randn(1, 4, 2, 4, 4),
         flow_latents=torch.zeros(1, 4, 2, 4, 4),
         timestep=torch.zeros(1),
         context=torch.randn(1, 3, 8),
