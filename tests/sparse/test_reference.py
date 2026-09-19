@@ -947,3 +947,57 @@ def test_block_hit_mask_agrees_with_the_route_it_describes():
     assert not bool(helper[0, 0, :TOKENS_PER_FRAME].any()), (
         "the helper covers future blocks only; frame 0 is the caller's addition"
     )
+
+
+def test_routing_does_not_synchronise_the_device():
+    """A device->host read in the route builder makes the whole denoising loop uncapturable
+    by CUDA graphs, which is the overhead this project is removing. Asserted statically
+    because a synchronisation is invisible in the output, only in the timing."""
+    import ast
+    from pathlib import Path
+
+    import dreamwam.sparse.routing as routing
+
+    tree = ast.parse(Path(routing.__file__).read_text())
+    offenders = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+            if node.func.attr in {"item", "cpu", "numpy", "tolist"}:
+                offenders.append((node.lineno, node.func.attr))
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            if node.func.id == "bool":
+                offenders.append((node.lineno, "bool"))
+    assert not offenders, (
+        "routing must not read device tensors into Python; found "
+        f"{offenders} (describe() may report scalars, but no path on the hot loop may)"
+    )
+
+
+def test_fallback_blending_is_unconditional_and_correct():
+    """The unconditional where must still prefer the fallback ordering when it fires."""
+    layout = make_layout()
+    query_video, key_video, _, _, _, _ = tensors()
+    flat = torch.full((1, NUM_HEADS, layout.video_length), 1.0 / layout.video_length)
+    route = build_route(
+        layout=layout,
+        config=SparseConfig.from_mapping(
+            {
+                "enabled": True,
+                "selection": "av",
+                "block_size": BLOCK_SIZE,
+                "head_blocks": [1, 1],
+                "min_anchor_mass": 0.99,
+                "fallback": "recency",
+            }
+        ),
+        num_heads=NUM_HEADS,
+        step_index=0,
+        num_steps=10,
+        av_mass=flat,
+        query_video=query_video,
+        key_video=key_video,
+    )
+    assert bool(route.fallback.all())
+    last = set(layout.future_block_keys[-1].tolist())
+    for head in range(NUM_HEADS):
+        assert set(route.keys[0, head, TOKENS_PER_FRAME:].tolist()) == last

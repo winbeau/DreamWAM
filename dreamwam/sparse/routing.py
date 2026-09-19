@@ -203,11 +203,15 @@ def build_route(
     else:
         concentration = torch.ones(batch, num_heads, device=device)
     fallback = concentration < config.min_anchor_mass
-    selected = torch.where(
-        fallback.unsqueeze(-1), fallback_order, order
-    ) if bool(fallback.any()) else order
+    # Always blend through torch.where. Guarding this with `bool(fallback.any())` reads a
+    # device tensor into Python, which forces a synchronisation and makes the whole denoising
+    # loop uncapturable by CUDA graphs - the very overhead this project is trying to remove.
+    # The where is unconditional because it is correct either way.
+    selected = torch.where(fallback.unsqueeze(-1), fallback_order, order)
 
-    maximum = int(keep.max().item()) if keep.numel() else 0
+    # `keep` comes from a tuple of Python ints, so the maximum is known without touching the
+    # device; an .item() here would synchronise once per layer-step.
+    maximum = max(blocks_per_head) if blocks_per_head else 0
     # `rank` counts blocks, `keep` counts per head: compare on different axes.
     rank = torch.arange(maximum, device=device).view(1, 1, -1)
     budget = keep.view(1, -1, 1)
