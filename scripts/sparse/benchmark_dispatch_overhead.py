@@ -165,43 +165,36 @@ def main() -> None:
             }
 
     try:
-        static_first = first_frame.clone()
-        static_context = context.clone()
-        static_mask = context_mask.clone()
-        static_proprio = proprio.clone()
+        from dreamwam.sparse.graph import StaticBufferSampler
 
-        stream = torch.cuda.Stream()
-        stream.wait_stream(torch.cuda.current_stream())
-        with torch.cuda.stream(stream):
-            for _ in range(3):
-                sample(
-                    first_frame_latents=static_first,
-                    context=static_context,
-                    context_mask=static_mask,
-                    proprio=static_proprio,
-                )
-        torch.cuda.current_stream().wait_stream(stream)
-        torch.cuda.synchronize()
-
-        graph = torch.cuda.CUDAGraph()
-        with torch.cuda.graph(graph):
-            static_output = sample(
-                first_frame_latents=static_first,
-                context=static_context,
-                context_mask=static_mask,
-                proprio=static_proprio,
-            )
-        graph.replay()
-        torch.cuda.synchronize()
-        captured = static_output.clone()
-        report["variants"]["cuda_graph"] = {
-            "timing": timed(graph.replay, warmup=args.warmup, reps=args.reps),
-            "correctness": compare(reference, captured),
-            "note": (
-                "replay reuses the captured initial noise, which matches the shipped path "
-                "because sample_action re-seeds from its own config on every call"
+        # Buffering correctness is covered by tests/sparse/test_graph.py on CPU, so this block
+        # only has to answer what a GPU alone can: does capture succeed, and is it faster.
+        request = dict(
+            first_frame_latents=first_frame,
+            context=context,
+            context_mask=context_mask,
+            proprio=proprio,
+        )
+        sampler = StaticBufferSampler(
+            lambda **inputs: sample(
+                num_steps=int(evaluation["denoising_steps"]), **inputs
             ),
+            request,
+            device=policy.device,
+        )
+        captured = sampler.capture()
+        entry = {
+            "capture_succeeded": captured,
+            "capture_error": sampler.capture_error,
+            "timing": timed(lambda: sampler(request), warmup=args.warmup, reps=args.reps),
+            "correctness": compare(reference, sampler(request)),
         }
+        if not captured:
+            entry["note"] = (
+                "capture failed, so this timing is the eager path through the same buffers "
+                "and must not be reported as a graph result"
+            )
+        report["variants"]["cuda_graph"] = entry
     except Exception as error:  # noqa: BLE001
         report["variants"]["cuda_graph"] = {"error": f"{type(error).__name__}: {error}"}
 
