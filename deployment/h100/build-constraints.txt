@@ -1,0 +1,3 @@
+# Isolated build tooling; runtime setuptools matches the reference environment.
+setuptools==84.0.0
+wheel==0.45.1
