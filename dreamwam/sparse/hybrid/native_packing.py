@@ -84,7 +84,9 @@ def pooled_layer(key, value, score, valid, full_mask, geometry, config):
     visual_bias = bias[None].expand(visibility.shape[0], -1).masked_fill(~visibility, -torch.inf)
     action_visibility = full_mask[nv:, nv:]
     action_bias = torch.zeros_like(action_visibility, dtype=torch.float32).masked_fill(~action_visibility, -torch.inf)
-    mask = torch.cat((visual_bias, action_bias), dim=1)
+    # The pinned CUDA SDPA backend requires additive bias to match Q/K dtype.
+    # Compute logarithms in FP32, then round once to the actual attention dtype.
+    mask = torch.cat((visual_bias, action_bias), dim=1).to(dtype=key.dtype)
     if k.shape[1] != geometry["packed_length"]:
         raise RuntimeError("packed region count changed with scores")
     return dict(k=k, v=v), mask, representatives, group_members, group_sizes

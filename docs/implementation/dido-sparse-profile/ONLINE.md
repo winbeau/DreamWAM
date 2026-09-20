@@ -98,6 +98,11 @@ multiplicity adds log(group size) to the attention bias; `unit` is a separate
 ablation. Original AV visibility must be identical within each group. Action
 keys retain their native visibility and no group-size bias. Full refinement
 restores original ordering and the original boolean mask exactly.
+Additive log-size biases are computed in FP32, then rounded once to the actual
+Q/K attention dtype. This is required by the pinned CUDA SDPA backend: the
+2026-09-20 19:49 UTC check at `72816b1` passed shared/layerwise/structure graph
+cases but rejected FP32 pool bias with BF16 queries. The failing log remains in
+`native-cuda-72816b1/cuda.log`; the correction requires a separate rerun.
 
 Groups never mix ages: packing accepts complete fresh Dense anchors, then retains
 the same groups/features until the next Dense refresh. All group members have

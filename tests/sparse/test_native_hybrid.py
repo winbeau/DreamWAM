@@ -87,7 +87,8 @@ def test_full_budget_is_native_and_read_ranking_does_not_change_recompute_budget
 
 
 @pytest.mark.parametrize("multiplicity", ["count", "unit"])
-def test_real_grid_pool_matches_independent_partition_and_preserves_visibility(multiplicity):
+@pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+def test_real_grid_pool_matches_independent_partition_and_preserves_visibility(multiplicity, dtype):
     grid = TokenGrid(3, 7, 14)
     nv = grid.length
     mask = torch.ones(nv + 4, nv + 4, dtype=torch.bool)
@@ -95,7 +96,7 @@ def test_real_grid_pool_matches_independent_partition_and_preserves_visibility(m
     config = NativeRoutingConfig(signal="dynamic", observed="full", packing="pool", multiplicity=multiplicity)
     geometry = compile_pool_geometry(grid, mask, 0.25, "cpu")
     assert geometry["packed_length"] == pool_read_count(grid, 0.25) == 198
-    key, value = torch.randn(1, nv, 8), torch.randn(1, nv, 8)
+    key, value = torch.randn(1, nv, 8, dtype=dtype), torch.randn(1, nv, 8, dtype=dtype)
     packed, bias, route, members, sizes = pooled_layer(key, value, torch.arange(nv).float(), torch.tensor(True), mask, geometry, config)
     groups = tuple(tuple(row[row >= 0].tolist()) for row in members)
     assert sorted(i for group in groups for i in group) == list(range(nv))
@@ -106,7 +107,8 @@ def test_real_grid_pool_matches_independent_partition_and_preserves_visibility(m
     k, v, visual_bias = reference.pack(key, value, mask[nv:, :nv], ages=torch.zeros(nv, dtype=torch.long))
     torch.testing.assert_close(packed["k"], k)
     torch.testing.assert_close(packed["v"], v)
-    torch.testing.assert_close(bias[:, :198], visual_bias)
+    assert bias.dtype == key.dtype
+    torch.testing.assert_close(bias[:, :198], visual_bias.to(dtype))
     assert (bias[:, 198:] == 0).all(), "all action keys retain original visibility and no multiplicity bias"
     bad = mask.clone()
     group = next(group for group in grid.regions() if len(group) > 1 and group[0] >= 98)
