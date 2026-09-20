@@ -1,6 +1,8 @@
 # DreamWAM paper-evaluation handoff
 
-Latest [H100 / OSMesa hybrid pilots](hybrid-pilot3-osmesa-20260920.md) are complete: tasks 0/1/2 × init 0, with independent matched Dense runs. Compact KV25 is fast (1.865× warm inference) but fails 0/3 against Dense 3/3. Keeping 75% K/V succeeds 3/3 against Dense 3/3, with 1.821× warm inference and a separate same-input 36-request recheck at 1.775×. Cold-inclusive pilot inference is only 1.418× and CPU-rendered whole-episode time does not improve. These are tiny adaptive development pilots, not SR preservation or 50-pair completion; KV75 is the retained candidate for broader validation. All 12 episodes reached benchmark-owned terminal outcomes, with no errors or forced cleanup.
+Latest [routing/profile expansion and lower-budget pilots](hybrid-routing-results-20260920.md): 57 configuration/dataset cases, 999 audited timings and 153 dependency interventions completed. The measured no-refresh uniform-anchor feature-cache candidate reaches **3/3 vs Dense 3/3 at nominal KV18.75 (56/294 rows)**, with **2.077× warm inference**; KV25 also succeeds 3/3 at 1.988×. Neither tiny pilot certifies SR preservation, and whole-episode CPU-rendered time does not improve. [V5 method interfaces](decision-support-method-20260920.md) now separate read value, refresh urgency, feature reuse and structure-only reuse. First-layer action/context routing has not shown a benefit; structure-only reuse reaches only 1.06–1.13×. Adaptive refresh remains unimplemented, and these results must not be labelled complete M1–M3 validation. All owned GPU jobs have exited; 50-pair testing remains unstarted.
+
+Earlier [H100 / OSMesa hybrid pilots](hybrid-pilot3-osmesa-20260920.md) are complete: tasks 0/1/2 × init 0, with independent matched Dense runs. Compact KV25 is fast (1.865× warm inference) but fails 0/3 against Dense 3/3. Keeping 75% K/V succeeds 3/3 against Dense 3/3, with 1.821× warm inference and a separate same-input 36-request recheck at 1.775×. Cold-inclusive pilot inference is only 1.418× and CPU-rendered whole-episode time does not improve. These are tiny adaptive development pilots, not SR preservation or 50-pair completion; KV75 was retained before the follow-up above. All 12 episodes reached benchmark-owned terminal outcomes, with no errors or forced cleanup.
 
 Implementation/debug snapshot before the pilots: [explicit hybrid schedules and compact cache reuse](hybrid-sparse-reuse-20260920.md). The opt-in path separates refresh timing, query budgets and cached-key read budgets, with 46/512-candidate generation, matched query quotas, resumable paired timing and frozen-profile export. Initial verification: 305 CPU tests, 36 H100 hybrid tests, and 30 real-checkpoint debug timings with own-eager parity. The first compact candidate measured 139.28 ms versus stronger Dense 262.24 ms (1.883×), but was not faster than the legacy full-K/V cache (136.72 ms) and had large action differences. Complete schedule search and larger-cohort hybrid SR remain unmeasured. The fresh-token failures and its unstarted 50-pair comparison remain separate from this new method.
 
@@ -54,8 +56,10 @@ The adapter loads the injected checkpoint, reports executed options, preserves p
 
 ## Remaining work
 
-The resumed work currently prioritizes the fresh-token experiment. Historical
-cached-policy/full-suite queues below are not implicitly resumed.
+Current follow-up prioritizes broader validation of the low-budget hybrid
+candidate and a better causally calibrated routing signal. The bounded pilots
+above are complete; historical fresh-token/50-pair/full-suite queues below are
+not implicitly resumed.
 
 1. Preserve the server dependency inventory; reference Python 3.10.20 and torch 2.7.1+cu126. Current pyproject delegates to requirements.txt; preserve both where possible. Recover/generate a complete lock only on server and record justified differences, including build-system pins.
 2. Complete the new fresh-token matched 50-episode exploratory comparison after its renderer admission check, and use quick cohorts to select the method. Resume unified full testing only in the later phase requested by the user. Preserve completed Dense short suites and all historical partial manifests; their records cannot silently fill a new denominator.
