@@ -2,8 +2,8 @@
 
 Status: CPU, four actual BF16 CUDA scenarios, and the 400-call real-checkpoint
 D0/R1–9 screen are verified. See [ONLINE-RESULTS.md](ONLINE-RESULTS.md) for the
-complete positive/negative matrix. New Sparse refresh/structure checkpoint
-comparisons, adapter and SR gates remain open. This extends the inherited hybrid
+complete positive/negative matrix. The [refresh/budget/structure follow-up](FOLLOWUP-RESULTS.md)
+is also verified; final nine-input timing, adapter and SR gates remain open. This extends the inherited hybrid
 executor without changing inputs, checkpoint, resolution, horizon or step count.
 
 First verification, 2026-09-20 19:18 UTC, source

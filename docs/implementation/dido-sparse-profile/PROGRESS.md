@@ -10,6 +10,20 @@ at 50 episodes in total across all arms and attempts. First proposed rollout is
 No rollout has started in this branch. A tiny pilot cannot establish statistical
 non-inferiority at the 5-point margin.
 
+## Verified refresh, budgets and fresh-structure follow-up
+
+[All 380 follow-up predictions](FOLLOWUP-RESULTS.md) and 240 raw trace steps
+pass independent replay: 190 single-refresh, 38 structure and 152 budget/multi-
+refresh calls. Every single or tested multi-Sparse schedule has worse mean
+prefix error than no refresh on the two inputs. Fresh structure reaches only
+1.21–1.26× with large errors. R28 brings little speed gain and worse error;
+R84 gives a small proxy improvement. Retain shared context R56/R84 and layerwise
+value-aware R56 for one frozen nine-input comparison, capped at 277 predictions.
+CPU OSMesa passes 80 native reads with no CUDA/model load. Failed launches and
+invocations remain in [FOLLOWUP-VERIFICATION.json](FOLLOWUP-VERIFICATION.json).
+Cumulative checkpoint predictions are 847; real episode attempts remain 0/50.
+The final adapter and bounded paired pilot are pending; full goal remains active.
+
 ## Verified online checkpoint screen through 20:08 UTC
 
 All three predeclared native stages are complete: **400 predictions**, including

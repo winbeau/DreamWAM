@@ -78,7 +78,7 @@
     "scope": "D0/R1-9 feature schedules; separate explicit Sparse refresh scan and structure comparisons follow after this bounded screen"
   },
   "online_followup": {
-    "status": "PREDECLARED_NOT_RUN",
+    "status": "COMPLETE_AND_INDEPENDENTLY_AUDITED", "completed_predict_calls": 228,
     "input_ids": ["t000-i001-r00-s42-c0004", "t001-i001-r00-s42-c0006"],
     "repeats": 2, "group_size": 2,
     "stages": {
@@ -93,7 +93,7 @@
     "next_bounded_stage": "at most two multi-refresh schedules from the single-step results, then independent read/recompute budgets; predeclare before execution"
   },
   "online_budget_followup": {
-    "status": "PREDECLARED_NOT_RUN",
+    "status": "COMPLETE_AND_INDEPENDENTLY_AUDITED", "completed_predict_calls": 152,
     "selection_source": "outputs/dido-sparse-profile-20260920/native-followup-audit-6c9a8bd/refresh/report.json",
     "decision": "Every single Sparse refresh worsened mean raw-prefix error versus no refresh on the two exposed inputs. The least-error single positions are 9,4,1 (0.124374,0.138186,0.139701); use these only for two bounded multi-refresh controls. No-refresh R56 remains retained.",
     "input_ids": [
@@ -426,6 +426,152 @@
         }
       }
     ]
+  },
+  "online_final": {
+    "status": "PREDECLARED_NOT_RUN",
+    "input_ids": [
+      "t000-i001-r00-s42-c0001",
+      "t000-i001-r00-s42-c0004",
+      "t000-i001-r00-s42-c0008",
+      "t001-i001-r00-s42-c0001",
+      "t001-i001-r00-s42-c0006",
+      "t001-i001-r00-s42-c0011",
+      "t002-i001-r00-s42-c0001",
+      "t002-i001-r00-s42-c0005",
+      "t002-i001-r00-s42-c0010"
+    ],
+    "repeats": 2,
+    "group_size": 2,
+    "predict_call_cap": 277,
+    "raw_byte_cap": 33554432,
+    "trace_eager": true,
+    "candidates": [
+      {
+        "label": "context_R56",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.1
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 56
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "layerwise": false
+          }
+        }
+      },
+      {
+        "label": "context_R84",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.1
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 84
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "layerwise": false
+          }
+        }
+      },
+      {
+        "label": "layerwise_value_action_R56",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.1
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 56
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "value_action",
+            "layerwise": true
+          }
+        }
+      }
+    ],
+    "gpu": "H100 GPU5, original admission limits and maximum 120-second pre-load wait",
+    "estimate_minutes": [
+      3,
+      5
+    ],
+    "closed_loop_episodes": 0,
+    "selection_rule": "Compare mean/worst pre-binarization executed-prefix L2, all gripper disagreements, warm median/p95 and matched mean speed over all nine exposed observations; no retuning on confirmation. Keep the best accuracy/speed Pareto choice above 1.5x for the predeclared three-pair development pilot. This rule selects a candidate, not SR acceptance.",
+    "scope": "All nine historical development observations; final retained-choice screen, not new or held-out rollouts. Both Dense and exact inherited uniform controls are interleaved per group."
   },
   "confirmation": {
     "suite": "libero_spatial",

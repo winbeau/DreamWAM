@@ -1,0 +1,348 @@
+{
+  "status": "REFRESH_STRUCTURE_BUDGET_SCREEN_AND_RENDER_PREFLIGHT_VERIFIED",
+  "timestamp_utc": "2026-09-20T20:45:30.983024+00:00",
+  "artifact_root": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "closed_loop_episode_attempts": 0,
+  "closed_loop_cap": 50,
+  "sr": null,
+  "stages": [
+    {
+      "status": "ERROR",
+      "source_commit": "2a8340ecdec71dec98388db4831ed2dc25be8f0d",
+      "start_utc": "2026-09-20T20:30:16.597337+00:00",
+      "end_utc": "2026-09-20T20:30:26.426586+00:00",
+      "pid": 616890,
+      "exit_code": 1,
+      "stage": "refresh",
+      "argv": [
+        "scripts/sparse/benchmark_native_routes.py",
+        "--stage",
+        "refresh",
+        "--share-gpu5",
+        "--out-dir",
+        "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-refresh-2a8340e"
+      ],
+      "completed_calls": 0,
+      "budget": {
+        "eager": 40,
+        "capture": 40,
+        "prompt_miss": 20,
+        "restore_prompts": 10,
+        "timed": 80,
+        "total": 190
+      },
+      "raw_bytes": 0,
+      "model_load_seconds": null,
+      "peak_allocated_bytes": null,
+      "peak_reserved_bytes": null,
+      "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+      "input_manifest_sha256": "6b1882ab8ac01366fbe6ec2e4463ceb450adb5c7276f6d2ab613ef72128cc66f",
+      "eager_reference_diagnostics": null,
+      "error": "RuntimeError('selected GPU is not currently admitted: need >=50000 MiB free, <=10% utilization, and authorized placement (GPU 5 sharing=True); inventory:\\n0, GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f, NVIDIA H100 80GB HBM3, 72974, 81559, 8108, 0\\n1, GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9, NVIDIA H100 80GB HBM3, 72975, 81559, 8107, 0\\n2, GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14, NVIDIA H100 80GB HBM3, 727, 81559, 80355, 0\\n3, GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30, NVIDIA H100 80GB HBM3, 23963, 81559, 57119, 100\\n4, GPU-3af22086-0ac4-4277-1486-96909b440d1c, NVIDIA H100 80GB HBM3, 23961, 81559, 57121, 0\\n5, GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a, NVIDIA H100 80GB HBM3, 3105, 81559, 77976, 47\\n')",
+      "directory": "native-refresh-2a8340e"
+    },
+    {
+      "status": "ERROR",
+      "source_commit": "2a8340ecdec71dec98388db4831ed2dc25be8f0d",
+      "start_utc": "2026-09-20T20:33:19.775017+00:00",
+      "end_utc": "2026-09-20T20:33:30.091372+00:00",
+      "pid": 616959,
+      "exit_code": 1,
+      "stage": "refresh",
+      "argv": [
+        "scripts/sparse/benchmark_native_routes.py",
+        "--stage",
+        "refresh",
+        "--share-gpu5",
+        "--out-dir",
+        "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-refresh-2a8340e-retry1"
+      ],
+      "completed_calls": 0,
+      "budget": {
+        "eager": 40,
+        "capture": 40,
+        "prompt_miss": 20,
+        "restore_prompts": 10,
+        "timed": 80,
+        "total": 190
+      },
+      "raw_bytes": 0,
+      "model_load_seconds": null,
+      "peak_allocated_bytes": null,
+      "peak_reserved_bytes": null,
+      "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+      "input_manifest_sha256": "6b1882ab8ac01366fbe6ec2e4463ceb450adb5c7276f6d2ab613ef72128cc66f",
+      "eager_reference_diagnostics": null,
+      "error": "RuntimeError('selected GPU is not currently admitted: need >=50000 MiB free, <=10% utilization, and authorized placement (GPU 5 sharing=True); inventory:\\n0, GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f, NVIDIA H100 80GB HBM3, 72974, 81559, 8108, 0\\n1, GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9, NVIDIA H100 80GB HBM3, 72975, 81559, 8107, 0\\n2, GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14, NVIDIA H100 80GB HBM3, 727, 81559, 80355, 0\\n3, GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30, NVIDIA H100 80GB HBM3, 23963, 81559, 57119, 94\\n4, GPU-3af22086-0ac4-4277-1486-96909b440d1c, NVIDIA H100 80GB HBM3, 23961, 81559, 57121, 94\\n5, GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a, NVIDIA H100 80GB HBM3, 3105, 81559, 77976, 51\\n')",
+      "directory": "native-refresh-2a8340e-retry1"
+    },
+    {
+      "status": "COMPLETE",
+      "source_commit": "6c9a8bd37aa158647b5a47d047b1174d054f1bf9",
+      "start_utc": "2026-09-20T20:35:09.847685+00:00",
+      "end_utc": "2026-09-20T20:37:32.276888+00:00",
+      "pid": 617046,
+      "exit_code": 0,
+      "stage": "refresh",
+      "argv": [
+        "scripts/sparse/benchmark_native_routes.py",
+        "--stage",
+        "refresh",
+        "--share-gpu5",
+        "--admission-wait-seconds",
+        "120",
+        "--out-dir",
+        "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-refresh-6c9a8bd"
+      ],
+      "completed_calls": 190,
+      "budget": {
+        "eager": 40,
+        "capture": 40,
+        "prompt_miss": 20,
+        "restore_prompts": 10,
+        "timed": 80,
+        "total": 190
+      },
+      "raw_bytes": 340480,
+      "model_load_seconds": 14.13071347400546,
+      "peak_allocated_bytes": 27246279168,
+      "peak_reserved_bytes": 28017950720,
+      "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+      "input_manifest_sha256": "6b1882ab8ac01366fbe6ec2e4463ceb450adb5c7276f6d2ab613ef72128cc66f",
+      "eager_reference_diagnostics": null,
+      "error": null,
+      "directory": "native-refresh-6c9a8bd",
+      "admission": {
+        "timestamp_utc": "2026-09-20T20:36:10.770058+00:00",
+        "eligible": [
+          {
+            "index": 5,
+            "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+            "used_mib": 3599,
+            "free_mib": 77482,
+            "total_mib": 81559,
+            "utilization": 6
+          }
+        ],
+        "selected": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+        "shared_host": true,
+        "selected_gpu_sharing": true,
+        "minimum_free_mib": 50000,
+        "maximum_utilization": 10
+      }
+    },
+    {
+      "status": "COMPLETE",
+      "source_commit": "6c9a8bd37aa158647b5a47d047b1174d054f1bf9",
+      "start_utc": "2026-09-20T20:38:22.893377+00:00",
+      "end_utc": "2026-09-20T20:39:05.688559+00:00",
+      "pid": 617338,
+      "exit_code": 0,
+      "stage": "structure",
+      "argv": [
+        "scripts/sparse/benchmark_native_routes.py",
+        "--stage",
+        "structure",
+        "--share-gpu5",
+        "--admission-wait-seconds",
+        "120",
+        "--out-dir",
+        "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-structure-6c9a8bd"
+      ],
+      "completed_calls": 38,
+      "budget": {
+        "eager": 8,
+        "capture": 8,
+        "prompt_miss": 4,
+        "restore_prompts": 2,
+        "timed": 16,
+        "total": 38
+      },
+      "raw_bytes": 68096,
+      "model_load_seconds": 14.430241149035282,
+      "peak_allocated_bytes": 26347160064,
+      "peak_reserved_bytes": 26814185472,
+      "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+      "input_manifest_sha256": "6b1882ab8ac01366fbe6ec2e4463ceb450adb5c7276f6d2ab613ef72128cc66f",
+      "eager_reference_diagnostics": null,
+      "error": null,
+      "directory": "native-structure-6c9a8bd",
+      "admission": {
+        "timestamp_utc": "2026-09-20T20:38:33.018178+00:00",
+        "eligible": [
+          {
+            "index": 5,
+            "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+            "used_mib": 3941,
+            "free_mib": 77140,
+            "total_mib": 81559,
+            "utilization": 4
+          }
+        ],
+        "selected": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+        "shared_host": true,
+        "selected_gpu_sharing": true,
+        "minimum_free_mib": 50000,
+        "maximum_utilization": 10
+      }
+    },
+    {
+      "status": "COMPLETE",
+      "source_commit": "dca3413af299e21f70ba4c2c77db31cf961c4dfb",
+      "start_utc": "2026-09-20T20:40:40.488013+00:00",
+      "end_utc": "2026-09-20T20:42:48.203125+00:00",
+      "pid": 617676,
+      "exit_code": 0,
+      "stage": "online_budget_followup",
+      "argv": [
+        "scripts/sparse/benchmark_native_routes.py",
+        "--stage",
+        "frozen",
+        "--design-key",
+        "online_budget_followup",
+        "--share-gpu5",
+        "--admission-wait-seconds",
+        "120",
+        "--out-dir",
+        "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-budgets-dca3413"
+      ],
+      "completed_calls": 152,
+      "budget": {
+        "eager": 32,
+        "capture": 32,
+        "prompt_miss": 16,
+        "restore_prompts": 8,
+        "timed": 64,
+        "total": 152
+      },
+      "raw_bytes": 272384,
+      "model_load_seconds": 13.13274920504773,
+      "peak_allocated_bytes": 27149611520,
+      "peak_reserved_bytes": 27931967488,
+      "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+      "input_manifest_sha256": "6b1882ab8ac01366fbe6ec2e4463ceb450adb5c7276f6d2ab613ef72128cc66f",
+      "eager_reference_diagnostics": "trace",
+      "error": null,
+      "directory": "native-budgets-dca3413",
+      "admission": {
+        "timestamp_utc": "2026-09-20T20:41:41.025793+00:00",
+        "eligible": [
+          {
+            "index": 5,
+            "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+            "used_mib": 3941,
+            "free_mib": 77140,
+            "total_mib": 81559,
+            "utilization": 0
+          }
+        ],
+        "selected": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+        "shared_host": true,
+        "selected_gpu_sharing": true,
+        "minimum_free_mib": 50000,
+        "maximum_utilization": 10
+      }
+    }
+  ],
+  "artifacts": {
+    "native-refresh-2a8340e/report.json": "eb64579cddfc93d40498e73e27b07362fa579bcd87fa5785905aac67bc1c1ee9",
+    "native-refresh-2a8340e/calls.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-refresh-2a8340e/requests.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-refresh-2a8340e/summary.json": "6a9cd5f4f93528d8f3514e2447e0b39cad065ac8f0f1ed2e7fe06567a5d37672",
+    "native-refresh-2a8340e-retry1/report.json": "d74b097cfcb0211650b63cb1a59dd6d82a7b1e7acae1d50a22765ccd772bfdf3",
+    "native-refresh-2a8340e-retry1/calls.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-refresh-2a8340e-retry1/requests.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-refresh-2a8340e-retry1/summary.json": "bf1d8e30e585fd95ed3d5e1862af72094b86f43a4f0cf72b60a2a2bb0fccf393",
+    "native-refresh-6c9a8bd/report.json": "9bcd18f3ad13aeae38d51c680e3929336769609e7016546b67194f9694824fbc",
+    "native-refresh-6c9a8bd/calls.jsonl": "6f8f1a8ec5c24ad15acb7f3d5881c5ae0905ade75d2cb11505bff25bf435765d",
+    "native-refresh-6c9a8bd/requests.jsonl": "850d3452a45007719d62907b29451299a4105d91e48dd2fc4c9b63e752eb232b",
+    "native-refresh-6c9a8bd/summary.json": "eac594623e05cc67f8971046e5cd5c0c0258f65d182fc4752bd549f15cbc539c",
+    "native-structure-6c9a8bd/report.json": "5da6467369aa499bbb0352f1de816a9a78a5dce2eb84e2b6112331d136b26db9",
+    "native-structure-6c9a8bd/calls.jsonl": "4f4dd431350a54cf48fe43d70bc7425e210e65eae33e0e6c4fe416d1972453da",
+    "native-structure-6c9a8bd/requests.jsonl": "40eeb22f3d71f5ddfff605a9147d31aa7c0d2b9cbfb92d7f50746df5c666e1d7",
+    "native-structure-6c9a8bd/summary.json": "f4c09352a6b2cd0a51e90d46e6d13ccec35514f8f5c092e4d8dec857dd21b531",
+    "native-budgets-dca3413/report.json": "3d233cbb2cb9e4f3888b87e888bc0908976800bbb754aefe2acccc3018ea7dbc",
+    "native-budgets-dca3413/calls.jsonl": "195eef826896bcaaabf1635bc9dc278276f4dc8e3f0f2f343ef16a213958c1e5",
+    "native-budgets-dca3413/requests.jsonl": "2b45499b06c9511e39457b6ccf278fa3c33555634a7653cf57c4c041f19ee5e1",
+    "native-budgets-dca3413/summary.json": "95740e31a180e869bc617b8fc9139ee674c945f1b7133e092aff9536342a7acf",
+    "native-followup-audit-6c9a8bd/refresh/report.json": "075767e40af8b5c4ff24fc31fd9c7c4dc7f5b8b91e515326558cb4463975560b",
+    "native-followup-audit-6c9a8bd/refresh/per-input-timings.csv": "22002a35fc52d0d8d0ea797fbf41d300fcf9d7ed4c4e6a61d9eb4fa648bc4edd",
+    "native-followup-audit-6c9a8bd/structure/report.json": "fe13d86a7c8576977f5728821cffc5b7e10d5c8693fba34e0db84cd0981382bb",
+    "native-followup-audit-6c9a8bd/structure/per-input-timings.csv": "f2a8f5502901ed46ab8ae269f65418f2800c8998a671bbf93b690335ace07d1c",
+    "native-followup-audit-97a8596/budgets/report.json": "43c0aa8c6650716ad0fdc0039419265290fdac557dbb09adf0f08d309b507908",
+    "native-followup-audit-97a8596/budgets/per-input-timings.csv": "40935e230d50117f5250088859c56e634c3805b4e51ef21e8b5783568529efe5",
+    "followup-checks-2a8340e/start.txt": "03dcaa0524e3fc6335797b51fd322ae8c08e4a44a02f074e18f83fd8f4d4635d",
+    "followup-checks-2a8340e/end.txt": "2adf9fd44c6b090fa4e16128dddfd2c85212de51522bd827a9e7d8df187c9c9c",
+    "followup-checks-2a8340e/cpu.log": "caf56757b18b52a7c892a24609a6f4ec6e8900c554da434531b573fc2a87250b",
+    "followup-checks-2a8340e/audit.log": "9cdf41e5e9789fa6194ec141796289dcfdffa701d8e4b6931923c6305bcb1be9",
+    "frozen-checks-dca3413/start.txt": "55e916b6eb381176374d213e34d5d019b1a147029aaec82cbb97b3409ef54b69",
+    "frozen-checks-dca3413/end.txt": "55e916b6eb381176374d213e34d5d019b1a147029aaec82cbb97b3409ef54b69",
+    "frozen-checks-dca3413/cpu.log": "253b5cef82a41f8f53519eb9c6e6ef1930bc1b66748d4d51bb12aa8bfcf084d2",
+    "frozen-checks-dca3413/audit.log": "e1e04700cc10eaba2b784a9f7033e2e7f6169fef0871f9af3e6e4904bc855aa2",
+    "trace-checks-97a8596/start.txt": "0d123944ea78ca1a5bda9a36be42453cd4b2a44593debe246da50360add180d9",
+    "trace-checks-97a8596/end.txt": "c3529e1c0adf5ec9d32813d1f81fa222cd6ef025fbca95e14ad609a3c264422a",
+    "trace-checks-97a8596/cpu.log": "808216c1e906665a6311eea3399af7e63a60328f6537b9bcf2f6f7027e943f4a",
+    "trace-checks-97a8596/audit.log": "a492d8c8fc945a9bb1aa9ca8fad2ce1a3a7f96008d5794c99c73dd2e87c83234",
+    "evaluator-preflight-5eab0bd/validate.log": "3af73840ab19be0c126f443466382369713d3684544083b21df899dbbc848873",
+    "evaluator-preflight-5eab0bd-cli1/validate.log": "4c34b3e88549b2eccf5f2f17a4b2dc274629a3825484186393d436217e1593cf",
+    "evaluator-preflight-5eab0bd-cli1/doctor.log": "ca7ba360582199527e5b3afe3aa8bb51e28ac28548a98e94d75744a0d345a421",
+    "evaluator-preflight-5eab0bd-cli1/describe.log": "ccd541689b8e392d326193d621520a8fb64dfa9682fa39bcbac902917bc3be9a",
+    "evaluator-preflight-5eab0bd-cli1/describe.exit": "7de1555df0c2700329e815b93b32c571c3ea54dc967b89e81ab73b9972b72d1d",
+    "evaluator-preflight-5eab0bd-path1/start.txt": "09e0ce09525fbae4eaaa759aabc83a7da8bc6566c9ac56a5089041f153a7e29f",
+    "evaluator-preflight-5eab0bd-path1/end.txt": "e32704327491040b07f260cbec4c1d7e45c72e4c105fa06f18d33c2d6b1bf31e",
+    "evaluator-preflight-5eab0bd-path1/describe.log": "147d12a1b485daa2fc32189e2cce5668b6a7a08099ee9f76b7fe87cdeac2d8f4",
+    "evaluator-preflight-5eab0bd-path1/describe.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "evaluator-preflight-5eab0bd-path1/render.log": "b4c376a727c610f0e126f06b0669301db099949cf7ace32264a931697e4ddc56",
+    "evaluator-preflight-5eab0bd-path1/render.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "evaluator-preflight-5eab0bd-path1/native-render/metadata.json": "92f84cffbc89e742c2fc85ed2590895da220bc1cfe5f4cbc3e1f04b4e5688977",
+    "evaluator-preflight-5eab0bd-path1/native-render/result.json": "8f6f7fdacf7749847d9647b5654128d497f69025d0d7a45ee9dbe9eee77d2a87"
+  },
+  "cpu_checks": [
+    {
+      "source": "2a8340e",
+      "passed": 7
+    },
+    {
+      "source": "dca3413",
+      "passed": 8
+    },
+    {
+      "source": "97a8596",
+      "passed": 9
+    }
+  ],
+  "audits": {
+    "refresh_calls": 190,
+    "structure_calls": 38,
+    "budget_calls": 152,
+    "budget_trace_calls": 24,
+    "budget_trace_steps": 240
+  },
+  "render_preflight": {
+    "evaluator_commit": "5eab0bdd0f7e8bec200b3a4b12745e1a8030b773",
+    "source_model": "2a8340ecdec71dec98388db4831ed2dc25be8f0d",
+    "start_utc": "2026-09-20T20:33:18Z",
+    "end_utc": "2026-09-20T20:33:41Z",
+    "exit_code": 0,
+    "commands": [
+      "python -m action_eval.cli validate configs/experiments/dreamwam-hybrid-dense-dev3-osmesa.yaml",
+      "python -m action_eval.cli doctor configs/experiments/dreamwam-hybrid-dense-dev3-osmesa.yaml",
+      "python -m action_eval.cli describe configs/experiments/dreamwam-hybrid-dense-dev3-osmesa.yaml --task-id 0 --init-index 1 --json",
+      "python scripts/probe-libero-render.py configs/experiments/dreamwam-hybrid-dense-dev3-osmesa.yaml --output <native-render-directory> --reads 80 --task 0 --init-index 1 --check-writes --readback native --import-order benchmark-first"
+    ],
+    "result": "80/80 native RGB writes, 5 diagnostic zero-action steps, no model; CUDA not initialized; describe platform expectations pass",
+    "failures_retained": [
+      "wrong python -m action_eval entrypoint, no execution",
+      "describe import lacked LIBERO_ROOT on PYTHONPATH, no model; corrected only environment path"
+    ],
+    "environment": "CPU OSMesa; CUDA_VISIBLE_DEVICES empty; private existing library; PYTHONPATH includes the frozen evaluator, model and LIBERO roots"
+  },
+  "completed_predict_calls_this_followup": 380,
+  "cumulative_checkpoint_predictions": 847,
+  "limitations": [
+    "shared GPU, development replay, not SR; new warm ratios cannot imply every-step fresh speed",
+    "profile/development inputs remain exposed; final nine-input timing/adapter/frozen pilot still pending",
+    "no owned infinite jobs, no GPU0 use, no dependency or checkpoint changes"
+  ]
+}
