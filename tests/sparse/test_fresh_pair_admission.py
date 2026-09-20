@@ -17,7 +17,7 @@ def admission(monkeypatch):
     spec = importlib.util.spec_from_file_location("fresh_pair_admission", path)
     runner = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(runner)
-    return runner.admit_placement
+    return runner
 
 
 def inventory():
@@ -26,28 +26,37 @@ def inventory():
 
 
 def test_h100_placement_leaves_authorized_spare(admission):
-    assert admission(inventory(), "gpu-3", "gpu-4", [3, 4, 5]) == [5]
+    assert admission.admit_placement(inventory(), "gpu-3", "gpu-4", [3, 4, 5]) == [5]
 
 
 def test_empty_unauthorized_gpu_does_not_count_as_spare(admission):
     gpus = inventory()
     gpus[5]["util"] = 95
-    assert admission(gpus, "gpu-3", "gpu-4", [3, 4, 5]) == []
+    assert admission.admit_placement(gpus, "gpu-3", "gpu-4", [3, 4, 5]) == []
     with pytest.raises(ValueError, match="outside"):
-        admission(gpus, "gpu-2", "gpu-4", [3, 4, 5])
+        admission.admit_placement(gpus, "gpu-2", "gpu-4", [3, 4, 5])
 
 
 def test_missing_container_process_rows_do_not_mean_empty_renderer(admission):
     gpus = inventory()
     gpus[4]["used"] = 950
-    assert admission(gpus, "gpu-3", "gpu-4", [3, 4, 5]) == []
-    assert admission(gpus, "gpu-3", "gpu-4", [3, 4, 5], True) == []
+    assert admission.admit_placement(gpus, "gpu-3", "gpu-4", [3, 4, 5]) == []
+    assert admission.admit_placement(gpus, "gpu-3", "gpu-4", [3, 4, 5], True) == []
 
 
 def test_graphics_sharing_requires_explicit_flag_and_visible_graphics_only(admission):
     gpus = inventory()
     gpus[4].update(used=950, processes=[dict(pid=123, type="G")])
-    assert admission(gpus, "gpu-3", "gpu-4", [3, 4, 5]) == []
-    assert admission(gpus, "gpu-3", "gpu-4", [3, 4, 5], True) == [5]
+    assert admission.admit_placement(gpus, "gpu-3", "gpu-4", [3, 4, 5]) == []
+    assert admission.admit_placement(gpus, "gpu-3", "gpu-4", [3, 4, 5], True) == [5]
     gpus[4]["processes"].append(dict(pid=456, type="C"))
-    assert admission(gpus, "gpu-3", "gpu-4", [3, 4, 5], True) == []
+    assert admission.admit_placement(gpus, "gpu-3", "gpu-4", [3, 4, 5], True) == []
+
+
+def test_cpu_renderer_uses_only_policy_gpu_and_preserves_a_spare(admission):
+    gpus = inventory()
+    assert admission.admit_cpu_rendering(gpus, "gpu-3", [3, 4, 5]) == [4, 5]
+    gpus[4]["util"] = gpus[5]["util"] = 95
+    assert admission.admit_cpu_rendering(gpus, "gpu-3", [3, 4, 5]) == []
+    with pytest.raises(ValueError, match="outside"):
+        admission.admit_cpu_rendering(gpus, "gpu-2", [3, 4, 5])

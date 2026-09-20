@@ -54,6 +54,18 @@ def admit_placement(gpus, policy_uuid, render_uuid, authorized_gpus, allow_share
     return spares if ready else []
 
 
+def admit_cpu_rendering(gpus, policy_uuid, authorized_gpus):
+    p = next(g for g in gpus if g["uuid"] == policy_uuid)
+    if p["index"] not in authorized_gpus:
+        raise ValueError("policy is outside the explicitly authorized GPU indices")
+    spares = [g["index"] for g in gpus if g["index"] in authorized_gpus
+        and g["uuid"] != policy_uuid and g["util"] <= 20 and g["free"] >= 35000
+        and not any("G" in x["type"] for x in g["processes"])]
+    ready = (p["util"] <= 20 and p["free"] >= 35000
+             and not any("G" in x["type"] for x in p["processes"]))
+    return spares if ready else []
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--eval-root", type=Path, required=True)
@@ -61,6 +73,7 @@ def main():
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--adapter-report", type=Path, required=True)
     parser.add_argument("--allow-shared-graphics", action="store_true")
+    parser.add_argument("--render-backend", choices=("egl", "osmesa"), default="egl")
     parser.add_argument("--authorized-gpus", type=int, nargs="+", default=[4, 5, 6, 7],
                         help="explicitly authorized physical indices for this host, including an unused spare")
     parser.add_argument("--wall-seconds", type=int, default=3600)
@@ -79,16 +92,19 @@ def main():
         evaluator_commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=args.eval_root, text=True).strip(),
         planned_episodes_per_arm=50, shared_graphics=args.allow_shared_graphics,
         authorized_gpu_indices=args.authorized_gpus,
+        render_backend=args.render_backend,
         smoke_only=args.smoke_only, runs=[], sr=None)
     save = lambda: (args.out_dir / "controller.json").write_text(json.dumps(meta, indent=2) + "\n")
     env = os.environ.copy()
-    env.update(MODEL_ROOT=str(args.model_root), MUJOCO_GL="egl", OMP_NUM_THREADS="1",
+    env.update(MODEL_ROOT=str(args.model_root), MUJOCO_GL=args.render_backend,
+               PYOPENGL_PLATFORM=args.render_backend, OMP_NUM_THREADS="1",
                MKL_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1")
     env.pop("MUJOCO_EGL_DEVICE_ID", None)
     env.pop("CUDA_VISIBLE_DEVICES", None)
     os.environ["MODEL_ROOT"] = str(args.model_root)
     # GPU_UUID, RENDER_GPU_UUID and LIBERO_ROOT remain explicit caller inputs.
-    policy_uuid, render_uuid = env["GPU_UUID"], env["RENDER_GPU_UUID"]
+    policy_uuid = env["GPU_UUID"]
+    render_uuid = env["RENDER_GPU_UUID"] if args.render_backend == "egl" else None
     if policy_uuid == render_uuid:
         raise ValueError("split policy and rendering GPUs")
 
@@ -115,8 +131,11 @@ def main():
     try:
         # Candidate first gives a quick quality signal without waiting for Dense.
         for arm, kind in (("sparse", "token10"), ("dense", "control")):
-            config = args.eval_root / f"configs/experiments/dreamwam-fresh-{kind}-quick50.yaml"
+            suffix = "-osmesa" if args.render_backend == "osmesa" else ""
+            config = args.eval_root / f"configs/experiments/dreamwam-fresh-{kind}-quick50{suffix}.yaml"
             loaded = load_experiment(config, require_paths=True)
+            if loaded.config.runtime.render_gpu_uuid != render_uuid:
+                raise ValueError("config renderer differs from the explicit execution backend")
             benchmark = loaded.config.benchmark
             assert list(benchmark.task_ids) == list(range(10))
             assert list(benchmark.initial_state_indices) == list(range(5)) and benchmark.repeats == 1
@@ -124,9 +143,11 @@ def main():
             while True:
                 gpus = inventory()
                 row = record(gpus, arm, "admission")
-                r = next(g for g in gpus if g["uuid"] == render_uuid)
-                spares = admit_placement(gpus, policy_uuid, render_uuid,
-                                         args.authorized_gpus, args.allow_shared_graphics)
+                r = next((g for g in gpus if g["uuid"] == render_uuid), None)
+                spares = (admit_cpu_rendering(gpus, policy_uuid, args.authorized_gpus)
+                          if args.render_backend == "osmesa" else
+                          admit_placement(gpus, policy_uuid, render_uuid,
+                                          args.authorized_gpus, args.allow_shared_graphics))
                 if spares:
                     row["spares_unused"] = spares
                     break
@@ -134,11 +155,12 @@ def main():
                     meta.update(status="RESOURCE_WINDOW_CLOSED", waiting_arm=arm)
                     return
                 time.sleep(3)
-            allowed_graphics = {x["pid"] for x in r["processes"]}
+            allowed_graphics = {x["pid"] for x in r["processes"]} if r else set()
             root = args.out_dir / arm
             root.mkdir()
+            rendering = ["--render-cpu"] if render_uuid is None else ["--render-gpu", render_uuid]
             cmd = [str(args.eval_root / ".venv/bin/python"), "scripts/supplement-libero.py", str(config),
-                   "--render-gpu", render_uuid, "--output", str(root), "--check-native-writes"]
+                   *rendering, "--output", str(root), "--check-native-writes"]
             entry = dict(arm=arm, start_utc=utc(), command=cmd, admission=row,
                          output=str(root), fingerprint_verified=False)
             meta["runs"].append(entry)
@@ -154,8 +176,8 @@ def main():
                     while proc.poll() is None:
                         gpus = inventory()
                         record(gpus, arm, "running")
-                        renderer = next(g for g in gpus if g["uuid"] == render_uuid)
-                        if any("C" in x["type"] or x["pid"] not in allowed_graphics | {proc.pid} for x in renderer["processes"]):
+                        renderer = next((g for g in gpus if g["uuid"] == render_uuid), None)
+                        if renderer and any("C" in x["type"] or x["pid"] not in allowed_graphics | {proc.pid} for x in renderer["processes"]):
                             violation = "renderer_resource_window_closed"
                             break
                         if time.monotonic() >= deadline:
