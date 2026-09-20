@@ -31,6 +31,7 @@ from dreamwam.sparse.visual_cache_graphs import GraphedVisualTokenCache
 from dreamwam.sparse.visual_step_cache import VisualStepCache
 from dreamwam.sparse.dense_graph_control import NativeDenseGraph
 from dreamwam.sparse.visual_kv_staging import StagedVisualKVCache
+from dreamwam.sparse.dit_boundary_graphs import BoundaryGraphControl, DiTBoundaryGraphs
 
 
 def main():
@@ -47,6 +48,8 @@ def main():
                         help="also graph the native Dense path without exporting unused visual K/V")
     parser.add_argument("--include-kv-staging-factor", action="store_true",
                         help="stage read-only action K/V only after a visual refresh; keep graph scope fixed")
+    parser.add_argument("--include-dit-boundary-factor", action="store_true",
+                        help="capture unchanged pre/post-DiT methods for both native Dense and temporal controls")
     parser.add_argument("--out-dir", required=True)
     args = parser.parse_args()
     if min(args.warmup, args.graph_warmup) < 1 or args.reps < 2:
@@ -55,6 +58,11 @@ def main():
         parser.error("temporal budget comparison requires --include-partial-factor for matched graph scope")
     if args.include_kv_staging_factor and not (args.include_temporal_control and args.include_native_graph_control):
         parser.error("K/V staging requires temporal and native graph controls")
+    if args.include_dit_boundary_factor:
+        if not (args.include_temporal_control and args.include_native_graph_control):
+            parser.error("DiT boundary capture requires temporal and native graph controls")
+        if args.include_kv_staging_factor:
+            parser.error("DiT boundary capture and K/V staging must be measured separately")
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=False)
     release = load_release_config(args.config)
@@ -69,9 +77,12 @@ def main():
                         "dreamwam/sparse/visual_cache_graphs.py", "dreamwam/sparse/visual_step_cache.py",
                         "dreamwam/sparse/dense_graph_control.py",
                         "dreamwam/sparse/visual_kv_staging.py",
+                        "dreamwam/sparse/dit_boundary_graphs.py",
                         "dreamwam/sparse/visual_token_cache.py", "dreamwam/sparse/action_guided_visual_token_cache.py",
                         "scripts/sparse/benchmark_visual_cache_graphs.py", "pyproject.toml", "requirements.txt", args.config)},
-                    factor=("read-only action K/V staging once per visual refresh with fixed graph scope"
+                    factor=("unchanged pre/post-DiT graph dispatch for equally optimized native Dense and temporal controls"
+                            if args.include_dit_boundary_factor else
+                            "read-only action K/V staging once per visual refresh with fixed graph scope"
                             if args.include_kv_staging_factor else
                             "visual refresh budget at fixed interval 5 and all-transformer graph dispatch"
                             if args.include_temporal_control else
@@ -80,6 +91,7 @@ def main():
                     include_temporal_control=args.include_temporal_control,
                     include_native_graph_control=args.include_native_graph_control,
                     include_kv_staging_factor=args.include_kv_staging_factor,
+                    include_dit_boundary_factor=args.include_dit_boundary_factor,
                     scope="selection and all policy/pre/post-DiT/RNG/scheduler logic remain eager; partial capture is a separate optional factor",
                     environment="existing .venv reused unchanged; no install or sync; uv.lock absent",
                     latency_boundary="synchronized full predict_action through CPU action output",
@@ -136,12 +148,23 @@ def main():
                     policy.model, keep_ratio=keep, refresh_every=5, guidance_weight=1.0,
                     graph_warmup=args.graph_warmup, graph_partial=True)
                 variants += (name,)
+        if args.include_dit_boundary_factor:
+            for label in ("dense", "temporal"):
+                for kind, enabled in (("buffered", False), ("graphed", True)):
+                    name = f"{kind}_boundaries_{label}"
+                    transformer = (NativeDenseGraph(policy.model, graph_warmup=args.graph_warmup)
+                                   if label == "dense" else GraphedVisualTokenCache(
+                                       policy.model, keep_ratio=1.0, refresh_every=5, guidance_weight=1.0,
+                                       graph_warmup=args.graph_warmup, graph_partial=True))
+                    caches[name] = BoundaryGraphControl(transformer, enabled=enabled, warmup=args.graph_warmup)
+                    variants += (name,)
         manifest["variant_options"] = {
             name: dict(refresh_every=cache.refresh_every, token_keep_ratio=cache.keep_ratio,
                        action_guidance_weight=getattr(cache, "guidance_weight", 0.0),
                        graph_enabled=getattr(cache, "graph_enabled", False),
                        graph_partial=getattr(cache, "graph_partial", False),
-                       refresh_scoped_kv_staging=isinstance(cache, StagedVisualKVCache))
+                       refresh_scoped_kv_staging=isinstance(cache, StagedVisualKVCache),
+                       dit_boundary_graphs=cache.boundaries.enabled if isinstance(cache, BoundaryGraphControl) else None)
             for name, cache in caches.items()}
 
         def reference_for(variant):
@@ -187,6 +210,8 @@ def main():
             required = {"dense", "action"} if name.endswith(("guided", "temporal")) else {"dense"}
             if name in ("graphed_partial_guided", "graphed_staged_guided"):
                 required.add("partial")
+            if isinstance(caches[name], BoundaryGraphControl):
+                required.update(f"dit_{part}" for part in DiTBoundaryGraphs.names)
             if set(graph_stats) != required or not all(value["captured"] for value in graph_stats.values()):
                 raise AssertionError(f"required CUDA graph missing: {name}")
         for variant in variants:
@@ -206,6 +231,11 @@ def main():
                     if variant.startswith("graphed_staged_"):
                         if stats["action_kv_stage_batches"] != 2 or stats["action_kv_skip_batches"] != 6:
                             raise AssertionError("K/V staging did not execute exactly two refresh copies and six skips")
+                    if isinstance(caches.get(variant), BoundaryGraphControl):
+                        for name in DiTBoundaryGraphs.names:
+                            if (stats[f"dit_{name}_calls"] != 10 or
+                                stats[f"dit_{name}_graph_replays"] != (10 if caches[variant].boundaries.enabled else 0)):
+                                raise AssertionError("DiT pre/post work or expected graph replay was skipped")
                     difference = actual.astype(np.float64) - references[("native_dense", input_id)].astype(np.float64)
                     row = dict(repeat=repeat, order=list(order), variant=variant, input_id=input_id,
                                seconds=seconds, bitwise_own_eager=True, cache=stats,
@@ -257,6 +287,13 @@ def main():
                 staging_factor_guided=mean("graphed_partial_guided") / mean("graphed_staged_guided"),
                 staged_temporal_vs_native_graph=mean("graphed_native_dense") / mean("graphed_staged_temporal"),
                 staged_guided_vs_native_graph=mean("graphed_native_dense") / mean("graphed_staged_guided"))
+        if args.include_dit_boundary_factor:
+            report["speedups"].update(
+                boundary_graph_factor_dense=mean("graphed_native_dense") / mean("graphed_boundaries_dense"),
+                boundary_graph_factor_temporal=mean("graphed_temporal") / mean("graphed_boundaries_temporal"),
+                boundary_graph_vs_buffered_dense=mean("buffered_boundaries_dense") / mean("graphed_boundaries_dense"),
+                boundary_graph_vs_buffered_temporal=mean("buffered_boundaries_temporal") / mean("graphed_boundaries_temporal"),
+                temporal_vs_native_graph_with_boundaries=mean("graphed_boundaries_dense") / mean("graphed_boundaries_temporal"))
         (out / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
         manifest.update(status="MEASURED", exit_code=0, end_utc=report["end_utc"], gpu_after=inventory(),
                         peak_allocated_mib=torch.cuda.max_memory_allocated() / 2**20,
