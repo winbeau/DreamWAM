@@ -9,6 +9,8 @@
   "gpu5_sharing_amendment": "2026-09-20 user permits flexible GPU 5 sharing with their other project, including the last available authorized card; GPU 0 authorization withdrawn. No dummy reservation job. Require >=50000 MiB free and <=10% utilization immediately before loading; do not signal the other project.",
   "closed_loop_total_episode_attempt_cap": 50,
   "closed_loop_attempts_used": 0,
+  "closed_loop_ledger": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json",
+  "closed_loop_budget_accounting": "reserve both complete arm manifests before either evaluator process; charges never auto-refund on errors or missing records; recorded attempts are reported separately",
   "sr_drop_margin_percentage_points": 5,
   "automatic_expansion": false,
   "development": {

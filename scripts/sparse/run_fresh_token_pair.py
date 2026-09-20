@@ -9,6 +9,7 @@ Explicit config pairs and an episode count support separately labelled pilots.
 
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -21,6 +22,8 @@ import xml.etree.ElementTree as ET
 from action_eval.config import load_experiment
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from dreamwam.sparse.episode_budget import EpisodeBudget
 
 
 def utc():
@@ -68,6 +71,32 @@ def admit_cpu_rendering(gpus, policy_uuid, authorized_gpus):
     ready = (p["util"] <= 20 and p["free"] >= 35000
              and not any("G" in x["type"] for x in p["processes"]))
     return spares if ready else []
+
+
+def admit_shared_gpu5_cpu(gpus, policy_uuid, authorized_gpus):
+    """Latest explicit H100 GPU-5 exception, with the profile's stricter limits."""
+    selected = next(g for g in gpus if g["uuid"] == policy_uuid)
+    if selected["index"] != 5 or 5 not in authorized_gpus:
+        raise ValueError("explicit flexible sharing is authorized only for GPU 5")
+    return selected["util"] <= 10 and selected["free"] >= 50000
+
+
+def budget_evidence(runs, status):
+    """Journal terminal attempts without confusing reservations or errors with SR."""
+    artifacts, attempted, not_run = {}, 0, 0
+    for entry in runs:
+        for path in sorted((Path(entry["output"]) / "run/episodes").glob("*/attempts/*/result.json")):
+            raw = path.read_bytes()
+            record = json.loads(raw)
+            if record["status"] == "not_run" or record["termination_reason"] == "not_attempted":
+                not_run += 1
+            else:
+                attempted += 1
+            artifacts[str(path)] = hashlib.sha256(raw).hexdigest()
+    return dict(controller_status=status, recorded_attempts=attempted, recorded_not_run=not_run,
+                terminal_artifacts=artifacts,
+                exact_attempt_count=status in {"PILOT_PAIR_COMPLETE", "QUICK50_PAIR_COMPLETE"},
+                accounting="full declared pair remains charged; incomplete/missing records never refund budget")
 
 
 def completed_outcomes(run_dir):
@@ -161,6 +190,10 @@ def main():
     parser.add_argument("--planned-episodes", type=int, default=50,
                         help="must equal each config's complete manifest; pilot configs must be labelled")
     parser.add_argument("--allow-shared-graphics", action="store_true")
+    parser.add_argument("--share-gpu5", action="store_true",
+                        help="explicit H100 GPU 5 flexible sharing with CPU rendering; require >=50000 MiB free and <=10%% utilization")
+    parser.add_argument("--episode-ledger", type=Path,
+                        help="shared effort ledger: reserve both complete arms against an immutable 50-episode cap")
     parser.add_argument("--render-backend", choices=("egl", "osmesa"), default="egl")
     parser.add_argument("--first-arm", choices=("sparse", "dense"), default="sparse",
                         help="use Dense first when establishing a new renderer baseline")
@@ -180,6 +213,11 @@ def main():
         parser.error("authorize at least three distinct nonnegative GPU indices")
     if min(args.wall_seconds, args.admission_seconds, args.stop_grace_seconds) <= 0:
         parser.error("time limits must be positive")
+    if args.share_gpu5 and (args.render_backend != "osmesa" or not args.episode_ledger or not args.dense_config):
+        parser.error("GPU 5 sharing requires CPU OSMesa, explicit pilot configs and the effort episode ledger")
+    budget = EpisodeBudget(args.episode_ledger) if args.episode_ledger else None
+    if budget is not None and 2 * args.planned_episodes > budget.available():
+        parser.error("both complete arm manifests must fit the effort's remaining 50-episode budget")
     args.out_dir.mkdir(parents=True, exist_ok=False)
     report = json.loads(args.adapter_report.read_text())
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=args.model_root, text=True).strip()
@@ -190,6 +228,8 @@ def main():
         planned_episodes_per_arm=args.planned_episodes, shared_graphics=args.allow_shared_graphics,
         authorized_gpu_indices=args.authorized_gpus,
         render_backend=args.render_backend,
+        shared_gpu5=args.share_gpu5,
+        episode_budget=None,
         first_arm=args.first_arm,
         wall_seconds_per_arm=args.wall_seconds, stop_grace_seconds=args.stop_grace_seconds,
         smoke_only=args.smoke_only, runs=[], sr=None)
@@ -211,6 +251,9 @@ def main():
                    sparse=args.sparse_config or args.eval_root / f"configs/experiments/dreamwam-fresh-token10-quick50{suffix}.yaml")
     loaded_configs = {arm: load_experiment(path, require_paths=True) for arm, path in configs.items()}
     validate_pair_configs(loaded_configs, args.planned_episodes, policy_uuid, render_uuid)
+    if budget is not None and any(item.config.runtime.retries != 0 or item.config.runtime.error_policy != "stop"
+                                  for item in loaded_configs.values()):
+        raise ValueError("bounded episode ledger requires retries=0 and error_policy=stop")
     for arm, loaded in loaded_configs.items():
         reference = report["arms"][arm]["fingerprint"]
         if not fingerprint_matches(reference, loaded.config.policy.options, reference["checkpoint_sha256"]):
@@ -243,8 +286,11 @@ def main():
                           if args.render_backend == "osmesa" else
                           admit_placement(gpus, policy_uuid, render_uuid,
                                           args.authorized_gpus, args.allow_shared_graphics))
-                if spares:
+                ready = admit_shared_gpu5_cpu(gpus, policy_uuid, args.authorized_gpus) if args.share_gpu5 else bool(spares)
+                if ready:
                     row["spares_unused"] = spares
+                    row["explicit_gpu5_sharing"] = args.share_gpu5
+                    row["last_available_exception"] = args.share_gpu5 and not spares
                     break
                 if time.monotonic() >= deadline:
                     meta.update(status="RESOURCE_WINDOW_CLOSED", waiting_arm=arm)
@@ -260,6 +306,11 @@ def main():
                          output=str(root), fingerprint_verified=False)
             meta["runs"].append(entry)
             with (root / "launch.log").open("w") as log:
+                if budget is not None and meta["episode_budget"] is None:
+                    meta["episode_budget"] = budget.reserve(str(args.out_dir.resolve()), 2 * args.planned_episodes,
+                        metadata=dict(model_commit=commit, evaluator_commit=meta["evaluator_commit"],
+                                      configs=meta["configs"], output=str(args.out_dir.resolve()), controller_pid=os.getpid()))
+                    save()
                 proc = subprocess.Popen(cmd, cwd=args.eval_root, env=env, stdout=log,
                                         stderr=subprocess.STDOUT, start_new_session=True)
                 entry["pid"] = proc.pid
@@ -314,6 +365,9 @@ def main():
     finally:
         meta["end_utc"] = utc()
         save()
+        if budget is not None and meta["episode_budget"] is not None:
+            meta["episode_budget"] = budget.finish(str(args.out_dir.resolve()), evidence=budget_evidence(meta["runs"], meta["status"]))
+            save()
 
 
 if __name__ == "__main__":

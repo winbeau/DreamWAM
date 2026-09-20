@@ -10,8 +10,10 @@ from .schedule import Schedule
 def uniform_feature_control(backend="cuda_graph"):
     # The inherited 56/294, [19,19,18] D0/R1-9 feature-reuse control.
     return HybridConfig(Schedule(10, ("dense",) + ("reuse",) * 9),
-        recompute_ratio=0.1, read_mode="compact", read_ratio=0.19,
-        selection="uniform", frame_quota="balanced", backend=backend)
+        recompute_ratio=0.1, read_mode="compact", read_ratio=0.1875,
+        # Historical selector name is drift, but its Dense-anchor rule is
+        # uniform and there are no Sparse steps to invoke a drift refresh.
+        selection="drift", frame_quota="balanced", backend=backend)
 
 
 def native_candidates(stage, backend="cuda_graph"):

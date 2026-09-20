@@ -18,7 +18,8 @@ def test_predeclared_stages_and_inclusive_call_cap():
         assert budget["total"] == calls == sum(value for key, value in budget.items() if key != "total")
     control = uniform_feature_control()
     assert control.budgets(294, 98) == (30, 56)
-    assert control.native_routing is None and control.selection == "uniform"
+    assert control.native_routing is None and control.selection == "drift"
+    assert control.read_ratio == 0.1875  # exact historical option; effective count is 56
 
 
 def test_pool_hard_controls_match_read_quotas_and_fusion_weights_are_explicit():

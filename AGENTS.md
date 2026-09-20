@@ -13,6 +13,17 @@ predeclared 3-pair development pilot only after offline gates. No automatic
 expansion. This supersedes the historical unspecified tolerance and 50-per-arm
 screening scope below. See `docs/implementation/dido-sparse-profile/PROGRESS.md`.
 
+Every DIDO closed-loop invocation must use the same external effort ledger:
+`/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json`.
+Pass it as `--episode-ledger` to `scripts/sparse/run_fresh_token_pair.py`; use
+`--share-gpu5 --render-backend osmesa --authorized-gpus 3 4 5` for the explicit
+GPU 5 sharing exception. Require retries=0 and error_policy=stop. The ledger
+reserves both full arm manifests before either process starts and conservatively
+retains the charge after interruptions. Report recorded attempts separately
+from charged slots; never delete or substitute the ledger to regain budget.
+These flags are launch controls, not permission to bypass the remaining offline,
+adapter, renderer or immutable-candidate gates.
+
 Latest hardware amendment: GPU 0 was reclaimed and must remain unused by this
 task. The user explicitly permits flexible sharing of **GPU 5** with their other
 project. For GPU 5 this supersedes the leave-last-card rule below; admit bounded

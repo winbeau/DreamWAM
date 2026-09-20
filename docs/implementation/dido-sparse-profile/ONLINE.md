@@ -130,6 +130,13 @@ changed inputs, prompt misses and hit restoration. Graph-internal transformer
 warmups also count in reported cold latency; they are not complete predictions.
 No new closed-loop episode is part of this screen.
 
+The uniform control retains the exact historical options: ratio 0.1875 and
+selector name `drift`, with D0/R1–9. Its Dense-anchor rule is uniform, and no
+Sparse step invokes a drift refresh; the realized read budget is 56, not 55.
+The new native-uniform arm must also match this control's executable and raw
+actions bitwise. Thus a spelling or inactive ratio is not used to claim a new
+selection mechanism.
+
 Every graph call must equal its own eager reference for both executable actions
 and raw pre-binarization actions. All calls have hashed raw/executable archives,
 timings, counters and input/phase identities; timed diagnostics separately report

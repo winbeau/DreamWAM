@@ -63,6 +63,45 @@ def test_cpu_renderer_uses_only_policy_gpu_and_preserves_a_spare(admission):
         admission.admit_cpu_rendering(gpus, "gpu-2", [3, 4, 5])
 
 
+def test_explicit_gpu5_sharing_allows_last_card_but_keeps_strict_headroom(admission):
+    gpus = inventory()
+    gpus[3]["util"] = gpus[4]["util"] = 100
+    assert admission.admit_cpu_rendering(gpus, "gpu-5", [3, 4, 5]) == []
+    assert admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5])
+    gpus[5]["util"] = 11
+    assert not admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5])
+    gpus[5].update(util=0, free=49999)
+    assert not admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5])
+    with pytest.raises(ValueError, match="only for GPU 5"):
+        admission.admit_shared_gpu5_cpu(gpus, "gpu-0", [0, 3, 4, 5])
+    with pytest.raises(ValueError, match="only for GPU 5"):
+        admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [0, 3, 4])
+
+
+def test_episode_budget_cli_refuses_oversized_pairs_before_any_model_or_evaluator_launch(admission, monkeypatch, tmp_path):
+    monkeypatch.setattr(sys, "argv", ["launcher", "--eval-root", "/unused/eval", "--model-root", "/unused/model",
+        "--out-dir", str(tmp_path / "out"), "--adapter-report", "/unused/report",
+        "--dense-config", "/unused/dense", "--sparse-config", "/unused/sparse", "--planned-episodes", "26",
+        "--episode-ledger", str(tmp_path / "ledger.json")])
+    monkeypatch.setattr(subprocess, "Popen", lambda *a, **k: pytest.fail("over-budget pair started a process"))
+    with pytest.raises(SystemExit) as error:
+        admission.main()
+    assert error.value.code == 2 and not (tmp_path / "out").exists()
+
+
+def test_episode_evidence_keeps_errors_separate_from_unattempted_identities(admission, tmp_path):
+    import json
+    root = tmp_path / "arm"
+    for number, (status, reason) in enumerate((("succeeded", "success"), ("error", "policy_error"),
+                                              ("not_run", "not_attempted"))):
+        path = root / "run/episodes" / str(number) / "attempts/0001/result.json"
+        path.parent.mkdir(parents=True)
+        path.write_text(json.dumps(dict(status=status, termination_reason=reason)))
+    evidence = admission.budget_evidence([dict(output=str(root))], "STOPPED_REQUIRES_REVIEW")
+    assert evidence["recorded_attempts"] == 2 and evidence["recorded_not_run"] == 1
+    assert not evidence["exact_attempt_count"] and len(evidence["terminal_artifacts"]) == 3
+
+
 def test_explicit_pilot_checks_count_protocol_and_common_options(admission):
     from copy import deepcopy
     from types import SimpleNamespace

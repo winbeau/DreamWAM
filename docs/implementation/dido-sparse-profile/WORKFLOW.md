@@ -89,6 +89,12 @@ projects. No dummy-load reservation is run. CPU rendering has no render GPU. Do 
 other GPUs/hosts, revive historical queues, train the checkpoint, or alter the
 scientific protocol without further authority.
 
+For the later bounded paired rollout, see [CLOSED-LOOP.md](CLOSED-LOOP.md).
+The launcher now exposes the same explicit GPU 5 sharing exception and a
+persistent 50-slot effort ledger. A pair's two full manifests must fit before
+the first evaluator process starts; incomplete records do not silently refund
+capacity. This does not start a rollout or close any numerical/adapter gate.
+
 Existing checkpoint SHA-256 (historical evidence, revalidate before experiments):
 `6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61`.
 Checkpoint and pretrained files remain external assets, never committed.
