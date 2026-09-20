@@ -1,6 +1,6 @@
 # DreamWAM paper-evaluation handoff
 
-This page records DreamWAM Joint integration with [action-eval](https://github.com/winbeau/action-eval). **main** is the maintained evaluation branch and default. **GPU work is PAUSED at the user's request as of 2026-09-20 06:21 UTC**. Our policy/render processes have exited; GPUs 3 and 4 had no processes at the release audit. Do not restart until the user resumes. See the [consolidated experiment results](sparse-results-paused-20260920.md).
+This page records DreamWAM Joint integration with [action-eval](https://github.com/winbeau/action-eval). **main** is the maintained evaluation branch and default. The user **resumed GPU 4–7 work** on 2026-09-20 for [every-step 10% visual tokens without cross-step visual caching](fresh-visual-tokens-20260920.md). That new method is numerically verified and measures **1.191×** (269.27 → 226.12 ms) versus strengthened Dense in a shared-load 96-request experiment. It has substantial action differences and no SR result. The shared-renderer smoke failed on its first native read (`unwritten_rgb`, exit 73), before any valid episode; all owned processes exited. The new matched 50-pair comparison awaits an available renderer. The historical pause audit and older cached results are retained in the [earlier consolidated record](sparse-results-paused-20260920.md); old 500-episode queues remain stopped.
 
 The [fixed-budget compact Head/Stage execution trial](head-stage-execution-20260920.md)
 completed 300 timings: compact Head × Stage is **338.48 ms** versus **306.95 ms**
@@ -48,10 +48,11 @@ The adapter loads the injected checkpoint, reports executed options, preserves p
 
 ## Remaining work
 
-All execution below waits for an explicit user request to resume.
+The resumed work currently prioritizes the fresh-token experiment. Historical
+cached-policy/full-suite queues below are not implicitly resumed.
 
 1. Preserve the server dependency inventory; reference Python 3.10.20 and torch 2.7.1+cu126. Current pyproject delegates to requirements.txt; preserve both where possible. Recover/generate a complete lock only on server and record justified differences, including build-system pins.
-2. Complete the new matched 50-episode exploratory comparison and use quick cohorts to select the method. Resume unified full testing only in the later phase requested by the user. Preserve completed Dense short suites and all historical partial manifests; their records cannot silently fill a new denominator.
+2. Complete the new fresh-token matched 50-episode exploratory comparison after its renderer admission check, and use quick cohorts to select the method. Resume unified full testing only in the later phase requested by the user. Preserve completed Dense short suites and all historical partial manifests; their records cannot silently fill a new denominator.
 3. Evaluate action guidance with its own matched budget/cadence control and the strengthened Dense control. Its small speed advantage over the strengthened temporal candidate does not establish a quality benefit.
 4. Preserve all attempts, impose finite recovery limits and report complete coverage before SR. Native EGL aborts remain unresolved; do not assume resume makes them statistically harmless or apply unverified rendering workarounds.
 5. Keep further optimizations separate, with complete `predict_action` timing and their own quality evidence. Any extension to another suite must use its official protocol; do not reuse Spatial's horizon blindly.

@@ -1,0 +1,120 @@
+{
+  "status": "SMOKE_STOPPED_FOR_REVIEW",
+  "start_utc": "2026-09-20T09:19:29.477950+00:00",
+  "pid": 571773,
+  "model_commit": "6c52f362a975e560707b905c1c57cb46a1b9b0a8",
+  "evaluator_commit": "e0d9e800bf621661cac99388f9e37002b9e8fdfa",
+  "planned_episodes_per_arm": 50,
+  "shared_graphics": true,
+  "smoke_only": true,
+  "runs": [
+    {
+      "arm": "sparse",
+      "start_utc": "2026-09-20T09:19:31.090234+00:00",
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/.venv/bin/python",
+        "scripts/supplement-libero.py",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/configs/experiments/dreamwam-fresh-token10-quick50.yaml",
+        "--render-gpu",
+        "GPU-7d459912-b567-59fb-8abf-57c18713cb84",
+        "--output",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/fresh-visual-tokens-20260920/smoke-599d225/sparse",
+        "--check-native-writes"
+      ],
+      "admission": {
+        "utc": "2026-09-20T09:19:31.089558+00:00",
+        "arm": "sparse",
+        "phase": "admission",
+        "gpus": [
+          {
+            "index": 0,
+            "uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+            "util": 0,
+            "free": 143156,
+            "processes": []
+          },
+          {
+            "index": 1,
+            "uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+            "util": 0,
+            "free": 143156,
+            "processes": []
+          },
+          {
+            "index": 2,
+            "uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+            "util": 0,
+            "free": 143156,
+            "processes": []
+          },
+          {
+            "index": 3,
+            "uuid": "GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba",
+            "util": 0,
+            "free": 143156,
+            "processes": []
+          },
+          {
+            "index": 4,
+            "uuid": "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4",
+            "util": 0,
+            "free": 127308,
+            "processes": [
+              {
+                "pid": 551992,
+                "type": "C"
+              }
+            ]
+          },
+          {
+            "index": 5,
+            "uuid": "GPU-7d459912-b567-59fb-8abf-57c18713cb84",
+            "util": 14,
+            "free": 142204,
+            "processes": [
+              {
+                "pid": 551992,
+                "type": "G"
+              }
+            ]
+          },
+          {
+            "index": 6,
+            "uuid": "GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5",
+            "util": 0,
+            "free": 126812,
+            "processes": [
+              {
+                "pid": 552000,
+                "type": "C"
+              }
+            ]
+          },
+          {
+            "index": 7,
+            "uuid": "GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8",
+            "util": 1,
+            "free": 142204,
+            "processes": [
+              {
+                "pid": 552000,
+                "type": "G"
+              }
+            ]
+          }
+        ],
+        "spares_unused": [
+          6
+        ]
+      },
+      "output": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/fresh-visual-tokens-20260920/smoke-599d225/sparse",
+      "fingerprint_verified": true,
+      "pid": 571779,
+      "exit_code": 73,
+      "end_utc": "2026-09-20T09:20:44.116544+00:00",
+      "stop_reason": null
+    }
+  ],
+  "sr": null,
+  "end_utc": "2026-09-20T09:20:44.117811+00:00"
+}

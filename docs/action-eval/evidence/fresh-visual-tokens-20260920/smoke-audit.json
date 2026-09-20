@@ -1,0 +1,19 @@
+{
+  "utc": "2026-09-20T09:25:35.519456+00:00",
+  "status": "RENDERER_SMOKE_FAILED",
+  "controller_pid": 571773,
+  "runner_pid": 571779,
+  "policy_pid": 571811,
+  "owned_processes_alive": false,
+  "exit_code": 73,
+  "native_journal": [
+    "1 start",
+    "1 error unwritten_rgb"
+  ],
+  "accepted_outcomes": 0,
+  "planned_manifest": 50,
+  "sr": null,
+  "osmesa_library": null,
+  "interpretation": "infrastructure error; not a task failure; no automatic retry on this shared renderer",
+  "process_recheck_utc": "2026-09-20T09:27:49.698830+00:00"
+}

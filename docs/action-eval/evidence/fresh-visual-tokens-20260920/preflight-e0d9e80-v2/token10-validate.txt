@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/configs/experiments/dreamwam-fresh-token10-quick50.yaml
+experiment  : dreamwam-fresh-token10-quick50 (DreamWAM Joint every-step action-selected visual tokens (exploratory 50))
+fingerprint : 599ff62b162645d7cf966e6dc13e1b8d60fd2831c49af3c4682a94bc6f7e082b
+benchmark   : libero_spatial tasks=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] inits=[0, 1, 2, 3, 4]
+episodes    : 50 planned (10 tasks x 5 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

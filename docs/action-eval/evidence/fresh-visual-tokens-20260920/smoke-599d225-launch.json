@@ -1,0 +1,22 @@
+{
+  "utc": "2026-09-20T09:19:29.332663+00:00",
+  "pid": 571773,
+  "command": [
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/.venv/bin/python",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-controller-599d225/scripts/sparse/run_fresh_token_pair.py",
+    "--eval-root",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80",
+    "--model-root",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-6c52f36",
+    "--out-dir",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/fresh-visual-tokens-20260920/smoke-599d225",
+    "--adapter-report",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/fresh-visual-tokens-20260920/adapter-6c52f36/report.json",
+    "--allow-shared-graphics",
+    "--smoke-only",
+    "--wall-seconds",
+    "600"
+  ],
+  "controller_source_sha256": "1cbde90f440449e85ea0363a9e7ce67607235cf7067d9e154cea76fcf8de434b",
+  "phase": "one accepted episode, no SR claim; 50-identity manifest preserved"
+}

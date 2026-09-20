@@ -1,0 +1,90 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-20T09:12:42.020770+00:00",
+  "seconds": {
+    "dense": {
+      "samples": 24,
+      "mean": 0.3030545919512709,
+      "p50": 0.31513561122119427,
+      "p95": 0.3159925383515656,
+      "min": 0.2732142060995102,
+      "max": 0.3160511702299118,
+      "stdev": 0.018124307561499395
+    },
+    "dense_strong": {
+      "samples": 24,
+      "mean": 0.2692662920647611,
+      "p50": 0.276126254349947,
+      "p95": 0.282147023268044,
+      "min": 0.2396175153553486,
+      "max": 0.28236646205186844,
+      "stdev": 0.01545466158206894
+    },
+    "uniform10": {
+      "samples": 24,
+      "mean": 0.22226067632436752,
+      "p50": 0.23237764462828636,
+      "p95": 0.2394219346344471,
+      "min": 0.19732950255274773,
+      "max": 0.23971152491867542,
+      "stdev": 0.01805038997749924
+    },
+    "action10": {
+      "samples": 24,
+      "mean": 0.22612230836724242,
+      "p50": 0.2405633982270956,
+      "p95": 0.24150931276381016,
+      "min": 0.1988280862569809,
+      "max": 0.24154837243258953,
+      "stdev": 0.018718780268300293
+    }
+  },
+  "speedups": {
+    "dense": 0.8885075468780796,
+    "dense_strong": 1.0,
+    "uniform10": 1.2114886740999273,
+    "action10": 1.190799324529489
+  },
+  "versus_full_recompute": {
+    "dense": 1.0,
+    "dense_strong": 1.1254828431268455,
+    "uniform10": 1.3635097173419584,
+    "action10": 1.3402242093649765
+  },
+  "graphs": {
+    "dense": {
+      "captured": true,
+      "capture_seconds": 0.2972056772559881,
+      "replays": 320
+    },
+    "dense_strong": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.24991843663156033,
+        "replays": 35
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.45823896676301956,
+        "replays": 315
+      }
+    },
+    "uniform10": {
+      "captured": true,
+      "capture_seconds": 0.24069004133343697,
+      "replays": 320
+    },
+    "action10": {
+      "captured": true,
+      "capture_seconds": 0.27022019028663635,
+      "replays": 350
+    }
+  },
+  "sr": null,
+  "limitations": [
+    "three exposed real calibration observations; no SR inference",
+    "warm repeated instructions; first instruction misses and setup reported separately",
+    "inactive visual rows bypass current transformer input; AV keys are also pruned",
+    "frame quotas add structural support but do not implement full AV-VV context bridging"
+  ]
+}

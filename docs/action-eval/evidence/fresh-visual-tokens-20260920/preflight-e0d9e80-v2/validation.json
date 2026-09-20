@@ -1,0 +1,53 @@
+{
+  "utc": "2026-09-20T09:12:34.279308+00:00",
+  "commands": [
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "validate",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/configs/experiments/dreamwam-fresh-control-quick50.yaml"
+      ],
+      "output": "control-validate.txt",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "doctor",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/configs/experiments/dreamwam-fresh-control-quick50.yaml"
+      ],
+      "output": "control-doctor.txt",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "validate",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/configs/experiments/dreamwam-fresh-token10-quick50.yaml"
+      ],
+      "output": "token10-validate.txt",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "doctor",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/configs/experiments/dreamwam-fresh-token10-quick50.yaml"
+      ],
+      "output": "token10-doctor.txt",
+      "exit_code": 0
+    }
+  ],
+  "dependency_sha256": {
+    "pyproject.toml": "a5e09a5048610cd8e5c3d66c6b0a82593c64acafa8e04aa90a986aaef3b5313a",
+    "uv.lock": "b5b2f17d88cde00f8357056b531606096f6b73eaecd852d1552bc8f9db4e8fe1"
+  }
+}

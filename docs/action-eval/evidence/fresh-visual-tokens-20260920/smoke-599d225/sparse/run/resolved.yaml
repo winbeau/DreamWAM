@@ -1,0 +1,79 @@
+schema_version: action-eval/v1
+experiment:
+  name: dreamwam-fresh-token10-quick50
+  label: DreamWAM Joint every-step action-selected visual tokens (exploratory 50)
+benchmark:
+  backend: libero
+  root: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO
+  suite: libero_spatial
+  task_ids:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  initial_state_indices:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  repeats: 1
+protocol:
+  id: dreamwam-release-v1
+  max_steps: 400
+  wait_steps: 30
+  resolution:
+  - 256
+  - 256
+  replan_steps: 10
+  observation_profile: dreamwam-libero-2cam-v1
+  action_profile: libero-osc-pose-v1
+  success_mode: first_success_after_wait
+  seed: 42
+policy:
+  repo_root: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-6c52f36
+  python: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-6c52f36/.venv/bin/python
+  entrypoint: evaluation/action_eval/infer.py:create_policy
+  model_config: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-6c52f36/configs/dreamwam_joint.yaml
+  checkpoint: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-6c52f36/checkpoints/dreamwam_joint.pt
+  options:
+    action_horizon: 32
+    denoising_steps: 10
+    rng_mode: fixed_per_predict
+    prompt_cache:
+      capacity: 8
+    fresh_visual_tokens:
+      keep_ratio: 0.1
+      selection: action
+      graph_dispatch: all_transformers
+runtime:
+  executor: local
+  policy_gpu_uuids:
+  - GPU-490b4a76-6210-31b9-4e03-838a113cf5f4
+  render_gpu_uuid: GPU-7d459912-b567-59fb-8abf-57c18713cb84
+  workers: 1
+  gpu_sharing: explicit
+  startup_timeout_s: 900.0
+  predict_timeout_s: 120.0
+  first_predict_timeout_s: null
+  episode_timeout_s: 7200.0
+  error_policy: stop
+  retries: 0
+  env: {}
+simulator_env:
+  OMP_NUM_THREADS: '1'
+  cpu_affinity: null
+outputs:
+  root: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/outputs
+  video: none
+  save_actions: true
+  save_observations: false
+report:
+  uncertainty: wilson95
+  table_label: DreamWAM fresh visual 10% exploratory Spatial 50

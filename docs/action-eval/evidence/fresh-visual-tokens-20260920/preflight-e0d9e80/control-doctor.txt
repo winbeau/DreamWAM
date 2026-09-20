@@ -1,0 +1,2 @@
+/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/configs/experiments/dreamwam-fresh-control-quick50.yaml: referenced paths do not exist
+  - policy.checkpoint: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-6c52f36/checkpoints/dreamwam_joint.pt

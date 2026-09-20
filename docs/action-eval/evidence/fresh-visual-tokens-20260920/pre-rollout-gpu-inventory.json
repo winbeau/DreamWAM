@@ -1,0 +1,113 @@
+{
+  "utc": "2026-09-20T09:15:08.635201+00:00",
+  "gpus": [
+    {
+      "index": 0,
+      "uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+      "util": "0 %",
+      "free": "69732 MiB",
+      "processes": [
+        {
+          "pid": "558828",
+          "type": "C"
+        },
+        {
+          "pid": "558829",
+          "type": "C"
+        },
+        {
+          "pid": "558830",
+          "type": "C"
+        },
+        {
+          "pid": "558831",
+          "type": "C"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+      "util": "100 %",
+      "free": "71138 MiB",
+      "processes": [
+        {
+          "pid": "558829",
+          "type": "C"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+      "util": "100 %",
+      "free": "71134 MiB",
+      "processes": [
+        {
+          "pid": "558830",
+          "type": "C"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "uuid": "GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba",
+      "util": "100 %",
+      "free": "71296 MiB",
+      "processes": [
+        {
+          "pid": "558831",
+          "type": "C"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "uuid": "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4",
+      "util": "0 %",
+      "free": "127308 MiB",
+      "processes": [
+        {
+          "pid": "551992",
+          "type": "C"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "uuid": "GPU-7d459912-b567-59fb-8abf-57c18713cb84",
+      "util": "13 %",
+      "free": "142204 MiB",
+      "processes": [
+        {
+          "pid": "551992",
+          "type": "G"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "uuid": "GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5",
+      "util": "0 %",
+      "free": "126812 MiB",
+      "processes": [
+        {
+          "pid": "552000",
+          "type": "C"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "uuid": "GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8",
+      "util": "0 %",
+      "free": "142220 MiB",
+      "processes": [
+        {
+          "pid": "552000",
+          "type": "G"
+        }
+      ]
+    }
+  ]
+}
