@@ -14,10 +14,13 @@ import os
 from pathlib import Path
 import signal
 import subprocess
+import sys
 import time
 import xml.etree.ElementTree as ET
 
 from action_eval.config import load_experiment
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 
 def utc():
@@ -96,7 +99,17 @@ def validate_pair_configs(loaded, planned_episodes, policy_uuid, render_uuid):
 def fingerprint_matches(fingerprint, options, checkpoint_sha256):
     keys = ["action_horizon", "denoising_steps", "rng_mode", "prompt_cache"]
     methods = [key for key in ("visual_cache", "fresh_visual_tokens", "hybrid_visual") if key in options]
-    return (len(methods) == 1 and all(fingerprint.get(k) == options[k] for k in keys + methods)
+    expected = dict(options)
+    if methods == ["hybrid_visual"]:
+        # The adapter describes validated effective defaults, not raw YAML.
+        # In particular new selector defaults and explicit reuse.mode=features
+        # must compare semantically, without accepting typos or changed budgets.
+        from dreamwam.sparse.hybrid import HybridConfig
+        try:
+            expected["hybrid_visual"] = HybridConfig.from_mapping(options["hybrid_visual"]).describe()
+        except (ValueError, TypeError):
+            return False
+    return (len(methods) == 1 and all(fingerprint.get(k) == expected[k] for k in keys + methods)
             and fingerprint.get("checkpoint_sha256") == checkpoint_sha256)
 
 

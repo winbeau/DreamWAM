@@ -92,12 +92,30 @@ def test_explicit_pilot_checks_count_protocol_and_common_options(admission):
 
 
 def test_hybrid_fingerprint_rejects_wrong_options_and_checkpoint(admission):
+    from dreamwam.sparse.hybrid import HybridConfig
+    from test_hybrid_schedule import options as hybrid_options
     options = dict(action_horizon=32, denoising_steps=10, rng_mode="fixed_per_predict",
-                   prompt_cache={"capacity": 8}, hybrid_visual={"read": {"mode": "compact"}})
-    fingerprint = dict(options, checkpoint_sha256="verified-checkpoint")
+                   prompt_cache={"capacity": 8}, hybrid_visual=hybrid_options())
+    fingerprint = dict(options, hybrid_visual=HybridConfig.from_mapping(options["hybrid_visual"]).describe(),
+                       checkpoint_sha256="verified-checkpoint")
     assert admission.fingerprint_matches(fingerprint, options, "verified-checkpoint")
     assert not admission.fingerprint_matches(fingerprint, options, "another-checkpoint")
     assert not admission.fingerprint_matches(fingerprint, dict(options, hybrid_visual={}), "verified-checkpoint")
+
+
+def test_hybrid_fingerprint_normalizes_new_routing_defaults_without_weakening_checks(admission):
+    from copy import deepcopy
+    from dreamwam.sparse.hybrid import HybridConfig
+    from test_hybrid_schedule import options as hybrid_options
+    hybrid = hybrid_options()
+    hybrid.update(selection=dict(method="action_context"), reuse=dict(mode="features"))
+    options = dict(action_horizon=32, denoising_steps=10, rng_mode="fixed_per_predict",
+                   prompt_cache={"capacity": 8}, hybrid_visual=hybrid)
+    fingerprint = dict(options, hybrid_visual=HybridConfig.from_mapping(hybrid).describe(), checkpoint_sha256="x")
+    assert admission.fingerprint_matches(fingerprint, options, "x")
+    changed = deepcopy(options)
+    changed["hybrid_visual"]["selection"]["context_weight"] = 2
+    assert not admission.fingerprint_matches(fingerprint, changed, "x")
 
 
 def test_cleanup_bounds_an_unresponsive_worker_without_touching_an_unrelated_process(admission):
