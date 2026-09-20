@@ -1,7 +1,8 @@
 # Native DreamWAM action–video evidence
 
 Status: raw capture and descriptive replay **verified**, 2026-09-20 UTC.
-The full goal remains active. The bounded diagnostic follow-up is also complete;
+This is the historical profile/diagnostic phase; the completed study is in
+[REPORT.md](REPORT.md). The bounded diagnostic follow-up is also complete;
 it does not establish a consistently better selector, a speedup or SR preservation.
 The subsequent [400-call online screen](ONLINE-RESULTS.md) is recorded separately;
 it tests actual selection/packing cost and retains two development candidates.
@@ -36,7 +37,7 @@ ran **18:22:35.421–18:22:58.347 UTC**, exit 0: all 567 files validated,
 360 attention cells, 423,360 token-score rows, 2,880 equal-budget routes,
 12,960 head comparisons and 33,264 regional/global transitions.
 The GPU process exited after capture. None of these calls is a closed-loop
-episode; closed-loop attempts remain **0/50**.
+episode; closed-loop attempts at this phase were **0/50**.
 
 All artifacts are under H100
 `/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/`:
@@ -153,15 +154,16 @@ CUDA_VISIBLE_DEVICES='' python scripts/sparse/audit_action_video_interventions.p
   --study /path/to/interventions-89bd1ea --out-dir /new/path/to/diagnostic-audit
 ```
 
-New real-checkpoint predictions so far: **67** (18 capture + 49 diagnostics;
-the refused launch attempted zero). New closed-loop episodes: **0/50**.
+At this phase, new real-checkpoint predictions were **67** (18 capture + 49
+diagnostics; the refused launch attempted zero), with **0/50** closed-loop attempts.
 The scripted audit completed at **18:50:06 UTC**, exit 0; all native-control
 parity, execution traces and 47 metrics reproduce from the archived arrays.
 At that time all owned model PIDs were absent and GPU 5 was at 4 MiB / 0%.
 
-Online scoring/packing, feature versus structure reuse, background pooling,
+At the 18:50 UTC phase boundary, online scoring/packing, feature versus structure reuse, background pooling,
 explicit refresh scans, CUDA graph parity, matched full-predict timings,
-adapter checks and bounded paired SR remain open. Historical uniform feature
+adapter checks and bounded paired SR remained open; their completed evidence is
+now in [REPORT.md](REPORT.md). Historical uniform feature
 reuse at roughly 2× is retained as a control, not claimed as a new selector
 result. The SR margin is 5 percentage points; the global closed-loop cap is
 50 attempts across Dense and all candidates, with no automatic expansion.

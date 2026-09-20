@@ -3,8 +3,10 @@
 Status: CPU, four actual BF16 CUDA scenarios, and the 400-call real-checkpoint
 D0/R1–9 screen are verified. See [ONLINE-RESULTS.md](ONLINE-RESULTS.md) for the
 complete positive/negative matrix. The [refresh/budget/structure follow-up](FOLLOWUP-RESULTS.md)
-is also verified; final nine-input timing, adapter and SR gates remain open. This extends the inherited hybrid
-executor without changing inputs, checkpoint, resolution, horizon or step count.
+is also verified. The [final report](REPORT.md) records the completed nine-input
+screen, adapter and twelve real attempts: new selectors worsen offline action
+proxies versus uniform, and the SR margin remains unproven. This extends the
+inherited executor without changing inputs, checkpoint, resolution, horizon or steps.
 
 First verification, 2026-09-20 19:18 UTC, source
 `bdabd8b37ce859a4964a5d1708239b36e38dac14`: the eight related CPU test modules
@@ -117,16 +119,16 @@ construction execute through the same eager/buffered/CUDA graph dispatcher.
 CPU geometry validation and all device transfers remain inside full
 predict_action timing. No local-only timing or SR result can establish success.
 
-## Verification scope and remaining work
+## Verification scope
 
 H100 tests cover independent raw-score replay, frame budgets, complete partition
 and mask/multiplicity parity, full-budget degeneration, independent recompute
 sets, request isolation, numeric fallback and CUDA eager/graph consistency.
 Graph tests poison float, integer, boolean and complex staging buffers between
 changed requests. The finite checkpoint screen against stronger Dense and the
-original uniform feature-reuse control is complete. The predeclared bounded
-refresh/structure scan, retained-candidate adapter checks and small 3-pair pilot
-remain, with no SR inferred from the offline results.
+original uniform feature-reuse control is complete. The bounded refresh/structure
+scan, 22-call adapter check and both three-pair cohorts are also complete, with
+no SR inferred from offline action proxies. All resources are released.
 
 ## Finite checkpoint screen
 
@@ -158,7 +160,8 @@ Fusion was a calibration axis: dynamic weights 0.25, 0.5 and 0.75 competed with
 both pure endpoints using identical uniform observed-frame treatment. The pure
 value-action score also has its normal scored-observed-frame arm, separating that
 choice from fusion. No fusion weight is adopted. Shared AV-seeded VV context
-and layerwise value-aware reads are retained for the next bounded comparisons;
-the final candidate and refresh schedule are not yet frozen.
+and layerwise value-aware reads were retained for the subsequent bounded
+comparisons. The final layerwise R56 D0/R1–9 candidate stayed frozen through both
+closed-loop cohorts; the final nine-input screen reverses the early proxy benefit.
 Pool/hard controls read exactly 198 rows with the same complete observed frame;
 uniform region selection and unit/count multiplicity are explicit ablations.

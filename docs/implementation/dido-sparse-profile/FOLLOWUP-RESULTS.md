@@ -1,8 +1,9 @@
 # Native refresh, budget and structure follow-up
 
 Status: 380 bounded predictions completed and independently audited on H100,
-2026-09-20 UTC. Cumulative checkpoint predictions: **847**; closed-loop attempts:
-**0/50**. These are two exposed DreamWAM development observations, not DIDO author
+2026-09-20 UTC. At this phase cumulative checkpoint predictions were **847** and
+closed-loop attempts **0/50**; see [REPORT.md](REPORT.md) for final totals.
+These are two exposed DreamWAM development observations, not DIDO author
 records or SR evidence. Exact revisions, timestamps, commands, failures and 51
 artifact hashes: [FOLLOWUP-VERIFICATION.json](FOLLOWUP-VERIFICATION.json).
 The prior [20-candidate screen](ONLINE-RESULTS.md) remains separate.

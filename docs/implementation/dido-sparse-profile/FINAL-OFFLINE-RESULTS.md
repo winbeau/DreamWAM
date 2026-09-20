@@ -31,8 +31,8 @@ at each trajectory's initial observation. The middle observations are much close
 late observations include additional failures of the action proxy. These are
 action differences, not benchmark task failures. The selected diagnostic pilot
 candidate, layerwise R56, is the least-error choice among the **new** candidates;
-it is not better than uniform. Its actual control consequence still requires the
-predeclared three-pair pilot. No retuning follows from calling this a final screen.
+it is not better than uniform. Its subsequently measured control consequence is
+in the [final report](REPORT.md); no retuning followed this frozen screen.
 
 The speed comes from D0/R1–9 feature reuse. Every action token executes all 30
 layers at all ten denoising steps; only D0 computes all 294 visual rows. Native
@@ -67,8 +67,9 @@ and `native-final-audit-41f515a/{report.json,per-input-timings.csv}`. Reproducti
 online_final --share-gpu5 --admission-wait-seconds 120 --out-dir <new-directory>`.
 This records a completed finite run; it does not authorize duplicate testing.
 
-The next six-attempt paired development pilot uses model `41f515a`, evaluator
-`62c3656`, tasks 0/1/2 × initial state 1, unchanged release protocol and CPU
-OSMesa. Candidate configuration and adverse comparison are committed in the
-isolated evaluator branch. The five-point SR tolerance is not established by
-offline errors or a tiny pilot. No training, checkpoint or dependency changed.
+The completed six-attempt development pilot uses model `41f515a`, evaluator
+`0f856c9`, tasks 0/1/2 × initial state 1, unchanged release protocol and CPU
+OSMesa: Dense/candidate both 3/3. The final fixed cohort uses evaluator `b5952a5`
+and tasks 3/4/5 × initial state 2: Dense 2/3, candidate 3/3. The study stopped
+at 12 attempts. The five-point SR tolerance is not established by offline errors
+or these tiny cohorts. No training, checkpoint or dependency changed.

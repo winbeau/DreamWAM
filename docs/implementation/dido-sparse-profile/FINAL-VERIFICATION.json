@@ -1,0 +1,1231 @@
+{
+  "status": "BOUNDED_STUDY_VERIFIED_WITH_NEGATIVE_AND_INCONCLUSIVE_TARGET_RESULTS",
+  "timestamp_utc": "2026-09-20T21:29:01.076307+00:00",
+  "artifact_root": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920",
+  "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "model_environment": {
+    "python": "3.10.20",
+    "torch": "2.7.1+cu126",
+    "cuda": "12.6",
+    "dependencies_changed": false
+  },
+  "offline_final": {
+    "start_utc": "2026-09-20T20:48:37.307884+00:00",
+    "end_utc": "2026-09-20T20:50:52.183307+00:00",
+    "argv": [
+      "scripts/sparse/benchmark_native_routes.py",
+      "--stage",
+      "frozen",
+      "--design-key",
+      "online_final",
+      "--share-gpu5",
+      "--admission-wait-seconds",
+      "120",
+      "--out-dir",
+      "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-final-41f515a"
+    ],
+    "exit_code": 0,
+    "completed_calls": 277,
+    "budget": {
+      "eager": 63,
+      "capture": 63,
+      "prompt_miss": 7,
+      "restore_prompts": 18,
+      "timed": 126,
+      "total": 277
+    },
+    "model_load_seconds": 14.129392547009047,
+    "raw_bytes": 496384,
+    "peak_allocated_bytes": 26473067008,
+    "peak_reserved_bytes": 27005026304
+  },
+  "artifacts": {
+    "native-final-41f515a/report.json": "9d40362d4214d0578b598670b9a277c931e68d298370989611fb567adc2d3e1d",
+    "native-final-41f515a/calls.jsonl": "0918224dfd3a40e021fe9bf474316f9f1d1bddaa021ba72705e8dc9bb6a108fb",
+    "native-final-41f515a/requests.jsonl": "af4a5bb10d17266b5277b39628df29e5c3dcf92cce6f551f1c66153eb42e9580",
+    "native-final-41f515a/summary.json": "2e87ccc83c8eff08bdcbc0230ef741a2b468f33bd420420daef67d99301a31ae",
+    "native-final-audit-41f515a/report.json": "7950d88ecf8a69341dec28444030fc7dab334240f2f0e66a84bb152472cc84c7",
+    "native-final-audit-41f515a/per-input-timings.csv": "98676f199e511dda6d3481c7a9b1bb02dcda9f2ee7d62151baac1e28cbb89867",
+    "adapter-41f515a-va56-shared50/report.json": "8dde7a0e742566c9b96613da8fd0fa810b2f63efb000cefd1d6af35927e81d85",
+    "adapter-41f515a-va56-shared50/dense-actions.npz": "1823e9cc86c6301611e0aa34f6c82462c38a1068c2e5902c8ccefc4d5383b591",
+    "adapter-41f515a-va56-shared50/sparse-actions.npz": "3933137b3702f77aea05a07c3bef41c84e4abf447fddc0c2685903f01fd00369",
+    "final-checks-41f515a/start.txt": "ab99a555c55ab5e4c5201cd441902a158029a4b579533bf321713d0f1269043b",
+    "final-checks-41f515a/end.txt": "ab99a555c55ab5e4c5201cd441902a158029a4b579533bf321713d0f1269043b",
+    "final-checks-41f515a/cpu.log": "db0a95095d1bb8c193b53ba76639b787b936edf85d81be2e3194da0c47c89d10",
+    "pilot-controls-b847775/start.txt": "59654539f697c557ba92523110b5f0212cdf237fc363e63f3f6461331913f8c5",
+    "pilot-controls-b847775/end.txt": "59654539f697c557ba92523110b5f0212cdf237fc363e63f3f6461331913f8c5",
+    "pilot-controls-b847775/cpu.log": "dc390fa1a4c10578eaf059c504611feb31824966f733dfb16714154481782f5e",
+    "eval-config-checks-62c3656/start.txt": "295042dc2fe516ea7db0ba1fc1d453045792132cffb0a9b8c6a3a02fe4c600ac",
+    "eval-config-checks-62c3656/end.txt": "12ab02b44e0548d742458a38f2d03c06f0ee5850d17d9bd3b1e6fc704ebc6201",
+    "eval-config-checks-62c3656/tests.log": "2ad4e56da9fbff3e67bce33d3260c6a6e1883352c6b24c1c86e06aca960a073c",
+    "eval-config-checks-62c3656/tests.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "eval-config-checks-62c3656/schema.json": "bbbfd05c1cbeb80cf194e4b1e654f641bd6b9436928d328fd8905de9eb64cb81",
+    "eval-config-checks-62c3656/schema.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "eval-config-checks-62c3656/dense-validate.log": "b19a7fd5d8419be1c814aa974e070aa347e35c5249607576c60c5168ba2c3b16",
+    "eval-config-checks-62c3656/dense-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+    "eval-config-checks-62c3656/native-va56-validate.log": "afbb087164d3140e6d04ab69bdfdee41411b606cb5b2f22056877f3668f6078e",
+    "eval-config-checks-62c3656/native-va56-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+    "eval-fixed-configs-b5952a5/start.txt": "c1e13e6a9c757a15c7f77e55b296c9160a4edd1218b970bc359bd8a1fe7e5644",
+    "eval-fixed-configs-b5952a5/end.txt": "d8b3cd120d95596510b98709f1029403f1d008b8fd1a8e3fdccf6775ff889dd1",
+    "eval-fixed-configs-b5952a5/dense-validate.log": "ac334557dad6105db497592a17d16e393bc03bf4f5909ce686414b2efbbb1a8a",
+    "eval-fixed-configs-b5952a5/dense-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+    "eval-fixed-configs-b5952a5/native-va56-validate.log": "b42b9c54628474d670688e4801f578739b1c9351824a88e759aaa3c9fa19c14e",
+    "eval-fixed-configs-b5952a5/native-va56-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+    "pilot3-native-va56-audit-c6e11f9/start.txt": "21b2fb2f5970cb0966bd9b5b0a41ea0f055c8c5de291b80c19a980c9bc5f55b6",
+    "pilot3-native-va56-audit-c6e11f9/end.txt": "21b2fb2f5970cb0966bd9b5b0a41ea0f055c8c5de291b80c19a980c9bc5f55b6",
+    "pilot3-native-va56-audit-c6e11f9/integrity.json": "eca57fd222778876c0c32b49706fe7626d1522254d21d7c3c01880cf28873f8d",
+    "pilot3-native-va56-audit-c6e11f9/paired-sr.json": "05583ec1fd8fabf9fac084428345d4d51c59a73c7db1a95de73e23a936749485",
+    "pilot3-native-va56-audit-c6e11f9/policy-timings.json": "5846f3c190877bfc95ed062066a37766f2a99bab5384c40d60255c6ffc71e12d",
+    "pilot3-native-va56-audit-c6e11f9/initial-inputs.json": "c47eb2ed66343838282253dab146c827a4041ce31327284ec6985c68e30a33e9",
+    "adapter-inputs.json": "f7a48e3e7238eefc9d10463cdc05bcc19a0d49cd82d2bd120a8fd221a109e4f9",
+    "confirmation-exposure.json": "ded3799ff0e3eeed80358d4d304d76b8c5d3804bceb432fef3bda70a4930f2d0",
+    "adapter-41f515a-va56.admission.log": "9c1063dc5aa7a6c521d450f0aa32ffbdfaf812335eb5b5e92012703acb602c88",
+    "adapter-41f515a-va56-shared50.admission.log": "c36da0041b6f5981786ec6504267fba746fc71aad89165f34faf2fafb15ca7d8",
+    "adapter-41f515a-va56-shared50.launch.log": "e9cc1103490f42cba0b01582cc4dceb417ad3541758bf8a4130ed234381b42af",
+    "fixed3-native-va56-audit-c6e11f9/end.txt": "fa4c171d310c36875af28701f569db2cffcc77759f3a9ee7c2c5276b1c4674e5",
+    "fixed3-native-va56-audit-c6e11f9/initial-inputs.json": "58824562dfc7cb9a368844dc34996c7890e08b0bee0af4ace86e94ce7a2bba21",
+    "fixed3-native-va56-audit-c6e11f9/initial-inputs.log": "4677f612e354e58b7ad80c0dc2b3784c4da56ab24783d081723870fe7fad7572",
+    "fixed3-native-va56-audit-c6e11f9/integrity.json": "f4c231dd969db71521461de9641bcb51940be4ab911620a3cc3a2cfd16c5c1e2",
+    "fixed3-native-va56-audit-c6e11f9/integrity.log": "ad9d9ec45dcf8ca948484d908065e26f2aa7c28918d3057d67207681c1193c48",
+    "fixed3-native-va56-audit-c6e11f9/paired-sr.json": "4f663ff58d94fb0aa8b72bb12a68e0289b7f179e4593c881a790c25ad6ac0058",
+    "fixed3-native-va56-audit-c6e11f9/paired-sr.log": "4f663ff58d94fb0aa8b72bb12a68e0289b7f179e4593c881a790c25ad6ac0058",
+    "fixed3-native-va56-audit-c6e11f9/policy-timings.json": "bcebb81f911585d33b85ff71d8c31727cdc1de7b2c864073da111fe16e972322",
+    "fixed3-native-va56-audit-c6e11f9/policy-timings.log": "60e4415be2886213fed9b1d638a1b61c53942c5c933b1594ac750cbc0f01c27b",
+    "fixed3-native-va56-audit-c6e11f9/start.txt": "fa4c171d310c36875af28701f569db2cffcc77759f3a9ee7c2c5276b1c4674e5",
+    "closed-loop-ledger.json": "73501eee4d96b2419684a8a1cf35b54cd86260089d9eef0a28f5df8c98ce4247",
+    "fixed3-native-va56-41f515a-shared50.launch.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fixed3-native-va56-41f515a-shared50/controller.json": "b50fdd6469cfe5ffbe3f0f2e049c57bd63037e787d475a264d1868a0c2d994e8",
+    "pilot3-native-va56-41f515a-shared50/controller.json": "08dbe73e9a2de78d1cd3b74da2e6707e6bef8fac1eedecba2dcf61bbfb03bdc2"
+  },
+  "offline_audit": {
+    "verified_calls": 277,
+    "verified_timed": 126,
+    "verified_native_counter_rows": 54,
+    "verified_trace_calls": 45,
+    "verified_trace_steps": 450
+  },
+  "offline_summary": [
+    {
+      "label": "context_R56",
+      "variant": "3c10056e0cb4df092ecce584834a7b6dfbcdcfb50d4211f86c109806a3277e2b",
+      "paired_speedup": {
+        "dense_strong": 2.0944810083141934,
+        "uniform_features": 1.0002121878286467
+      },
+      "seconds": {
+        "samples": 18,
+        "mean": 0.160031984058959,
+        "p50": 0.15896246847114526,
+        "p95": 0.17808061804971653,
+        "min": 0.13082773599307984,
+        "max": 0.20199935202253982
+      },
+      "mean_raw_prefix_l2": 0.7111848778844192,
+      "worst_raw_prefix_l2": 1.460378771119499,
+      "fallback_events": 0
+    },
+    {
+      "label": "context_R84",
+      "variant": "d4b764b9e11ee5312e9027b33aa9ecdd0e5b1424e05aef78d2275acdcad9844b",
+      "paired_speedup": {
+        "dense_strong": 2.1310623131145126,
+        "uniform_features": 1.0176814638749374
+      },
+      "seconds": {
+        "samples": 18,
+        "mean": 0.1572849133840969,
+        "p50": 0.15818485850468278,
+        "p95": 0.18663309714465867,
+        "min": 0.11403981497278437,
+        "max": 0.19683811301365495
+      },
+      "mean_raw_prefix_l2": 0.7153215820604847,
+      "worst_raw_prefix_l2": 1.4587954006734283,
+      "fallback_events": 0
+    },
+    {
+      "label": "layerwise_value_action_R56",
+      "variant": "09012d4a60602bcf9de5f93480809fe66e2e693e57179474a89267418cb7c9ff",
+      "paired_speedup": {
+        "dense_strong": 2.1303761699263446,
+        "uniform_features": 0.9937469879125478
+      },
+      "seconds": {
+        "samples": 18,
+        "mean": 0.1534571541091686,
+        "p50": 0.15576890902593732,
+        "p95": 0.16397207532136235,
+        "min": 0.11734096298459917,
+        "max": 0.17014740098966286
+      },
+      "mean_raw_prefix_l2": 0.701120497904244,
+      "worst_raw_prefix_l2": 1.4560848959724095,
+      "fallback_events": 0
+    }
+  ],
+  "adapter": {
+    "status": "VERIFIED",
+    "start_utc": "2026-09-20T21:07:06.409148+00:00",
+    "end_utc": "2026-09-20T21:07:55.004946+00:00",
+    "argv": [
+      "scripts/sparse/verify_prompt_cache_adapter.py",
+      "--inputs",
+      "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/adapter-inputs.json",
+      "--hybrid-options",
+      "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/configs/experiments/dreamwam-dido-native-va56-dev3-osmesa.yaml",
+      "--out-dir",
+      "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/adapter-41f515a-va56-shared50"
+    ],
+    "commit": {
+      "exit_code": 0,
+      "stdout": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+      "stderr": ""
+    },
+    "hybrid_options_source": {
+      "path": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/configs/experiments/dreamwam-dido-native-va56-dev3-osmesa.yaml",
+      "sha256": "b43d16e7160709dc620fa4bb2f5114163b86690d0249d2c1ea198c2d48275edb"
+    },
+    "input_manifest_sha256": "f7a48e3e7238eefc9d10463cdc05bcc19a0d49cd82d2bd120a8fd221a109e4f9",
+    "exit_code": 0,
+    "inclusive_predictions": 22,
+    "archived_output_arrays": 22,
+    "bytewise_parity": true,
+    "close_released_caches": true
+  },
+  "strict_adapter_admission_refusal": {
+    "artifact": "adapter-41f515a-va56.admission.log",
+    "exit_code": 1,
+    "model_loaded": false,
+    "predictions": 0,
+    "limit_seconds": 120,
+    "last_written_utc": "2026-09-20T21:01:15.354281+00:00"
+  },
+  "development_pilot": {
+    "coverage": {
+      "complete": true,
+      "dense_episodes": 3,
+      "excluded_non_terminal": 0,
+      "expected_dense_episodes": 3,
+      "expected_sparse_episodes": 3,
+      "missing_dense_rows": 0,
+      "missing_sparse_rows": 0,
+      "paired_terminal": 3,
+      "planned_identity_difference": 0,
+      "shared_episodes": 3,
+      "sparse_episodes": 3,
+      "sparse_non_terminal_detail": {},
+      "unpaired": 0
+    },
+    "dense_run": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/dense/run",
+    "label": "native_layerwise_value_aware_R56_development",
+    "paired": {
+      "bootstrap_degenerate": false,
+      "bootstrap_withheld_reason": "fewer than two episodes in at least one task stratum",
+      "delta_ci95": null,
+      "dense_loss_sparse_win": 0,
+      "dense_sr_ci95": null,
+      "dense_win_sparse_loss": 0,
+      "mcnemar_one_sided_sparse_worse_p": 1,
+      "mcnemar_two_sided_p": 1,
+      "resamples": 0,
+      "sparse_sr_ci95": null,
+      "unchanged": 3
+    },
+    "per_task": {
+      "0": {
+        "dense_loss_sparse_win": 0,
+        "dense_success": 1,
+        "dense_win_sparse_loss": 0,
+        "pairs": 1,
+        "sparse_success": 1
+      },
+      "1": {
+        "dense_loss_sparse_win": 0,
+        "dense_success": 1,
+        "dense_win_sparse_loss": 0,
+        "pairs": 1,
+        "sparse_success": 1
+      },
+      "2": {
+        "dense_loss_sparse_win": 0,
+        "dense_success": 1,
+        "dense_win_sparse_loss": 0,
+        "pairs": 1,
+        "sparse_success": 1
+      }
+    },
+    "sparse_run": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/sparse/run",
+    "success_rate": {
+      "delta_absolute": 0,
+      "dense": 1,
+      "dense_wilson95": [
+        0.43849391955098227,
+        1
+      ],
+      "sparse": 1,
+      "sparse_wilson95": [
+        0.43849391955098227,
+        1
+      ],
+      "withheld_reason": null
+    },
+    "timing_seconds": {
+      "dense_mean": 26.977666666666664,
+      "note": "wall time includes simulator stepping and render aborts, so it is not the model's own latency; the operator-level cost is measured separately",
+      "sparse_mean": 29.09
+    },
+    "tool": "scripts/sparse/paired_sr.py"
+  },
+  "development_timing": {
+    "complete": true,
+    "dense": {
+      "coverage": {
+        "complete": true,
+        "completed": 3,
+        "planned": 3
+      },
+      "episodes": [
+        {
+          "all_model": {
+            "mean": 0.522399625,
+            "p50": 0.275314,
+            "p95": 1.4373766499999991,
+            "samples": 8
+          },
+          "calls_sha256": "202f781e65b1964cae299481fed0c1bee8ad13dd8fc1c49e65f6134dfdefc403",
+          "env_seconds": 19.087912,
+          "episode_id": "t000-i001-r00-s42",
+          "first_model_seconds": 1.931437,
+          "policy_calls": 8,
+          "result_sha256": "5984977cd737bd5c16b9d956f737e4fd98b1dffc952569470875ba017bdc2e15",
+          "status": "succeeded",
+          "wall_seconds": 25.519979,
+          "warm_model": {
+            "mean": 0.3211085714285714,
+            "p50": 0.259515,
+            "p95": 0.4912945999999999,
+            "samples": 7
+          }
+        },
+        {
+          "all_model": {
+            "mean": 0.2959841818181818,
+            "p50": 0.250692,
+            "p95": 0.422123,
+            "samples": 11
+          },
+          "calls_sha256": "e7347b602479c6a70f0d0c91698cc1b2614b1983da6df7b3c4dfa3cfff52e8e9",
+          "env_seconds": 22.356198,
+          "episode_id": "t001-i001-r00-s42",
+          "first_model_seconds": 0.27966,
+          "policy_calls": 11,
+          "result_sha256": "2d9cf6d353565a0362dbc51bb9588dea41b72a76a2e1ba8bc5c6d0745c36b904",
+          "status": "succeeded",
+          "wall_seconds": 27.866066,
+          "warm_model": {
+            "mean": 0.2976166,
+            "p50": 0.25047850000000005,
+            "p95": 0.42664269999999993,
+            "samples": 10
+          }
+        },
+        {
+          "all_model": {
+            "mean": 0.24972750000000002,
+            "p50": 0.2471265,
+            "p95": 0.26111265,
+            "samples": 10
+          },
+          "calls_sha256": "a1688e3e7bde760f4da3b19a96304ae746539ca6971051a21455c49519b68ee7",
+          "env_seconds": 22.767338,
+          "episode_id": "t002-i001-r00-s42",
+          "first_model_seconds": 0.268503,
+          "policy_calls": 10,
+          "result_sha256": "d872c1db5d7d76c8ba0a08ca1a325d72154c41233efe97f56a9aebf5367ec9a6",
+          "status": "succeeded",
+          "wall_seconds": 27.546611,
+          "warm_model": {
+            "mean": 0.24764133333333335,
+            "p50": 0.247006,
+            "p95": 0.2509652,
+            "samples": 9
+          }
+        }
+      ],
+      "model_seconds_all": {
+        "mean": 0.3424930344827586,
+        "p50": 0.250399,
+        "p95": 0.4988295999999999,
+        "samples": 29
+      },
+      "model_seconds_first_per_episode": {
+        "mean": 0.8265333333333333,
+        "p50": 0.27966,
+        "p95": 1.7662593,
+        "samples": 3
+      },
+      "model_seconds_warm": {
+        "mean": 0.2866422307692308,
+        "p50": 0.249779,
+        "p95": 0.45666450000000003,
+        "samples": 26
+      },
+      "transport_seconds_all": {
+        "mean": 0.35170379275825386,
+        "p50": 0.2594731639837846,
+        "p95": 0.5094507527770473,
+        "samples": 29
+      },
+      "transport_seconds_warm": {
+        "mean": 0.29577562065409996,
+        "p50": 0.2581550245231483,
+        "p95": 0.465345564254676,
+        "samples": 26
+      }
+    },
+    "descriptive_all_model_speedup": 1.9217945408085895,
+    "descriptive_episode_balanced_warm_model_speedup": 2.1972604949764674,
+    "descriptive_warm_model_speedup": 2.178436694022012,
+    "descriptive_warm_transport_speedup": 2.1136270431741626,
+    "limitations": [
+      "Closed-loop observations, lengths and success outcomes may differ.",
+      "First-call costs include prompt misses and any lazy graph capture.",
+      "Model timing excludes IPC, model load, simulator and rendering.",
+      "Use paired_sr.py for success and same-input replay for controlled speed measurements."
+    ],
+    "sparse": {
+      "coverage": {
+        "complete": true,
+        "completed": 3,
+        "planned": 3
+      },
+      "episodes": [
+        {
+          "all_model": {
+            "mean": 0.2912903333333333,
+            "p50": 0.12954,
+            "p95": 1.0026319999999995,
+            "samples": 9
+          },
+          "calls_sha256": "561bb1f9b6a72bea80294abe45683e9fb243def7edd07332aac897b534bc4472",
+          "env_seconds": 21.157594,
+          "episode_id": "t000-i001-r00-s42",
+          "first_model_seconds": 1.583536,
+          "policy_calls": 9,
+          "result_sha256": "35669339ac8ea296eda23ae05841e5818c170692aaed5d7e2ec731ba9e512d16",
+          "status": "succeeded",
+          "wall_seconds": 25.889798,
+          "warm_model": {
+            "mean": 0.129759625,
+            "p50": 0.129539,
+            "p95": 0.13106075,
+            "samples": 8
+          }
+        },
+        {
+          "all_model": {
+            "mean": 0.13407966666666668,
+            "p50": 0.131885,
+            "p95": 0.14477385,
+            "samples": 12
+          },
+          "calls_sha256": "115bfb7a08e8cd13f45509c772f61db2ad3f40d3fca8c213dc7299352107c279",
+          "env_seconds": 27.428476,
+          "episode_id": "t001-i001-r00-s42",
+          "first_model_seconds": 0.152041,
+          "policy_calls": 12,
+          "result_sha256": "531e8a57cba50cdb871f8ea2ae7539de4e07790af883d01c1be50b0c1ae5dbcf",
+          "status": "succeeded",
+          "wall_seconds": 31.140429,
+          "warm_model": {
+            "mean": 0.13244681818181817,
+            "p50": 0.131825,
+            "p95": 0.1354315,
+            "samples": 11
+          }
+        },
+        {
+          "all_model": {
+            "mean": 0.13384709090909092,
+            "p50": 0.13155,
+            "p95": 0.145196,
+            "samples": 11
+          },
+          "calls_sha256": "20b1710e47f35da9eced791876f4fc34cb7f8fa31a7dab492eeafbd323d4fe64",
+          "env_seconds": 26.667786,
+          "episode_id": "t002-i001-r00-s42",
+          "first_model_seconds": 0.151443,
+          "policy_calls": 11,
+          "result_sha256": "3e6b0db9746122d97281aab97a7a826731235c44b15cff72e8be1ce16e2d2880",
+          "status": "succeeded",
+          "wall_seconds": 30.240191,
+          "warm_model": {
+            "mean": 0.1320875,
+            "p50": 0.1314925,
+            "p95": 0.13585165,
+            "samples": 10
+          }
+        }
+      ],
+      "model_seconds_all": {
+        "mean": 0.17821521875000002,
+        "p50": 0.1316465,
+        "p95": 0.1517121,
+        "samples": 32
+      },
+      "model_seconds_first_per_episode": {
+        "mean": 0.6290066666666667,
+        "p50": 0.152041,
+        "p95": 1.4403865,
+        "samples": 3
+      },
+      "model_seconds_warm": {
+        "mean": 0.13158162068965518,
+        "p50": 0.13155,
+        "p95": 0.13612319999999997,
+        "samples": 29
+      },
+      "transport_seconds_all": {
+        "mean": 0.18659058253251715,
+        "p50": 0.13986982050118968,
+        "p95": 0.16003728224604857,
+        "samples": 32
+      },
+      "transport_seconds_warm": {
+        "mean": 0.13993746986219274,
+        "p50": 0.13971411401871592,
+        "p95": 0.14535937680630012,
+        "samples": 29
+      }
+    },
+    "warm_definition": "call_index > 1 within each episode AND recorded prompt-cache hit"
+  },
+  "new_offline_and_adapter_predictions": 1146,
+  "real_episode_hard_cap": 50,
+  "declared_stop_at_attempts": 12,
+  "controller_commit": "b8477755bd413e1b435246e68bde3b949155d180",
+  "auditor_commit": "c6e11f90934db8da91c073708af7e179f9f0571d",
+  "fixed_pilot": {
+    "coverage": {
+      "complete": true,
+      "dense_episodes": 3,
+      "excluded_non_terminal": 0,
+      "expected_dense_episodes": 3,
+      "expected_sparse_episodes": 3,
+      "missing_dense_rows": 0,
+      "missing_sparse_rows": 0,
+      "paired_terminal": 3,
+      "planned_identity_difference": 0,
+      "shared_episodes": 3,
+      "sparse_episodes": 3,
+      "sparse_non_terminal_detail": {},
+      "unpaired": 0
+    },
+    "dense_run": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run",
+    "label": "native_layerwise_value_aware_R56_fixed_validation",
+    "paired": {
+      "bootstrap_degenerate": false,
+      "bootstrap_withheld_reason": "fewer than two episodes in at least one task stratum",
+      "delta_ci95": null,
+      "dense_loss_sparse_win": 1,
+      "dense_sr_ci95": null,
+      "dense_win_sparse_loss": 0,
+      "mcnemar_one_sided_sparse_worse_p": 1,
+      "mcnemar_two_sided_p": 1,
+      "resamples": 0,
+      "sparse_sr_ci95": null,
+      "unchanged": 2
+    },
+    "per_task": {
+      "3": {
+        "dense_loss_sparse_win": 0,
+        "dense_success": 1,
+        "dense_win_sparse_loss": 0,
+        "pairs": 1,
+        "sparse_success": 1
+      },
+      "4": {
+        "dense_loss_sparse_win": 0,
+        "dense_success": 1,
+        "dense_win_sparse_loss": 0,
+        "pairs": 1,
+        "sparse_success": 1
+      },
+      "5": {
+        "dense_loss_sparse_win": 1,
+        "dense_success": 0,
+        "dense_win_sparse_loss": 0,
+        "pairs": 1,
+        "sparse_success": 1
+      }
+    },
+    "sparse_run": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run",
+    "success_rate": {
+      "delta_absolute": 0.3333333333333333,
+      "dense": 0.6666666666666666,
+      "dense_wilson95": [
+        0.2076549551264879,
+        0.9385096847238394
+      ],
+      "sparse": 1,
+      "sparse_wilson95": [
+        0.43849391955098227,
+        1
+      ],
+      "withheld_reason": null
+    },
+    "timing_seconds": {
+      "dense_mean": 53.173333333333325,
+      "note": "wall time includes simulator stepping and render aborts, so it is not the model's own latency; the operator-level cost is measured separately",
+      "sparse_mean": 31.204333333333334
+    },
+    "tool": "scripts/sparse/paired_sr.py"
+  },
+  "fixed_timing": {
+    "complete": true,
+    "dense": {
+      "coverage": {
+        "complete": true,
+        "completed": 3,
+        "planned": 3
+      },
+      "episodes": [
+        {
+          "all_model": {
+            "mean": 0.434769375,
+            "p50": 0.261941,
+            "p95": 1.1617816999999993,
+            "samples": 8
+          },
+          "calls_sha256": "2438fe7b0e5fd90d9158bf9ef6ad69398c58922ce189eb437bec181e23b42acd",
+          "env_seconds": 19.862697,
+          "episode_id": "t003-i002-r00-s42",
+          "first_model_seconds": 1.645719,
+          "policy_calls": 8,
+          "result_sha256": "2b7e62ae467ac423d2d9812ec38b35035d87560b9d2788ea9fcb0512e0b71e32",
+          "status": "succeeded",
+          "wall_seconds": 25.264035,
+          "warm_model": {
+            "mean": 0.2617765714285714,
+            "p50": 0.261844,
+            "p95": 0.2628706,
+            "samples": 7
+          }
+        },
+        {
+          "all_model": {
+            "mean": 0.26401875,
+            "p50": 0.2627045,
+            "p95": 0.2714029,
+            "samples": 12
+          },
+          "calls_sha256": "700bfc6d83a094ae26757c31e9a3fa99a2994d3c332d7a33a40ddbd58bdd3dca",
+          "env_seconds": 27.909469,
+          "episode_id": "t004-i002-r00-s42",
+          "first_model_seconds": 0.278389,
+          "policy_calls": 12,
+          "result_sha256": "8b9b1487718eccc7ea39be16a6010a21ad360a9818ce751ae36a6fea30ebf768",
+          "status": "succeeded",
+          "wall_seconds": 33.355257,
+          "warm_model": {
+            "mean": 0.26271236363636363,
+            "p50": 0.262434,
+            "p95": 0.2649765,
+            "samples": 11
+          }
+        },
+        {
+          "all_model": {
+            "mean": 0.26298927499999997,
+            "p50": 0.2623275,
+            "p95": 0.26526065000000004,
+            "samples": 40
+          },
+          "calls_sha256": "eaa6f2ada6af71d69f059cf48c5d8322a25e0c6c166e030876dc2efcb850bef8",
+          "env_seconds": 87.863009,
+          "episode_id": "t005-i002-r00-s42",
+          "first_model_seconds": 0.285536,
+          "policy_calls": 40,
+          "result_sha256": "020a0b53908b450258ff23c53ad450d74f32f36c1138bbf1bfb94eceb08224f0",
+          "status": "failed",
+          "wall_seconds": 100.900939,
+          "warm_model": {
+            "mean": 0.2624111538461539,
+            "p50": 0.262298,
+            "p95": 0.2648583,
+            "samples": 39
+          }
+        }
+      ],
+      "model_seconds_all": {
+        "mean": 0.28609918333333334,
+        "p50": 0.2623565,
+        "p95": 0.26632209999999995,
+        "samples": 60
+      },
+      "model_seconds_first_per_episode": {
+        "mean": 0.736548,
+        "p50": 0.285536,
+        "p95": 1.5097006999999998,
+        "samples": 3
+      },
+      "model_seconds_warm": {
+        "mean": 0.262391350877193,
+        "p50": 0.262298,
+        "p95": 0.2649026,
+        "samples": 57
+      },
+      "transport_seconds_all": {
+        "mean": 0.29456973480118903,
+        "p50": 0.2709054404986091,
+        "p95": 0.27845893909980074,
+        "samples": 60
+      },
+      "transport_seconds_warm": {
+        "mean": 0.2709028840007816,
+        "p50": 0.2705566530348733,
+        "p95": 0.2737905019777827,
+        "samples": 57
+      }
+    },
+    "descriptive_all_model_speedup": 1.600592317311259,
+    "descriptive_episode_balanced_warm_model_speedup": 1.9658412958400142,
+    "descriptive_warm_model_speedup": 1.9667816141622414,
+    "descriptive_warm_transport_speedup": 1.8994159273257982,
+    "limitations": [
+      "Closed-loop observations, lengths and success outcomes may differ.",
+      "First-call costs include prompt misses and any lazy graph capture.",
+      "Model timing excludes IPC, model load, simulator and rendering.",
+      "Use paired_sr.py for success and same-input replay for controlled speed measurements."
+    ],
+    "sparse": {
+      "coverage": {
+        "complete": true,
+        "completed": 3,
+        "planned": 3
+      },
+      "episodes": [
+        {
+          "all_model": {
+            "mean": 0.2963786666666667,
+            "p50": 0.134906,
+            "p95": 1.0126371999999995,
+            "samples": 9
+          },
+          "calls_sha256": "27a5a7f03b0cadcc6facba33c062974afb7ea5b6fba87bdffb06d22ce6cd6372",
+          "env_seconds": 22.454476,
+          "episode_id": "t003-i002-r00-s42",
+          "first_model_seconds": 1.591834,
+          "policy_calls": 9,
+          "result_sha256": "b2652143c4ee44495b36818d3d5158b233508e63d3da38688edcbc5fdc026653",
+          "status": "succeeded",
+          "wall_seconds": 27.627449,
+          "warm_model": {
+            "mean": 0.13444675,
+            "p50": 0.134231,
+            "p95": 0.1411701,
+            "samples": 8
+          }
+        },
+        {
+          "all_model": {
+            "mean": 0.13472792857142857,
+            "p50": 0.1337465,
+            "p95": 0.1418022,
+            "samples": 14
+          },
+          "calls_sha256": "4a65de3f33db40e12c2d89d38061ef48f18bf9cbe24aa79f3ddbe0d77fb93b0f",
+          "env_seconds": 33.310141,
+          "episode_id": "t004-i002-r00-s42",
+          "first_model_seconds": 0.15,
+          "policy_calls": 14,
+          "result_sha256": "2a8809f6afa0e04f18ec802a8f96f6d9e98dba1d90605fe363b3beb087ebd2b2",
+          "status": "succeeded",
+          "wall_seconds": 37.643669,
+          "warm_model": {
+            "mean": 0.13355315384615385,
+            "p50": 0.133696,
+            "p95": 0.13643460000000002,
+            "samples": 13
+          }
+        },
+        {
+          "all_model": {
+            "mean": 0.1345013,
+            "p50": 0.1321445,
+            "p95": 0.1462501,
+            "samples": 10
+          },
+          "calls_sha256": "dd3a4522f067a32e579bd8463244110998dd21c441ae33cdd6dec981c39ab94d",
+          "env_seconds": 24.81825,
+          "episode_id": "t005-i002-r00-s42",
+          "first_model_seconds": 0.154432,
+          "policy_calls": 10,
+          "result_sha256": "b937eee4b8d368c4ecb4e661a6a11935cb1dcd31787139a61de8b7d2b0a74fef",
+          "status": "succeeded",
+          "wall_seconds": 28.34233,
+          "warm_model": {
+            "mean": 0.13228677777777775,
+            "p50": 0.131379,
+            "p95": 0.1351716,
+            "samples": 9
+          }
+        }
+      ],
+      "model_seconds_all": {
+        "mean": 0.17874581818181817,
+        "p50": 0.133554,
+        "p95": 0.15177279999999999,
+        "samples": 33
+      },
+      "model_seconds_first_per_episode": {
+        "mean": 0.6320886666666666,
+        "p50": 0.154432,
+        "p95": 1.4480938,
+        "samples": 3
+      },
+      "model_seconds_warm": {
+        "mean": 0.13341153333333333,
+        "p50": 0.1330865,
+        "p95": 0.1368759,
+        "samples": 30
+      },
+      "transport_seconds_all": {
+        "mean": 0.18802966505543076,
+        "p50": 0.1429214479867369,
+        "p95": 0.1607566930120811,
+        "samples": 33
+      },
+      "transport_seconds_warm": {
+        "mean": 0.14262430892752795,
+        "p50": 0.14240908951614983,
+        "p95": 0.14728057189204263,
+        "samples": 30
+      }
+    },
+    "warm_definition": "call_index > 1 within each episode AND recorded prompt-cache hit"
+  },
+  "fixed_integrity": {
+    "status": "VERIFIED",
+    "source_model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+    "evaluator_commit": "b5952a54369b8fcc11513c8508e5c7fdd3840ff2",
+    "controller_source_sha256": "c05870a11a790940a6f86f6c0ef8c3da9076e2fe97b1a3cc9d1f4e78713855e3",
+    "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+    "recorded_attempts": 6,
+    "receipt": {
+      "path": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json",
+      "reservation_id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50",
+      "charged": 6,
+      "total_charged": 12,
+      "cap": 50,
+      "evidence": {
+        "controller_status": "PILOT_PAIR_COMPLETE",
+        "recorded_attempts": 6,
+        "recorded_not_run": 0,
+        "terminal_artifacts": {
+          "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run/episodes/t003-i002-r00-s42/attempts/0001/result.json": "b2652143c4ee44495b36818d3d5158b233508e63d3da38688edcbc5fdc026653",
+          "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run/episodes/t004-i002-r00-s42/attempts/0001/result.json": "2a8809f6afa0e04f18ec802a8f96f6d9e98dba1d90605fe363b3beb087ebd2b2",
+          "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run/episodes/t005-i002-r00-s42/attempts/0001/result.json": "b937eee4b8d368c4ecb4e661a6a11935cb1dcd31787139a61de8b7d2b0a74fef",
+          "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run/episodes/t003-i002-r00-s42/attempts/0001/result.json": "2b7e62ae467ac423d2d9812ec38b35035d87560b9d2788ea9fcb0512e0b71e32",
+          "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run/episodes/t004-i002-r00-s42/attempts/0001/result.json": "8b9b1487718eccc7ea39be16a6010a21ad360a9818ce751ae36a6fea30ebf768",
+          "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run/episodes/t005-i002-r00-s42/attempts/0001/result.json": "020a0b53908b450258ff23c53ad450d74f32f36c1138bbf1bfb94eceb08224f0"
+        },
+        "exact_attempt_count": true,
+        "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+      }
+    },
+    "arms": {
+      "dense": {
+        "episodes": [
+          {
+            "episode_id": "t003-i002-r00-s42",
+            "status": "succeeded",
+            "executed_steps": 79,
+            "policy_calls": 8,
+            "fallback_events": 0,
+            "actual_actions_match_prediction_prefixes": true,
+            "result_sha256": "2b7e62ae467ac423d2d9812ec38b35035d87560b9d2788ea9fcb0512e0b71e32"
+          },
+          {
+            "episode_id": "t004-i002-r00-s42",
+            "status": "succeeded",
+            "executed_steps": 112,
+            "policy_calls": 12,
+            "fallback_events": 0,
+            "actual_actions_match_prediction_prefixes": true,
+            "result_sha256": "8b9b1487718eccc7ea39be16a6010a21ad360a9818ce751ae36a6fea30ebf768"
+          },
+          {
+            "episode_id": "t005-i002-r00-s42",
+            "status": "failed",
+            "executed_steps": 400,
+            "policy_calls": 40,
+            "fallback_events": 0,
+            "actual_actions_match_prediction_prefixes": true,
+            "result_sha256": "020a0b53908b450258ff23c53ad450d74f32f36c1138bbf1bfb94eceb08224f0"
+          }
+        ],
+        "native_reads": 1392
+      },
+      "sparse": {
+        "episodes": [
+          {
+            "episode_id": "t003-i002-r00-s42",
+            "status": "succeeded",
+            "executed_steps": 85,
+            "policy_calls": 9,
+            "fallback_events": 0,
+            "actual_actions_match_prediction_prefixes": true,
+            "result_sha256": "b2652143c4ee44495b36818d3d5158b233508e63d3da38688edcbc5fdc026653"
+          },
+          {
+            "episode_id": "t004-i002-r00-s42",
+            "status": "succeeded",
+            "executed_steps": 139,
+            "policy_calls": 14,
+            "fallback_events": 0,
+            "actual_actions_match_prediction_prefixes": true,
+            "result_sha256": "2a8809f6afa0e04f18ec802a8f96f6d9e98dba1d90605fe363b3beb087ebd2b2"
+          },
+          {
+            "episode_id": "t005-i002-r00-s42",
+            "status": "succeeded",
+            "executed_steps": 93,
+            "policy_calls": 10,
+            "fallback_events": 0,
+            "actual_actions_match_prediction_prefixes": true,
+            "result_sha256": "b937eee4b8d368c4ecb4e661a6a11935cb1dcd31787139a61de8b7d2b0a74fef"
+          }
+        ],
+        "native_reads": 844
+      }
+    },
+    "artifacts": {
+      "manifest": "fixed3-native-va56-audit-c6e11f9/integrity.json",
+      "verified_files": 167
+    },
+    "sr_source": "benchmark-owned terminal records; paired_sr.py reports rates/intervals",
+    "start_utc": "2026-09-20T21:28:18.366599+00:00",
+    "end_utc": "2026-09-20T21:28:18.405278+00:00",
+    "exit_code": 0,
+    "argv": [
+      "scripts/sparse/audit_dido_pilot.py",
+      "--pair",
+      "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50",
+      "--out",
+      "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-audit-c6e11f9/integrity.json"
+    ],
+    "auditor_commit": "c6e11f90934db8da91c073708af7e179f9f0571d"
+  },
+  "initial_input_parity": {
+    "development": {
+      "pairs": 3,
+      "state_equal": 3,
+      "agentview_equal": 3,
+      "wrist_equal": 3,
+      "artifact": "pilot3-native-va56-audit-c6e11f9/initial-inputs.json"
+    },
+    "fixed": {
+      "pairs": 3,
+      "state_equal": 3,
+      "agentview_equal": 3,
+      "wrist_equal": 3,
+      "artifact": "fixed3-native-va56-audit-c6e11f9/initial-inputs.json"
+    }
+  },
+  "cohorts": [
+    {
+      "artifact_directory": "pilot3-native-va56-41f515a-shared50",
+      "status": "PILOT_PAIR_COMPLETE",
+      "start_utc": "2026-09-20T21:08:53.667719+00:00",
+      "end_utc": "2026-09-20T21:13:05.545446+00:00",
+      "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+      "evaluator_commit": "0f856c9ce160150286ed31f11001cca0acd04c32",
+      "first_arm": "dense",
+      "controller_source_sha256": "c05870a11a790940a6f86f6c0ef8c3da9076e2fe97b1a3cc9d1f4e78713855e3",
+      "shared_gpu5": true,
+      "max_shared_utilization": 50,
+      "min_free_mib": 50000,
+      "wall_seconds_per_arm": 600,
+      "stop_grace_seconds": 120,
+      "arms": [
+        {
+          "arm": "dense",
+          "start_utc": "2026-09-20T21:08:58.204149+00:00",
+          "end_utc": "2026-09-20T21:10:57.774982+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/configs/experiments/dreamwam-dido-dense-dev3-osmesa.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/dense",
+            "--check-native-writes"
+          ],
+          "exit_code": 0,
+          "forced_cleanup": false,
+          "fingerprint_verified": true,
+          "admission": [
+            {
+              "index": 5,
+              "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+              "util": 46,
+              "free": 77040,
+              "used": 4041,
+              "processes": [
+                {
+                  "pid": 621456,
+                  "type": "C"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "arm": "sparse",
+          "start_utc": "2026-09-20T21:10:58.823593+00:00",
+          "end_utc": "2026-09-20T21:13:05.544124+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/configs/experiments/dreamwam-dido-native-va56-dev3-osmesa.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/sparse",
+            "--check-native-writes"
+          ],
+          "exit_code": 0,
+          "forced_cleanup": false,
+          "fingerprint_verified": true,
+          "admission": [
+            {
+              "index": 5,
+              "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+              "util": 0,
+              "free": 81078,
+              "used": 4,
+              "processes": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "artifact_directory": "fixed3-native-va56-41f515a-shared50",
+      "status": "PILOT_PAIR_COMPLETE",
+      "start_utc": "2026-09-20T21:19:29.016989+00:00",
+      "end_utc": "2026-09-20T21:25:01.069500+00:00",
+      "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+      "evaluator_commit": "b5952a54369b8fcc11513c8508e5c7fdd3840ff2",
+      "first_arm": "sparse",
+      "controller_source_sha256": "c05870a11a790940a6f86f6c0ef8c3da9076e2fe97b1a3cc9d1f4e78713855e3",
+      "shared_gpu5": true,
+      "max_shared_utilization": 50,
+      "min_free_mib": 50000,
+      "wall_seconds_per_arm": 600,
+      "stop_grace_seconds": 120,
+      "arms": [
+        {
+          "arm": "sparse",
+          "start_utc": "2026-09-20T21:19:29.839216+00:00",
+          "end_utc": "2026-09-20T21:21:43.289296+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-b5952a5-fixed/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-b5952a5-fixed/configs/experiments/dreamwam-dido-native-va56-fixed3-osmesa.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse",
+            "--check-native-writes"
+          ],
+          "exit_code": 0,
+          "forced_cleanup": false,
+          "fingerprint_verified": true,
+          "admission": [
+            {
+              "index": 5,
+              "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+              "util": 0,
+              "free": 80256,
+              "used": 825,
+              "processes": []
+            }
+          ]
+        },
+        {
+          "arm": "dense",
+          "start_utc": "2026-09-20T21:21:44.175395+00:00",
+          "end_utc": "2026-09-20T21:25:01.048759+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-b5952a5-fixed/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-b5952a5-fixed/configs/experiments/dreamwam-dido-dense-fixed3-osmesa.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense",
+            "--check-native-writes"
+          ],
+          "exit_code": 0,
+          "forced_cleanup": false,
+          "fingerprint_verified": true,
+          "admission": [
+            {
+              "index": 5,
+              "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+              "util": 0,
+              "free": 81078,
+              "used": 4,
+              "processes": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "episode_ledger_snapshot": {
+    "schema_version": 1,
+    "effort": "dido-sparse-profile-20260920",
+    "cap": 50,
+    "created_utc": "2026-09-20T21:08:58.204386+00:00",
+    "reservations": [
+      {
+        "id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50",
+        "charged": 6,
+        "created_utc": "2026-09-20T21:08:58.204394+00:00",
+        "state": "FINALIZED",
+        "metadata": {
+          "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+          "evaluator_commit": "0f856c9ce160150286ed31f11001cca0acd04c32",
+          "configs": {
+            "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/configs/experiments/dreamwam-dido-dense-dev3-osmesa.yaml",
+            "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/configs/experiments/dreamwam-dido-native-va56-dev3-osmesa.yaml"
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50",
+          "controller_pid": 622180
+        },
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 6,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/dense/run/episodes/t000-i001-r00-s42/attempts/0001/result.json": "5984977cd737bd5c16b9d956f737e4fd98b1dffc952569470875ba017bdc2e15",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/dense/run/episodes/t001-i001-r00-s42/attempts/0001/result.json": "2d9cf6d353565a0362dbc51bb9588dea41b72a76a2e1ba8bc5c6d0745c36b904",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/dense/run/episodes/t002-i001-r00-s42/attempts/0001/result.json": "d872c1db5d7d76c8ba0a08ca1a325d72154c41233efe97f56a9aebf5367ec9a6",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/sparse/run/episodes/t000-i001-r00-s42/attempts/0001/result.json": "35669339ac8ea296eda23ae05841e5818c170692aaed5d7e2ec731ba9e512d16",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/sparse/run/episodes/t001-i001-r00-s42/attempts/0001/result.json": "531e8a57cba50cdb871f8ea2ae7539de4e07790af883d01c1be50b0c1ae5dbcf",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/sparse/run/episodes/t002-i001-r00-s42/attempts/0001/result.json": "3e6b0db9746122d97281aab97a7a826731235c44b15cff72e8be1ce16e2d2880"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        },
+        "finalized_utc": "2026-09-20T21:13:05.546710+00:00"
+      },
+      {
+        "id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50",
+        "charged": 6,
+        "created_utc": "2026-09-20T21:19:29.839481+00:00",
+        "state": "FINALIZED",
+        "metadata": {
+          "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+          "evaluator_commit": "b5952a54369b8fcc11513c8508e5c7fdd3840ff2",
+          "configs": {
+            "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-b5952a5-fixed/configs/experiments/dreamwam-dido-dense-fixed3-osmesa.yaml",
+            "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-b5952a5-fixed/configs/experiments/dreamwam-dido-native-va56-fixed3-osmesa.yaml"
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50",
+          "controller_pid": 623285
+        },
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 6,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run/episodes/t003-i002-r00-s42/attempts/0001/result.json": "b2652143c4ee44495b36818d3d5158b233508e63d3da38688edcbc5fdc026653",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run/episodes/t004-i002-r00-s42/attempts/0001/result.json": "2a8809f6afa0e04f18ec802a8f96f6d9e98dba1d90605fe363b3beb087ebd2b2",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run/episodes/t005-i002-r00-s42/attempts/0001/result.json": "b937eee4b8d368c4ecb4e661a6a11935cb1dcd31787139a61de8b7d2b0a74fef",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run/episodes/t003-i002-r00-s42/attempts/0001/result.json": "2b7e62ae467ac423d2d9812ec38b35035d87560b9d2788ea9fcb0512e0b71e32",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run/episodes/t004-i002-r00-s42/attempts/0001/result.json": "8b9b1487718eccc7ea39be16a6010a21ad360a9818ce751ae36a6fea30ebf768",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run/episodes/t005-i002-r00-s42/attempts/0001/result.json": "020a0b53908b450258ff23c53ad450d74f32f36c1138bbf1bfb94eceb08224f0"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        },
+        "finalized_utc": "2026-09-20T21:25:02.087689+00:00"
+      }
+    ]
+  },
+  "actual_closed_loop_attempts": 12,
+  "charged_closed_loop_slots": 12,
+  "unused_hard_cap_slots": 38,
+  "closed_loop_summary": {
+    "development": {
+      "dense_success": 3,
+      "dense_failure": 0,
+      "candidate_success": 3,
+      "candidate_failure": 0,
+      "attempts": 6,
+      "errors": 0,
+      "retries": 0
+    },
+    "fixed": {
+      "dense_success": 2,
+      "dense_failure": 1,
+      "candidate_success": 3,
+      "candidate_failure": 0,
+      "attempts": 6,
+      "errors": 0,
+      "retries": 0
+    },
+    "pooled_counts_descriptive_only": {
+      "dense_success": 5,
+      "dense_attempts": 6,
+      "candidate_success": 6,
+      "candidate_attempts": 6
+    },
+    "five_percentage_point_noninferiority_established": false,
+    "bootstrap_delta_interval": null,
+    "reason": "one matched episode per task; development is exposed and fixed cohort has only three pairs; no globally unseen claim"
+  },
+  "prediction_accounting": {
+    "raw_profile": 18,
+    "interventions_including_controls": 49,
+    "initial_native_screen": 400,
+    "refresh_structure_budget_followup": 380,
+    "final_offline": 277,
+    "adapter": 22,
+    "closed_loop_model_calls": 154,
+    "complete_prediction_total": 1300,
+    "note": "CPU/CUDA toy tests and internal transformer graph warmups are separate; complete-prediction count is not an episode count"
+  },
+  "resource_release": {
+    "timestamp_utc": "2026-09-20T21:29:01.076307+00:00",
+    "known_owned_pids": [
+      618412,
+      622180,
+      622195,
+      622703,
+      623285,
+      623290,
+      623611
+    ],
+    "known_owned_pid_alive": [],
+    "matching_frozen_run_processes": [],
+    "gpu5_snapshot": "5, GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a, 0, 81078, 4",
+    "gpu5_columns": "index, uuid, utilization_percent, free_mib, used_mib",
+    "compute_processes_on_gpu5": [],
+    "foreign_processes_signalled": 0,
+    "dummy_load_running": false
+  },
+  "limitations": [
+    "DIDO author demonstrations, object/gripper tracks, boxes and attribution raw records remain unavailable; all recorded arrays are self-captured DreamWAM data.",
+    "Nine offline observations come from three exposed trajectories and are not independent held-out episodes.",
+    "New native selectors worsen the final nine-input action proxies relative to inherited uniform; no selector improvement claim.",
+    "Measured >1.5x warm full prediction comes from feature reuse with online selection overhead included; fresh retained-QKV structure controls reach only 1.21-1.26x.",
+    "Twelve exploratory real attempts cannot establish a five-percentage-point SR non-inferiority margin; no full-benchmark SR.",
+    "Fixed-cohort identities were unused by this study before freezing but covered by historical task baselines; no globally unseen claim.",
+    "Shared H100 compute and CPU rendering affect timing; different closed-loop trajectories prevent causal speed comparisons from episode ratios.",
+    "Adaptive refresh and semantic labels are not implemented or inferred from value-dynamic proxies."
+  ],
+  "next_step": "Stop this finite effort with all raw and negative evidence retained. Do not use the remaining 38 ledger slots or claim target SR acceptance. Further experiments require a newly scoped request."
+}

@@ -7,6 +7,11 @@ the current [progress ledger](PROGRESS.md) and AGENTS.md amendments: 50 total
 closed-loop episode attempts across arms, SR tolerance 5 percentage points,
 author raw data unavailable. The original setup statement above is historical.
 
+Closeout, 2026-09-20: the [bounded study](REPORT.md) is complete, stopped at
+12 real attempts and with all owned GPU processes exited. The 50-attempt ceiling
+does not authorize filling the remaining slots. Later instructions below describe
+the preserved iteration/replay workflow, not an active experiment queue.
+
 ## Repositories and scope
 
 | Item | Location / identity |
@@ -90,10 +95,12 @@ other GPUs/hosts, revive historical queues, train the checkpoint, or alter the
 scientific protocol without further authority.
 
 For the later bounded paired rollout, see [CLOSED-LOOP.md](CLOSED-LOOP.md).
-The launcher now exposes the same explicit GPU 5 sharing exception and a
+The launcher exposes the explicit GPU 5 sharing exception and a
 persistent 50-slot effort ledger. A pair's two full manifests must fit before
 the first evaluator process starts; incomplete records do not silently refund
-capacity. This does not start a rollout or close any numerical/adapter gate.
+capacity. The final frozen adapter/cohorts explicitly used a 50% utilization
+ceiling while retaining the memory floor; timing screens retained 10%.
+Completed numerical/adapter/rollout evidence is in [FINAL-VERIFICATION.json](FINAL-VERIFICATION.json).
 
 Existing checkpoint SHA-256 (historical evidence, revalidate before experiments):
 `6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61`.

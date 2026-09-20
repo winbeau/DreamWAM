@@ -1,14 +1,19 @@
 {
-  "status": "RAW_PROFILE_DIAGNOSTICS_AND_NATIVE_DR_SCREEN_VERIFIED_REFRESH_ADAPTER_SR_PENDING",
+  "status": "BOUNDED_STUDY_COMPLETE_SCIENTIFIC_TARGET_NOT_ESTABLISHED",
   "created_utc": "2026-09-20",
+  "completed_utc": "2026-09-20T21:25:01.069500+00:00",
+  "closed_loop_slots_charged": 12,
+  "stop_effort_after_total_attempts": 12,
+  "final_report": "REPORT.md",
+  "final_verification": "FINAL-VERIFICATION.json",
   "protocol": "dreamwam-release-v1",
   "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
   "authorized_h100_gpu_indices": [3, 4, 5],
   "leave_last_available_authorized_gpu_unused": true,
   "allow_explicit_gpu5_sharing": true,
-  "gpu5_sharing_amendment": "2026-09-20 user permits flexible GPU 5 sharing with their other project, including the last available authorized card; GPU 0 authorization withdrawn. No dummy reservation job. Require >=50000 MiB free and <=10% utilization immediately before loading; do not signal the other project.",
+  "gpu5_sharing_amendment": "2026-09-20 user permits flexible GPU 5 sharing with their other project, including the last available authorized card; GPU 0 authorization withdrawn. No dummy reservation. Require >=50000 MiB free and <=10% utilization for offline timing; the frozen adapter/cohorts explicitly allow <=50% under disclosed flexible sharing. No foreign process signals.",
   "closed_loop_total_episode_attempt_cap": 50,
-  "closed_loop_attempts_used": 0,
+  "closed_loop_attempts_used": 12,
   "closed_loop_ledger": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json",
   "closed_loop_budget_accounting": "reserve both complete arm manifests before either evaluator process; charges never auto-refund on errors or missing records; recorded attempts are reported separately",
   "sr_drop_margin_percentage_points": 5,
@@ -432,7 +437,7 @@
     "completed_predict_calls": 277, "completed_timed_calls": 126,
     "verified_trace_steps": 450,
     "result": "All three native candidates worsen nine-input mean raw-prefix error and gripper agreement versus inherited uniform at similar latency. No replacement recommendation.",
-    "diagnostic_pilot_choice": "layerwise_value_action_R56 is the least-error new candidate; use only for the predeclared six-attempt real-control diagnostic, not as an improvement over uniform",
+    "diagnostic_pilot_choice": "layerwise_value_action_R56 was frozen as the least-error NEW candidate; two matched cohorts used 12 attempts across Dense and candidate; not an improvement over inherited uniform",
     "input_ids": [
       "t000-i001-r00-s42-c0001",
       "t000-i001-r00-s42-c0004",
@@ -578,7 +583,7 @@
     "scope": "All nine historical development observations; final retained-choice screen, not new or held-out rollouts. Both Dense and exact inherited uniform controls are interleaved per group."
   },
   "confirmation": {
-    "status": "FROZEN_ADDITIONAL_MATCHED_VALIDATION_PREDECLARED",
+    "status": "COMPLETE_AND_INDEPENDENTLY_AUDITED",
     "episode_attempt_cap": 6, "stop_effort_after_total_attempts": 12,
     "first_arm": "sparse", "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
     "candidate": "layerwise_value_action_R56; unchanged after development outcomes",
@@ -587,7 +592,10 @@
     "reserved_init_indices": [2],
     "seed": 42,
     "use": "one frozen candidate after development; no tuning or threshold calibration on these identities",
-    "observations_captured": false,
+    "observations_captured": true,
+    "actual_attempts": 6, "dense_successes": 2, "candidate_successes": 3,
+    "dense_task_failures": 1, "errors": 0,
+    "audit": "outputs/dido-sparse-profile-20260920/fixed3-native-va56-audit-c6e11f9/integrity.json",
     "historical_exposure_audit": "H100 outcomes audit scanned 28 result files and found no reserved-identity matches; H200 full baselines cover these tasks, so label additional matched fixed-candidate validation, not globally unseen",
     "exposure_artifact": "outputs/dido-sparse-profile-20260920/confirmation-exposure.json",
     "exposure_sha256": "ded3799ff0e3eeed80358d4d304d76b8c5d3804bceb432fef3bda70a4930f2d0"
@@ -610,10 +618,10 @@
   "experiment_matrix": [
     {"id": "raw_profile", "status": "verified", "source_commit": "025be1235d29f4227ba0311e22daabb00ad1e72b", "artifact": "outputs/dido-sparse-profile-20260920/native-025be12/report.json", "factors": ["step", "layer", "head", "frame", "camera", "space"]},
     {"id": "equal_budget_intervention", "status": "bounded_partial_design_verified", "source_commit": "89bd1ea2249a552b17e161a3eceaf19595665638", "artifact": "outputs/dido-sparse-profile-20260920/interventions-89bd1ea/report.json", "selectors": ["uniform", "seeded_random", "action", "value_action", "value_dynamic", "visual_context", "action_context"], "read_scopes": ["AV", "VV", "joint"], "operations": ["delete", "replace", "recompute"], "limit": "47 frozen diagnostic cases plus 2 native controls; no automatic extension"},
-    {"id": "selector_runtime", "status": "native_dense_reuse_screen_verified_refresh_budget_structure_scan_pending", "controls": ["dense_strong", "uniform_feature_reuse"], "independent_factors": ["action", "value", "dynamic", "VV_context", "frame_quota", "Q_budget", "KV_budget", "feature_or_structure_reuse"]},
+    {"id": "selector_runtime", "status": "bounded_native_selector_refresh_budget_structure_matrix_complete_and_audited", "controls": ["dense_strong", "uniform_feature_reuse"], "independent_factors": ["action", "value", "dynamic", "VV_context", "frame_quota", "Q_budget", "KV_budget", "feature_or_structure_reuse"]},
     {"id": "background_pooling", "status": "bounded_real_checkpoint_screen_verified_negative_and_tradeoff_results", "comparison": "five full-observed-frame controls at 198 packed rows; dynamic count pooling is slower and has worse mean error than hard dynamic; unit pooling slightly improves mean error but retains a prefix gripper disagreement"},
-    {"id": "refresh_scan", "status": "pending", "single_refresh_steps": [1,2,3,4,5,6,7,8,9], "no_refresh_control": true, "max_multirefresh_candidates": 2, "adaptive": "optional; calibrate and freeze before use"},
-    {"id": "paired_timing", "status": "168_native_screen_timings_verified_retained_choice_followup_pending", "scope": "complete predict_action including every online cost; common backend and prompt cache; balanced/interleaved controls; cold/setup calls also retained"},
-    {"id": "bounded_closed_loop", "status": "pending", "total_attempt_cap_all_arms": 50}
+    {"id": "refresh_scan", "status": "all_nine_single_refresh_and_two_measured_rank_multirefresh_controls_complete_no_improvement", "single_refresh_steps": [1,2,3,4,5,6,7,8,9], "no_refresh_control": true, "max_multirefresh_candidates": 2, "adaptive": "not implemented; no uncalibrated threshold adopted"},
+    {"id": "paired_timing", "status": "454_warm_full_prediction_timings_across_native_stages_verified_plus_22_adapter_predictions_and_separate_IPC_episode_timings", "scope": "complete predict_action including every online cost; common backend and prompt cache; balanced/interleaved controls; cold/setup calls also retained"},
+    {"id": "bounded_closed_loop", "status": "complete_12_attempts_stop_here_five_point_noninferiority_not_established", "total_attempt_cap_all_arms": 50, "actual_attempts": 12, "errors": 0, "development": "Dense3/3; candidate3/3", "fixed_validation": "Dense2/3; candidate3/3"}
   ]
 }

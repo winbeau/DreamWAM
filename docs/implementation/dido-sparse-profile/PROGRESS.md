@@ -1,34 +1,39 @@
 # DIDO profile execution ledger
 
-Status: ACTIVE, 2026-09-20 UTC. The full [GOAL](GOAL.md) is invoked; this is no
-longer a setup-only handoff. No training or checkpoint changes are authorized.
+Status: BOUNDED STUDY COMPLETE, 2026-09-20 UTC. The [final report](REPORT.md)
+and [verification](FINAL-VERIFICATION.json) distinguish delivered evidence from
+the unestablished scientific target. No training or checkpoint changes occurred.
 
 User amendments: author raw data is unavailable to the user; SR tolerance is
 5 **percentage points** below matched Dense; real closed-loop testing is capped
-at 50 episodes in total across all arms and attempts. First proposed rollout is
-3 pairs (6 episodes), only after profiling, implementation and adapter gates.
-The first six attempts have completed. A tiny pilot cannot establish statistical
-non-inferiority at the 5-point margin.
+at 50 episodes in total across all arms and attempts. The study stopped at the
+predeclared **12 actual attempts / 12 charged slots**, leaving 38 unused. The
+tiny cohorts cannot establish statistical non-inferiority at the 5-point margin.
 
-## Development pilot verified; final six attempts predeclared
+## Final fixed cohort and resource release verified
 
-Dense 3/3 and frozen layerwise value-aware R56 3/3, six attempts total, zero
-errors/retries. Independent audit verifies 135 artifacts, actual executed action
-prefixes, unchanged token/layer budgets and all native reads. Initial state and
-both camera hashes match across all three pairs. Nominal Wilson95 is
-[43.85%,100%] per arm; paired bootstrap is withheld with one episode/task. No
-five-point non-inferiority claim. Shared-load warm model/IPC speedups are
-2.178×/2.114×; all-call model speedup is 1.922×. Episode wall time does not improve.
+Development Dense/candidate both 3/3. The unchanged fixed candidate on tasks
+3/4/5 × init 2 succeeds 3/3 against Dense 2/3; Dense task 5 reaches 400 steps.
+There are zero errors/retries or forced cleanup. Audits verify 135 development
+and 167 fixed-cohort artifact hashes, exact executed prefixes, token/layer
+budgets, all native reads and every initial input pair. Nominal Wilson95 for
+fixed Dense is [20.77%,93.85%], candidate [43.85%,100%]; the task-stratified
+paired interval is withheld with one episode/task. No five-point acceptance.
 
-The 22-call adapter check passes at model `41f515a`, with episode reset and
-changed inputs/instructions; model weights/sampling remain unchanged. The next
-and final six attempts use the same frozen candidate on tasks 3/4/5, initial
-state 2, candidate first. Stop at **12 attempts**, leaving the rest of the user's
-50-attempt cap unused. The first pilot's audit is
-`outputs/dido-sparse-profile-20260920/pilot3-native-va56-audit-c6e11f9/`.
-Goal remains active until the final fixed cohort, verification and delivery finish.
+The 22-call adapter check passes at model `41f515a`; the candidate stays frozen.
+Descriptive warm model/IPC ratios are 2.178×/2.114× for development and
+1.967×/1.899× for fixed validation. On every task where both succeed, the
+candidate takes more control steps and longer wall time. The final same-input
+screen is the controlled timing evidence: 2.130× through feature reuse, with
+worse action proxies than uniform. Fresh structure fails the speed target.
 
-## Verified nine-input screen; subsequent diagnostic pilot
+The final controller exits at 21:25:01 UTC; all audit commands exit 0. At 21:29:01
+UTC, no owned or matching run process remains and GPU 5 uses 4 MiB at 0%.
+No further rollout, training, tuning, dummy load or automatic expansion follows.
+The historical phase entries below retain their then-current counts and gates;
+the requirement ledger records their final disposition.
+
+## Historical phase: nine-input screen before diagnostic pilot
 
 The [277-call final offline screen](FINAL-OFFLINE-RESULTS.md) completes at
 20:50:52 UTC, source `41f515a`; all raw arrays, 126 timings and 450 trace steps
@@ -50,7 +55,7 @@ user's flexible GPU-5 sharing, the frozen adapter/pilot can explicitly use a
 50% utilization ceiling while retaining 50000 MiB free. Timing-screen gates stay
 unchanged. Attempts remain 0/50, the real ledger is uncreated, and goal is active.
 
-## Verified refresh, budgets and fresh-structure follow-up
+## Historical phase: refresh, budgets and fresh-structure follow-up
 
 [All 380 follow-up predictions](FOLLOWUP-RESULTS.md) and 240 raw trace steps
 pass independent replay: 190 single-refresh, 38 structure and 152 budget/multi-
@@ -64,7 +69,7 @@ invocations remain in [FOLLOWUP-VERIFICATION.json](FOLLOWUP-VERIFICATION.json).
 Cumulative checkpoint predictions are 847; real episode attempts remain 0/50.
 The final adapter and bounded paired pilot are pending; full goal remains active.
 
-## Verified online checkpoint screen through 20:08 UTC
+## Historical phase: online checkpoint screen through 20:08 UTC
 
 All three predeclared native stages are complete: **400 predictions**, including
 168 matched/interleaved warm timings, 400 raw action archives, 20 candidates and
@@ -129,7 +134,7 @@ online speed, sparse refresh/structure ablations and bounded SR are still open.
 The full goal remains active; this is implementation and verification progress,
 not completion. The checkpoint, protocol and dependencies remain unchanged.
 
-## Verified profile update through 18:50 UTC
+## Historical phase: profile update through 18:50 UTC
 
 The native profile and finite counterfactual study are complete. See
 [RESULTS.md](RESULTS.md) for every cohort, revision, count, negative finding and
@@ -178,19 +183,19 @@ instruction. Availability is rechecked immediately before the real model load.
 
 ## Requirement and evidence ledger
 
-| GOAL section | Required evidence | Current state / next gate |
+| GOAL section | Required evidence | Final disposition |
 |---|---|---|
-| 1–2 | Scope, authorized hardware, clean exact Git chain | Runtime/checkpoint source `efd6c47`, independent audit `dea8919`, all committed/pushed/synced; separate detached H100 worktrees |
+| 1–2 | Scope, authorized hardware, clean exact Git chain | Frozen final model `41f515a`, controller `b847775`, auditor `c6e11f9`; isolated local/server branches and immutable run trees; unchanged environments |
 | 3 | Paper/version audit, public implementation status | [Source audit](SOURCES.md); inference refinement separated from training |
 | 4 | Typed raw-data manifest, licenses, frozen splits | Author data absent; 9 self-captured observations hash-verified; [plan](experiment-plan.json) freezes episode identities |
 | 5 | Inherit all prior evidence | All 119 historical indexed artifacts and 9 observations verified, zero mismatches; legacy results remain immutable |
 | 6 | Replayable multi-step/layer/head raw profile | Complete native capture and independent replay on 9 observations; author semantic labels remain absent |
 | 7 | Equal-budget interventions, action/video errors | 47 real-input AV/VV/joint counterfactuals complete with all raw outputs; tiny partial design, no stable selector win |
-| 8 | Independent selectors and background pooling | CPU/CUDA and 400-call real-checkpoint D0/R1–9 screen verified; explicit fusion calibration and five pooling controls complete; final profile not frozen |
-| 9 | Bounded schedule scan, frozen choice | Existing 0/1-refresh negative/positive evidence retained; new selection-specific scan pending |
-| 10 | CPU/CUDA/graph/checkpoint checks; complete paired timing | Four actual CUDA modes and 168 D/R warm timings pass with all raw archives; retained-choice adapter, Sparse/structure checkpoint and episode/IPC gates remain open |
-| 11 | Predeclared bounded paired LIBERO pilot | 0/50 episodes attempted; native OSMesa and adapter gates pending |
-| 12 | Code/config/raw arrays/results/reproduction; release resources | Active ledger; no new method speed or SR claim; no owned GPU job |
+| 8 | Independent selectors and background pooling | Bounded matrix complete; final native rules worsen nine-input action proxies versus uniform; pooling/fusion adverse results preserved |
+| 9 | Bounded schedule scan, frozen choice | All nine single positions and two measured-rank multi-refresh schedules complete; independent Q/KV budgets and fresh-structure controls verified; no adaptive threshold adopted |
+| 10 | CPU/CUDA/graph/checkpoint checks; complete paired timing | Four actual CUDA modes, 454 native-stage warm timings, 22 adapter predictions and separate IPC/episode timings verified; complete raw arrays and cold/setup calls retained |
+| 11 | Predeclared bounded paired LIBERO pilot | Development 3/3 vs 3/3; fixed Dense 2/3 vs candidate 3/3; 12/50 total attempts, zero errors; five-point margin unproven, no benchmark claim |
+| 12 | Code/config/raw arrays/results/reproduction; release resources | [Final report](REPORT.md), [hash/command record](FINAL-VERIFICATION.json), frozen configs and raw manifests delivered; all owned processes exited; finite effort stopped |
 
 ## Initial verification
 

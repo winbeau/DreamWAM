@@ -2,6 +2,8 @@
 
 Status: three predeclared stages complete and independently audited on H100,
 2026-09-20 UTC. This is development input replay, **not closed-loop SR**.
+The subsequent full-input and closed-loop findings are in [REPORT.md](REPORT.md);
+they retain the unfavorable reversal of the two-input selection benefit.
 The source is `efd6c478fb63fafba6f1c19ed090c885fb7485b9`; the independent auditor
 is `dea89198b8fdfb598052825d9970b538742fc380`. All checkpoints, dependencies,
 sampling steps, input preprocessing and action horizons remain unchanged.

@@ -1,14 +1,17 @@
 # Bounded paired rollout controls
 
-Status: launch support passes 17 H100 CPU tests and the evaluator-interpreter
-CLI check at `72816b1`, 2026-09-20 19:48:40–19:48:41 UTC, exit 0. Logs and hashes
-are in [ONLINE-VERIFICATION.json](ONLINE-VERIFICATION.json). No DIDO
-closed-loop episode or real effort-ledger reservation has been started.
-The first pilot remains three matched Spatial episodes per arm: tasks 0/1/2,
-initial state 1, seed 42. The protocol remains `dreamwam-release-v1`, with CPU
-OSMesa rendering, one worker, retries=0 and error_policy=stop. Only the evaluator
-defines success. The unchanged offline, adapter and native-rendering gates in
-[experiment-plan.json](experiment-plan.json) remain prerequisites.
+Status: both finite cohorts completed and independently audited, then stopped at
+12 actual attempts / 12 charged slots. Development tasks 0/1/2 × init 1 give
+Dense/candidate 3/3 each; fixed tasks 3/4/5 × init 2 give Dense 2/3, candidate
+3/3. There are no errors/retries; Dense task 5 is a real 400-step failure. See
+[REPORT.md](REPORT.md) and [FINAL-VERIFICATION.json](FINAL-VERIFICATION.json).
+The five-point SR margin is not established by these tiny cohorts.
+
+Launch support passed 17 H100 CPU tests and the evaluator-interpreter CLI at
+`72816b1`, then 15 admission/ledger checks at controller `b847775`. The final
+22-call adapter check, native renderer and config validation passed before
+rollouts. Both cohorts retain `dreamwam-release-v1`, seed 42, CPU OSMesa, one
+worker, retries=0 and error_policy=stop. Only the evaluator defines success.
 
 ## GPU 5 sharing
 
@@ -22,7 +25,7 @@ launcher behavior is preserved when this new option is absent.
 
 After the completed nine-input screen, the GPU remained near 40% utilization
 with more than 76000 MiB free. The user-facing operational amendment uses
-`--max-shared-utilization 50` only for the frozen adapter/six-attempt pilot under
+`--max-shared-utilization 50` only for the frozen adapter/two six-attempt cohorts under
 the existing flexible-sharing authorization. The default remains 10; 50 requires
 `--share-gpu5`, retains the 50000-MiB memory floor and is recorded in controller
 metadata with its own source hash. Profiling/timing gates are unchanged. Shared
@@ -54,10 +57,10 @@ explicit `not_run`/`not_attempted` records, and archives result hashes. Incomple
 records are not proof that an unrecorded attempt never started. A lock file or
 reservation also does not prove a process is alive.
 
-## Later invocation
+## Preserved launch specification
 
-After the candidate/config and real adapter checks are frozen, the existing
-paired launcher receives the following additional controls:
+The completed development pair used the following additional controls; the fixed
+pair used `--first-arm sparse`. Both explicitly set `--max-shared-utilization 50`:
 
 ```
 --planned-episodes 3 --first-arm dense
@@ -65,11 +68,14 @@ paired launcher receives the following additional controls:
 --episode-ledger /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json
 ```
 
-The required evaluator/model roots, two actual config paths, verified adapter
-report, fresh output directory and finite wall limits must name the final frozen
-run. This is a flag specification, not a fabricated runnable experiment with an
-unselected candidate. Configuration changes belong in an isolated action-eval
-branch/worktree following its skills. No SR or non-inferiority claim follows
-from these launch controls; the user permits at most a 5-percentage-point drop
-against contemporaneous matched Dense, and the small sample's interval remains
-part of the report.
+The model was `41f515a`, controller `b847775`, development evaluator `0f856c9`
+and fixed evaluator `b5952a5`. Both used 120-second admission, 600-second arm
+limits and 120-second stop grace, under an outer 25-minute timeout. Exact arm
+commands, configs, GPU snapshots and fingerprints remain in their controller
+artifacts. No runtime checkout was pulled while in use.
+
+Both ledger reservations are finalized, with six actual attempts each. Do not
+fill the remaining 38 slots or rerun these cohorts automatically. CPU evidence
+replay in [REPORT.md](REPORT.md) requires no model or new episode. A later
+experiment needs a newly scoped user request; preserve this original ledger and
+all accepted outcomes.

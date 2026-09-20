@@ -24,12 +24,13 @@ from charged slots; never delete or substitute the ledger to regain budget.
 These flags are launch controls, not permission to bypass the remaining offline,
 adapter, renderer or immutable-candidate gates.
 
-Finite closeout declaration (2026-09-20): the first three-pair development pilot
-completed 3/3 in both arms, with six attempts and no errors/retries. Run only the
-already frozen additional tasks 3/4/5 × initial state 2, three per arm, then stop
-this effort at **12 actual attempts total**. Keep the 50-slot ledger as the hard
-ceiling; do not fill its remaining 38 slots or tune the candidate on the additional
-cohort. No globally unseen/benchmark or five-point non-inferiority claim follows.
+Finite closeout completed (2026-09-20): development Dense/candidate each 3/3;
+the frozen tasks 3/4/5 × initial state 2 yield Dense 2/3 and candidate 3/3.
+The effort is stopped at **12 actual attempts and 12 charged slots**, with zero
+errors/retries and all owned processes exited. Preserve the 50-slot ledger; do
+not fill its remaining 38 slots, tune on the fixed cohort or restart this study
+without a newly scoped user request. No globally unseen/benchmark or five-point
+non-inferiority claim follows. See `docs/implementation/dido-sparse-profile/REPORT.md`.
 
 Latest hardware amendment: GPU 0 was reclaimed and must remain unused by this
 task. The user explicitly permits flexible sharing of **GPU 5** with their other
@@ -41,7 +42,7 @@ needed. Release this task's resources when its finite work finishes.
 
 Operational sharing choice, disclosed 2026-09-20 after the final offline screen:
 keep profiling/timing admission at <=10% utilization. For the already frozen
-adapter check and six-attempt diagnostic pilot, the user's flexible GPU-5 sharing
+adapter check and two six-attempt diagnostic cohorts, the user's flexible GPU-5 sharing
 authorization is implemented with an explicit moderate ceiling of 50%, still
 requiring >=50000 MiB free. Pass `--max-shared-utilization 50` to the bounded
 controller, record every admission snapshot and label timing as shared-load.

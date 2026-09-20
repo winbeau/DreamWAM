@@ -1,24 +1,26 @@
 # DreamWAM paper-evaluation handoff
 
-Active isolated branch: [DIDO-guided action/video profile](../implementation/dido-sparse-profile/PROGRESS.md).
-The [native profile and bounded diagnostics](../implementation/dido-sparse-profile/RESULTS.md)
-are verified: nine observations, 18 native capture calls and 47 interventions
-plus two controls, with raw arrays and parity/replay checks. The subsequent
-[400-call online screen](../implementation/dido-sparse-profile/ONLINE-RESULTS.md)
-and four CUDA graph cases pass. The [380-call refresh/budget/structure follow-up](../implementation/dido-sparse-profile/FOLLOWUP-RESULTS.md)
-and CPU OSMesa preflight also pass. Final retained-choice timing, adapter and closed-loop
-gates are tracked in the [nine-input result](../implementation/dido-sparse-profile/FINAL-OFFLINE-RESULTS.md):
-warm prediction is about 2.1×, but all new selectors worsen action proxies versus
-inherited uniform. Final adapter and closed-loop gates remain open; attempts are 0/50. The user
-sets a 5-percentage-point SR margin and a cap of 50 **total** episode attempts
-across arms for this effort, superseding the historical per-arm scope below.
-See the [raw-data distinction](../implementation/dido-sparse-profile/SOURCES.md)
-and [current execution record](../implementation/dido-sparse-profile/EXECUTION-20260920.json).
-The [online selectors/pooling implementation](../implementation/dido-sparse-profile/ONLINE.md)
-passes CPU/CUDA and real-checkpoint D/R checks;
-[failures, corrections, admission refusal and all completed stages](../implementation/dido-sparse-profile/ONLINE-VERIFICATION.json)
-are preserved. Shared context and layerwise value-aware routing remain development
-choices; neither action-vector similarity nor the roughly 2× warm speed proves SR.
+Completed isolated branch: [DIDO-guided study final report](../implementation/dido-sparse-profile/REPORT.md)
+and [final verification](../implementation/dido-sparse-profile/FINAL-VERIFICATION.json).
+The study stops at **12 actual episode attempts**, below the user's 50-total cap:
+development Dense/candidate 3/3 each; additional fixed validation Dense 2/3 and
+candidate 3/3, with one real Dense task failure and zero errors/retries. Initial
+inputs match in every pair. The five-percentage-point SR margin remains unproven;
+these tiny cohorts are not benchmark or globally unseen confirmation results.
+Same-input warm prediction is 2.130× through feature reuse, but all new selectors
+worsen the final nine-input action proxies versus inherited uniform. Fresh
+structure controls reach only 1.21–1.26×. No replacement is recommended.
+
+The [native profile and diagnostics](../implementation/dido-sparse-profile/RESULTS.md),
+[400-call online screen](../implementation/dido-sparse-profile/ONLINE-RESULTS.md),
+[380-call refresh/budget/structure follow-up](../implementation/dido-sparse-profile/FOLLOWUP-RESULTS.md),
+[277-call final screen](../implementation/dido-sparse-profile/FINAL-OFFLINE-RESULTS.md),
+four CUDA graph cases, CPU OSMesa preflight and 22-call real adapter check pass.
+[Online implementation](../implementation/dido-sparse-profile/ONLINE.md),
+[data provenance](../implementation/dido-sparse-profile/SOURCES.md), raw arrays,
+negative evidence and admission refusals are retained. All owned model processes
+have exited; GPU 5 has no dummy reservation. The historical cohorts below remain
+separate and their queues are not resumed.
 
 Latest [routing/profile expansion and lower-budget pilots](hybrid-routing-results-20260920.md): 57 configuration/dataset cases, 999 audited timings and 153 dependency interventions completed. The measured no-refresh uniform-anchor feature-cache candidate reaches **3/3 vs Dense 3/3 at nominal KV18.75 (56/294 rows)**, with **2.077× warm inference**; KV25 also succeeds 3/3 at 1.988×. Neither tiny pilot certifies SR preservation, and whole-episode CPU-rendered time does not improve. [V5 method interfaces](decision-support-method-20260920.md) now separate read value, refresh urgency, feature reuse and structure-only reuse. First-layer action/context routing has not shown a benefit; structure-only reuse reaches only 1.06–1.13×. Adaptive refresh remains unimplemented, and these results must not be labelled complete M1–M3 validation. All owned GPU jobs have exited; 50-pair testing remains unstarted.
 
