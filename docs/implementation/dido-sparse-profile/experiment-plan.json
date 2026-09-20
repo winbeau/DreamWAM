@@ -1,5 +1,5 @@
 {
-  "status": "RAW_PROFILE_AND_BOUNDED_DIAGNOSTICS_VERIFIED_ONLINE_GATES_PENDING",
+  "status": "RAW_PROFILE_DIAGNOSTICS_AND_NATIVE_DR_SCREEN_VERIFIED_REFRESH_ADAPTER_SR_PENDING",
   "created_utc": "2026-09-20",
   "protocol": "dreamwam-release-v1",
   "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
@@ -48,7 +48,13 @@
     "closed_loop_episodes": 0
   },
   "online_screen": {
-    "status": "PREDECLARED_NOT_LAUNCHED",
+    "status": "COMPLETE_AND_INDEPENDENTLY_AUDITED",
+    "source_commit": "efd6c478fb63fafba6f1c19ed090c885fb7485b9",
+    "completed_predict_calls": 400,
+    "completed_timed_calls": 168,
+    "audit": "outputs/dido-sparse-profile-20260920/native-audit-dea8919/all-stages/report.json",
+    "retained_development_choices": ["shared action_context at 56 rows", "layerwise value_action at 56 rows/layer"],
+    "adopted_fusion_weights": null,
     "input_ids": ["t000-i001-r00-s42-c0004", "t001-i001-r00-s42-c0006"],
     "role": "historically exposed development observations, already used for diagnostic screening",
     "backend": "cuda_graph",
@@ -95,10 +101,10 @@
   "experiment_matrix": [
     {"id": "raw_profile", "status": "verified", "source_commit": "025be1235d29f4227ba0311e22daabb00ad1e72b", "artifact": "outputs/dido-sparse-profile-20260920/native-025be12/report.json", "factors": ["step", "layer", "head", "frame", "camera", "space"]},
     {"id": "equal_budget_intervention", "status": "bounded_partial_design_verified", "source_commit": "89bd1ea2249a552b17e161a3eceaf19595665638", "artifact": "outputs/dido-sparse-profile-20260920/interventions-89bd1ea/report.json", "selectors": ["uniform", "seeded_random", "action", "value_action", "value_dynamic", "visual_context", "action_context"], "read_scopes": ["AV", "VV", "joint"], "operations": ["delete", "replace", "recompute"], "limit": "47 frozen diagnostic cases plus 2 native controls; no automatic extension"},
-    {"id": "selector_runtime", "status": "pending", "controls": ["dense_strong", "uniform_feature_reuse"], "independent_factors": ["action", "value", "dynamic", "VV_context", "frame_quota", "Q_budget", "KV_budget", "feature_or_structure_reuse"]},
-    {"id": "background_pooling", "status": "pending", "comparison": "fine dynamic + pooled background versus equal packed-budget hard selection"},
+    {"id": "selector_runtime", "status": "native_dense_reuse_screen_verified_refresh_budget_structure_scan_pending", "controls": ["dense_strong", "uniform_feature_reuse"], "independent_factors": ["action", "value", "dynamic", "VV_context", "frame_quota", "Q_budget", "KV_budget", "feature_or_structure_reuse"]},
+    {"id": "background_pooling", "status": "bounded_real_checkpoint_screen_verified_negative_and_tradeoff_results", "comparison": "five full-observed-frame controls at 198 packed rows; dynamic count pooling is slower and has worse mean error than hard dynamic; unit pooling slightly improves mean error but retains a prefix gripper disagreement"},
     {"id": "refresh_scan", "status": "pending", "single_refresh_steps": [1,2,3,4,5,6,7,8,9], "no_refresh_control": true, "max_multirefresh_candidates": 2, "adaptive": "optional; calibrate and freeze before use"},
-    {"id": "paired_timing", "status": "pending", "scope": "complete predict_action including every online cost; common backend and prompt cache; balanced/interleaved controls"},
+    {"id": "paired_timing", "status": "168_native_screen_timings_verified_retained_choice_followup_pending", "scope": "complete predict_action including every online cost; common backend and prompt cache; balanced/interleaved controls; cold/setup calls also retained"},
     {"id": "bounded_closed_loop", "status": "pending", "total_attempt_cap_all_arms": 50}
   ]
 }

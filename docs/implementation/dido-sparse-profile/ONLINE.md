@@ -1,9 +1,10 @@
 # Native-anchor selection and background pooling
 
-Status: implementation submitted for H100 CPU/CUDA verification. No new online
-speed or SR result is claimed yet. This extends the inherited hybrid executor;
-it does not replace the uniform feature-reuse control or change model inputs,
-checkpoint, resolution, action horizon or denoising steps.
+Status: CPU, four actual BF16 CUDA scenarios, and the 400-call real-checkpoint
+D0/R1–9 screen are verified. See [ONLINE-RESULTS.md](ONLINE-RESULTS.md) for the
+complete positive/negative matrix. New Sparse refresh/structure checkpoint
+comparisons, adapter and SR gates remain open. This extends the inherited hybrid
+executor without changing inputs, checkpoint, resolution, horizon or step count.
 
 First verification, 2026-09-20 19:18 UTC, source
 `bdabd8b37ce859a4964a5d1708239b36e38dac14`: the eight related CPU test modules
@@ -14,7 +15,9 @@ One cause was an implicit CPU-to-CUDA head-index transfer inside capture; the
 other was a test fixture constructed on CPU whose ordinary RoPE attributes did
 not move with `Module.to`. The corrective change selects static head views on
 device and constructs CUDA fixtures on CUDA, with BF16 matching the checkpoint.
-No checkpoint was loaded by these toy-model checks. Reverification is pending.
+No checkpoint was loaded by those initial toy-model checks. Subsequent
+corrections and successful reverification are recorded below and in
+[ONLINE-VERIFICATION.json](ONLINE-VERIFICATION.json).
 
 Correction source `25a704198ef59b5912735f6638a406aea0a12705` passes its CPU
 module (32 passed, 4 skipped; exit 0). The immediately following CUDA admission
@@ -102,7 +105,8 @@ Additive log-size biases are computed in FP32, then rounded once to the actual
 Q/K attention dtype. This is required by the pinned CUDA SDPA backend: the
 2026-09-20 19:49 UTC check at `72816b1` passed shared/layerwise/structure graph
 cases but rejected FP32 pool bias with BF16 queries. The failing log remains in
-`native-cuda-72816b1/cuda.log`; the correction requires a separate rerun.
+`native-cuda-72816b1/cuda.log`. The separate `efd6c47` rerun passes all four
+actual CUDA cases, followed by all five real-checkpoint pooling controls.
 
 Groups never mix ages: packing accepts complete fresh Dense anchors, then retains
 the same groups/features until the next Dense refresh. All group members have
@@ -113,15 +117,16 @@ construction execute through the same eager/buffered/CUDA graph dispatcher.
 CPU geometry validation and all device transfers remain inside full
 predict_action timing. No local-only timing or SR result can establish success.
 
-## Remaining verification
+## Verification scope and remaining work
 
-H100 tests must cover independent raw-score replay, frame budgets, complete
-partition and mask/multiplicity parity, full-budget degeneration, independent
-recompute sets, request isolation, numeric fallback and actual CUDA eager/graph
-consistency. Graph tests poison float, integer, boolean and complex staging
-buffers between changed requests. After these gates, use a finite checkpoint
-study against stronger Dense and the original uniform feature-reuse control,
-then the predeclared bounded refresh scan and at most the small 3-pair pilot.
+H100 tests cover independent raw-score replay, frame budgets, complete partition
+and mask/multiplicity parity, full-budget degeneration, independent recompute
+sets, request isolation, numeric fallback and CUDA eager/graph consistency.
+Graph tests poison float, integer, boolean and complex staging buffers between
+changed requests. The finite checkpoint screen against stronger Dense and the
+original uniform feature-reuse control is complete. The predeclared bounded
+refresh/structure scan, retained-candidate adapter checks and small 3-pair pilot
+remain, with no SR inferred from the offline results.
 
 ## Finite checkpoint screen
 
@@ -149,9 +154,11 @@ the executed first 10 actions and gripper signs. Online scoring/packing and all
 request-local transfers remain inside timing. Archival CPU copies and hashing
 follow timing, with the lightweight raw-output observer itself included.
 
-Fusion is a calibration axis: dynamic weights 0.25, 0.5 and 0.75 compete with
+Fusion was a calibration axis: dynamic weights 0.25, 0.5 and 0.75 competed with
 both pure endpoints using identical uniform observed-frame treatment. The pure
 value-action score also has its normal scored-observed-frame arm, separating that
-choice from fusion. No weight, candidate or refresh schedule is selected yet.
+choice from fusion. No fusion weight is adopted. Shared AV-seeded VV context
+and layerwise value-aware reads are retained for the next bounded comparisons;
+the final candidate and refresh schedule are not yet frozen.
 Pool/hard controls read exactly 198 rows with the same complete observed frame;
 uniform region selection and unit/count multiplicity are explicit ablations.

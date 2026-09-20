@@ -1,14 +1,15 @@
 {
-  "status": "CPU_VERIFIED_CUDA_CORRECTION_AWAITS_ADMISSION",
+  "status": "ONLINE_FEATURE_REUSE_CPU_CUDA_CHECKPOINT_SCREEN_VERIFIED_REMAINING_GATES_OPEN",
   "goal_status": "active",
   "turn_classification": "progress",
   "host": "h100-server",
   "artifact_root": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920",
   "interpreter": "/root/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-6c52f36/.venv/bin/python",
   "environment": "Python 3.10.20, torch 2.7.1+cu126; unchanged dependencies; CPU tests pin CUDA_VISIBLE_DEVICES='' and OMP/MKL/OPENBLAS_NUM_THREADS=1",
-  "checkpoint_loaded_in_this_stage": false,
+  "checkpoint_loaded_in_this_stage": true,
   "reference_checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
-  "new_checkpoint_predict_calls": 0,
+  "new_checkpoint_predict_calls": 400,
+  "cumulative_checkpoint_predict_calls_including_profile_and_interventions": 467,
   "closed_loop_episode_attempts": 0,
   "closed_loop_total_attempt_cap": 50,
   "stages": [
@@ -70,26 +71,129 @@
         "native-screen-cpu-1356102/cpu.log": "fa9cd0e25dcc1e230610463c80c04cc48c6c326debe3521403b94a8e7f25f4ae",
         "native-screen-cpu-1356102/cli-help.txt": "c6d3020954e4f967519e2fd951c4f43e35dffd73d610f06c8fcb4cb45ed5a944"
       }
+    },
+    {
+      "id": "bounded-rollout-controls",
+      "source_commit": "72816b1a15e9e074eff0600744d656361120b484",
+      "start_utc": "2026-09-20T19:48:40Z", "end_utc": "2026-09-20T19:48:41Z", "exit_code": 0,
+      "command": "python -m pytest -q tests/sparse/test_episode_budget.py tests/sparse/test_fresh_pair_admission.py tests/sparse/test_native_experiment.py",
+      "result": "17 passed; evaluator-interpreter run_fresh_token_pair.py --help also passed; real effort ledger remains absent",
+      "scope": "GPU 5 placement, process-safe immutable 50-slot budget, no automatic refund/retry, precise historical control options; no GPU/model/episode execution",
+      "artifacts": {
+        "eval-controls-72816b1/cpu.log": "74a9f4f9259985abd8c51e87abbd6304e7372b6398fff4673cab10bc05c34141",
+        "eval-controls-72816b1/cli-help.txt": "6acac74a1ccddd5be9fb3eef651f9e6848fbb7c69dfd1f8620ce0dc63f73b7c3"
+      }
+    },
+    {
+      "id": "cuda-found-pool-bias-dtype-error",
+      "source_commit": "72816b1a15e9e074eff0600744d656361120b484",
+      "start_utc": "2026-09-20T19:49:01Z", "end_utc": "2026-09-20T19:49:05Z", "exit_code": 1,
+      "command": "timeout 3m python -m pytest -q tests/sparse/test_native_hybrid.py -k cuda",
+      "result": "3 passed, 1 failed, 32 deselected; shared/layerwise/structure pass, pooled FP32 bias rejected by the BF16 CUDA SDPA backend",
+      "artifacts": {
+        "native-cuda-72816b1/cuda.log": "56c41046e1fa87ce0475eb4fb119b4735c141fdfe7d678192fa5ca48a5b68de8",
+        "native-cuda-72816b1/admission.log": "64d2d0e7317acba110388e1a0931f2db9a515d7d2c7c3050728d5c70463f3613"
+      }
+    },
+    {
+      "id": "corrected-native-cuda-gates",
+      "source_commit": "efd6c478fb63fafba6f1c19ed090c885fb7485b9",
+      "start_utc": "2026-09-20T19:51:00Z", "end_utc": "2026-09-20T19:51:07Z", "exit_code": 0,
+      "cpu_command": "python -m pytest -q tests/sparse/test_native_hybrid.py -k 'pool or refinement'",
+      "cpu_result": "7 passed, 1 skipped, 30 deselected; includes BF16/FP32 bias and count/unit reference checks",
+      "cuda_command": "timeout 3m python -m pytest -q tests/sparse/test_native_hybrid.py -k cuda",
+      "cuda_result": "4 passed, 34 deselected; changed-input replay after poisoning all staged tensor dtypes",
+      "artifacts": {
+        "native-checks-efd6c47/cpu.log": "ce4aca4827407bae94a773bad43fe836c4b43896f9cb108bc43c7da082f327ed",
+        "native-checks-efd6c47/cuda.log": "b5c17115c4b6fa89a837f7a7456f2a20866a96d6f73744ce460edfe43527ae4e",
+        "native-checks-efd6c47/admission.log": "060dfbdf576cbe73738cbcd8881cb8cb27f91bac6eda22b589c37bbfd0cbd56c"
+      }
+    },
+    {
+      "id": "native-selector-screen",
+      "source_commit": "efd6c478fb63fafba6f1c19ed090c885fb7485b9",
+      "start_utc": "2026-09-20T19:51:58.276267+00:00", "end_utc": "2026-09-20T19:53:28.986191+00:00", "exit_code": 0,
+      "command": "timeout --signal=TERM --kill-after=60s 12m python -u scripts/sparse/benchmark_native_routes.py --stage selectors --share-gpu5 --out-dir /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-selectors-efd6c47",
+      "owned_pid": 604808, "candidate_count": 11, "completed_predict_calls": 219, "timed_calls": 92,
+      "raw_bytes": 392448, "peak_allocated_bytes": 27132892672, "peak_reserved_bytes": 27753709568,
+      "artifacts": {
+        "native-selectors-efd6c47/report.json": "feb424592fb4598a45f5a952623eb7367913b1d69b671991c133180614a676f1",
+        "native-selectors-efd6c47/calls.jsonl": "235371c34a29d5a907941b965c3484c530b347e43535702fbb51e8bb6b8e685c",
+        "native-selectors-efd6c47/requests.jsonl": "596363f336c6559e1867d59eeb9168e0243ee0acc5b17fe430173f7675c3e12e",
+        "native-selectors-efd6c47/summary.json": "c72c660c33dcf4e2d2425ff07b2a6754b8fbe2e72bb70b3e3d012432ee52b4fb"
+      }
+    },
+    {
+      "id": "native-layer-screen-refused",
+      "source_commit": "efd6c478fb63fafba6f1c19ed090c885fb7485b9",
+      "start_utc": "2026-09-20T19:54:21.289860+00:00", "end_utc": "2026-09-20T19:54:31.665824+00:00", "exit_code": 1,
+      "command": "timeout --signal=TERM --kill-after=60s 12m python -u scripts/sparse/benchmark_native_routes.py --stage layers --share-gpu5 --out-dir /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-layers-efd6c47",
+      "owned_pid": 606073, "completed_predict_calls": 0, "checkpoint_loaded": false,
+      "reason": "GPU 5 free 41080 MiB, utilization 78%; admission refused before model loading; preserve this zero-call attempt",
+      "artifacts": {
+        "native-layers-efd6c47/report.json": "22237d9f2aedf7ab78e5113a455a544d50801098bbefdd1e6d493d2326f9b0a2",
+        "native-layers-efd6c47/summary.json": "0b1c6855f1e1cbcdad2b7ae1c979c3a2541d5ee151c76370dcd93f798a5bef2f"
+      }
+    },
+    {
+      "id": "native-layer-screen-complete",
+      "source_commit": "efd6c478fb63fafba6f1c19ed090c885fb7485b9",
+      "start_utc": "2026-09-20T20:01:32.800865+00:00", "end_utc": "2026-09-20T20:02:19.416034+00:00", "exit_code": 0,
+      "command": "timeout --signal=TERM --kill-after=60s 12m python -u scripts/sparse/benchmark_native_routes.py --stage layers --share-gpu5 --out-dir /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-layers-efd6c47-retry1",
+      "owned_pid": 607601, "candidate_count": 4, "completed_predict_calls": 76, "timed_calls": 32,
+      "raw_bytes": 136192, "peak_allocated_bytes": 26724613632, "peak_reserved_bytes": 27258781696,
+      "artifacts": {
+        "native-layers-efd6c47-retry1/report.json": "f638b0b6f9402a63b42961ed62d607950cc6b66e61f1a9d96cb2b3d4369559fc",
+        "native-layers-efd6c47-retry1/calls.jsonl": "00711f9685871e08f74bfa32e7a3095611921e1fe368769ba4a3674dd4bb01f0",
+        "native-layers-efd6c47-retry1/requests.jsonl": "efe584bc5ebb21c8593e4280389fa67212f7e43720644cf3d4992c3481697ca5",
+        "native-layers-efd6c47-retry1/summary.json": "70fe8643a2423d8ebb208fd0a83a596d87a67ef6ff6849aad26ce9f3ea0b7eb2"
+      }
+    },
+    {
+      "id": "native-pooling-screen",
+      "source_commit": "efd6c478fb63fafba6f1c19ed090c885fb7485b9",
+      "start_utc": "2026-09-20T20:04:13.897360+00:00", "end_utc": "2026-09-20T20:05:11.967480+00:00", "exit_code": 0,
+      "command": "timeout --signal=TERM --kill-after=60s 12m python -u scripts/sparse/benchmark_native_routes.py --stage pooling --share-gpu5 --out-dir /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-pooling-efd6c47",
+      "owned_pid": 608395, "candidate_count": 5, "completed_predict_calls": 105, "timed_calls": 44,
+      "raw_bytes": 188160, "peak_allocated_bytes": 26889295872, "peak_reserved_bytes": 27560771584,
+      "artifacts": {
+        "native-pooling-efd6c47/report.json": "95c52435b315c4c02a6d4e59afa7df55143622f8059c0de5bf4d6b2420b36a49",
+        "native-pooling-efd6c47/calls.jsonl": "ff6df76bbe3814b0bce7f2ccc1259b53d553f64c21c06e534b12d61cc1cbb886",
+        "native-pooling-efd6c47/requests.jsonl": "1516efb9a6e9f35505fa5c3a0318a551f449bf00296bc0ccac7ee48bf5e7c0e2",
+        "native-pooling-efd6c47/summary.json": "e0fcd446ce0860ca0b8e820ba34611df2b5cc287f50fd6bd058cfb191c5a0302"
+      }
+    },
+    {
+      "id": "independent-screen-audit",
+      "source_commit": "dea89198b8fdfb598052825d9970b538742fc380",
+      "start_utc": "2026-09-20T20:08:51.046870+00:00", "end_utc": "2026-09-20T20:08:51.281884+00:00",
+      "test_command": "python -m pytest -q tests/sparse/test_native_screen_audit.py", "test_result": "4 passed", "test_exit_code": 0,
+      "command": "python scripts/sparse/audit_native_screen.py --screen /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-selectors-efd6c47 --screen /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-layers-efd6c47-retry1 --screen /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-pooling-efd6c47 --out-dir /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/native-audit-dea8919/all-stages",
+      "exit_code": 0, "verified_raw_files": 400, "verified_timed_rows": 168, "verified_native_counter_rows": 80,
+      "coverage": "all raw bytes, journals, complete setup+timing caps, own eager/graph byte equality, native-uniform control equality, action metrics and actual token/layer budgets",
+      "artifacts": {
+        "native-audit-dea8919/all-stages/report.json": "94f9ab7ef5db917bc14aa55474a0bdeb2710703c8580a51e40d049430856081f",
+        "native-audit-dea8919/all-stages/per-input-timings.csv": "9869bd6c11e509b6d1d4ec741ba4951bf69e0f9bfc524893302198295ae92fe4"
+      }
     }
   ],
   "latest_resource_observation": {
-    "timestamp_utc": "2026-09-20T19:34:52Z",
+    "timestamp_utc": "2026-09-20T20:08:51Z",
     "command": "nvidia-smi --query-gpu=index,uuid,memory.used,memory.free,utilization.gpu --format=csv,noheader",
     "exit_code": 0,
-    "gpu3": {"used_mib": 23961, "free_mib": 57121, "utilization_percent": 100},
-    "gpu4": {"used_mib": 23961, "free_mib": 57121, "utilization_percent": 100},
-    "gpu5": {"used_mib": 41297, "free_mib": 39785, "utilization_percent": 95},
+    "gpu3": {"used_mib": 23961, "free_mib": 57121, "utilization_percent": 6},
+    "gpu4": {"used_mib": 23961, "free_mib": 57121, "utilization_percent": 98},
+    "gpu5": {"used_mib": 2897, "free_mib": 78184, "utilization_percent": 79},
     "interpretation": "no currently admitted authorized card; no task-owned model or reservation job; GPU 0 remains unauthorized"
   },
   "remaining": [
-    "fresh admission and the four corrected actual BF16 CUDA graph tests",
-    "three predeclared checkpoint screens, capped at 219/76/105 predictions inclusive of setup",
     "separate Sparse refresh, budget and structure controls",
+    "real selected-route trace examples and stronger timing on retained choices",
     "real adapter, rendering and bounded paired closed-loop evidence"
   ],
   "limitations": [
-    "CPU success and a corrected implementation do not establish actual CUDA graph parity",
-    "toy checks and planned benchmarks supply no new real-checkpoint speed or SR result",
+    "real-checkpoint screen covers D0/R1-9 feature schedules; no claim that fresh-every-step structure execution is equally fast",
+    "two exposed observations and four timings/candidate are exploratory; action error is not SR",
     "all prior failures and resource refusals remain recorded; no new closed-loop attempt was made"
   ]
 }

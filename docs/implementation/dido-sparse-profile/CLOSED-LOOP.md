@@ -1,6 +1,8 @@
 # Bounded paired rollout controls
 
-Status: launch support implemented; server verification pending. No DIDO
+Status: launch support passes 17 H100 CPU tests and the evaluator-interpreter
+CLI check at `72816b1`, 2026-09-20 19:48:40–19:48:41 UTC, exit 0. Logs and hashes
+are in [ONLINE-VERIFICATION.json](ONLINE-VERIFICATION.json). No DIDO
 closed-loop episode or real effort-ledger reservation has been started.
 The first pilot remains three matched Spatial episodes per arm: tasks 0/1/2,
 initial state 1, seed 42. The protocol remains `dreamwam-release-v1`, with CPU

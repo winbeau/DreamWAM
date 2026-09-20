@@ -3,6 +3,8 @@
 Status: raw capture and descriptive replay **verified**, 2026-09-20 UTC.
 The full goal remains active. The bounded diagnostic follow-up is also complete;
 it does not establish a consistently better selector, a speedup or SR preservation.
+The subsequent [400-call online screen](ONLINE-RESULTS.md) is recorded separately;
+it tests actual selection/packing cost and retains two development candidates.
 
 ## Cohort, execution and provenance
 

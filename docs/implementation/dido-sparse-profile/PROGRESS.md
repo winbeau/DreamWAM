@@ -10,7 +10,43 @@ at 50 episodes in total across all arms and attempts. First proposed rollout is
 No rollout has started in this branch. A tiny pilot cannot establish statistical
 non-inferiority at the 5-point margin.
 
-## Online implementation update through 19:34 UTC
+## Verified online checkpoint screen through 20:08 UTC
+
+All three predeclared native stages are complete: **400 predictions**, including
+168 matched/interleaved warm timings, 400 raw action archives, 20 candidates and
+all setup calls. Independent CPU audit verifies their bytes, own-eager parity,
+metric replay and native budgets. [ONLINE-RESULTS.md](ONLINE-RESULTS.md) contains
+the complete matrix and limitations; [ONLINE-VERIFICATION.json](ONLINE-VERIFICATION.json)
+contains exact source, timestamps, commands, exits, failures and artifact hashes.
+
+At `efd6c47`, four BF16 CUDA graph scenarios pass after the explicit index,
+fixture and pooled-bias fixes. On two exposed development observations, shared
+AV-seeded VV context achieves 2.130× paired warm speedup with mean raw executed
+prefix L2 0.10983, compared with uniform 0.32220. Layerwise value-aware gives
+2.039× and 0.09676. Both have no prefix gripper disagreement on those two
+inputs. Retain both for development; these metrics are not SR or a frozen final
+candidate. Their speed comes predominantly from visual feature reuse.
+
+Preserve the negatives: first-layer-only value-aware is poor; layerwise context
+is worse than shared context; large dynamic fusion weights keep a gripper
+disagreement; dynamic count pooling is slower than equal-budget hard selection
+without improving mean action error. The refused first layer-stage attempt made
+zero calls and was retried only after terminal failure and fresh admission.
+
+The bounded rollout launcher now implements explicit GPU 5 sharing and a
+persistent 50-slot effort ledger; 17 related CPU tests and its evaluator CLI
+check pass. No real rollout reservation exists. Cumulative new checkpoint
+predictions are **467** (67 profile/diagnostic + 400 screen); closed-loop episode
+attempts remain **0/50**. At 20:08:51 UTC all owned model PIDs have exited and
+no dummy load exists. GPU 5 is again busy with the other project.
+
+The full goal remains **active**. Next required gates are the bounded explicit
+Sparse refresh/budget and structure comparisons, actual selected-route trace
+examples, retained-choice timing and real adapter/reset validation, followed by
+the three-pair development pilot and a correctly labelled frozen confirmation.
+Do not repeat the completed 400-call screen or infer SR from its action metrics.
+
+## Historical online implementation update through 19:34 UTC
 
 The inherited hybrid runtime now has native multi-depth action, value, dynamic
 and context scores, independent recompute selectors, shared/layerwise reads,
@@ -90,15 +126,15 @@ instruction. Availability is rechecked immediately before the real model load.
 
 | GOAL section | Required evidence | Current state / next gate |
 |---|---|---|
-| 1–2 | Scope, authorized hardware, clean exact Git chain | Implementation/test stages committed/pushed/synced through `1356102`; server tests and jobs use separate detached worktrees |
+| 1–2 | Scope, authorized hardware, clean exact Git chain | Runtime/checkpoint source `efd6c47`, independent audit `dea8919`, all committed/pushed/synced; separate detached H100 worktrees |
 | 3 | Paper/version audit, public implementation status | [Source audit](SOURCES.md); inference refinement separated from training |
 | 4 | Typed raw-data manifest, licenses, frozen splits | Author data absent; 9 self-captured observations hash-verified; [plan](experiment-plan.json) freezes episode identities |
 | 5 | Inherit all prior evidence | All 119 historical indexed artifacts and 9 observations verified, zero mismatches; legacy results remain immutable |
 | 6 | Replayable multi-step/layer/head raw profile | Complete native capture and independent replay on 9 observations; author semantic labels remain absent |
 | 7 | Equal-budget interventions, action/video errors | 47 real-input AV/VV/joint counterfactuals complete with all raw outputs; tiny partial design, no stable selector win |
-| 8 | Independent selectors and background pooling | Online integration implemented and CPU-tested; actual graph correction, calibrated selection and checkpoint comparisons pending |
+| 8 | Independent selectors and background pooling | CPU/CUDA and 400-call real-checkpoint D0/R1–9 screen verified; explicit fusion calibration and five pooling controls complete; final profile not frozen |
 | 9 | Bounded schedule scan, frozen choice | Existing 0/1-refresh negative/positive evidence retained; new selection-specific scan pending |
-| 10 | CPU/CUDA/graph/checkpoint checks; complete paired timing | Native profiler CUDA eager and real checkpoint checks pass; new online graph/adapter and timing gates remain open |
+| 10 | CPU/CUDA/graph/checkpoint checks; complete paired timing | Four actual CUDA modes and 168 D/R warm timings pass with all raw archives; retained-choice adapter, Sparse/structure checkpoint and episode/IPC gates remain open |
 | 11 | Predeclared bounded paired LIBERO pilot | 0/50 episodes attempted; native OSMesa and adapter gates pending |
 | 12 | Code/config/raw arrays/results/reproduction; release resources | Active ledger; no new method speed or SR claim; no owned GPU job |
 
