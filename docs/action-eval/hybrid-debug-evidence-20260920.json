@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "status": "VERIFIED_DEBUG_ONLY",
+  "audited_utc": "2026-09-20T12:44:54Z",
+  "server": "h100-server",
+  "artifact_root": "/root/wenbiao_zhao/dreamwam-sr/outputs/hybrid-implementation-20260920",
+  "test_source": "dc029e32e35c4e9bb8f24dc57d98a57d8d120c59",
+  "tests": {
+    "cpu": {
+      "passed": 305,
+      "skipped": 15,
+      "subtests_passed": 8,
+      "seconds": 8.08,
+      "exit_code": 0,
+      "log": "dc029e3-cpu.log",
+      "sha256": "c0f02981909f0965dea23dd5a939207faeee16733718a9784d1f19e63ead7562"
+    },
+    "hybrid_cuda": {
+      "passed": 36,
+      "subtests_passed": 8,
+      "seconds": 6.10,
+      "exit_code": 0,
+      "log": "dc029e3-hybrid-cuda.log",
+      "sha256": "4b4fba20f7ffbb0c28ea11e7a187c32313edc1f826cdda9f190b7579ea828f10"
+    }
+  },
+  "real_checkpoint_source": "5dec9c3abebc71c269395d338ca361d1b8f04cd7",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+  "inputs_sha256": "bcdba90931d4cb9f980d5fe68d2cac26703684d8f5ad4f86a79742962352627a",
+  "physical_gpu": 3,
+  "gpu_uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+  "python": "3.10.20",
+  "torch": "2.7.1+cu126",
+  "cuda": "12.6",
+  "split_label": "debug",
+  "allow_shared_gpu": true,
+  "compact_run": {
+    "directory": "compact-run",
+    "manifest_identity": "47a440139806f65cefa4eeff143213478fbfa155bc05b056a581026d3817677e",
+    "candidate_id": "ff9b7c3a263d49750563ee6e50c2a1d19dc24028dc43660c299f8c7e4816f6f0",
+    "operations": ["dense", "reuse", "reuse", "reuse", "reuse", "sparse", "reuse", "reuse", "reuse", "reuse"],
+    "recompute_ratio": 0.1,
+    "read_ratio": 0.25,
+    "completed_requests": 24,
+    "planned_requests": 24,
+    "requests_per_arm": 6,
+    "attempts": 2,
+    "attempt_completed_counts": [3, 24],
+    "attempt_exit_codes": [0, 0],
+    "end_utc": "2026-09-20T12:32:15.858087+00:00",
+    "per_row_attempt_id_available": false,
+    "mean_seconds": {
+      "hybrid": 0.13928197900531814,
+      "dense_strong": 0.26223850332704995,
+      "legacy": 0.13671683634553725,
+      "fresh": 0.2166927701618988
+    },
+    "pooled_speedup_vs_dense": 1.8827884640915178,
+    "pooled_speedup_vs_legacy": 0.9815830972671422,
+    "mean_action_relative_l2": 0.8307387801612717,
+    "own_eager_bitwise_parity": true,
+    "all_action_artifact_hashes_verified": true,
+    "action_layer_updates_per_request": 300,
+    "traces_verified": 3,
+    "frozen_profile_reimport_verified_at_test_source": true,
+    "artifact_sha256": {
+      "manifest.json": "e26af878a11ff94701819e4af536d7177f6a7e93e8ec14982fc4876586fc48b7",
+      "requests.jsonl": "8e3188822654ecb9a20fb4648743733dd37d561036078d7c9576db3310b900cf",
+      "summary.json": "e72662257b5184f162faa42a63c55b8debaf2df09e5d4165808c51cdb7e7740f"
+    }
+  },
+  "all_dense_control_run": {
+    "directory": "dense-control-run",
+    "manifest_identity": "8db3df235588af9485cdbc1c90e4ece5279dad77c416a9a9bd35c929ca8ec780",
+    "completed_requests": 6,
+    "planned_requests": 6,
+    "requests_per_arm": 3,
+    "exit_code": 0,
+    "end_utc": "2026-09-20T12:36:36.224229+00:00",
+    "hybrid_all_dense_mean_seconds": 0.3063871823445273,
+    "dense_strong_mean_seconds": 0.26360349733537686,
+    "own_eager_bitwise_parity": true,
+    "hybrid_all_dense_bitwise_matches_dense_strong": true,
+    "all_action_artifact_hashes_verified": true,
+    "action_layer_updates_per_request": 300,
+    "artifact_sha256": {
+      "manifest.json": "dd6b15da94a980aad6e418533623461d614348cabcaffd9f3819315cb1af437f",
+      "requests.jsonl": "01e51e1b188722e228cdc35237e81fc16eb153a6706ce6cc9c086115476d46e0",
+      "summary.json": "1098162b1b59e36c4138437e665b458e72672b8f9792a0fb0ecf66507accb9c8"
+    }
+  },
+  "sr": null,
+  "limitations": [
+    "Three previously exposed observations; not held-out confirmation data.",
+    "Small shared-host debug run, not final performance acceptance.",
+    "Compact timing spans two invocations, with a cyclic block split at resume.",
+    "Old journals lack per-row attempt IDs; no retroactive contemporaneity claim.",
+    "Legacy global-query and compact balanced-query rules differ in this run.",
+    "The all-Dense wrapper is a numerical control, not the strengthened timing baseline.",
+    "No complete 46/512 schedule timing search or hybrid closed-loop SR run yet.",
+    "Phase traces are CPU/CUDA stream spans, not kernel self-time or copy-byte accounting."
+  ]
+}
