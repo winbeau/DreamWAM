@@ -1,6 +1,9 @@
 # Decision-support routing: executable hypotheses for Introduction V5
 
-Status: implementation and exploratory validation in progress, 2026-09-20 UTC.
+Status: routing, structure-only reuse and offline interventions implemented;
+exploratory screening completed, 2026-09-20 UTC. First-layer decision/context
+ranking has **not** demonstrated a benefit. See the complete
+[57-case table](evidence/hybrid-routing-20260920/results.csv), including negative results.
 The Introduction's three findings are **hypotheses to test**, not established
 facts. In particular, small action error is not sufficient control quality,
 attention mass is not causal importance, and latent fidelity is not video quality.
@@ -120,6 +123,27 @@ must not be described as adaptive. The current explicit/periodic/hash-frozen
 profile interfaces already permit measured refresh-step selection without
 embedding search in the policy. The three historical observations are exposed
 debug inputs, not held-out confirmation or representative trajectory coverage.
+
+The offline audit also supports `--scope future`: observed-frame keys are never
+removed. `--group-count 7` adds a partition of each future frame into seven
+within-frame index groups, measuring action/video sensitivity independently of
+attention ranking. All groups and steps are retained, not only favorable ones.
+These effects concern executable denormalized/binarized actions and future latent
+distance to Dense, not true world-prediction quality or closed-loop task success.
+
+The existing [Head × Stage sensitivity study](head-stage-calibration-20260920.md)
+is a different intervention granularity. It is not silently integrated into the
+new token selector. Its negative compact execution results and the new first-layer
+negative findings remain separate evidence. Neither speed nor scientific claims
+can be inherited just because both components are called decision-aware.
+
+For trajectory coverage, action-eval's existing `outputs.save_observations` option
+now records actual policy inputs without changing actions or success judgement.
+`export_trajectory_inputs.py` validates full terminal coverage (including failures),
+checks archive and policy-input hashes and selects first/middle/last calls per
+episode. It exports only images/state/instruction, no outcomes or teacher actions.
+This round captures nine snapshots from three Dense development episodes. They
+are correlated within episodes and explicitly labelled development.
 
 ## Entry points and implementation boundaries
 
