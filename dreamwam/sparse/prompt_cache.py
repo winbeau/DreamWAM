@@ -6,8 +6,21 @@ the entries. This common optimization must be enabled on both timing arms.
 """
 
 from collections import OrderedDict
+from collections.abc import Mapping
 
 import torch
+
+
+def prompt_cache_options(payload):
+    """Opt-in configuration; an omitted option preserves uncached inference."""
+    if payload is None:
+        return None
+    if not isinstance(payload, Mapping) or set(payload) - {"capacity"}:
+        raise ValueError("prompt_cache accepts only capacity")
+    capacity = payload.get("capacity", 8)
+    if type(capacity) is not int or capacity < 1:
+        raise ValueError("prompt_cache.capacity must be a positive integer")
+    return {"capacity": capacity}
 
 
 class PromptEncodingCache:
@@ -62,6 +75,7 @@ class PromptEncodingCache:
     def clear(self):
         self.entries.clear()
         self.signature = None
+        self.last_hit = False
 
     def stats(self):
         return dict(hits=self.hits, misses=self.misses, invalidations=self.invalidations,

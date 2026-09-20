@@ -7,9 +7,13 @@ completed 300 timings: compact Head × Stage is **338.48 ms** versus **306.95 ms
 for the same mask, a negative **0.907×** result. All evidence is preserved.
 The user's renewed priority is a working sparse method, so current development
 returns to the existing action-guided visual token recomputation candidate.
-The next [single common factor](prompt-cache-single-factor-20260920.md) tests
-exact prompt encoding reuse on both strengthened Dense and that unchanged
-sparse candidate. It is not yet a new performance or SR result.
+The [single common factor](prompt-cache-single-factor-20260920.md) of exact prompt
+encoding reuse has now completed **96 balanced full-request timings on three real
+inputs**: **137.37 ms Sparse versus 257.20 ms equally optimized Dense (1.872×)**.
+All timed actions matched their own uncached eager reference bitwise. First
+instruction misses with warm graphs measure 1.791× and are reported separately.
+The current change exposes both measured paths through the evaluation adapter;
+integration checks and complete candidate SR remain pending.
 
 [Offline Head × Stage calibration](head-stage-calibration-20260920.md) is **complete**: 6,480 interventions, 2,160 typed units and a matched-budget combined test, with controls/audits passed. Check-input action relative L2 improves from **0.154 uniform to 0.084 Head × Stage**, while **head-only is slightly better at 0.083**. Relative-type agreement is 63.5%; Stage's incremental action benefit is unproven. The CSV, heatmaps, stability plots and all combined actions are available in the record. These masks were exercised in full offline inference; the fast SR policies remain frozen and do not load them. No new M1 speed or SR claim is made.
 

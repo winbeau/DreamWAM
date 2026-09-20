@@ -132,6 +132,9 @@ def test_visual_option_defaults_preserve_temporal_identity_and_disable_implicit_
     {"refresh_every": 5, "keep_ratio": 0.1},
     {"refresh_every": 5, "action_guidance_weight": 1.0},
     {"refresh_every": 5, "graph_dispatch": "all_transformers"},
+    {"refresh_every": 1, "conditioned_frame_reuse": False},
+    {"refresh_every": 1, "conditioned_frame_reuse": True, "token_keep_ratio": 0.1},
+    {"refresh_every": 1, "conditioned_frame_reuse": True, "graph_dispatch": "dense_action"},
     *({"refresh_every": 5, "token_keep_ratio": 0.1, "graph_dispatch": value}
       for value in (True, None, 1, "all", "none", [])),
     *({"refresh_every": 5, "token_keep_ratio": value}

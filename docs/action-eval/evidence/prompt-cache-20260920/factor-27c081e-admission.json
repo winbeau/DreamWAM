@@ -1,0 +1,116 @@
+{
+  "utc": "2026-09-20T05:02:26.803401+00:00",
+  "target_gpu": 4,
+  "spare_gpu": 1,
+  "inventory": [
+    {
+      "index": 0,
+      "uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+      "util": 18,
+      "free_mib": 139704,
+      "processes": [
+        {
+          "pid": "366790",
+          "type": "G",
+          "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-verification/.venv/bin/python"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+      "util": 4,
+      "free_mib": 116800,
+      "processes": [
+        {
+          "pid": "376135",
+          "type": "C",
+          "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/dreamzero-eval/.venv/bin/python"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+      "util": 12,
+      "free_mib": 116800,
+      "processes": [
+        {
+          "pid": "376134",
+          "type": "C",
+          "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/dreamzero-eval/.venv/bin/python"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "uuid": "GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba",
+      "util": 100,
+      "free_mib": 116915,
+      "processes": [
+        {
+          "pid": "419576",
+          "type": "C",
+          "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/.venv/bin/python"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "uuid": "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4",
+      "util": 0,
+      "free_mib": 143156,
+      "processes": []
+    },
+    {
+      "index": 5,
+      "uuid": "GPU-7d459912-b567-59fb-8abf-57c18713cb84",
+      "util": 0,
+      "free_mib": 118414,
+      "processes": [
+        {
+          "pid": "367109",
+          "type": "C",
+          "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-egl/.venv/bin/python"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "uuid": "GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5",
+      "util": 0,
+      "free_mib": 141399,
+      "processes": [
+        {
+          "pid": "375994",
+          "type": "G",
+          "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-verification/.venv/bin/python"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "uuid": "GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8",
+      "util": 40,
+      "free_mib": 141315,
+      "processes": [
+        {
+          "pid": "376000",
+          "type": "G",
+          "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-verification/.venv/bin/python"
+        }
+      ]
+    }
+  ],
+  "shared_host": true,
+  "command": [
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-prompt-cache-27c081e/.venv/bin/python",
+    "scripts/sparse/benchmark_prompt_cache.py",
+    "--inputs",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-calibration-20260920/inputs-gpu4/manifest.json",
+    "--out-dir",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/prompt-cache-20260920/factor-27c081e"
+  ],
+  "worktree": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-prompt-cache-27c081e",
+  "planned_timed_requests": 96
+}

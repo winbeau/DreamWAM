@@ -8,8 +8,9 @@ All future-frame rows are recomputed at every existing visual refresh. Reduced
 GEMM/attention shapes can still change floating-point results: real-checkpoint
 action parity must be measured, never inferred from this argument.
 
-This benchmark-only factor adds no policy option. Graph scope, refresh cadence,
-action steps, schedulers, precision and RNG stay unchanged.
+The policy exposes this measured factor through conditioned_frame_reuse. The
+strengthened Dense control uses refresh_every=1. Graph scope, action steps,
+schedulers, precision and RNG stay unchanged.
 """
 
 from __future__ import annotations

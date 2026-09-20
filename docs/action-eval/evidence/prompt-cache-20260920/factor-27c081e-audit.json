@@ -1,0 +1,124 @@
+{
+  "status": "VERIFIED",
+  "utc": "2026-09-20T05:08:26.860491+00:00",
+  "benchmark_commit": "27c081e54cbb92aeb905ae263bc6edf44d86c6ed",
+  "timed_rows": 96,
+  "balanced_variant_input_position_counts": {
+    "cells": 48,
+    "rows_per_cell": 2
+  },
+  "means_seconds_recomputed": {
+    "dense_raw": 0.269838145468384,
+    "dense_cached": 0.25720468373037875,
+    "sparse_raw": 0.15015945071354508,
+    "sparse_cached": 0.13737012228618065
+  },
+  "sparse_vs_matched_dense": 1.872348072854947,
+  "explicit_instruction_misses": [
+    {
+      "arm": "dense",
+      "input_id": 0,
+      "seconds": 0.2708907909691334
+    },
+    {
+      "arm": "sparse",
+      "input_id": 0,
+      "seconds": 0.15128042548894882
+    },
+    {
+      "arm": "dense",
+      "input_id": 1,
+      "seconds": 0.27107076719403267
+    },
+    {
+      "arm": "sparse",
+      "input_id": 1,
+      "seconds": 0.1514626182615757
+    },
+    {
+      "arm": "dense",
+      "input_id": 2,
+      "seconds": 0.2711417395621538
+    },
+    {
+      "arm": "sparse",
+      "input_id": 2,
+      "seconds": 0.15131508372724056
+    }
+  ],
+  "model_graph_setup_first_requests": [
+    {
+      "variant": "dense_raw",
+      "seconds": 1.164361933246255
+    },
+    {
+      "variant": "dense_cached",
+      "seconds": 0.25873594358563423
+    },
+    {
+      "variant": "sparse_raw",
+      "seconds": 0.7737409677356482
+    },
+    {
+      "variant": "sparse_cached",
+      "seconds": 0.13862603716552258
+    }
+  ],
+  "amortized_prompt_miss_only_graphs_warm": {
+    "1": {
+      "requests": 1,
+      "seconds": {
+        "dense": 0.2710344325751066,
+        "sparse": 0.15135270915925503
+      },
+      "speedup": 1.7907471500224097
+    },
+    "2": {
+      "requests": 2,
+      "seconds": {
+        "dense": 0.2641195581527427,
+        "sparse": 0.14436141572271782
+      },
+      "speedup": 1.8295716818131675
+    },
+    "10": {
+      "requests": 10,
+      "seconds": {
+        "dense": 0.25858765861485156,
+        "sparse": 0.1387683809734881
+      },
+      "speedup": 1.8634479756901907
+    },
+    "40": {
+      "requests": 40,
+      "seconds": {
+        "dense": 0.2575504274514969,
+        "sparse": 0.13771968695800751
+      },
+      "speedup": 1.8701061056726576
+    }
+  },
+  "processes": {
+    "factor-27c081e.pid": {
+      "pid": 423509,
+      "exists": false,
+      "state": null
+    },
+    "factor-27c081e-wrapper.pid": {
+      "pid": 423508,
+      "exists": false,
+      "state": null
+    }
+  },
+  "exit_code": 0,
+  "sha256": {
+    "factor-27c081e/manifest.json": "762b618cb80628b557005b9d2142a24dc976bd36724817bbcf6d8027b20345cb",
+    "factor-27c081e/summary.json": "f08b5d6997e5540afd992933e40d3c22fa92980baf28680ac7f9ce3962647e2f",
+    "factor-27c081e/requests.jsonl": "631ec91ff4d9cec7261720aa8009adbd97700233bb0517c4b1017488afa4d1a6",
+    "tests-27c081e.log": "a94c3c1c640b8791c2f5a9b3453c7d52b46a64d28d088d22f648edfad8fdf0e1",
+    "factor-27c081e-admission.json": "8bbb93e727baebea4376db9a78d681edb837ef3f0c8047e42c69841d344feb5a",
+    "factor-27c081e.log": "93f00872c0cce3a87e056873d47e10984fb9b1c99c7c2100ee3c91a1d7869e4a",
+    "factor-27c081e.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "sr": null
+}

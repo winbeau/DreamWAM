@@ -11,6 +11,8 @@ from .preprocessing.libero import PROMPT_TEMPLATE
 from .runtime import build_model, load_model_checkpoint
 from .sparse import SparseConfig
 from .sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
+from .sparse.conditioned_frame_cache import ConditionedFrameCache, GraphedConditionedFrameCache
+from .sparse.prompt_cache import PromptEncodingCache, prompt_cache_options
 from .sparse.visual_cache_graphs import GraphedVisualTokenCache
 from .sparse.visual_step_cache import VisualStepCache, visual_cache_options
 
@@ -45,6 +47,7 @@ class DreamWAMPolicy:
         device: str | torch.device = "cuda",
         sparse: dict | None = None,
         visual_cache: dict | None = None,
+        prompt_cache: dict | None = None,
     ):
         self.config = config
         self.evaluation = config.evaluation
@@ -56,7 +59,9 @@ class DreamWAMPolicy:
         # the run at startup instead of silently producing a dense result.
         self.sparse_config = SparseConfig.from_mapping(sparse)
         self.visual_cache_config = visual_cache_options(visual_cache)
+        self.prompt_cache_config = prompt_cache_options(prompt_cache)
         self._visual_cache_runtime = None
+        self._prompt_cache_runtime = None
         if self.visual_cache_config and "graph_dispatch" in self.visual_cache_config and self.device.type != "cuda":
             raise ValueError("visual-cache graph dispatch requires a CUDA device")
         if self.visual_cache_config is not None and self.sparse_config.enabled:
@@ -84,6 +89,9 @@ class DreamWAMPolicy:
             dtype=self.dtype,
             context_length=int(config.preprocessing.get("context_length", 128)),
         )
+        if self.prompt_cache_config is not None:
+            self._prompt_cache_runtime = PromptEncodingCache(self.text_encoder, **self.prompt_cache_config)
+            self.text_encoder = self._prompt_cache_runtime
         self.normalizer = LiberoNormalizer(config.paths.dataset_stats)
         self.image_size = int(config.preprocessing["image_size"])
         required = {
@@ -99,7 +107,10 @@ class DreamWAMPolicy:
             raise KeyError(f"Evaluation config is missing: {missing}")
         if self.visual_cache_config is not None:
             options = self.visual_cache_config
-            if "token_keep_ratio" in options:
+            if options.get("conditioned_frame_reuse"):
+                cache_class = GraphedConditionedFrameCache if options.get("graph_dispatch") else ConditionedFrameCache
+                self._visual_cache_runtime = cache_class(self.model, refresh_every=options["refresh_every"])
+            elif "token_keep_ratio" in options:
                 mode = options.get("graph_dispatch")
                 cache_class = GraphedVisualTokenCache if mode else ActionGuidedVisualTokenCache
                 graph_options = {"graph_partial": mode == "all_transformers"} if mode else {}
@@ -113,6 +124,11 @@ class DreamWAMPolicy:
                 self._visual_cache_runtime = VisualStepCache(self.model, **options)
             self._visual_cache_runtime.__enter__()
 
+    def reset(self) -> None:
+        """Charge each episode its first instruction encoding; visual state is request-local."""
+        if self._prompt_cache_runtime is not None:
+            self._prompt_cache_runtime.clear()
+
     def close(self) -> None:
         """Remove inference wrappers before the adapter releases model modules."""
         if self._visual_cache_runtime is not None:
@@ -120,6 +136,10 @@ class DreamWAMPolicy:
             if isinstance(self._visual_cache_runtime, GraphedVisualTokenCache):
                 self._visual_cache_runtime.close_graphs()
             self._visual_cache_runtime = None
+        if self._prompt_cache_runtime is not None:
+            self._prompt_cache_runtime.clear()
+            self.text_encoder = self._prompt_cache_runtime.encoder
+            self._prompt_cache_runtime = None
 
     @torch.no_grad()
     def _encode_first_frame(self, images: dict[str, np.ndarray]) -> torch.Tensor:
@@ -205,8 +225,10 @@ def build_policy(
     device: str | torch.device = "cuda",
     sparse: dict | None = None,
     visual_cache: dict | None = None,
+    prompt_cache: dict | None = None,
 ) -> DreamWAMPolicy:
     checkpoint = Path(config.paths.checkpoint)
     if not checkpoint.is_file():
         raise FileNotFoundError(f"Missing DreamWAM checkpoint: {checkpoint}")
-    return DreamWAMPolicy(config, device=device, sparse=sparse, visual_cache=visual_cache)
+    return DreamWAMPolicy(config, device=device, sparse=sparse, visual_cache=visual_cache,
+                         prompt_cache=prompt_cache)

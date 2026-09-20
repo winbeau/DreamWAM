@@ -21,13 +21,24 @@ def visual_cache_options(payload):
     """Strict adapter/policy configuration; omission retains native Dense."""
     if payload is None:
         return None
-    allowed = {"refresh_every", "token_keep_ratio", "action_guidance_weight", "graph_dispatch"}
+    allowed = {"refresh_every", "token_keep_ratio", "action_guidance_weight", "graph_dispatch", "conditioned_frame_reuse"}
     if not isinstance(payload, Mapping) or "refresh_every" not in payload or set(payload) - allowed:
-        raise ValueError("visual_cache requires refresh_every; optional keys are token_keep_ratio, action_guidance_weight and graph_dispatch")
+        raise ValueError("visual_cache requires refresh_every; optional keys are token_keep_ratio, action_guidance_weight, graph_dispatch and conditioned_frame_reuse")
     interval = payload["refresh_every"]
     if isinstance(interval, bool) or not isinstance(interval, int) or interval < 1:
         raise ValueError("visual_cache.refresh_every must be a positive integer")
     options = {"refresh_every": interval}
+    if "conditioned_frame_reuse" in payload:
+        if payload["conditioned_frame_reuse"] is not True:
+            raise ValueError("visual_cache.conditioned_frame_reuse must be true when supplied")
+        if {"token_keep_ratio", "action_guidance_weight"} & set(payload):
+            raise ValueError("visual_cache conditioned-frame reuse selects all future tokens; do not combine token selection")
+        options["conditioned_frame_reuse"] = True
+        if "graph_dispatch" in payload:
+            if payload["graph_dispatch"] != "all_transformers":
+                raise ValueError("visual_cache conditioned-frame graph_dispatch must be all_transformers")
+            options["graph_dispatch"] = "all_transformers"
+        return options
     if "token_keep_ratio" not in payload:
         if "action_guidance_weight" in payload or "graph_dispatch" in payload:
             raise ValueError("visual_cache.action_guidance_weight and graph_dispatch require token_keep_ratio")

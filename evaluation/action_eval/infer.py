@@ -47,6 +47,8 @@ Options (``policy.options`` in the experiment YAML), all optional:
                    repeated episode means.
 ``hash_checkpoint`` default ``True``. Set ``false`` to skip the SHA-256 of the
                    checkpoint when a run is already covered by a recorded hash.
+``prompt_cache``   exact frozen text-encoding reuse, e.g. ``{capacity: 8}``.
+                   Opt-in on both Dense and Sparse; cleared at each episode reset.
 """
 
 from __future__ import annotations
@@ -203,7 +205,8 @@ class DreamWAMPolicy:
         # at startup instead of silently running dense.
         self._sparse_options = options.get("sparse")
         self.policy = build_policy(release, device=device, sparse=self._sparse_options,
-                                   visual_cache=options.get("visual_cache"))
+                                   visual_cache=options.get("visual_cache"),
+                                   prompt_cache=options.get("prompt_cache"))
         self._sparse_hash = config_hash(self.policy.sparse_config)
 
         # ``build_policy`` gives the policy its own reference to the release YAML's
@@ -261,6 +264,8 @@ class DreamWAMPolicy:
             "sparse_config_hash": self._sparse_hash,
             "visual_cache": self.policy.visual_cache_config,
         }
+        if self.policy.prompt_cache_config is not None:
+            self._fingerprint["prompt_cache"] = self.policy.prompt_cache_config
         notes = (
             "DreamWAM released checkpoint through its own build_policy; the benchmark "
             "flips the images and DreamWAM center-crops, resizes and concatenates them "
@@ -289,12 +294,11 @@ class DreamWAMPolicy:
     def reset(self, episode: dict) -> None:
         """Per-episode reset.
 
-        DreamWAM is stateless across ``predict_action`` calls: it encodes the current
-        observation and samples an action chunk from it, keeping no history and no KV
-        cache between calls. So there is genuinely nothing to clear, and saying so is
-        more useful than pretending to reset hidden state. The counters below are
-        reset because they are reported per episode.
+        Visual and action state is local to each prediction. The optional exact
+        instruction cache is cleared here, so every episode pays its first encoding.
+        Prediction counters are reported per episode; cache counters span the worker.
         """
+        self.policy.reset()
         self.predict_calls = 0
         self._episode_id = episode.get("episode_id")
         if self._rng_mode == RNG_MODE_EPISODE_STREAM:
@@ -349,6 +353,8 @@ class DreamWAMPolicy:
         visual_cache = self.policy._visual_cache_runtime
         if visual_cache is not None:
             diagnostics["visual_cache"] = dict(visual_cache.last_stats)
+        if self.policy._prompt_cache_runtime is not None:
+            diagnostics["prompt_cache"] = self.policy._prompt_cache_runtime.stats()
         if self.policy.sparse_config.enabled:
             # Executed density, not the requested one: a budget can be clamped by the
             # structural floor or replaced by a fallback route.

@@ -3,7 +3,7 @@ from types import SimpleNamespace
 import pytest
 import torch
 
-from dreamwam.sparse.prompt_cache import PromptEncodingCache
+from dreamwam.sparse.prompt_cache import PromptEncodingCache, prompt_cache_options
 
 
 class Encoder:
@@ -59,3 +59,11 @@ def test_weight_and_tokenizer_changes_invalidate_and_rng_is_unchanged():
 def test_invalid_prompts_cannot_hit_cache(prompts):
     with pytest.raises(ValueError):
         PromptEncodingCache(Encoder())(prompts)
+
+
+def test_opt_in_configuration_rejects_silent_fallback():
+    assert prompt_cache_options(None) is None
+    assert prompt_cache_options({}) == {"capacity": 8}
+    for invalid in (False, True, [], {"capacity": 0}, {"capacity": True}, {"capacity": 1.5}, {"enabled": True}):
+        with pytest.raises(ValueError):
+            prompt_cache_options(invalid)

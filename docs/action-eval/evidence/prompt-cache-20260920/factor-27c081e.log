@@ -1,0 +1,130 @@
+timed round 1/24
+timed round 2/24
+timed round 3/24
+timed round 4/24
+timed round 5/24
+timed round 6/24
+timed round 7/24
+timed round 8/24
+timed round 9/24
+timed round 10/24
+timed round 11/24
+timed round 12/24
+timed round 13/24
+timed round 14/24
+timed round 15/24
+timed round 16/24
+timed round 17/24
+timed round 18/24
+timed round 19/24
+timed round 20/24
+timed round 21/24
+timed round 22/24
+timed round 23/24
+timed round 24/24
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-20T05:03:56.806453+00:00",
+  "seconds": {
+    "dense_raw": {
+      "samples": 24,
+      "mean": 0.269838145468384,
+      "p50": 0.2698150184005499,
+      "p95": 0.2701413744129241,
+      "min": 0.26932619512081146,
+      "max": 0.2705426439642906,
+      "stdev": 0.0002639440480228666
+    },
+    "dense_cached": {
+      "samples": 24,
+      "mean": 0.25720468373037875,
+      "p50": 0.2572197923436761,
+      "p95": 0.2574287557043135,
+      "min": 0.2567710932344198,
+      "max": 0.25791447423398495,
+      "stdev": 0.00023230546571943253
+    },
+    "sparse_raw": {
+      "samples": 24,
+      "mean": 0.15015945071354508,
+      "p50": 0.150142477825284,
+      "p95": 0.1506221503019333,
+      "min": 0.1497712153941393,
+      "max": 0.1509155873209238,
+      "stdev": 0.0002449970098051416
+    },
+    "sparse_cached": {
+      "samples": 24,
+      "mean": 0.13737012228618065,
+      "p50": 0.13738638628274202,
+      "p95": 0.13751960899680854,
+      "min": 0.13715432211756706,
+      "max": 0.13755560852587223,
+      "stdev": 9.87040165272461e-05
+    }
+  },
+  "sparse_vs_matched_dense_before": 1.797010738825534,
+  "sparse_vs_matched_dense_after": 1.872348072854947,
+  "prompt_factor_dense": 1.049118319133133,
+  "prompt_factor_sparse": 1.0931012378421028,
+  "graphs": {
+    "dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.45463492535054684,
+        "replays": 67
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.2584054172039032,
+        "replays": 603
+      }
+    },
+    "sparse": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.25641645677387714,
+        "replays": 67
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.15587304532527924,
+        "replays": 536
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.2620991263538599,
+        "replays": 67
+      }
+    }
+  },
+  "prompt_caches": {
+    "dense": {
+      "hits": 33,
+      "misses": 8,
+      "invalidations": 0,
+      "entries": 3,
+      "last_hit": true,
+      "capacity": 8
+    },
+    "sparse": {
+      "hits": 33,
+      "misses": 8,
+      "invalidations": 0,
+      "entries": 3,
+      "last_hit": true,
+      "capacity": 8
+    }
+  },
+  "gpu_after": {
+    "exit_code": 0,
+    "stdout": "index, uuid, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, 0 %, 3453 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 0 %, 26357 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 0 %, 26357 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 100 %, 26257 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 0 %, 26013 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, 77 %, 24743 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 38 %, 2322 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 3 %, 1402 MiB",
+    "stderr": ""
+  },
+  "sr": null,
+  "limitations": [
+    "Three exposed real scenes plus one input-boundary diagnostic",
+    "Warm means assume a repeated instruction; six first-instruction misses are separate",
+    "Sparse approximation unchanged, but complete official paired SR remains required"
+  ]
+}
