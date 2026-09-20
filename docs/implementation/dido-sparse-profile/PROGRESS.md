@@ -10,7 +10,36 @@ at 50 episodes in total across all arms and attempts. First proposed rollout is
 No rollout has started in this branch. A tiny pilot cannot establish statistical
 non-inferiority at the 5-point margin.
 
-## Verified update through 18:50 UTC
+## Online implementation update through 19:34 UTC
+
+The inherited hybrid runtime now has native multi-depth action, value, dynamic
+and context scores, independent recompute selectors, shared/layerwise reads,
+and fixed-budget background pooling. [ONLINE.md](ONLINE.md) defines their scope
+and age semantics. [ONLINE-VERIFICATION.json](ONLINE-VERIFICATION.json) records
+the exact commands, failures, revisions and artifact hashes.
+
+The initial CPU integration suite passed (65 tests, 9 skipped, 16 subtests).
+Four actual CUDA cases exposed a host index transfer and a CPU-created RoPE test
+fixture. Both were corrected in `25a7041`; its CPU module passed 32 checks.
+The CUDA rerun did **not** start: fresh admission found GPU 5 at 77% utilization.
+At 19:34:52 UTC it had 39,785 MiB free and 95% utilization; GPUs 3/4 were both
+at 100%. No owned model job is waiting/running and no dummy GPU load is used.
+
+`1356102` freezes the next finite screen, with two passing design/budget tests
+and a passing H100 CLI import check. The three separately launched stages have
+11 selector, 4 layer-sharing and 5 pooling candidates. The inclusive limits are
+219/76/105 predictions (400 total), using two existing development observations,
+with every eager, capture and prompt-miss call counted and archived. GPU 5 is
+planned after admission, approximately 3–8 minutes per stage. This adds **zero**
+closed-loop episodes. The corrected CUDA tests remain a prerequisite.
+
+No new real-checkpoint calls were made in this stage: cumulative predictions
+remain 67 and closed-loop attempts remain **0/50**. Fusion calibration, actual
+online speed, sparse refresh/structure ablations and bounded SR are still open.
+The full goal remains active; this is implementation and verification progress,
+not completion. The checkpoint, protocol and dependencies remain unchanged.
+
+## Verified profile update through 18:50 UTC
 
 The native profile and finite counterfactual study are complete. See
 [RESULTS.md](RESULTS.md) for every cohort, revision, count, negative finding and
@@ -61,13 +90,13 @@ instruction. Availability is rechecked immediately before the real model load.
 
 | GOAL section | Required evidence | Current state / next gate |
 |---|---|---|
-| 1–2 | Scope, authorized hardware, clean exact Git chain | All implementation stages committed/pushed/synced through `89bd1ea`; server tests and jobs use separate detached worktrees |
+| 1–2 | Scope, authorized hardware, clean exact Git chain | Implementation/test stages committed/pushed/synced through `1356102`; server tests and jobs use separate detached worktrees |
 | 3 | Paper/version audit, public implementation status | [Source audit](SOURCES.md); inference refinement separated from training |
 | 4 | Typed raw-data manifest, licenses, frozen splits | Author data absent; 9 self-captured observations hash-verified; [plan](experiment-plan.json) freezes episode identities |
 | 5 | Inherit all prior evidence | All 119 historical indexed artifacts and 9 observations verified, zero mismatches; legacy results remain immutable |
 | 6 | Replayable multi-step/layer/head raw profile | Complete native capture and independent replay on 9 observations; author semantic labels remain absent |
 | 7 | Equal-budget interventions, action/video errors | 47 real-input AV/VV/joint counterfactuals complete with all raw outputs; tiny partial design, no stable selector win |
-| 8 | Independent selectors and background pooling | Score/selection and region-pooling reference modules CPU-tested; online hybrid integration, calibrated selection and graph validation pending |
+| 8 | Independent selectors and background pooling | Online integration implemented and CPU-tested; actual graph correction, calibrated selection and checkpoint comparisons pending |
 | 9 | Bounded schedule scan, frozen choice | Existing 0/1-refresh negative/positive evidence retained; new selection-specific scan pending |
 | 10 | CPU/CUDA/graph/checkpoint checks; complete paired timing | Native profiler CUDA eager and real checkpoint checks pass; new online graph/adapter and timing gates remain open |
 | 11 | Predeclared bounded paired LIBERO pilot | 0/50 episodes attempted; native OSMesa and adapter gates pending |

@@ -9,6 +9,9 @@ sets a 5-percentage-point SR margin and a cap of 50 **total** episode attempts
 across arms for this effort, superseding the historical per-arm scope below.
 See the [raw-data distinction](../implementation/dido-sparse-profile/SOURCES.md)
 and [current execution record](../implementation/dido-sparse-profile/EXECUTION-20260920.json).
+The [online selectors/pooling implementation](../implementation/dido-sparse-profile/ONLINE.md)
+passes CPU checks; [CUDA failures, corrections and admission refusal](../implementation/dido-sparse-profile/ONLINE-VERIFICATION.json)
+are preserved. The bounded checkpoint screen is prepared but has not launched.
 
 Latest [routing/profile expansion and lower-budget pilots](hybrid-routing-results-20260920.md): 57 configuration/dataset cases, 999 audited timings and 153 dependency interventions completed. The measured no-refresh uniform-anchor feature-cache candidate reaches **3/3 vs Dense 3/3 at nominal KV18.75 (56/294 rows)**, with **2.077× warm inference**; KV25 also succeeds 3/3 at 1.988×. Neither tiny pilot certifies SR preservation, and whole-episode CPU-rendered time does not improve. [V5 method interfaces](decision-support-method-20260920.md) now separate read value, refresh urgency, feature reuse and structure-only reuse. First-layer action/context routing has not shown a benefit; structure-only reuse reaches only 1.06–1.13×. Adaptive refresh remains unimplemented, and these results must not be labelled complete M1–M3 validation. All owned GPU jobs have exited; 50-pair testing remains unstarted.
 

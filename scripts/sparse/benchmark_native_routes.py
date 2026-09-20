@@ -92,6 +92,7 @@ def main():
         input_manifest_sha256=sha256(inputs_path), inputs=input_metadata,
         input_kind="self_captured_observations", split_role="development", stage=args.stage,
         torch=torch.__version__, cuda=torch.version.cuda, python=sys.version, gpu_uuid=visible,
+        shared_host=True, selected_gpu_sharing=args.share_gpu5, gpu_snapshots=[],
         checkpoint_sha256=None, evaluation=dict(release.evaluation),
         controls={"dense_strong": "conditioned-frame cache plus CUDA graph; all 10 native denoising steps",
                   "uniform_features": uniform_feature_control().describe()},
@@ -172,6 +173,13 @@ def main():
             return HybridVisualRuntime(policy.model, uniform_feature_control(backend))
         return make_runtime(policy.model, name, configs, backend)
 
+    def snapshot(phase):
+        report["gpu_snapshots"].append(dict(timestamp_utc=stamp(), group=current_group, phase=phase,
+            inventory=command("nvidia-smi", "-i", visible,
+                "--query-gpu=uuid,memory.used,memory.free,utilization.gpu,clocks.sm,power.draw", "--format=csv,noheader"),
+            processes=command("nvidia-smi", "-i", visible,
+                "--query-compute-apps=pid,process_name,used_gpu_memory", "--format=csv,noheader")))
+
     try:
         report["checkpoint_sha256"] = sha256(release.paths.checkpoint)
         if report["checkpoint_sha256"] != plan["checkpoint_sha256"]:
@@ -189,6 +197,7 @@ def main():
         versions = {name: parameter._version for name, parameter in policy.model.named_parameters()}
         torch.cuda.reset_peak_memory_stats()
         for current_group in sorted({cell["group"] for cell in cells}):
+            snapshot("group_start")
             group_cells = [cell for cell in cells if cell["group"] == current_group]
             variants = sorted({cell["variant"] for cell in group_cells})
             refs = {}
@@ -200,6 +209,10 @@ def main():
                 finally:
                     close_runtime(eager)
                 runtimes[name] = runtime_for(name, "cuda_graph")
+            for name in variants:
+                if labels.get(name) == "uniform":
+                    for input_id in observations:
+                        same(refs[name, input_id], refs["uniform_features", input_id])
             for name, runtime in runtimes.items():
                 policy._prompt_cache_runtime.clear()
                 for input_id in observations:
@@ -233,6 +246,7 @@ def main():
                     report["graphs"][f"{current_group}/{name}"] = runtime.graph_stats()
                 close_runtime(runtime)
             runtimes.clear()
+            snapshot("group_end")
             print(json.dumps(dict(stage=args.stage, group=current_group, calls=report["completed_calls"],
                                   call_cap=budget["total"], timed=len(accepted))), flush=True)
         if report["completed_calls"] != budget["total"]:
@@ -252,6 +266,7 @@ def main():
             report["peak_allocated_bytes"] = torch.cuda.max_memory_allocated()
             report["peak_reserved_bytes"] = torch.cuda.max_memory_reserved()
             policy.close()
+        snapshot("final")
         report["end_utc"] = stamp()
         call_file.close()
         timed_file.close()

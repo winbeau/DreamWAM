@@ -2,6 +2,8 @@
   "status": "NATIVE_PROFILE_AND_BOUNDED_DIAGNOSTICS_VERIFIED_ONLINE_GATES_PENDING",
   "turn_classification": "progress",
   "goal_status": "active",
+  "online_implementation_verification": "ONLINE-VERIFICATION.json",
+  "scope_of_this_record": "native profile and bounded diagnostic execution through 18:50 UTC; subsequent online implementation checks are in the linked verification record",
   "host": "h100-server",
   "artifact_root": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920",
   "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
