@@ -26,9 +26,11 @@ def main():
     read.add_argument("--read-ratio", type=float, default=0.25)
     read.add_argument("--read-ratios", help="comma-separated finite budget grid")
     selectors = p.add_mutually_exclusive_group()
-    selectors.add_argument("--selection", choices=("uniform", "drift", "action_drift"), default="action_drift")
+    selectors.add_argument("--selection", choices=("uniform", "drift", "action_drift", "action", "action_context", "visual_context"), default="action_drift")
     selectors.add_argument("--selections", help="comma-separated selector grid")
     p.add_argument("--guidance-weight", type=float, default=1.0)
+    p.add_argument("--context-weight", type=float, default=1.0)
+    p.add_argument("--support-seed-ratio", type=float, default=0.1)
     p.add_argument("--frame-quota", choices=("none", "balanced"),
                    help="full defaults to global queries; use balanced for matched compact-read ablations")
     p.add_argument("--backend", choices=("eager", "buffered", "cuda_graph"), default="eager")
@@ -37,7 +39,8 @@ def main():
                    help="reject, never truncate, a larger Cartesian search")
     args = p.parse_args()
     try:
-        selection = dict(method=args.selection, guidance_weight=args.guidance_weight)
+        selection = dict(method=args.selection, guidance_weight=args.guidance_weight,
+                         context_weight=args.context_weight, support_seed_ratio=args.support_seed_ratio)
         if args.frame_quota is not None:
             selection["frame_quota"] = args.frame_quota
         config = HybridConfig.from_mapping(dict(

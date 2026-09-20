@@ -143,12 +143,16 @@ class HybridVisualRuntime:
         self._stats["total_video_token_layers"] += batch * length * layers
         self._stats["read_video_token_layers"] += batch * kv_rows * layers
         self._stats["action_probe_rows"] += selection.action_probe_rows if selection else 0
+        self._stats["video_key_probe_rows"] += selection.video_key_probe_rows if selection else 0
+        self._stats["video_query_probe_rows"] += selection.video_query_probe_rows if selection else 0
         self._stats["graph_replays"] += int(self.dispatch.last_replayed)
         row = dict(step_index=step_index, requested_op=decision.operation, effective_op=effective,
                    q_rows=q_rows, kv_rows=kv_rows, read_mode=decision.read_mode,
                    route_refresh=effective != "reuse", route_age=step_index - self.state.route_step,
                    action_layer_updates=layers, fallback_reason=None,
                    action_probe_rows=selection.action_probe_rows if selection else 0,
+                   video_key_probe_rows=selection.video_key_probe_rows if selection else 0,
+                   video_query_probe_rows=selection.video_query_probe_rows if selection else 0,
                    graph_key=self.dispatch.last_key, graph_replay=self.dispatch.last_replayed)
         if self.config.diagnostics == "trace":
             # Device values are serialized once at request end, not inside a timed step.
@@ -182,7 +186,8 @@ class HybridVisualRuntime:
                                denoising_steps=0, dense_steps=0, sparse_steps=0, reuse_steps=0,
                                action_layer_updates=0, computed_video_token_layers=0,
                                total_video_token_layers=0, read_video_token_layers=0,
-                               action_probe_rows=0, graph_replays=0, steps=[], status="RUNNING")
+                               action_probe_rows=0, video_key_probe_rows=0, video_query_probe_rows=0,
+                               graph_replays=0, steps=[], status="RUNNING")
             try:
                 result = sample(*args, **kwargs)
                 if self._stats["denoising_steps"] != self.plan.schedule.num_steps:

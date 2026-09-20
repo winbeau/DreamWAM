@@ -12,7 +12,8 @@ from test_visual_step_cache import model_and_inputs
 
 @pytest.mark.parametrize("backend", ["buffered", "cuda_graph"])
 @pytest.mark.parametrize("read_mode", ["full", "compact"])
-def test_dispatch_parity_after_changing_inputs_and_poisoning_buffers(backend, read_mode):
+@pytest.mark.parametrize("selection", ["action_drift", "action_context"])
+def test_dispatch_parity_after_changing_inputs_and_poisoning_buffers(backend, read_mode, selection):
     if backend == "cuda_graph" and not torch.cuda.is_available():
         pytest.skip("CUDA device required")
     device = "cuda" if backend == "cuda_graph" else "cpu"
@@ -22,7 +23,7 @@ def test_dispatch_parity_after_changing_inputs_and_poisoning_buffers(backend, re
     model.to(dtype=dtype)
     inputs = {key: value.to(device=device, dtype=dtype if value.is_floating_point() else value.dtype)
               if isinstance(value, torch.Tensor) else value for key, value in inputs.items()}
-    conf = replace(compact(selection="action_drift"), read_mode=read_mode,
+    conf = replace(compact(selection=selection), read_mode=read_mode,
                    read_ratio=1.0 if read_mode == "full" else 0.5)
     eager = HybridVisualRuntime(model, conf)
     runtime = HybridVisualRuntime(model, replace(conf, backend=backend))

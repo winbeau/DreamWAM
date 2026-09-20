@@ -29,6 +29,8 @@ class HybridConfig:
     graph_warmup: int = 3
     max_graphs: int = 8
     diagnostics: str = "counters"
+    context_weight: float = 1.0
+    support_seed_ratio: float = 0.1
 
     def __post_init__(self):
         if not isinstance(self.schedule, Schedule):
@@ -36,8 +38,10 @@ class HybridConfig:
         number(self.recompute_ratio, "recompute.keep_ratio", 0, 1, open_low=True)
         number(self.read_ratio, "read.keep_ratio", 0, 1, open_low=True)
         number(self.guidance_weight, "selection.guidance_weight", 0)
+        number(self.context_weight, "selection.context_weight", 0)
+        number(self.support_seed_ratio, "selection.support_seed_ratio", 0, 1, open_low=True)
         enums = ((self.read_mode, ("full", "compact"), "read.mode"),
-                 (self.selection, ("uniform", "drift", "action_drift"), "selection.method"),
+                 (self.selection, ("uniform", "drift", "action_drift", "action", "action_context", "visual_context"), "selection.method"),
                  (self.frame_quota, ("balanced", "none"), "selection.frame_quota"),
                  (self.backend, ("eager", "buffered", "cuda_graph"), "execution.backend"),
                  (self.diagnostics, ("counters", "trace"), "diagnostics.level"))
@@ -63,7 +67,8 @@ class HybridConfig:
             raise ValueError("unsupported hybrid_visual.schema_version")
         recompute = mapping(p.get("recompute", {}), ("keep_ratio",), "recompute")
         read = mapping(p.get("read", {}), ("mode", "keep_ratio"), "read")
-        select = mapping(p.get("selection", {}), ("method", "guidance_weight", "frame_quota"), "selection")
+        select = mapping(p.get("selection", {}), ("method", "guidance_weight", "frame_quota",
+                                                  "context_weight", "support_seed_ratio"), "selection")
         execution = mapping(p.get("execution", {}), ("backend", "graph_warmup", "max_graphs"), "execution")
         diagnostics = mapping(p.get("diagnostics", {}), ("level",), "diagnostics")
         return cls(Schedule.from_mapping(p["schedule"]),
@@ -72,10 +77,11 @@ class HybridConfig:
                    select.get("frame_quota", "balanced" if read.get("mode", "full") == "compact" else "none"),
                    execution.get("backend", "eager"),
                    execution.get("graph_warmup", 3), execution.get("max_graphs", 8),
-                   diagnostics.get("level", "counters"))
+                   diagnostics.get("level", "counters"), select.get("context_weight", 1.0),
+                   select.get("support_seed_ratio", 0.1))
 
     def describe(self, *, canonical=False):
-        return dict(schema_version=1, schedule=self.schedule.describe(canonical=canonical),
+        result = dict(schema_version=1, schedule=self.schedule.describe(canonical=canonical),
                     recompute=dict(keep_ratio=float(self.recompute_ratio)),
                     read=dict(mode=self.read_mode, keep_ratio=float(self.read_ratio)),
                     selection=dict(method=self.selection, guidance_weight=float(self.guidance_weight),
@@ -83,6 +89,11 @@ class HybridConfig:
                     execution=dict(backend=self.backend, graph_warmup=self.graph_warmup,
                                    max_graphs=self.max_graphs),
                     diagnostics=dict(level=self.diagnostics))
+        # Preserve historical fingerprints when the new factor is unused.
+        if self.selection in ("action", "action_context", "visual_context") or self.context_weight != 1 or self.support_seed_ratio != 0.1:
+            result["selection"].update(context_weight=float(self.context_weight),
+                                       support_seed_ratio=float(self.support_seed_ratio))
+        return result
 
     @property
     def policy_hash(self):
