@@ -1,0 +1,41 @@
+{
+  "status": "VERIFIED",
+  "start_utc": "2026-09-20T21:41:49.303994+00:00",
+  "end_utc": "2026-09-20T21:41:49.563554+00:00",
+  "exit_code": 0,
+  "command": "H100 Python stdlib metadata/hash checks via ssh bash stdin; no torch import or model execution",
+  "model_documentation_commit": "2bee5d33ebbe9d3d5064cb5edabbbc3b5e609595",
+  "evaluator_documentation_commit": "c1efbebce91ff3315e8a6a6ec393b357d621df26",
+  "frozen_runtime_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "final_manifest_sha256": "2c97a1acf7e0315c5be42bc44bb635e1f5b2c81a080fbd99a06b02a682de8b84",
+  "final_report_sha256": "bca8d53ed1ffa6d9837628df4a12ebe5c9c4e5fa623cd1697afca840badfdbd0",
+  "verified_final_manifest_artifacts": 56,
+  "verified_pair_artifacts": {
+    "pilot3-native-va56-41f515a-shared50": 135,
+    "fixed3-native-va56-41f515a-shared50": 167
+  },
+  "frozen_candidate_equal": true,
+  "model_runtime_and_dependency_sources_unchanged": true,
+  "evaluator_core_dependencies_schema_unchanged": true,
+  "recorded_attempts": 12,
+  "charged_slots": 12,
+  "ledger_hard_cap": 50,
+  "known_owned_pids_alive": [],
+  "current_gpu5": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a, 26, 5119, 75963",
+  "current_gpu5_compute_apps": [
+    "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a, 624758"
+  ],
+  "limitations": [
+    "No additional model execution or SR inference; previous immutable run audits remain the scientific evidence."
+  ],
+  "next_step": "Archive completed bounded study; no further episodes.",
+  "external_receipt_path": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closeout-2bee5d3/verification.json",
+  "external_receipt_sha256": "9adc38508fdaed5a736b16bfe10a2a869a5f4188bca899654e9b1ad32a480eb3",
+  "later_gpu5_process": {
+    "pid": 624758,
+    "cwd_is_this_deployment": false,
+    "exe_is_this_deployment": false,
+    "action": "left untouched"
+  }
+}

@@ -3,6 +3,11 @@
 Status: BOUNDED STUDY COMPLETE, 2026-09-20 UTC. The [final report](REPORT.md)
 and [verification](FINAL-VERIFICATION.json) distinguish delivered evidence from
 the unestablished scientific target. No training or checkpoint changes occurred.
+The [delivery receipt](DELIVERY-VERIFICATION.json) verifies exact model/evaluator
+server synchronization, all 56 final-index hashes and 302 closed-loop artifacts
+at 21:41:49 UTC, exit 0. Frozen runtime/configs/dependencies remain unchanged.
+GPU 5 subsequently carries another process; it was left untouched and this
+study's owned processes remain absent.
 
 User amendments: author raw data is unavailable to the user; SR tolerance is
 5 **percentage points** below matched Dense; real closed-loop testing is capped
