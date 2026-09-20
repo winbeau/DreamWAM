@@ -1,0 +1,40 @@
+{
+  "utc": "2026-09-20T02:31:58.842856+00:00",
+  "timed_samples": 294,
+  "parity_only_variant_requests": 35,
+  "means_reproduced": true,
+  "samples_per_variant_input_position": 2,
+  "all_own_eager_bitwise": true,
+  "all_before_conditioned_reuse_bitwise": true,
+  "relative_l2_to_dense": {
+    "graph_r5": [
+      [
+        0,
+        0.09419327609534958
+      ],
+      [
+        1,
+        0.10035331755284842
+      ],
+      [
+        2,
+        0.09363804287784304
+      ]
+    ],
+    "graph_r10": [
+      [
+        0,
+        0.12248311320315924
+      ],
+      [
+        1,
+        0.13163878901451997
+      ],
+      [
+        2,
+        0.12658116550350346
+      ]
+    ]
+  },
+  "sr": null
+}

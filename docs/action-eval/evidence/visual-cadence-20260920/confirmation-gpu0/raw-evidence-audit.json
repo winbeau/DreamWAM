@@ -1,0 +1,49 @@
+{
+  "utc": "2026-09-20T02:31:58.858452+00:00",
+  "complete_samples": 294,
+  "equal_variant_position_input_count": 2,
+  "means_reproduced": true,
+  "bitwise_own_eager": true,
+  "all_bitwise_before_conditioned_reuse": true,
+  "observed_gpu0_compute_pids": [
+    "304456"
+  ],
+  "benchmark_pid": "304456",
+  "compute_journal": "two-second samples; not a GPU reservation",
+  "sr": null,
+  "timed_samples": 294,
+  "parity_only_variant_requests": 35,
+  "samples_per_variant_input_position": 2,
+  "all_own_eager_bitwise": true,
+  "all_before_conditioned_reuse_bitwise": true,
+  "relative_l2_to_dense": {
+    "graph_r5": [
+      [
+        0,
+        0.09419327609534958
+      ],
+      [
+        1,
+        0.10035331755284842
+      ],
+      [
+        2,
+        0.09363804287784304
+      ]
+    ],
+    "graph_r10": [
+      [
+        0,
+        0.12248311320315924
+      ],
+      [
+        1,
+        0.13163878901451997
+      ],
+      [
+        2,
+        0.12658116550350346
+      ]
+    ]
+  }
+}

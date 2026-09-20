@@ -1,0 +1,20 @@
+{
+  "utc": "2026-09-20T02:26:15.053147+00:00",
+  "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-suite-expansion-20260920/long-gpu3/runs/run-20260920T020549Z-1cb163e4",
+  "snapshot": {
+    "planned": 500,
+    "outcomes": {
+      "t000-i000-r00-s42": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "c2e03cffb69ea8a73b244964238d1177c511710b0188d76f51e5d8dd20bbbd50"
+      }
+    },
+    "manifest_sha256": "87d31d0af3ab0023d842513aa64c357ce2bbfb4b2a15cc267f7c1a0da379d3ba",
+    "resolved_sha256": "54ea2a1b7bb6a8c8d11fc79d3697a8cd3b6a69cdfac6aa233c9c701fa6024712"
+  },
+  "worker_alive": false,
+  "initial_exit_code": 134,
+  "sr": null,
+  "next_step": "Recovery pending resources; GPU 3 is temporarily the spare while an independent cadence confirmation occupies GPU 0"
+}

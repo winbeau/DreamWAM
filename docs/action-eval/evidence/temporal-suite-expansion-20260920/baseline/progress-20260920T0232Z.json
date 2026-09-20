@@ -1,0 +1,58 @@
+{
+  "utc": "2026-09-20T02:31:58.878247+00:00",
+  "runs": {
+    "eager_spatial": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1/run-20260919T215351Z-7f224961",
+      "completed": 348,
+      "planned": 500,
+      "successes": 347,
+      "failures": {
+        "t005-i033-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "006a2033778910b2dc8d60a7ff9cf152542fd394388c0d2b7515e460a04d06de"
+        }
+      },
+      "prior_outcomes_unchanged": true,
+      "worker_alive": true,
+      "manifest_sha256": "220ab29833458a81817e3e3c953d7c5532e4913f91e2fe37aea5ee8c10631215",
+      "resolved_sha256": "9f621deb83a7843555efb69c28ee45ffe168df6ac41fbd3c5a63e8ff7ddd904c",
+      "sr": null
+    },
+    "graph_spatial": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2/run-20260920T001038Z-cf9e4f10",
+      "completed": 324,
+      "planned": 500,
+      "successes": 322,
+      "failures": {
+        "t005-i028-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "9e2931c596865df64ef59f82c96c10523b99f037001704697b6cef7a22f3340a"
+        },
+        "t006-i003-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "a03e8e8c344c2d72715c4e56f6986ef7ee72eb32d5c1d3af4a0daa018a93bf81"
+        }
+      },
+      "prior_outcomes_unchanged": true,
+      "worker_alive": false,
+      "manifest_sha256": "6f59948ca8c1bd850574a31b32a06c9aea20335f059c4f401c08478507baabc9",
+      "resolved_sha256": "42878d7939348fa649a009c7d978bcb6b23cb8270d94566e0b5fafd219e159f9",
+      "sr": null
+    },
+    "graph_long_gpu3": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-suite-expansion-20260920/long-gpu3/runs/run-20260920T020549Z-1cb163e4",
+      "completed": 1,
+      "planned": 500,
+      "successes": 1,
+      "failures": {},
+      "prior_outcomes_unchanged": true,
+      "worker_alive": true,
+      "manifest_sha256": "87d31d0af3ab0023d842513aa64c357ce2bbfb4b2a15cc267f7c1a0da379d3ba",
+      "resolved_sha256": "54ea2a1b7bb6a8c8d11fc79d3697a8cd3b6a69cdfac6aa233c9c701fa6024712",
+      "sr": null
+    }
+  }
+}

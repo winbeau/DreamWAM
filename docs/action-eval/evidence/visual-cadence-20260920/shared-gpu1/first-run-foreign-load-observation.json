@@ -1,0 +1,12 @@
+{
+  "observed_utc": "2026-09-20T02:21:21Z",
+  "gpu_index": 1,
+  "gpu_uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+  "benchmark_pid": 297535,
+  "benchmark_mib": 26466,
+  "foreign_pid": 298176,
+  "foreign_mib": 46004,
+  "total_gpu_mib": 72485,
+  "gpu_utilization": 100,
+  "scope": "mid-run observation; all 294 samples retained, not relabelled as exclusively idle"
+}

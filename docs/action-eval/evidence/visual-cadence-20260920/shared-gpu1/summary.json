@@ -1,0 +1,127 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-20T02:22:26.405067+00:00",
+  "seconds": {
+    "native_dense": {
+      "samples": 42,
+      "mean": 0.47624998082894654,
+      "p50": 0.45609757397323847,
+      "p95": 0.6279370853677388,
+      "min": 0.452214615419507,
+      "max": 0.7813823353499174,
+      "stdev": 0.06401204252835221
+    },
+    "eager_dense": {
+      "samples": 42,
+      "mean": 0.46862452676785843,
+      "p50": 0.4567381488159299,
+      "p95": 0.5352139123715459,
+      "min": 0.45320108719170094,
+      "max": 0.64686069637537,
+      "stdev": 0.04070372881482692
+    },
+    "eager_r5": {
+      "samples": 42,
+      "mean": 0.2865408089544092,
+      "p50": 0.277623288333416,
+      "p95": 0.3628719256259498,
+      "min": 0.27523168735206127,
+      "max": 0.3958104830235243,
+      "stdev": 0.027926614788931096
+    },
+    "eager_r10": {
+      "samples": 42,
+      "mean": 0.26073959230312277,
+      "p50": 0.25563445687294006,
+      "p95": 0.27166714230552313,
+      "min": 0.2529528830200434,
+      "max": 0.35547592118382454,
+      "stdev": 0.018941186041407963
+    },
+    "graph_dense": {
+      "samples": 42,
+      "mean": 0.2602515575431642,
+      "p50": 0.2501445207744837,
+      "p95": 0.2524447040632367,
+      "min": 0.2497503962367773,
+      "max": 0.46676211804151535,
+      "stdev": 0.04507025618600136
+    },
+    "graph_r5": {
+      "samples": 42,
+      "mean": 0.14691564888649045,
+      "p50": 0.13987214118242264,
+      "p95": 0.16004069885238997,
+      "min": 0.139408178627491,
+      "max": 0.2976513560861349,
+      "stdev": 0.029571798230804705
+    },
+    "graph_r10": {
+      "samples": 42,
+      "mean": 0.1353809108425464,
+      "p50": 0.12607812136411667,
+      "p95": 0.2145862126722928,
+      "min": 0.12568339332938194,
+      "max": 0.2815321870148182,
+      "stdev": 0.034354738352780266
+    }
+  },
+  "cadence_factor_eager": 1.0989539656152074,
+  "cadence_factor_graph": 1.0852021010359387,
+  "r5_vs_matched_dense": 1.7714352386262067,
+  "r10_vs_matched_dense": 1.9223652428062592,
+  "peak_allocated_mib": 25204.171875,
+  "peak_reserved_mib": 25632.0,
+  "graphs": {
+    "graph_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.2939952854067087,
+        "replays": 49
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.26056502386927605,
+        "replays": 441
+      }
+    },
+    "graph_r5": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.26328090764582157,
+        "replays": 49
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.16238331981003284,
+        "replays": 392
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.879493560642004,
+        "replays": 49
+      }
+    },
+    "graph_r10": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.27630837820470333,
+        "replays": 49
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.1613382324576378,
+        "replays": 441
+      }
+    }
+  },
+  "bitwise_own_eager": true,
+  "all_bitwise_before_conditioned_reuse": true,
+  "samples_per_variant_position_input": 2,
+  "gpu_after": {
+    "exit_code": 0,
+    "stdout": "index, uuid, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, 0 %, 0 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 0 %, 26477 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 0 %, 0 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 0 %, 0 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 11 %, 55379 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, 11 %, 57275 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 7 %, 57275 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 17 %, 55313 MiB",
+    "stderr": ""
+  },
+  "sr": null
+}
