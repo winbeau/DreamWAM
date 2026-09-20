@@ -24,6 +24,13 @@ from charged slots; never delete or substitute the ledger to regain budget.
 These flags are launch controls, not permission to bypass the remaining offline,
 adapter, renderer or immutable-candidate gates.
 
+Finite closeout declaration (2026-09-20): the first three-pair development pilot
+completed 3/3 in both arms, with six attempts and no errors/retries. Run only the
+already frozen additional tasks 3/4/5 × initial state 2, three per arm, then stop
+this effort at **12 actual attempts total**. Keep the 50-slot ledger as the hard
+ceiling; do not fill its remaining 38 slots or tune the candidate on the additional
+cohort. No globally unseen/benchmark or five-point non-inferiority claim follows.
+
 Latest hardware amendment: GPU 0 was reclaimed and must remain unused by this
 task. The user explicitly permits flexible sharing of **GPU 5** with their other
 project. For GPU 5 this supersedes the leave-last-card rule below; admit bounded

@@ -7,10 +7,28 @@ User amendments: author raw data is unavailable to the user; SR tolerance is
 5 **percentage points** below matched Dense; real closed-loop testing is capped
 at 50 episodes in total across all arms and attempts. First proposed rollout is
 3 pairs (6 episodes), only after profiling, implementation and adapter gates.
-No rollout has started in this branch. A tiny pilot cannot establish statistical
+The first six attempts have completed. A tiny pilot cannot establish statistical
 non-inferiority at the 5-point margin.
 
-## Verified nine-input screen; frozen diagnostic pilot pending
+## Development pilot verified; final six attempts predeclared
+
+Dense 3/3 and frozen layerwise value-aware R56 3/3, six attempts total, zero
+errors/retries. Independent audit verifies 135 artifacts, actual executed action
+prefixes, unchanged token/layer budgets and all native reads. Initial state and
+both camera hashes match across all three pairs. Nominal Wilson95 is
+[43.85%,100%] per arm; paired bootstrap is withheld with one episode/task. No
+five-point non-inferiority claim. Shared-load warm model/IPC speedups are
+2.178×/2.114×; all-call model speedup is 1.922×. Episode wall time does not improve.
+
+The 22-call adapter check passes at model `41f515a`, with episode reset and
+changed inputs/instructions; model weights/sampling remain unchanged. The next
+and final six attempts use the same frozen candidate on tasks 3/4/5, initial
+state 2, candidate first. Stop at **12 attempts**, leaving the rest of the user's
+50-attempt cap unused. The first pilot's audit is
+`outputs/dido-sparse-profile-20260920/pilot3-native-va56-audit-c6e11f9/`.
+Goal remains active until the final fixed cohort, verification and delivery finish.
+
+## Verified nine-input screen; subsequent diagnostic pilot
 
 The [277-call final offline screen](FINAL-OFFLINE-RESULTS.md) completes at
 20:50:52 UTC, source `41f515a`; all raw arrays, 126 timings and 450 trace steps

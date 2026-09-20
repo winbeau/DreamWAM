@@ -578,15 +578,24 @@
     "scope": "All nine historical development observations; final retained-choice screen, not new or held-out rollouts. Both Dense and exact inherited uniform controls are interleaved per group."
   },
   "confirmation": {
+    "status": "FROZEN_ADDITIONAL_MATCHED_VALIDATION_PREDECLARED",
+    "episode_attempt_cap": 6, "stop_effort_after_total_attempts": 12,
+    "first_arm": "sparse", "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+    "candidate": "layerwise_value_action_R56; unchanged after development outcomes",
     "suite": "libero_spatial",
     "reserved_tasks": [3, 4, 5],
     "reserved_init_indices": [2],
     "seed": 42,
     "use": "one frozen candidate after development; no tuning or threshold calibration on these identities",
     "observations_captured": false,
-    "historical_exposure_audit": "must recheck before calling any future run confirmation"
+    "historical_exposure_audit": "H100 outcomes audit scanned 28 result files and found no reserved-identity matches; H200 full baselines cover these tasks, so label additional matched fixed-candidate validation, not globally unseen",
+    "exposure_artifact": "outputs/dido-sparse-profile-20260920/confirmation-exposure.json",
+    "exposure_sha256": "ded3799ff0e3eeed80358d4d304d76b8c5d3804bceb432fef3bda70a4930f2d0"
   },
   "first_pilot": {
+    "status": "COMPLETE_AND_INDEPENDENTLY_AUDITED", "actual_attempts": 6,
+    "dense_successes": 3, "candidate_successes": 3, "errors": 0,
+    "audit": "outputs/dido-sparse-profile-20260920/pilot3-native-va56-audit-c6e11f9/integrity.json",
     "role": "development",
     "suite": "libero_spatial",
     "task_ids": [0, 1, 2],
