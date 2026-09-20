@@ -1,0 +1,182 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-20T01:37:24.275578+00:00",
+  "seconds": {
+    "native_dense": {
+      "samples": 30,
+      "mean": 0.46745697502046824,
+      "p50": 0.46723503805696964,
+      "p95": 0.4710355043411255,
+      "min": 0.4643437210470438,
+      "max": 0.47143898718059063,
+      "stdev": 0.001956183875784568
+    },
+    "eager_temporal": {
+      "samples": 30,
+      "mean": 0.2833641899128755,
+      "p50": 0.28294269647449255,
+      "p95": 0.28555025449022653,
+      "min": 0.28218636848032475,
+      "max": 0.2861096691340208,
+      "stdev": 0.001071871979110513
+    },
+    "conditioned_dense": {
+      "samples": 30,
+      "mean": 0.46862528485556443,
+      "p50": 0.4691977156326175,
+      "p95": 0.4711866674013436,
+      "min": 0.46558784134685993,
+      "max": 0.47297109849750996,
+      "stdev": 0.0018292288563319448
+    },
+    "conditioned_temporal": {
+      "samples": 30,
+      "mean": 0.2840470055739085,
+      "p50": 0.28393574990332127,
+      "p95": 0.2857129521667957,
+      "min": 0.2820397447794676,
+      "max": 0.28630170226097107,
+      "stdev": 0.0011481751102915628
+    },
+    "graph_dense": {
+      "samples": 30,
+      "mean": 0.28852713697900373,
+      "p50": 0.2860113112255931,
+      "p95": 0.30460825031623245,
+      "min": 0.28559437952935696,
+      "max": 0.3048719558864832,
+      "stdev": 0.006426650969490471
+    },
+    "graph_temporal": {
+      "samples": 30,
+      "mean": 0.1466023159523805,
+      "p50": 0.14507482945919037,
+      "p95": 0.15620375303551554,
+      "min": 0.14485331997275352,
+      "max": 0.15684164874255657,
+      "stdev": 0.0038866635886850563
+    },
+    "graph_conditioned_dense": {
+      "samples": 30,
+      "mean": 0.25479917755971354,
+      "p50": 0.25237971637398005,
+      "p95": 0.27104643611237406,
+      "min": 0.25183721259236336,
+      "max": 0.2710866816341877,
+      "stdev": 0.006470642616357329
+    },
+    "graph_conditioned_temporal": {
+      "samples": 30,
+      "mean": 0.14286825520296892,
+      "p50": 0.14135786145925522,
+      "p95": 0.15258587626740336,
+      "min": 0.1411319375038147,
+      "max": 0.15264434181153774,
+      "stdev": 0.0038810637465070044
+    },
+    "eager_guided": {
+      "samples": 30,
+      "mean": 0.28543960452079775,
+      "p50": 0.2853160873055458,
+      "p95": 0.289054920244962,
+      "min": 0.28296547569334507,
+      "max": 0.2908867970108986,
+      "stdev": 0.0017905555246258299
+    },
+    "graph_guided": {
+      "samples": 30,
+      "mean": 0.14049397489676874,
+      "p50": 0.13899082131683826,
+      "p95": 0.15008245818316937,
+      "min": 0.13868207298219204,
+      "max": 0.15019740350544453,
+      "stdev": 0.003837714737408381
+    }
+  },
+  "dense_factor_eager": 0.9975069423847749,
+  "dense_factor_graph": 1.1323707546559323,
+  "temporal_factor_eager": 0.99759611737623,
+  "temporal_factor_graph": 1.0261363921894804,
+  "temporal_vs_dense_graph_before": 1.9680939902253891,
+  "temporal_vs_dense_graph_after": 1.7834555142969128,
+  "peak_allocated_mib": 25759.0107421875,
+  "peak_reserved_mib": 26378.0,
+  "graphs": {
+    "graph_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.5825681816786528,
+        "replays": 370
+      }
+    },
+    "graph_temporal": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.3245227374136448,
+        "replays": 74
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.16665693558752537,
+        "replays": 296
+      }
+    },
+    "graph_conditioned_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.2755686081945896,
+        "replays": 37
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.25420916825532913,
+        "replays": 333
+      }
+    },
+    "graph_conditioned_temporal": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.27042582258582115,
+        "replays": 37
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.1551987286657095,
+        "replays": 296
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.3910408075898886,
+        "replays": 37
+      }
+    },
+    "graph_guided": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 1.4011629857122898,
+        "replays": 37
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.14777430891990662,
+        "replays": 296
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.26246292889118195,
+        "replays": 37
+      }
+    }
+  },
+  "bitwise_own_eager": true,
+  "all_bitwise_prefactor": true,
+  "gpu_after": {
+    "exit_code": 0,
+    "stdout": "index, uuid, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, 0 %, 1 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 2 %, 25147 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 0 %, 27277 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 0 %, 1 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 2 %, 43263 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, 18 %, 44381 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 18 %, 44381 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 18 %, 42419 MiB",
+    "stderr": ""
+  },
+  "sr": null,
+  "guided_vs_dense_graph_before": 2.053661996473556,
+  "guided_vs_dense_graph_after": 1.8135950509403214,
+  "guided_vs_conditioned_temporal": 1.0168995169219515
+}

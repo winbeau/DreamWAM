@@ -1,0 +1,14 @@
+This machine may lack LIBERO assets or a GPU; unreachable checks are
+reported as not-verified rather than passed.
+
+[OK  ] policy.python: policy interpreter 3.10.20
+[OK  ] policy.repo_root: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c
+[OK  ] policy.entrypoint: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/evaluation/action_eval/infer.py
+[OK  ] benchmark.bddl_files: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/libero/bddl_files
+[OK  ] benchmark.init_files: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/libero/init_files
+[OK  ] benchmark.suite[libero_goal]: /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/libero/bddl_files/libero_goal
+[OK  ] gpu.nvidia-smi: /usr/bin/nvidia-smi
+[OK  ] runtime.workers: workers=1 (single-worker MVP)
+[info] checkpoint declared: checkpoints/dreamwam_joint.pt
+
+note: no model was loaded and no environment was rendered (`--smoke` is required for that)

@@ -1,0 +1,190 @@
+{
+  "status": "OBSERVED",
+  "start_utc": "2026-09-20T01:23:11.663494+00:00",
+  "argv": [
+    "scripts/sparse/audit_conditioned_frame.py",
+    "--out-dir",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/conditioned-frame-audit-20260920/audit-e9cd379-ready"
+  ],
+  "git": {
+    "exit_code": 0,
+    "stdout": "e9cd37939c1601743a3bb824cac1c18ef5c58557",
+    "stderr": ""
+  },
+  "dirty": {
+    "exit_code": 0,
+    "stdout": "?? .venv\n?? pretrained",
+    "stderr": ""
+  },
+  "python": "3.10.20",
+  "torch": "2.7.1+cu126",
+  "cuda": "12.6",
+  "cuda_visible_devices": "4",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "sources": {
+    "dreamwam/model.py": "a510a9959477f5218af21ec0f580960694431c019413cb8179b9afb57885e0ce",
+    "dreamwam/experts.py": "6c534b8d43a816f76f086459ee057572ff55bf6709eae076034a31ec5ea19eea",
+    "dreamwam/mot.py": "35e7cdabbf669298880b8ecc61489f3bd84b06bd391785936428c2d7e34ed2fd",
+    "scripts/sparse/audit_conditioned_frame.py": "4cdb3ecfb3aa1f793018d63f48ab32ea807bb862f954857e54de5f83ce7ed700",
+    "configs/dreamwam_joint.yaml": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115"
+  },
+  "gpu_before": {
+    "exit_code": 0,
+    "stdout": "index, uuid, utilization.gpu [%], memory.used [MiB]\n0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, 12 %, 25515 MiB\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 0 %, 24741 MiB\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 0 %, 25515 MiB\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 0 %, 1 MiB\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 9 %, 43255 MiB\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, 18 %, 44375 MiB\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 18 %, 44375 MiB\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 20 %, 42449 MiB",
+    "stderr": ""
+  },
+  "environment": "existing environment unchanged; no install or sync",
+  "scope": "native Dense observation only; no cached computation, no latency or SR claim",
+  "sr": null,
+  "model_load_seconds": 15.444513514637947,
+  "evaluation": {
+    "action_horizon": 32,
+    "video_frames": 9,
+    "denoising_steps": 10,
+    "replan_steps": 10,
+    "wait_steps": 30,
+    "resolution": 256,
+    "seed": 42,
+    "rand_device": "cpu",
+    "binarize_gripper": true
+  },
+  "dtype": "torch.bfloat16",
+  "fast_ops_enabled": false,
+  "inputs": {
+    "kind": "synthetic random images and zero proprio; latency screening only",
+    "seeds": [
+      0,
+      1,
+      2
+    ]
+  },
+  "requests": [
+    {
+      "request": 0,
+      "input_id": 0,
+      "video_tokens": 294,
+      "conditioned_tokens": 98,
+      "steps": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "layers": 30,
+      "instrumented_action_bitwise": true,
+      "comparisons": 3330,
+      "invariant_comparisons": 1674,
+      "invariant_differences": 0,
+      "invariant_max_abs": 0.0,
+      "future_differences": 1656
+    },
+    {
+      "request": 1,
+      "input_id": 1,
+      "video_tokens": 294,
+      "conditioned_tokens": 98,
+      "steps": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "layers": 30,
+      "instrumented_action_bitwise": true,
+      "comparisons": 3330,
+      "invariant_comparisons": 1674,
+      "invariant_differences": 0,
+      "invariant_max_abs": 0.0,
+      "future_differences": 1656
+    },
+    {
+      "request": 2,
+      "input_id": 2,
+      "video_tokens": 294,
+      "conditioned_tokens": 98,
+      "steps": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "layers": 30,
+      "instrumented_action_bitwise": true,
+      "comparisons": 3330,
+      "invariant_comparisons": 1674,
+      "invariant_differences": 0,
+      "invariant_max_abs": 0.0,
+      "future_differences": 1656
+    },
+    {
+      "request": 3,
+      "input_id": 3,
+      "video_tokens": 294,
+      "conditioned_tokens": 98,
+      "steps": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "layers": 30,
+      "instrumented_action_bitwise": true,
+      "comparisons": 3330,
+      "invariant_comparisons": 1674,
+      "invariant_differences": 0,
+      "invariant_max_abs": 0.0,
+      "future_differences": 1656
+    },
+    {
+      "request": 4,
+      "input_id": 0,
+      "video_tokens": 294,
+      "conditioned_tokens": 98,
+      "steps": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "layers": 30,
+      "instrumented_action_bitwise": true,
+      "comparisons": 3330,
+      "invariant_comparisons": 1674,
+      "invariant_differences": 0,
+      "invariant_max_abs": 0.0,
+      "future_differences": 1656
+    }
+  ],
+  "all_conditioned_bitwise": true,
+  "end_utc": "2026-09-20T01:23:45.803489+00:00"
+}

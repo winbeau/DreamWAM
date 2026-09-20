@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-temporal-suites-334d28c/configs/experiments/dreamwam-temporal-graph-libero-goal.yaml
+experiment  : dreamwam-temporal-graph-libero-goal (DreamWAM Joint temporal visual cache with transformer graphs (full Goal))
+fingerprint : 67e4152d1918f300db74e25d1883ddb5f66f686dfda4bd98eaa44186ea03f018
+benchmark   : libero_goal tasks=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] inits=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+episodes    : 500 planned (10 tasks x 50 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

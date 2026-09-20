@@ -1,5 +1,12 @@
 # Temporal graph reuse and a stronger Dense control
 
+Later common-control update: [conditioned-frame reuse](conditioned-frame-single-factor-20260920.md)
+also accelerates Dense. Applying it to both sides yields 1.783× temporal and
+1.814× guided in a direct new measurement. The approximately 2× ratios below
+remain historical results against their stated control, not the strongest
+currently measured Dense. [Four-suite coverage](temporal-suite-expansion-20260920.md)
+is still incomplete.
+
 Status: **MEASURED; full paired SR pending**. The final control completed on
 **2026-09-20 at 00:07:51 UTC**, exit 0: conservative temporal reuse takes
 **149.60 ms** per complete request versus **293.96 ms** for native Dense with

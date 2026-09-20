@@ -1,0 +1,565 @@
+{
+  "utc": "2026-09-20T01:32:53.490651+00:00",
+  "sr": null,
+  "runs": {
+    "dense_spatial": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0",
+      "planned": 500,
+      "terminal": 428,
+      "statuses": {
+        "succeeded": 421,
+        "failed": 7
+      },
+      "failed_records": {
+        "t005-i002-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "4b7c1c1c842b0d0d2bedda24d33b9020684ae8d780e9222cae5b04590df6cad9"
+        },
+        "t005-i003-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "b3346245911414cd7c849d2414507eebca303c7e0e21d7a57d9eee7d2be3544f"
+        },
+        "t005-i025-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "ee64d056ba9f36988039d775db0d3d1e5f36f07e5e58436de9487acc5ef8ae86"
+        },
+        "t005-i026-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "a075322cc14435cd90b8c4ab4ac71e2014d200ade7359606c956e16daa8b6dd2"
+        },
+        "t005-i046-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "57493282f86d84ae97a8c790a48fb86496cc5369b4085ccb3b2f7baeb2fd9df1"
+        },
+        "t006-i002-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "42b4d47f8f6a09f2069150b73087b9d9e740586a0a2ce6b483e90c1a1fc234c1"
+        },
+        "t006-i019-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "5e81931ed9f45e5c0f98363d995e6d920ab5f27421ec96f26be19cc035e8fdbe"
+        }
+      },
+      "manifest_sha256": "343a536e8af2273d4e942ed8a99e4b9df9db1cf32d734105ea3f44de4aaa8081",
+      "resolved_sha256": "25021eb8960d7b0ca0ccf7289b3fb1200b377d8479dff4a5af5907c0da780c88",
+      "fingerprint": "87c8f1d0ee291acad1b19a8a318f4d0de9c41c97b8753e87ed1eb23999d8ebb6",
+      "protocol": {
+        "id": "dreamwam-release-v1",
+        "max_steps": 400,
+        "wait_steps": 30,
+        "replan_steps": 10,
+        "resolution": [
+          256,
+          256
+        ],
+        "seed": 42,
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "success_mode": "first_success_after_wait",
+        "repeats": 1
+      },
+      "benchmark": {
+        "backend": "libero",
+        "suite": "libero_spatial"
+      },
+      "worker_alive": false,
+      "policy": null,
+      "repo": {
+        "policy": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6",
+          "commit": "28845c608e51b885ba18d8d918fee19f70eeea39",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv",
+            "?? pretrained"
+          ],
+          "state": "dirty"
+        },
+        "evaluator": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+          "commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv"
+          ],
+          "state": "dirty"
+        }
+      }
+    },
+    "eager_spatial": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1/run-20260919T215351Z-7f224961",
+      "planned": 500,
+      "terminal": 243,
+      "statuses": {
+        "succeeded": 243
+      },
+      "failed_records": {},
+      "manifest_sha256": "220ab29833458a81817e3e3c953d7c5532e4913f91e2fe37aea5ee8c10631215",
+      "resolved_sha256": "9f621deb83a7843555efb69c28ee45ffe168df6ac41fbd3c5a63e8ff7ddd904c",
+      "fingerprint": "7f2249610b3f88ba2c440150800721dcac48a8a9e5bafed5192d8d6b7017753f",
+      "protocol": {
+        "id": "dreamwam-release-v1",
+        "max_steps": 400,
+        "wait_steps": 30,
+        "replan_steps": 10,
+        "resolution": [
+          256,
+          256
+        ],
+        "seed": 42,
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "success_mode": "first_success_after_wait",
+        "repeats": 1
+      },
+      "benchmark": {
+        "backend": "libero",
+        "suite": "libero_spatial"
+      },
+      "worker_alive": true,
+      "policy": {
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "rng_mode": "fixed_per_predict",
+        "action_horizon": 32,
+        "fingerprint": {
+          "adapter": "dreamwam",
+          "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/configs/dreamwam_joint.yaml",
+          "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+          "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/checkpoints/dreamwam_joint.pt",
+          "checkpoint_source": "policy.checkpoint",
+          "checkpoint_size_bytes": 12063469113,
+          "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+          "checkpoint_conflict": null,
+          "setting": "joint",
+          "action_horizon": 32,
+          "denoising_steps": 10,
+          "video_frames": 9,
+          "replan_steps": 10,
+          "wait_steps": 30,
+          "binarize_gripper": true,
+          "model_seed": 42,
+          "rng_mode": "fixed_per_predict",
+          "sparse": {
+            "enabled": false,
+            "selection": "av_context",
+            "backend": "masked",
+            "block_size": 14,
+            "future_ratio": 1.0,
+            "conditional_keep_ratio": 1.0,
+            "context_weight": 1.0,
+            "min_anchor_mass": 0.0,
+            "fallback": "recency",
+            "num_stages": 1,
+            "anchor_refresh": "layer",
+            "anchor_layer": 0,
+            "sparse_layers": null,
+            "head_blocks": null,
+            "stage_blocks": null
+          },
+          "sparse_config_hash": "10d80b7ca00e97b5",
+          "visual_cache": {
+            "refresh_every": 5
+          }
+        },
+        "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+      },
+      "repo": {
+        "policy": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6",
+          "commit": "28845c608e51b885ba18d8d918fee19f70eeea39",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv",
+            "?? pretrained"
+          ],
+          "state": "dirty"
+        },
+        "evaluator": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+          "commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv"
+          ],
+          "state": "dirty"
+        }
+      }
+    },
+    "graph_spatial": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2/run-20260920T001038Z-cf9e4f10",
+      "planned": 500,
+      "terminal": 232,
+      "statuses": {
+        "succeeded": 232
+      },
+      "failed_records": {},
+      "manifest_sha256": "6f59948ca8c1bd850574a31b32a06c9aea20335f059c4f401c08478507baabc9",
+      "resolved_sha256": "42878d7939348fa649a009c7d978bcb6b23cb8270d94566e0b5fafd219e159f9",
+      "fingerprint": "cf9e4f105affc2b519291185bba90be7b8675dd139846b78bda133729afba1a9",
+      "protocol": {
+        "id": "dreamwam-release-v1",
+        "max_steps": 400,
+        "wait_steps": 30,
+        "replan_steps": 10,
+        "resolution": [
+          256,
+          256
+        ],
+        "seed": 42,
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "success_mode": "first_success_after_wait",
+        "repeats": 1
+      },
+      "benchmark": {
+        "backend": "libero",
+        "suite": "libero_spatial"
+      },
+      "worker_alive": false,
+      "policy": null,
+      "repo": {
+        "policy": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c",
+          "commit": "2c02c5cde86757479c3e8a2b0ceac094e1403d9c",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv",
+            "?? pretrained"
+          ],
+          "state": "dirty"
+        },
+        "evaluator": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+          "commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv"
+          ],
+          "state": "dirty"
+        }
+      }
+    },
+    "graph_object": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-suite-expansion-20260920/object-gpu5/runs/run-20260920T011857Z-f8c5a29a",
+      "planned": 500,
+      "terminal": 3,
+      "statuses": {
+        "succeeded": 2,
+        "failed": 1
+      },
+      "failed_records": {
+        "t000-i001-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "5d7cd05a98a1b0f69b12710404a50256be7cb819b0db0b670af1195f145e5c34"
+        }
+      },
+      "manifest_sha256": "c3f39738f05e1e846f9bc4a2af6df49e7b2c56c0b4f0688a28366199da1d4c39",
+      "resolved_sha256": "c5ec6f38d4be45fae1694ae69cce9a81763374ee3571a983d7616cf0b3b4c6a6",
+      "fingerprint": "f8c5a29a8bf3fac58accf62a8527e919bd2c8f0cc460f398f531c6292ecf5833",
+      "protocol": {
+        "id": "dreamwam-release-v1",
+        "max_steps": 400,
+        "wait_steps": 30,
+        "replan_steps": 10,
+        "resolution": [
+          256,
+          256
+        ],
+        "seed": 42,
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "success_mode": "first_success_after_wait",
+        "repeats": 1
+      },
+      "benchmark": {
+        "backend": "libero",
+        "suite": "libero_object"
+      },
+      "worker_alive": false,
+      "policy": {
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "rng_mode": "fixed_per_predict",
+        "action_horizon": 32,
+        "fingerprint": {
+          "adapter": "dreamwam",
+          "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/configs/dreamwam_joint.yaml",
+          "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+          "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/checkpoints/dreamwam_joint.pt",
+          "checkpoint_source": "policy.checkpoint",
+          "checkpoint_size_bytes": 12063469113,
+          "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+          "checkpoint_conflict": null,
+          "setting": "joint",
+          "action_horizon": 32,
+          "denoising_steps": 10,
+          "video_frames": 9,
+          "replan_steps": 10,
+          "wait_steps": 30,
+          "binarize_gripper": true,
+          "model_seed": 42,
+          "rng_mode": "fixed_per_predict",
+          "sparse": {
+            "enabled": false,
+            "selection": "av_context",
+            "backend": "masked",
+            "block_size": 14,
+            "future_ratio": 1.0,
+            "conditional_keep_ratio": 1.0,
+            "context_weight": 1.0,
+            "min_anchor_mass": 0.0,
+            "fallback": "recency",
+            "num_stages": 1,
+            "anchor_refresh": "layer",
+            "anchor_layer": 0,
+            "sparse_layers": null,
+            "head_blocks": null,
+            "stage_blocks": null
+          },
+          "sparse_config_hash": "10d80b7ca00e97b5",
+          "visual_cache": {
+            "refresh_every": 5,
+            "token_keep_ratio": 1.0,
+            "action_guidance_weight": 1.0,
+            "graph_dispatch": "all_transformers"
+          }
+        },
+        "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+      },
+      "repo": {
+        "policy": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c",
+          "commit": "2c02c5cde86757479c3e8a2b0ceac094e1403d9c",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv",
+            "?? pretrained"
+          ],
+          "state": "dirty"
+        },
+        "evaluator": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+          "commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv"
+          ],
+          "state": "dirty"
+        }
+      }
+    },
+    "graph_goal": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-suite-expansion-20260920/goal-gpu7/runs/run-20260920T011900Z-67e4152d",
+      "planned": 500,
+      "terminal": 3,
+      "statuses": {
+        "succeeded": 3
+      },
+      "failed_records": {},
+      "manifest_sha256": "b5edc8cf6703b3dc5d80e7e6db7830e4b5d7947bc2ff0d5d13c4a8f0fc0eeb56",
+      "resolved_sha256": "b8ab8111be6bf6a70634795906027a65d47c9817d80a81f86db552c34ea33234",
+      "fingerprint": "67e4152d1918f300db74e25d1883ddb5f66f686dfda4bd98eaa44186ea03f018",
+      "protocol": {
+        "id": "dreamwam-release-v1",
+        "max_steps": 400,
+        "wait_steps": 30,
+        "replan_steps": 10,
+        "resolution": [
+          256,
+          256
+        ],
+        "seed": 42,
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "success_mode": "first_success_after_wait",
+        "repeats": 1
+      },
+      "benchmark": {
+        "backend": "libero",
+        "suite": "libero_goal"
+      },
+      "worker_alive": false,
+      "policy": {
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "rng_mode": "fixed_per_predict",
+        "action_horizon": 32,
+        "fingerprint": {
+          "adapter": "dreamwam",
+          "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/configs/dreamwam_joint.yaml",
+          "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+          "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/checkpoints/dreamwam_joint.pt",
+          "checkpoint_source": "policy.checkpoint",
+          "checkpoint_size_bytes": 12063469113,
+          "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+          "checkpoint_conflict": null,
+          "setting": "joint",
+          "action_horizon": 32,
+          "denoising_steps": 10,
+          "video_frames": 9,
+          "replan_steps": 10,
+          "wait_steps": 30,
+          "binarize_gripper": true,
+          "model_seed": 42,
+          "rng_mode": "fixed_per_predict",
+          "sparse": {
+            "enabled": false,
+            "selection": "av_context",
+            "backend": "masked",
+            "block_size": 14,
+            "future_ratio": 1.0,
+            "conditional_keep_ratio": 1.0,
+            "context_weight": 1.0,
+            "min_anchor_mass": 0.0,
+            "fallback": "recency",
+            "num_stages": 1,
+            "anchor_refresh": "layer",
+            "anchor_layer": 0,
+            "sparse_layers": null,
+            "head_blocks": null,
+            "stage_blocks": null
+          },
+          "sparse_config_hash": "10d80b7ca00e97b5",
+          "visual_cache": {
+            "refresh_every": 5,
+            "token_keep_ratio": 1.0,
+            "action_guidance_weight": 1.0,
+            "graph_dispatch": "all_transformers"
+          }
+        },
+        "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+      },
+      "repo": {
+        "policy": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c",
+          "commit": "2c02c5cde86757479c3e8a2b0ceac094e1403d9c",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv",
+            "?? pretrained"
+          ],
+          "state": "dirty"
+        },
+        "evaluator": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+          "commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv"
+          ],
+          "state": "dirty"
+        }
+      }
+    },
+    "graph_long": {
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-suite-expansion-20260920/long-gpu6/runs/run-20260920T013204Z-7ab8fda5",
+      "planned": 500,
+      "terminal": 0,
+      "statuses": {},
+      "failed_records": {},
+      "manifest_sha256": "28a37a52d910dfab42a187319e1bee5d08158b08e8e03353db3d8fa6dcc1c2ff",
+      "resolved_sha256": "c903ba6b010d94966c40b08058d722c82866c7073c7d1989e1a2a2b58d1e91c5",
+      "fingerprint": "7ab8fda53115581eea1e38960a5c52c100ed9474757f5a8a7919b942aec9a0dc",
+      "protocol": {
+        "id": "dreamwam-release-v1-long",
+        "max_steps": 700,
+        "wait_steps": 30,
+        "replan_steps": 10,
+        "resolution": [
+          256,
+          256
+        ],
+        "seed": 42,
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "success_mode": "first_success_after_wait",
+        "repeats": 1
+      },
+      "benchmark": {
+        "backend": "libero",
+        "suite": "libero_10"
+      },
+      "worker_alive": true,
+      "policy": {
+        "observation_profile": "dreamwam-libero-2cam-v1",
+        "action_profile": "libero-osc-pose-v1",
+        "rng_mode": "fixed_per_predict",
+        "action_horizon": 32,
+        "fingerprint": {
+          "adapter": "dreamwam",
+          "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/configs/dreamwam_joint.yaml",
+          "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+          "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/checkpoints/dreamwam_joint.pt",
+          "checkpoint_source": "policy.checkpoint",
+          "checkpoint_size_bytes": 12063469113,
+          "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+          "checkpoint_conflict": null,
+          "setting": "joint",
+          "action_horizon": 32,
+          "denoising_steps": 10,
+          "video_frames": 9,
+          "replan_steps": 10,
+          "wait_steps": 30,
+          "binarize_gripper": true,
+          "model_seed": 42,
+          "rng_mode": "fixed_per_predict",
+          "sparse": {
+            "enabled": false,
+            "selection": "av_context",
+            "backend": "masked",
+            "block_size": 14,
+            "future_ratio": 1.0,
+            "conditional_keep_ratio": 1.0,
+            "context_weight": 1.0,
+            "min_anchor_mass": 0.0,
+            "fallback": "recency",
+            "num_stages": 1,
+            "anchor_refresh": "layer",
+            "anchor_layer": 0,
+            "sparse_layers": null,
+            "head_blocks": null,
+            "stage_blocks": null
+          },
+          "sparse_config_hash": "10d80b7ca00e97b5",
+          "visual_cache": {
+            "refresh_every": 5,
+            "token_keep_ratio": 1.0,
+            "action_guidance_weight": 1.0,
+            "graph_dispatch": "all_transformers"
+          }
+        },
+        "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+      },
+      "repo": {
+        "policy": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c",
+          "commit": "2c02c5cde86757479c3e8a2b0ceac094e1403d9c",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv",
+            "?? pretrained"
+          ],
+          "state": "dirty"
+        },
+        "evaluator": {
+          "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+          "commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b",
+          "dirty": true,
+          "dirty_files": [
+            "?? .venv"
+          ],
+          "state": "dirty"
+        }
+      }
+    }
+  }
+}

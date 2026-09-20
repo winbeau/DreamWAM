@@ -1,0 +1,14 @@
+{"attempt": 1, "return_code": -6, "new_task_outcomes": 1, "completed": 1, "planned": 500, "stagnant": 0}
+{"attempt": 2, "return_code": -6, "new_task_outcomes": 1, "completed": 2, "planned": 500, "stagnant": 0}
+{"attempt": 3, "return_code": -6, "new_task_outcomes": 1, "completed": 3, "planned": 500, "stagnant": 0}
+{"attempt": 4, "return_code": -6, "new_task_outcomes": 0, "completed": 3, "planned": 500, "stagnant": 1}
+{"attempt": 5, "return_code": -6, "new_task_outcomes": 0, "completed": 3, "planned": 500, "stagnant": 2}
+{
+  "reason": "stagnation_limit",
+  "attempts": 5,
+  "planned": 500,
+  "completed": 3,
+  "sr": null,
+  "successes": 2,
+  "task_failures": 1
+}

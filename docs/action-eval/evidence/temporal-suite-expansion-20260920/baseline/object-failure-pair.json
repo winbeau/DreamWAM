@@ -1,0 +1,11 @@
+{
+  "identity": "t000-i001-r00-s42",
+  "dense_original": {
+    "attempt": 1,
+    "status": "succeeded",
+    "sha256": "0c6fa93e8f5a24428b028349466253eb1629ca45fca3c1ada1c77a1901074a2d"
+  },
+  "candidate_failure_sha256": "5d7cd05a98a1b0f69b12710404a50256be7cb819b0db0b670af1195f145e5c34",
+  "full_pair_sr": null,
+  "interpretation": "single accepted pair; full candidate coverage is incomplete"
+}

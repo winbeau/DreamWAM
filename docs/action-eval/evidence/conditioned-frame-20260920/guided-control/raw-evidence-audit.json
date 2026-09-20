@@ -1,0 +1,87 @@
+{
+  "rows": 300,
+  "own_eager_all": true,
+  "prefactor_all": true,
+  "variants": {
+    "native_dense": {
+      "samples": 30,
+      "mean_seconds": 0.46745697502046824,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    },
+    "eager_temporal": {
+      "samples": 30,
+      "mean_seconds": 0.2833641899128755,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    },
+    "conditioned_dense": {
+      "samples": 30,
+      "mean_seconds": 0.46862528485556443,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    },
+    "conditioned_temporal": {
+      "samples": 30,
+      "mean_seconds": 0.2840470055739085,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    },
+    "graph_dense": {
+      "samples": 30,
+      "mean_seconds": 0.28852713697900373,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    },
+    "graph_temporal": {
+      "samples": 30,
+      "mean_seconds": 0.1466023159523805,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    },
+    "graph_conditioned_dense": {
+      "samples": 30,
+      "mean_seconds": 0.25479917755971354,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    },
+    "graph_conditioned_temporal": {
+      "samples": 30,
+      "mean_seconds": 0.14286825520296892,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    },
+    "eager_guided": {
+      "samples": 30,
+      "mean_seconds": 0.28543960452079775,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    },
+    "graph_guided": {
+      "samples": 30,
+      "mean_seconds": 0.14049397489676874,
+      "input_position_combinations": 30,
+      "each_combination_counts": [
+        1
+      ]
+    }
+  }
+}
