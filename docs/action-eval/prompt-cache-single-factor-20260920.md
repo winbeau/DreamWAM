@@ -101,16 +101,42 @@ The preceding compact Head/Stage negative result remains
 ## Evaluation entrypoint
 
 The following explicit adapter options expose the measured implementations.
-**Integration verification is pending** until the new constructor/lifecycle
-tests and real-checkpoint adapter check complete. Existing live SR jobs keep
-their frozen options and outputs.
+**Integration VERIFIED** at `04163905f047169a159b3e366d679afc86392757`:
+server CPU checks **59 passed, 3 CUDA-skipped in 14.12 s**; targeted CUDA checks
+**8 passed in 20.73 s** (partly overlapping the CPU set), both exit 0.
+The real-checkpoint adapter check ran **05:22:27–05:24:09 UTC**, GPU 4, exit 0.
+Both arms passed seven complete action comparisons to their own uncached eager
+reference, including repeated instructions, another image/state with the same
+instruction, changed instructions and episode reset. All 14 calls preserved
+the executed visual/action budgets, effective options and checkpoint identity.
+Graph and text caches were released on close. This is an integration check;
+its setup-inclusive request times are not a new timing benchmark.
+
+The [adapter audit](evidence/prompt-cache-20260920/adapter-0416390-audit.json)
+independently rechecked the saved action arrays. Report SHA256:
+`d0f38ecf2d0df38d0b7f15fcdbfc00717e86d7ae30c79cd9e67d546a8b30a557`.
+Run from the frozen model worktree with the same GPU/thread environment as above:
+
+```bash
+.venv/bin/python scripts/sparse/verify_prompt_cache_adapter.py \
+  --inputs "$OUT/head-stage-calibration-20260920/inputs-gpu4/manifest.json" \
+  --out-dir "$OUT/prompt-cache-20260920/adapter-0416390"
+```
+
+Existing live SR jobs keep their frozen options and outputs. A new matched
+Dense/Sparse pilot and independent 500-identity Spatial configurations are
+committed in action-eval at `aa5f5fa7815702ee9dd00aedca2a9e94d0ff9133`.
+All four configurations passed server validation/doctor; the platform's **199
+tests passed in 112.55 s**, and generated schema bytes match the committed schema.
+The evaluator dependency files and existing environment were preserved.
 
 The first CPU integration test invocation at `eaf5add` returned **1 failed,
 58 passed, 3 CUDA-skipped** (4.87 s, exit 1). The failure was the new test
 requiring an action-guidance counter from eager conditioned Dense, which does
 not construct guidance or publish that counter. Its action comparison and
 cache hit/miss checks had passed. The test now treats an absent counter as zero;
-no model computation or measured result was changed. The failed log is retained.
+no model computation or measured result was changed. The failed log is retained
+alongside the successful rerun.
 
 Sparse `policy.options`:
 
@@ -141,3 +167,5 @@ instruction cache; visual/action state remains local to each request. Cache hits
 and actual visual/action work are emitted with each prediction. The current
 measurement meets the latency target but does **not** yet meet the complete
 paired-SR acceptance criterion or establish a full SR/latency Pareto frontier.
+The [new closed-loop record](prompt-cache-paired-20260920.md) contains the completed
+15-pair pilot and the independently running full Spatial comparison.

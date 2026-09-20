@@ -1,0 +1,104 @@
+{
+  "start_utc": "2026-09-20T05:23:40.314593+00:00",
+  "commit": "aa5f5fa7815702ee9dd00aedca2a9e94d0ff9133",
+  "model_commit": "04163905f047169a159b3e366d679afc86392757",
+  "dependency_sources_unchanged": {
+    "pyproject.toml": "a5e09a5048610cd8e5c3d66c6b0a82593c64acafa8e04aa90a986aaef3b5313a",
+    "uv.lock": "b5b2f17d88cde00f8357056b531606096f6b73eaecd852d1552bc8f9db4e8fe1"
+  },
+  "environment": "existing evaluator venv reused; no installs/sync",
+  "commands": [
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "validate",
+        "configs/experiments/dreamwam-prompt-conditioned-pilot.yaml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "doctor",
+        "configs/experiments/dreamwam-prompt-conditioned-pilot.yaml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "validate",
+        "configs/experiments/dreamwam-prompt-conditioned-libero-spatial.yaml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "doctor",
+        "configs/experiments/dreamwam-prompt-conditioned-libero-spatial.yaml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "validate",
+        "configs/experiments/dreamwam-prompt-guided-pilot.yaml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "doctor",
+        "configs/experiments/dreamwam-prompt-guided-pilot.yaml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "validate",
+        "configs/experiments/dreamwam-prompt-guided-libero-spatial.yaml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "doctor",
+        "configs/experiments/dreamwam-prompt-guided-libero-spatial.yaml"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "schema_exit": 0,
+  "schema_matches_committed": true,
+  "end_utc": "2026-09-20T05:25:34.701252+00:00"
+}

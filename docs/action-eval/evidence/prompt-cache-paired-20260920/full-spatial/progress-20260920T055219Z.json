@@ -1,0 +1,332 @@
+{
+  "utc": "2026-09-20T05:52:19.425364+00:00",
+  "controller": {
+    "status": "RUNNING",
+    "start_utc": "2026-09-20T05:44:38.954756+00:00",
+    "pid": 453956,
+    "evaluator_commit": "aa5f5fa7815702ee9dd00aedca2a9e94d0ff9133",
+    "model_commit": "04163905f047169a159b3e366d679afc86392757",
+    "renderer": 4,
+    "policy_gpu": 2,
+    "planned_episodes_per_arm": 500,
+    "runs": [
+      {
+        "arm": "dense",
+        "start_utc": "2026-09-20T05:44:42.851862+00:00",
+        "admission": {
+          "utc": "2026-09-20T05:44:42.851157+00:00",
+          "arm": "dense",
+          "phase": "admission",
+          "gpus": [
+            {
+              "index": 0,
+              "uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+              "util": 0,
+              "free": 138201,
+              "processes": [
+                {
+                  "pid": "366790",
+                  "type": "G",
+                  "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-verification/.venv/bin/python"
+                }
+              ]
+            },
+            {
+              "index": 1,
+              "uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+              "util": 0,
+              "free": 116800,
+              "processes": [
+                {
+                  "pid": "376135",
+                  "type": "C",
+                  "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/dreamzero-eval/.venv/bin/python"
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+              "util": 0,
+              "free": 116800,
+              "processes": [
+                {
+                  "pid": "376134",
+                  "type": "C",
+                  "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/dreamzero-eval/.venv/bin/python"
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "uuid": "GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba",
+              "util": 100,
+              "free": 116900,
+              "processes": [
+                {
+                  "pid": "444917",
+                  "type": "G",
+                  "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2/.venv/bin/python"
+                },
+                {
+                  "pid": "444986",
+                  "type": "C",
+                  "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/.venv/bin/python"
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "uuid": "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4",
+              "util": 0,
+              "free": 143156,
+              "processes": []
+            },
+            {
+              "index": 5,
+              "uuid": "GPU-7d459912-b567-59fb-8abf-57c18713cb84",
+              "util": 18,
+              "free": 118414,
+              "processes": [
+                {
+                  "pid": "367109",
+                  "type": "C",
+                  "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-egl/.venv/bin/python"
+                }
+              ]
+            },
+            {
+              "index": 6,
+              "uuid": "GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5",
+              "util": 0,
+              "free": 139776,
+              "processes": [
+                {
+                  "pid": "375994",
+                  "type": "G",
+                  "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-verification/.venv/bin/python"
+                }
+              ]
+            },
+            {
+              "index": 7,
+              "uuid": "GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8",
+              "util": 8,
+              "free": 140160,
+              "processes": [
+                {
+                  "pid": "376000",
+                  "type": "G",
+                  "process_name": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-verification/.venv/bin/python"
+                }
+              ]
+            }
+          ],
+          "spare_unused_by_this_task": [
+            1,
+            5
+          ]
+        },
+        "command": [
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+          "scripts/supplement-libero.py",
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/configs/experiments/dreamwam-prompt-conditioned-libero-spatial.yaml",
+          "--render-gpu",
+          "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4",
+          "--output",
+          "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/prompt-cache-paired-20260920/full-spatial/dense-spatial-gpu2-render4",
+          "--check-native-writes"
+        ],
+        "output": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/prompt-cache-paired-20260920/full-spatial/dense-spatial-gpu2-render4",
+        "fingerprint_verified": true,
+        "pid": 454021
+      }
+    ],
+    "sr": null,
+    "notes": [
+      "new matched rendering lineage; no pooling with earlier runs",
+      "shared compute GPU; no performance claim from these episode wall times"
+    ]
+  },
+  "runs": {
+    "dense": {
+      "snapshot": {
+        "planned": 500,
+        "outcomes": {
+          "t000-i000-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "58ca15704053a8a6a5b1f9af929018e5ecefb0f37af45a6e0e6b5433cdd2fce8"
+          },
+          "t000-i001-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "aa923743aa41436a75130a579babdb77f154d32804a353e7a3584b5bf0ba960a"
+          },
+          "t000-i002-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c83d24be9d784bed405c40ff4ce1a8deee33f083368ea09421bb4677f4a72532"
+          },
+          "t000-i003-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "b3b002e7ddc8ddca58344d603ebb4eb1fc6a22a617d6da571100ff1a6f232276"
+          },
+          "t000-i004-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "363b7731f7d7b08b3b12695ed40d941092dd8b6d8c11f1f2b43a5532ec91a435"
+          },
+          "t000-i005-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "11d8ab135313781728770fcdb1464ae5384f54db4e2022286af0784fa3b13f91"
+          },
+          "t000-i006-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "31658d8a58848bbfbf3296150be6ac4d09743de9c0ea61f065b6e5072df878a7"
+          },
+          "t000-i007-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "4ea758a3a23eb8254e7c0e7af03a5c36369205ba869b889fccf506607651a050"
+          },
+          "t000-i008-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "81e7dbe4e668ca9bb2ac20f497efd61e56e7ad58ea69ecabc0c8b6adddfe4919"
+          },
+          "t000-i009-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "b946a9af3591fc372fd3bb3bca3d5408f3e6c9ee1548143461d6ca81dcb238f4"
+          },
+          "t000-i010-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "12502fb135597a7bcb82e5366b000b62b219550984db5f641bbdc870f603c3f4"
+          },
+          "t000-i011-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ac8ca90962c427363b2fb0637bcd04398e96b3d58d16c8e210b937c18000a92d"
+          },
+          "t000-i012-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "925d1e3b3accf9f67d8e08159f3d63c08fac78bf8e0ea07bbea9cffbeab91940"
+          },
+          "t000-i013-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "2c08445af80597dfc3382cbfbdec80995ccd4d3f1ad9b51a2e59b4724feeb596"
+          },
+          "t000-i014-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3712b3408f82336b52692e6e15977af2df516397db792138df994ba8fb0406d8"
+          },
+          "t000-i015-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "7fc9b376765f09d2c73ba274979660ee80adf76fb8828d9399237ff268fc795b"
+          },
+          "t000-i016-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3583428d8e8222aebacc4ff390be1d891d1f0392dc30d670606ad97bac5fd31f"
+          },
+          "t000-i017-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "68e4332486616ac5a8a5d757cf59bb3b1a2608d6d760b87f60caf2de31e07906"
+          },
+          "t000-i018-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "a3726ba33df32d5a1940b70ee78a1621ba695db2fdf43ddb4c63e664fb5e20a9"
+          },
+          "t000-i019-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "cdaab93f76943c9a81f52cb4e57c966eaa2b4331bfc358e2dd3ca86688e2d7d2"
+          },
+          "t000-i020-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "4f8f85385b6321a430d48c431b84ff0fa2d93037bdff6d737ce82e72dec1ad6e"
+          },
+          "t000-i021-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "2850cbd96a8a29819bdb7791e7137ad429fb744dc14134741846ae80de32acf6"
+          },
+          "t000-i022-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c8a1b4ea0e92bfec5fa0589f7ee7a972a5a5bbb6328462802145fd77f106f7d1"
+          },
+          "t000-i023-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3a876624f105b739bd1896b4f9fd15d650c4a19241ccf8653ae0f71ce5365f72"
+          },
+          "t000-i024-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c58a786803fa0ea41845474b6c5cd33f475149074b358129d5987e993a6ad0d4"
+          },
+          "t000-i025-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "6a5462d355f191de8f7dbe9c235ecd08d3e41b8e42ffdc7966531c37b42f006d"
+          },
+          "t000-i026-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ef4ab7ed17b17d5cf330c1bb8e90136472efb5695be5229b5f18852b671e26c9"
+          },
+          "t000-i027-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "a325832912325898c1afdb84154088b69fef1a2c9e08f2bc12755ebe04238c4f"
+          },
+          "t000-i028-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ef312487949d237aaff827e87bd55210e978baeeed581e90f353a694bab0d93c"
+          },
+          "t000-i029-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c465103331d9c75add8327702609eb3d1911c752804f5c5eb0e5543acbdb42d6"
+          },
+          "t000-i030-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "d7053edf2f3256f29f2802968ba60d652f8bf964edb148d4be03076da182f4c1"
+          },
+          "t000-i031-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "431ac2e6833c0a431e6b87caad6bc10fb7648f8b96625e91b979080837ea402a"
+          },
+          "t000-i032-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "a7d082dde61cf6a800f3b34c1ad62b1100329473047ed20309a9ff5392b5f262"
+          }
+        },
+        "manifest_sha256": "af65fcc838a4f2a9d12b4936d8a7bbdc9350149ed5e62bd7092f15810a64a407",
+        "resolved_sha256": "b20794675418f7827bf15b671bc08b475f94a9d58676d3e0bf6bf60df549087d"
+      },
+      "completed": 33,
+      "successes": 33,
+      "task_failures": 0,
+      "policy_worker_alive": true
+    }
+  },
+  "sr": null
+}

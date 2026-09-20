@@ -1,0 +1,18 @@
+{
+  "start_utc": "2026-09-20T05:20:43.956614+00:00",
+  "commit": "04163905f047169a159b3e366d679afc86392757",
+  "command": [
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-prompt-policy-0416390/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/sparse/test_prompt_cache.py",
+    "tests/sparse/test_visual_step_cache.py",
+    "tests/sparse/test_visual_adapter_integration.py",
+    "tests/sparse/test_conditioned_frame_cache.py",
+    "tests/sparse/test_adapter_contract.py"
+  ],
+  "environment": "unchanged reused venv; CPU-only",
+  "exit_code": 0,
+  "end_utc": "2026-09-20T05:20:58.690825+00:00"
+}

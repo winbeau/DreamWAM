@@ -1,0 +1,23 @@
+{
+  "status": "VERIFIED",
+  "start_utc": "2026-09-20T05:22:27.429251+00:00",
+  "argv": [
+    "scripts/sparse/verify_prompt_cache_adapter.py",
+    "--inputs",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-calibration-20260920/inputs-gpu4/manifest.json",
+    "--out-dir",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/prompt-cache-20260920/adapter-0416390"
+  ],
+  "pid": 436372,
+  "commit": {
+    "exit_code": 0,
+    "stdout": "04163905f047169a159b3e366d679afc86392757",
+    "stderr": ""
+  },
+  "torch": "2.7.1+cu126",
+  "cuda": "12.6",
+  "cuda_visible_devices": "4",
+  "input_manifest_sha256": "bcdba90931d4cb9f980d5fe68d2cac26703684d8f5ad4f86a79742962352627a",
+  "sr": null,
+  "end_utc": "2026-09-20T05:24:09.880314+00:00"
+}

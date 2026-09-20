@@ -1,0 +1,35 @@
+{"selected": 15, "planned": 15, "render_gpu": "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4", "policy_gpus": ["GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074"]}
+Traceback (most recent call last):
+  File "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/src/action_eval/benchmarks/libero/inspect_state.py", line 126, in import_benchmark_module
+    return importlib.import_module("libero.libero.benchmark")
+  File "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/.uv-python/cpython-3.10-linux-x86_64-gnu/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 992, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 992, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1004, in _find_and_load_unlocked
+ModuleNotFoundError: No module named 'libero'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/scripts/supplement-libero.py", line 151, in <module>
+    raise SystemExit(main())
+  File "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/scripts/supplement-libero.py", line 133, in main
+    backend = create_backend(loaded)
+  File "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/src/action_eval/runner/run.py", line 357, in create_backend
+    return LiberoBenchmark(loaded)
+  File "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/src/action_eval/benchmarks/libero/backend.py", line 259, in __init__
+    self._task_suite = make_task_suite(self.suite, self._root)
+  File "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/src/action_eval/benchmarks/libero/inspect_state.py", line 147, in make_task_suite
+    benchmark = import_benchmark_module(benchmark_root)
+  File "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/src/action_eval/benchmarks/libero/inspect_state.py", line 128, in import_benchmark_module
+    raise LiberoUnavailable(
+action_eval.benchmarks.libero.inspect_state.LiberoUnavailable: libero.libero.benchmark is not importable in this interpreter: No module named 'libero'. Missing dependency: 'libero'. Install the simulator stack with `uv pip install -e '.[libero]'` (or run the platform on the machine that already has LIBERO installed).

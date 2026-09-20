@@ -1,0 +1,16 @@
+{
+  "start_utc": "2026-09-20T05:22:24.664475+00:00",
+  "command": [
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-prompt-policy-0416390/.venv/bin/python",
+    "scripts/sparse/verify_prompt_cache_adapter.py",
+    "--inputs",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-calibration-20260920/inputs-gpu4/manifest.json",
+    "--out-dir",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/prompt-cache-20260920/adapter-0416390"
+  ],
+  "worktree": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-prompt-policy-0416390",
+  "environment": "unchanged existing venv; CUDA_VISIBLE_DEVICES=4",
+  "pid": 436372,
+  "exit_code": 0,
+  "end_utc": "2026-09-20T05:24:13.929601+00:00"
+}

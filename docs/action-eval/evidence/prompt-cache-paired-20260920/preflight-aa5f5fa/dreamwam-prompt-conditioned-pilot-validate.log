@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/configs/experiments/dreamwam-prompt-conditioned-pilot.yaml
+experiment  : dreamwam-prompt-conditioned-pilot (DreamWAM Joint conditioned-frame Dense with exact prompt reuse (pilot))
+fingerprint : 1fb4c188aed68a68e4ac17b3b3d0616fd80d90800f9101f94e40da8e3269ca38
+benchmark   : libero_spatial tasks=[0, 1, 2] inits=[0, 1, 2, 3, 4]
+episodes    : 15 planned (3 tasks x 5 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

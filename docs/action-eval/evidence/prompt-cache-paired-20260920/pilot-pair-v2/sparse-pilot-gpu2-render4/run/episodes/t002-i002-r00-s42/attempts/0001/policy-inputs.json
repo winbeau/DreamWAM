@@ -1,0 +1,312 @@
+[
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "364382ec8b0889f3e9e3510b1b848bc88a0ec76e959690affa5f02027f9d6f20",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "afa6e2bf07ce2b00790d7b0e4d26a34577ccbb552a7e5a111eee66e44358d23f",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "e4f4ebb7d5bf8c97e1907475003f4b22148d1667e20bc7395d5283209a680665",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 30
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "46ebd8bc33d12bc3b3bd9717966027c743d878779b2596b37f8fdc73ccc56a81",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "ab0dfd4a36de1c032d6b00b2af225ad5263fbfe26c9cefc68c0bbc2b4bc49797",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "780cd35282d4163a3b1638eb8bc0e1242a06d4f7ce030f95d860167b6fddd8ac",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 40
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "d6748bd2873c65d60a5e061425d7d9b93492f69507f9f66c5febac75ae4782c6",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "1be1b02142946fb15947a16a70c15b36ca046d4d73d8c3bb9fc50f684176066c",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "90d7c6e1807f238482823cb69fb42930a78aecf7691255aef928cab07b246a05",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 50
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "c43bc5ca236d557224b0e9890ea99912d991b42826bf39bc18d7b6abb7cac249",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "adbaee9365f4a7d5ccce6a5dc426ee28475e65c91946d0ed878100dbc2938f9e",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "2149b0ff37fbf09e34227bb4e65b9f694aa5bbb77140db6104d8852002940010",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 60
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "dde32f20c214ea5fc63b3b0ead67065edfc0f5a087135aec9f1a161b91d47ee0",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "d011e8184cc4c02467659f42d4f71bcabcf89c599f37095e65ecbb3b7104670c",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "a2bf527bb92d4187b91ed0b49bf061530f13595df3f443f1ba08b3b5c0fe4ea1",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 70
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "a7ce379fa293a8e63523012027402a50d0897768eff1284f0333ddab73cd1af7",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "df588dab63681a30df3cc20d0c25b485856f2468e8b56b3fe35d0d296c526c01",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "8aaef6453a241dfca481904e50e36f8a83cf94d079125183efdcdf7c5565f21a",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 80
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "af628f641d544cf7946bd45da59db3d8445e194528f1a9c2352c80ff9cad8758",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "9ab8207cf90cba2714caab2a95bba72b15427bb220272e70270c8ba68242dc95",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "782bdc46e1dd9b2bec0124a78684ffcb9b672cf3e7726e53eb37532f083cead4",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 90
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "39e51edc8723c441557b2d786cba7b1326dd913d79fda9d2414fabae2e038d5b",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "641cc5bb4e47089a81eaf5f9330060691fbf720c2a5482366000d3cb0ef492a2",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "8a46ae896d76eb5332e4a345486359b748e276b392c1b75208393a8fb49272b5",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 100
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "8661348e371d21807f27d77b671dc2295127ea37a9261291c1d42205137fda7c",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "a0876cd3d2170ceeab8d7fea9fad75909b8c8182e95e83a225c9392e5555979f",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "22c88c30a4fc2865aa71774f629d24b075c343c183bad8442d48577d196ea0fb",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 110
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "ff11b51fbf851d67698085fbc8bc5e7a2caa7472e0d244229597b4c7da0e6bd7",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "af6ce338c2e52b5a07bea1fc19a3ce11e8f9edbda36ac9d51867974043adff1c",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl from table center and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "98edc51395b457734fe6cf4bfbfab1e589482df5403064ff2fc846977e303add",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 120
+  }
+]

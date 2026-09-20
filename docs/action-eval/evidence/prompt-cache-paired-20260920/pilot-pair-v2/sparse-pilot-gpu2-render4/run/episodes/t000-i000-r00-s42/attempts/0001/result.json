@@ -1,0 +1,32 @@
+{
+  "schema_version": "action-eval/episode/v1",
+  "episode_id": "t000-i000-r00-s42",
+  "run_id": "run",
+  "attempt": 1,
+  "status": "succeeded",
+  "success": true,
+  "termination_reason": "success",
+  "task_id": 0,
+  "init_index": 0,
+  "repeat": 0,
+  "seed": 42,
+  "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+  "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+  "executed_steps": 74,
+  "policy_calls": 8,
+  "waited_steps": 30,
+  "started_at": "2026-09-20T05:38:59.541214+00:00",
+  "finished_at": "2026-09-20T05:39:19.355307+00:00",
+  "wall_seconds": 19.814095,
+  "policy_seconds": 3.352145,
+  "env_seconds": 3.64685,
+  "error_type": null,
+  "error_message": null,
+  "artifacts": {
+    "actions": "episodes/t000-i000-r00-s42/attempts/0001/actions.npy",
+    "predictions": "episodes/t000-i000-r00-s42/attempts/0001/predictions.npy",
+    "prediction_lengths": "episodes/t000-i000-r00-s42/attempts/0001/prediction_lengths.npy",
+    "policy_inputs": "episodes/t000-i000-r00-s42/attempts/0001/policy-inputs.json"
+  },
+  "notes": []
+}

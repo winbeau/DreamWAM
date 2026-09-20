@@ -1,0 +1,4 @@
+task_id,task_name,planned,succeeded,failed,errors,cancelled,not_run,completed,coverage,success_rate,observed_sr,success_lower_bound,wilson_low,wilson_high
+0,pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate,5,5,0,0,0,0,5,1.0,1.0,1.0,1.0,0.5655175352168251,1.0
+1,pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate,5,5,0,0,0,0,5,1.0,1.0,1.0,1.0,0.5655175352168251,1.0
+2,pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate,5,5,0,0,0,0,5,1.0,1.0,1.0,1.0,0.5655175352168251,1.0

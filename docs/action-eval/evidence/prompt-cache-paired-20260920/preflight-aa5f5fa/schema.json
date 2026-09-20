@@ -1,0 +1,467 @@
+{
+  "$defs": {
+    "BenchmarkConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "backend": {
+          "default": "libero",
+          "enum": [
+            "libero",
+            "mock"
+          ],
+          "title": "Backend",
+          "type": "string"
+        },
+        "initial_state_indices": {
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 1,
+          "title": "Initial State Indices",
+          "type": "array"
+        },
+        "repeats": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Repeats",
+          "type": "integer"
+        },
+        "root": {
+          "description": "LIBERO checkout root; may use ${VAR}.",
+          "minLength": 1,
+          "title": "Root",
+          "type": "string"
+        },
+        "suite": {
+          "title": "Suite",
+          "type": "string"
+        },
+        "task_ids": {
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 1,
+          "title": "Task Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "root",
+        "suite",
+        "task_ids",
+        "initial_state_indices"
+      ],
+      "title": "BenchmarkConfig",
+      "type": "object"
+    },
+    "ExperimentMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$",
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "ExperimentMeta",
+      "type": "object"
+    },
+    "OutputsConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "root": {
+          "minLength": 1,
+          "title": "Root",
+          "type": "string"
+        },
+        "save_actions": {
+          "default": true,
+          "title": "Save Actions",
+          "type": "boolean"
+        },
+        "save_observations": {
+          "default": false,
+          "title": "Save Observations",
+          "type": "boolean"
+        },
+        "video": {
+          "default": "failures",
+          "enum": [
+            "none",
+            "failures",
+            "all"
+          ],
+          "title": "Video",
+          "type": "string"
+        }
+      },
+      "required": [
+        "root"
+      ],
+      "title": "OutputsConfig",
+      "type": "object"
+    },
+    "PolicyConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "checkpoint": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Checkpoint"
+        },
+        "entrypoint": {
+          "description": "module_or_file:callable importable by the policy interpreter.",
+          "minLength": 1,
+          "title": "Entrypoint",
+          "type": "string"
+        },
+        "model_config": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "model-side config file, resolved against repo_root",
+          "title": "Model Config"
+        },
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        },
+        "python": {
+          "minLength": 1,
+          "title": "Python",
+          "type": "string"
+        },
+        "repo_root": {
+          "minLength": 1,
+          "title": "Repo Root",
+          "type": "string"
+        }
+      },
+      "required": [
+        "repo_root",
+        "python",
+        "entrypoint"
+      ],
+      "title": "PolicyConfig",
+      "type": "object"
+    },
+    "ProtocolConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "action_profile": {
+          "minLength": 1,
+          "title": "Action Profile",
+          "type": "string"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "max_steps": {
+          "minimum": 1,
+          "title": "Max Steps",
+          "type": "integer"
+        },
+        "observation_profile": {
+          "minLength": 1,
+          "title": "Observation Profile",
+          "type": "string"
+        },
+        "replan_steps": {
+          "description": "K: executed actions per predicted chunk.",
+          "minimum": 1,
+          "title": "Replan Steps",
+          "type": "integer"
+        },
+        "resolution": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            }
+          ],
+          "title": "Resolution",
+          "type": "array"
+        },
+        "seed": {
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "success_mode": {
+          "const": "first_success_after_wait",
+          "default": "first_success_after_wait",
+          "title": "Success Mode",
+          "type": "string"
+        },
+        "wait_steps": {
+          "minimum": 0,
+          "title": "Wait Steps",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "max_steps",
+        "wait_steps",
+        "resolution",
+        "replan_steps",
+        "observation_profile",
+        "action_profile",
+        "seed"
+      ],
+      "title": "ProtocolConfig",
+      "type": "object"
+    },
+    "ReportConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "table_label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Table Label"
+        },
+        "uncertainty": {
+          "default": "wilson95",
+          "enum": [
+            "none",
+            "wilson95"
+          ],
+          "title": "Uncertainty",
+          "type": "string"
+        }
+      },
+      "title": "ReportConfig",
+      "type": "object"
+    },
+    "RuntimeConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "env": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Env",
+          "type": "object"
+        },
+        "episode_timeout_s": {
+          "default": 7200.0,
+          "exclusiveMinimum": 0,
+          "title": "Episode Timeout S",
+          "type": "number"
+        },
+        "error_policy": {
+          "default": "stop",
+          "enum": [
+            "stop",
+            "continue"
+          ],
+          "title": "Error Policy",
+          "type": "string"
+        },
+        "executor": {
+          "const": "local",
+          "default": "local",
+          "title": "Executor",
+          "type": "string"
+        },
+        "first_predict_timeout_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "First Predict Timeout S"
+        },
+        "gpu_sharing": {
+          "default": "explicit",
+          "enum": [
+            "exclusive",
+            "explicit"
+          ],
+          "title": "Gpu Sharing",
+          "type": "string"
+        },
+        "policy_gpu_uuids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Policy Gpu Uuids",
+          "type": "array"
+        },
+        "predict_timeout_s": {
+          "default": 120.0,
+          "exclusiveMinimum": 0,
+          "title": "Predict Timeout S",
+          "type": "number"
+        },
+        "render_gpu_uuid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Render Gpu Uuid"
+        },
+        "retries": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Retries",
+          "type": "integer"
+        },
+        "startup_timeout_s": {
+          "default": 600.0,
+          "exclusiveMinimum": 0,
+          "title": "Startup Timeout S",
+          "type": "number"
+        },
+        "workers": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Workers",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "policy_gpu_uuids"
+      ],
+      "title": "RuntimeConfig",
+      "type": "object"
+    },
+    "SimulatorEnvConfig": {
+      "additionalProperties": false,
+      "description": "Process environment for the benchmark/simulator side.\n\nEvery entry here is a *performance* knob, never a scientific one: it must not\nchange which episodes run, what success means, or which actions are executed.\nThe defaults exist because the measured cost of getting them wrong is extreme\n-- on a loaded 192-core node, an unset ``OMP_NUM_THREADS`` made a MuJoCo step\ntake ~4.6 s instead of ~21 ms (a ~220x slowdown), which turns a pilot into an\novernight job and makes latency numbers meaningless.\n\n``OMP_NUM_THREADS=1`` is the measured best setting for this simulator workload.\nIt may be overridden, but a wrong value is a performance bug, not a\nreproducibility one.",
+      "properties": {
+        "OMP_NUM_THREADS": {
+          "default": "1",
+          "title": "Omp Num Threads",
+          "type": "string"
+        },
+        "cpu_affinity": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Affinity"
+        }
+      },
+      "title": "SimulatorEnvConfig",
+      "type": "object"
+    }
+  },
+  "$id": "https://github.com/winbeau/action-eval/schemas/action-eval.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "benchmark": {
+      "$ref": "#/$defs/BenchmarkConfig"
+    },
+    "experiment": {
+      "$ref": "#/$defs/ExperimentMeta"
+    },
+    "outputs": {
+      "$ref": "#/$defs/OutputsConfig"
+    },
+    "policy": {
+      "$ref": "#/$defs/PolicyConfig"
+    },
+    "protocol": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ProtocolConfig"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "protocol_file": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Protocol File"
+    },
+    "report": {
+      "$ref": "#/$defs/ReportConfig"
+    },
+    "runtime": {
+      "$ref": "#/$defs/RuntimeConfig"
+    },
+    "schema_version": {
+      "const": "action-eval/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "simulator_env": {
+      "$ref": "#/$defs/SimulatorEnvConfig"
+    }
+  },
+  "required": [
+    "schema_version",
+    "experiment",
+    "benchmark",
+    "policy",
+    "runtime",
+    "outputs"
+  ],
+  "title": "action-eval experiment configuration",
+  "type": "object"
+}

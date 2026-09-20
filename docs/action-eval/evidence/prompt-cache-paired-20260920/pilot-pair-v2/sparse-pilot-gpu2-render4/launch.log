@@ -1,0 +1,40 @@
+{"selected": 15, "planned": 15, "render_gpu": "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4", "policy_gpus": ["GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074"]}
+[robosuite WARNING] No private macro file found! (macros.py:53)
+[robosuite WARNING] It is recommended to use a private macro file (macros.py:54)
+[robosuite WARNING] To setup, run: python /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/lib/python3.10/site-packages/robosuite/scripts/setup_macros.py (macros.py:55)
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[libero] creating environment for task 0 (pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl) at 256x256
+[libero] environment for task 0 ready
+[OK  ] t000-i000-r00-s42 steps=74 policy_calls=8 wall=19.8s (success)
+[OK  ] t000-i001-r00-s42 steps=75 policy_calls=8 wall=7.0s (success)
+[OK  ] t000-i002-r00-s42 steps=77 policy_calls=8 wall=15.5s (success)
+[OK  ] t000-i003-r00-s42 steps=75 policy_calls=8 wall=8.0s (success)
+[OK  ] t000-i004-r00-s42 steps=73 policy_calls=8 wall=14.3s (success)
+[libero] creating environment for task 1 (pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate.bddl) at 256x256
+[libero] environment for task 1 ready
+[OK  ] t001-i000-r00-s42 steps=105 policy_calls=11 wall=17.4s (success)
+[OK  ] t001-i001-r00-s42 steps=102 policy_calls=11 wall=10.0s (success)
+[OK  ] t001-i002-r00-s42 steps=107 policy_calls=11 wall=14.3s (success)
+[OK  ] t001-i003-r00-s42 steps=104 policy_calls=11 wall=18.9s (success)
+[OK  ] t001-i004-r00-s42 steps=108 policy_calls=11 wall=10.5s (success)
+[libero] creating environment for task 2 (pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate.bddl) at 256x256
+[libero] environment for task 2 ready
+[OK  ] t002-i000-r00-s42 steps=95 policy_calls=10 wall=7.1s (success)
+[OK  ] t002-i001-r00-s42 steps=93 policy_calls=10 wall=7.4s (success)
+[OK  ] t002-i002-r00-s42 steps=92 policy_calls=10 wall=14.3s (success)
+[OK  ] t002-i003-r00-s42 steps=92 policy_calls=10 wall=7.8s (success)
+[OK  ] t002-i004-r00-s42 steps=94 policy_calls=10 wall=14.1s (success)
+[libero] closing environment for task 0
+[libero] environment for task 0 closed
+[libero] closing environment for task 1
+[libero] environment for task 1 closed
+[libero] closing environment for task 2
+[libero] environment for task 2 closed
+{"selected": 15, "completed": 15, "selection_complete": true, "full_suite_success_rate": null}

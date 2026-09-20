@@ -1,0 +1,10 @@
+{
+  "utc": "2026-09-20T05:31:56.068764+00:00",
+  "exit_code": 0,
+  "PYTHONPATH": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/src:/data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO",
+  "command": [
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/.venv/bin/python",
+    "-c",
+    "from action_eval.benchmarks.libero.inspect_state import make_task_suite, import_env_module; import importlib.metadata as m; suite=make_task_suite('libero_spatial', '/data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO'); module=import_env_module('/data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO'); print('tasks',suite.n_tasks,'env',module.__file__); print({k:m.version(k) for k in ['mujoco','robosuite','numpy']})"
+  ]
+}

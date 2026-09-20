@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-prompt-aa5f5fa/configs/experiments/dreamwam-prompt-guided-pilot.yaml
+experiment  : dreamwam-prompt-guided-pilot (DreamWAM Joint guided token sparsity with exact prompt reuse (pilot))
+fingerprint : b0ec360462bfc2c9b4e6a640fa3150b7e9e779114e842876e44193d6a937326c
+benchmark   : libero_spatial tasks=[0, 1, 2] inits=[0, 1, 2, 3, 4]
+episodes    : 15 planned (3 tasks x 5 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

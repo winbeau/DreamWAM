@@ -1,0 +1,374 @@
+[
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "b54e5c44599f8f521432a560b62312045ec86273ad948ce1201bf6f94b423914",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "3682407f13863953899e313f9c61e8c449e30d5855317ad707f75e31d6f4eb48",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "1ebdf0ca84769a69fe1720f9d82d8c91d0a5e33d3c2388cc62d8a9018172b36b",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 30
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "46413c0517b1e15ff5f1196ee14e7c7db09b8210b246d1da5caba1c24ebd441d",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "513657064c6ede9a0f28c87d1eec0364993a40b60651612bf0f906b5a78d73d5",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "e3d51e8b62efa02304438941352180582985eae1d3cc609cddd6642d20986e69",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 40
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "1e7adcbfcb5eeeb887e928b221c7bc9c2147ad72fcb61b5b7a75449349d0ccb7",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "8ecea3c3cbe7a9158fcad3dd67d5ba06bd9adbab0a5b61a85a3f8177c52760e9",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "5d08bc82de35d98348e85ee630659e7d070a2a20f9ed4f4b52a3cf750ee5ff42",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 50
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "b5fd24305b97b57cf2455d664f7d89ce2b92f3f244b55c168fd47c1ad90621c5",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "653997c4e4b51d2cb567f17b51b110002a2d0e5753f84f08fa4279a8e769f790",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "487f51665fa3d927a7649fc38c6b73426854964f5297d3b8107b8abd25be6a4c",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 60
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "55e14ecf6cc54c50e05bfc506dd6e405292f089c6685e2bc7c8c559846979db7",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "37d9acdbb8e97e05e394fe821c052cabc31375fcf8938e03e673879bd45790fc",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "472aec01a559cfb3fd69edae5485db03c25ce04164f0f39beb01ada89d2c588d",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 70
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "17e470c1ea0dbd5df8a00dc630d92525d48d1c88852b0c5873183baad8ef5c76",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "fabd899ce7dd645a0ee251c1aeca54a40f7539387c6f6615dadcd86689128dd4",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "0c2a3392cea366b0e3cc7bc408c9d3a86b55c67973e247f0a202da7ffed335d5",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 80
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "8935f96025999c0a096ae16371fcba8ea2d64b28881dc8188ecd2935d1738bea",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "17a5fcc1adfb14cd15a2c6b81a9791b2499288dc40c34cc4d27f517eabd20efd",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "d5f643e7dabb9f7e3d6783a0434f3a9c6c31b01d9eada37790a8e8c32c416ee7",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 90
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "b3f05b5b1aa628cec2d5f9555f0539ea7135b428ae05e1391b58e539eefef2fc",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "78149621bf3f080ad5762ea2a2f303263e6cad9147258fccb1550abb570c3aa9",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "0bab53954243a8d45d7546cd1718d9932a9648dd9b85b5259e3b10d2a7adf998",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 100
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "ff999d5c123f7599b5858d1f01be118279e2678efc101428015ac68d0ea660b7",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "bc4d7fe37c47d55533fde25fe460d70db3aa7c49b27edad0a87a1c3c59fdcef5",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "3a61912d4706767c6c58af35d9664d2be6e6adcf5b4a6a148a523ff4cbb1f2b3",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 110
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "52c502c56337471a7df5becf19021b4db4faafbd8189b27e0840873689f37593",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "50fa9e939c8237c9f5d0e30057c8d2296a0d71057076ff711de8ff936356b8ad",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "01bb76d8b337007ee05e29cb8ce08bbe9f2fa80a4fe200e276be531e2de4ca2f",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 120
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "06b63e04b718acdc4e5e07916431d5355eda2e8a327132891f5fe2b81c50f15a",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "a6ee48290029c2518e05221d3d1dc664c2fa6bfcfdc1af714907fb5c57789787",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "80a38b3ec52126dd144b05a2ccbabca5ee989ae1bd8a8211d602a9fbe34d87fe",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 130
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "9b65bf28832e13da7e5710ee411cf4f436fbe1f105c92582cc4ed404c7f2208d",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "b986de9f02b21fed3ee245e6e64ecfc9f4c517c084de7429b8b78340985c50ad",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl next to the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "a50af2e251d1370cb7f1ba5003c14e811e44aef62fd91c547ddce13a6b809115",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 140
+  }
+]

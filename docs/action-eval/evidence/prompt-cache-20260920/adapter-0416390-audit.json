@@ -1,0 +1,38 @@
+{
+  "utc": "2026-09-20T05:26:17.467993+00:00",
+  "status": "VERIFIED",
+  "commit": "04163905f047169a159b3e366d679afc86392757",
+  "checks": {
+    "dense": {
+      "exact_action_checks": 7,
+      "executed_visual_token_layers": 61740,
+      "action_layer_updates": 300,
+      "reset_misses_verified": true,
+      "weight_hash_verified": true,
+      "actions_sha256": "f9e7ae3a8b2a35474cc65c75913b2b5f10142b96e65fa0a28288e90523a9b9f5"
+    },
+    "sparse": {
+      "exact_action_checks": 7,
+      "executed_visual_token_layers": 9720,
+      "action_layer_updates": 300,
+      "reset_misses_verified": true,
+      "weight_hash_verified": true,
+      "actions_sha256": "99d495fb2e04ae7d9c7e2383bf83b72596e8ee48d1a42c3e8e6d92b932927930"
+    }
+  },
+  "sha256": {
+    "adapter-0416390/dense-actions.npz": "f9e7ae3a8b2a35474cc65c75913b2b5f10142b96e65fa0a28288e90523a9b9f5",
+    "adapter-0416390/report.json": "d0f38ecf2d0df38d0b7f15fcdbfc00717e86d7ae30c79cd9e67d546a8b30a557",
+    "adapter-0416390/sparse-actions.npz": "99d495fb2e04ae7d9c7e2383bf83b72596e8ee48d1a42c3e8e6d92b932927930",
+    "tests-policy-eaf5add-cpu.log": "06920cb14e76fc3beb621733694927c4edaef64dacd3bedd09b95fb6c83063d3",
+    "tests-policy-eaf5add-cpu.exit": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "tests-policy-0416390-cpu.log": "5465721c3d64dcf392ee118aa1b42561fc26ab3eb8d5ed00210b0555e4451595",
+    "tests-policy-0416390-cpu.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests-policy-0416390-cuda.log": "550ff36502c940f50705ce1f83c5e9537bbe28b880a4ff20ed00661bc67f2815",
+    "tests-policy-0416390-cuda.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "adapter-0416390.log": "a22a725b107c2378bc70ef7eaf99e1399493418e3cad703e23b5b6dac7420392",
+    "adapter-0416390.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+  },
+  "sr": null,
+  "note": "Full action parity of API integration; no new timing benchmark or SR claim"
+}

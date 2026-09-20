@@ -1,0 +1,191 @@
+{
+  "utc": "2026-09-20T05:52:19.401398+00:00",
+  "status": "VERIFIED",
+  "scope": "15-episode pilot pair; not benchmark SR",
+  "arms": {
+    "dense": [
+      {
+        "episode_id": "t000-i000-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 76,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t000-i001-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 75,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t000-i002-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 74,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t000-i003-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 75,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t000-i004-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 73,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i000-r00-s42",
+        "policy_calls": 11,
+        "executed_steps": 106,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i001-r00-s42",
+        "policy_calls": 11,
+        "executed_steps": 101,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i002-r00-s42",
+        "policy_calls": 12,
+        "executed_steps": 111,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i003-r00-s42",
+        "policy_calls": 11,
+        "executed_steps": 106,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i004-r00-s42",
+        "policy_calls": 11,
+        "executed_steps": 108,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i000-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 93,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i001-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 92,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i002-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 91,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i003-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 91,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i004-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 97,
+        "horizon32_replan10_action_prefix_verified": true
+      }
+    ],
+    "sparse": [
+      {
+        "episode_id": "t000-i000-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 74,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t000-i001-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 75,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t000-i002-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 77,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t000-i003-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 75,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t000-i004-r00-s42",
+        "policy_calls": 8,
+        "executed_steps": 73,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i000-r00-s42",
+        "policy_calls": 11,
+        "executed_steps": 105,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i001-r00-s42",
+        "policy_calls": 11,
+        "executed_steps": 102,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i002-r00-s42",
+        "policy_calls": 11,
+        "executed_steps": 107,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i003-r00-s42",
+        "policy_calls": 11,
+        "executed_steps": 104,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t001-i004-r00-s42",
+        "policy_calls": 11,
+        "executed_steps": 108,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i000-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 95,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i001-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 93,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i002-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 92,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i003-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 92,
+        "horizon32_replan10_action_prefix_verified": true
+      },
+      {
+        "episode_id": "t002-i004-r00-s42",
+        "policy_calls": 10,
+        "executed_steps": 94,
+        "horizon32_replan10_action_prefix_verified": true
+      }
+    ]
+  }
+}
