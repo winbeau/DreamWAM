@@ -1,5 +1,18 @@
 # DreamWAM evaluation fork guidance
 
+## Active DIDO goal amendments (2026-09-20)
+
+The user invoked the full `docs/implementation/dido-sparse-profile/GOAL.md`
+in this session. The setup-only hold is over for this branch. The user has no
+private DIDO raw-data link; proceed with explicitly labelled DreamWAM observations
+and Q/K/V, retaining the missing author-data limitation. Maximum permitted SR
+drop is **5 percentage points** against matched Dense. Keep closed-loop tests
+small: this effort adopts **50 episodes total across Dense and all candidate
+arms, including attempted episodes**, not 50 pairs or 50 per arm. Start with a
+predeclared 3-pair development pilot only after offline gates. No automatic
+expansion. This supersedes the historical unspecified tolerance and 50-per-arm
+screening scope below. See `docs/implementation/dido-sparse-profile/PROGRESS.md`.
+
 ## Active isolated-worktree handoff (2026-09-20)
 
 The user explicitly requested a separate DIDO-guided action/video sparse-profile

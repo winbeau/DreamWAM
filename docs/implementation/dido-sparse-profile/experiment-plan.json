@@ -1,0 +1,57 @@
+{
+  "status": "PREDECLARED_NOT_LAUNCHED",
+  "created_utc": "2026-09-20",
+  "protocol": "dreamwam-release-v1",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "authorized_h100_gpu_indices": [3, 4, 5],
+  "leave_last_available_authorized_gpu_unused": true,
+  "closed_loop_total_episode_attempt_cap": 50,
+  "closed_loop_attempts_used": 0,
+  "sr_drop_margin_percentage_points": 5,
+  "automatic_expansion": false,
+  "development": {
+    "suite": "libero_spatial",
+    "historically_exposed_tasks": [0, 1, 2],
+    "historically_exposed_init_indices": [0, 1],
+    "profile_inputs": "/root/wenbiao_zhao/dreamwam-sr/outputs/hybrid-routing-profile-20260920/trajectory-dense/manifest.json",
+    "profile_inputs_sha256": "6b1882ab8ac01366fbe6ec2e4463ceb450adb5c7276f6d2ab613ef72128cc66f",
+    "input_count": 9,
+    "capture_steps": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    "capture_layers": [0, 9, 19, 29],
+    "capture_heads": [0, 6, 12, 18],
+    "sampling_rule": "fixed evenly spaced heads/depths, all denoising steps; no ranking by observed importance",
+    "max_profile_predict_calls": 18,
+    "max_profile_raw_bytes": 2147483648,
+    "gpu_run_estimate_minutes": [5, 15]
+  },
+  "confirmation": {
+    "suite": "libero_spatial",
+    "reserved_tasks": [3, 4, 5],
+    "reserved_init_indices": [2],
+    "seed": 42,
+    "use": "one frozen candidate after development; no tuning or threshold calibration on these identities",
+    "observations_captured": false,
+    "historical_exposure_audit": "must recheck before calling any future run confirmation"
+  },
+  "first_pilot": {
+    "role": "development",
+    "suite": "libero_spatial",
+    "task_ids": [0, 1, 2],
+    "init_indices": [1],
+    "seed": 42,
+    "arms": ["dense_strong", "one_offline_shortlisted_candidate"],
+    "episode_attempt_cap": 6,
+    "renderer": "cpu_osmesa",
+    "gpu_run_estimate_minutes": [5, 15],
+    "launch_gates": ["fresh GPU admission", "CPU and actual CUDA graph checks", "real checkpoint adapter parity", "immutable candidate config", "native OSMesa read smoke", "episode ledger total <= 50"]
+  },
+  "experiment_matrix": [
+    {"id": "raw_profile", "status": "pending", "factors": ["step", "layer", "head", "frame", "camera", "space"]},
+    {"id": "equal_budget_intervention", "status": "pending", "selectors": ["uniform", "seeded_random", "action", "value_action", "value_dynamic", "visual_context", "action_context"], "read_scopes": ["AV", "VV", "joint"], "operations": ["delete", "replace", "recompute"], "limit": "declare finite subset from profile before launching"},
+    {"id": "selector_runtime", "status": "pending", "controls": ["dense_strong", "uniform_feature_reuse"], "independent_factors": ["action", "value", "dynamic", "VV_context", "frame_quota", "Q_budget", "KV_budget", "feature_or_structure_reuse"]},
+    {"id": "background_pooling", "status": "pending", "comparison": "fine dynamic + pooled background versus equal packed-budget hard selection"},
+    {"id": "refresh_scan", "status": "pending", "single_refresh_steps": [1,2,3,4,5,6,7,8,9], "no_refresh_control": true, "max_multirefresh_candidates": 2, "adaptive": "optional; calibrate and freeze before use"},
+    {"id": "paired_timing", "status": "pending", "scope": "complete predict_action including every online cost; common backend and prompt cache; balanced/interleaved controls"},
+    {"id": "bounded_closed_loop", "status": "pending", "total_attempt_cap_all_arms": 50}
+  ]
+}

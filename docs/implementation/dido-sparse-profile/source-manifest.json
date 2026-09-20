@@ -1,0 +1,20 @@
+{
+  "status": "PUBLIC_SOURCE_AUDIT_AUTHOR_RAW_DATA_UNAVAILABLE",
+  "checked_utc": "2026-09-20",
+  "source_commit": "fda0235d3da9389c529b36204c66055020900b7a",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "retrieval_command_template": "curl -fsSL --max-time 30 URL -o FILE",
+  "exit_code": 0,
+  "archive_root": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/sources",
+  "sources": [
+    {"path": "paper.pdf", "url": "https://arxiv.org/pdf/2609.15570v2", "sha256": "9ab686c28188f03b580d80254153f4960fb72ab6ed16e6221c158bba609d8465", "role": "paper_not_raw_data"},
+    {"path": "repo.json", "url": "https://api.github.com/repos/LoveJu1y/DIDO-WAM", "sha256": "edc0249d9e748cb58a6222e6edbdf5c72ec7fde62b9c93c667b2dfe455729381"},
+    {"path": "commit.json", "url": "https://api.github.com/repos/LoveJu1y/DIDO-WAM/commits/main", "sha256": "60c6c59467e7bf11d8cb3019324bfbdbe812145235caad9cac1574ae28db5c07"},
+    {"path": "contents.json", "url": "https://api.github.com/repos/LoveJu1y/DIDO-WAM/contents/", "sha256": "39b31f4fefa8bcf1190814f4cf68d7fd266d6170e8848f2c5115adceec291507"},
+    {"path": "releases.json", "url": "https://api.github.com/repos/LoveJu1y/DIDO-WAM/releases", "sha256": "2ba33ca0557f1bb5b7ba88d67f9d0093c7185a36ec51fe2b7bd9372d3e001d6d"},
+    {"path": "project.html", "url": "https://loveju1y.github.io/DIDO/", "sha256": "f673fa3a4562c16bae6e33f2f974dd182f0fa4061a10c449a60354da7d1b84b5"}
+  ],
+  "author_data_acquired": false,
+  "limitations": ["No author demonstrations, annotations or attribution raw arrays published in inspected sources", "Public project videos are presentation assets", "User has no private author-data link"],
+  "next_step": "Independent native DreamWAM profiling with separately labelled self-captured development observations"
+}
