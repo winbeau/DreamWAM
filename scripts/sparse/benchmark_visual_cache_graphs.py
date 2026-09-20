@@ -29,6 +29,7 @@ from dreamwam.policy import build_policy
 from dreamwam.sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
 from dreamwam.sparse.visual_cache_graphs import GraphedVisualTokenCache
 from dreamwam.sparse.visual_step_cache import VisualStepCache
+from dreamwam.sparse.dense_graph_control import NativeDenseGraph
 
 
 def main():
@@ -41,6 +42,8 @@ def main():
                         help="add matched Dense and guided variants with partial-refresh capture enabled")
     parser.add_argument("--include-temporal-control", action="store_true",
                         help="compare full visual refresh against 10 percent with all-transformer capture fixed")
+    parser.add_argument("--include-native-graph-control", action="store_true",
+                        help="also graph the native Dense path without exporting unused visual K/V")
     parser.add_argument("--out-dir", required=True)
     args = parser.parse_args()
     if min(args.warmup, args.graph_warmup) < 1 or args.reps < 2:
@@ -59,6 +62,7 @@ def main():
                     checkpoint_sha256=sha256(release.paths.checkpoint),
                     sources={name: sha256(name) for name in (
                         "dreamwam/sparse/visual_cache_graphs.py", "dreamwam/sparse/visual_step_cache.py",
+                        "dreamwam/sparse/dense_graph_control.py",
                         "dreamwam/sparse/visual_token_cache.py", "dreamwam/sparse/action_guided_visual_token_cache.py",
                         "scripts/sparse/benchmark_visual_cache_graphs.py", "pyproject.toml", "requirements.txt", args.config)},
                     factor=("visual refresh budget at fixed interval 5 and all-transformer graph dispatch"
@@ -66,6 +70,7 @@ def main():
                             "CUDA graph dispatch for dense Joint and cached-video action transformer calls"),
                     include_partial_factor=args.include_partial_factor,
                     include_temporal_control=args.include_temporal_control,
+                    include_native_graph_control=args.include_native_graph_control,
                     scope="selection and all policy/pre/post-DiT/RNG/scheduler logic remain eager; partial capture is a separate optional factor",
                     environment="existing .venv reused unchanged; no install or sync; uv.lock absent",
                     latency_boundary="synchronized full predict_action through CPU action output",
@@ -112,6 +117,9 @@ def main():
                 policy.model, keep_ratio=1.0, refresh_every=5, guidance_weight=1.0,
                 graph_warmup=args.graph_warmup, graph_partial=True)
             variants += ("eager_temporal", "graphed_temporal")
+        if args.include_native_graph_control:
+            caches["graphed_native_dense"] = NativeDenseGraph(policy.model, graph_warmup=args.graph_warmup)
+            variants += ("graphed_native_dense",)
         manifest["variant_options"] = {
             name: dict(refresh_every=cache.refresh_every, token_keep_ratio=cache.keep_ratio,
                        action_guidance_weight=getattr(cache, "guidance_weight", 0.0),
@@ -200,7 +208,7 @@ def main():
                           graph_vs_buffered_guided=mean("buffered_guided") / mean("graphed_guided"),
                           graphed_guided_vs_native=mean("native_dense") / mean("graphed_guided")),
                       graphs={name: cache.graph_stats() for name, cache in caches.items()
-                              if isinstance(cache, GraphedVisualTokenCache)},
+                              if hasattr(cache, "graph_stats")},
                       bitwise_own_eager_every_sample=True, unchanged_parameters=True, sr=None)
         if args.include_partial_factor:
             report["speedups"].update(
@@ -215,6 +223,14 @@ def main():
                 graph_factor_temporal=mean("eager_temporal") / mean("graphed_temporal"),
                 token_budget_factor_graphed=mean("graphed_temporal") / mean("graphed_partial_guided"),
                 all_graphed_temporal_vs_native=mean("native_dense") / mean("graphed_temporal"))
+        if args.include_native_graph_control:
+            report["speedups"]["native_graph_factor"] = mean("native_dense") / mean("graphed_native_dense")
+            if args.include_partial_factor:
+                report["speedups"].update(
+                    full_budget_export_overhead=mean("graphed_partial_dense") / mean("graphed_native_dense"),
+                    guided_vs_native_graph=mean("graphed_native_dense") / mean("graphed_partial_guided"))
+            if args.include_temporal_control:
+                report["speedups"]["temporal_vs_native_graph"] = mean("graphed_native_dense") / mean("graphed_temporal")
         (out / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
         manifest.update(status="MEASURED", exit_code=0, end_utc=report["end_utc"], gpu_after=inventory(),
                         peak_allocated_mib=torch.cuda.max_memory_allocated() / 2**20,
@@ -225,12 +241,12 @@ def main():
         manifest.update(status="FAILED", end_utc=datetime.now(timezone.utc).isoformat(),
                         error=f"{type(error).__name__}: {error}", gpu_after=inventory(),
                         graphs={name: cache.graph_stats() for name, cache in caches.items()
-                                if isinstance(cache, GraphedVisualTokenCache)})
+                                if hasattr(cache, "graph_stats")})
         write_manifest()
         raise
     finally:
         for cache in caches.values():
-            if isinstance(cache, GraphedVisualTokenCache):
+            if hasattr(cache, "close_graphs"):
                 cache.close_graphs()
         if policy is not None:
             policy.close()
