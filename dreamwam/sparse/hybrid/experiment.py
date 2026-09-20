@@ -54,6 +54,8 @@ def read_journal(path, cells):
             raise ValueError("invalid request timing")
         if row.get("own_eager_parity") is not True:
             raise ValueError("request has no validated own-eager reference")
+        if "attempt_id" in row:
+            integer(row["attempt_id"], "attempt_id", 0)
         rows[key] = row
     return rows
 
@@ -88,6 +90,10 @@ def summarize(cells, rows, candidate_ids):
         sparse_time = statistics.fmean(row["seconds"] for row, _ in paired) if paired else None
         dense_time = statistics.fmean(row["seconds"] for _, row in paired) if paired else None
         complete = len(measured) == expected and len(paired) == expected
+        same_attempt = [(row, dense) for row, dense in paired if row.get("attempt_id") is not None
+                        and row.get("attempt_id") == dense.get("attempt_id")]
+        cross_attempt = sum(row.get("attempt_id") is not None and dense.get("attempt_id") is not None
+                            and row["attempt_id"] != dense["attempt_id"] for row, dense in paired)
         versus_controls = {}
         for name in controls:
             matches = [(row, lookup.get((row["group"], row["repeat"], row["input_id"], name)))
@@ -100,6 +106,11 @@ def summarize(cells, rows, candidate_ids):
             coverage=dict(completed=len(measured), planned=expected, paired=len(paired)),
             seconds=distribution([r["seconds"] for r in measured]),
             paired_speedup=dense_time / sparse_time if complete else None,
+            pairing_attempts=dict(same=len(same_attempt), cross=cross_attempt,
+                                  untracked=len(paired) - len(same_attempt) - cross_attempt),
+            paired_speedup_same_attempt=(
+                statistics.fmean(dense["seconds"] for _, dense in same_attempt)
+                / statistics.fmean(row["seconds"] for row, _ in same_attempt) if same_attempt else None),
             paired_speedup_vs_controls=versus_controls,
             mean_action_relative_l2=statistics.fmean(r["action_diagnostics"]["relative_l2"] for r in measured)
                 if measured else None,
@@ -121,6 +132,6 @@ def summarize(cells, rows, candidate_ids):
     return dict(status="COMPLETE" if len(rows) == len(cells) else "PARTIAL",
                 coverage=dict(completed=len(rows), planned=len(cells)),
                 candidates=results, diagnostic_pareto=frontier, shortlist=shortlist,
-                sr=None, scope="open-loop latency/action diagnostics; no SR selection or quality claim",
+                sr=None, scope="open-loop latency/action diagnostics; pooled timings may span attempts; no SR claim",
                 controls={name: distribution([row["seconds"] for row in entries])
                           for name, entries in by_variant.items() if name not in candidate_ids})

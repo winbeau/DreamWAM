@@ -277,7 +277,8 @@ def main():
                             raise AssertionError("all-dense hybrid control differs from stronger Dense")
                     action_path = args.out_dir / "actions" / (cell["request_id"] + ".npy")
                     np.save(action_path, actions, allow_pickle=False)
-                    row = dict(**cell, seconds=seconds, counters=counters, own_eager_parity=True,
+                    row = dict(**cell, attempt_id=len(manifest["attempts"]) - 1,
+                        seconds=seconds, counters=counters, own_eager_parity=True,
                         prompt_hit=policy._prompt_cache_runtime.last_hit,
                         actions_path=str(action_path.relative_to(args.out_dir)), actions_sha256=sha256(action_path),
                         action_diagnostics=diagnostics(actions, refs["dense_strong", input_id]))

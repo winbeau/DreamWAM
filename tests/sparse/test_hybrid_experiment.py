@@ -13,7 +13,7 @@ from test_hybrid_schedule import options
 
 def records(cells):
     return {cell["request_id"]: dict(**cell, seconds=2.0 if cell["variant"] == "dense_strong" else 1.0,
-                own_eager_parity=True, action_diagnostics=dict(relative_l2=0.1)) for cell in cells}
+                attempt_id=0, own_eager_parity=True, action_diagnostics=dict(relative_l2=0.1)) for cell in cells}
 
 
 def test_search_order_and_resume_identity_are_deterministic(tmp_path):
@@ -74,3 +74,13 @@ def test_report_exports_a_hash_checked_profile_that_compiles(tmp_path):
     exported = json.loads((tmp_path / "profiles" / (candidate + ".options.json")).read_text())
     loaded = HybridConfig.from_mapping(exported["hybrid_visual"])
     assert compile_plan(loaded, 10, compatibility=compatibility).plan_hash == candidate
+
+
+def test_resume_exposes_pairs_that_cross_process_attempts():
+    cells = request_cells(["a"], ["x", "y"], repeats=1, controls=("dense_strong",))
+    rows = records(cells)
+    first_dense = next(row for row in rows.values() if row["variant"] == "dense_strong")
+    first_dense["attempt_id"] = 1
+    result = summarize(cells, rows, ["a"])["candidates"][0]
+    assert result["pairing_attempts"] == dict(same=1, cross=1, untracked=0)
+    assert result["paired_speedup_same_attempt"] == 2
