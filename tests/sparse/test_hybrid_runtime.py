@@ -64,6 +64,10 @@ def test_explicit_last_step_refresh_physical_work_and_scheduler_counts(monkeypat
     assert rows[2]["route_age"] == 2
     assert rows[3]["feature_age_max"] == 3
     assert all(r["video_t"] is not None and r["route_hash"] for r in rows)
+    phases = runtime.last_stats["phase_timings"]
+    assert sum(row["phase"] == "execute_reuse" for row in phases) == 2
+    assert all(row["cpu_seconds"] >= 0 for row in phases)
+    assert all(row["cuda_stream_span_seconds"] is None for row in phases)
 
 
 def test_failed_partial_call_does_not_commit_and_next_request_is_clean(monkeypatch):

@@ -2,6 +2,7 @@
 
 from functools import wraps
 import inspect
+import time
 
 import torch
 
@@ -38,7 +39,36 @@ class HybridVisualRuntime:
         return compile_plan(self.config, num_steps)
 
     def _call(self, operation, request):
-        return self.dispatch(operation, getattr(self.executor, operation), request)
+        return self._measure("execute_" + operation,
+                             lambda: self.dispatch(operation, getattr(self.executor, operation), request))
+
+    def _measure(self, phase, function):
+        if self.config.diagnostics != "trace":
+            return function()
+        device = next(self.model.parameters()).device
+        start_event = end_event = None
+        if device.type == "cuda":
+            start_event, end_event = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
+            start_event.record()
+        started = time.perf_counter()
+        try:
+            return function()
+        finally:
+            elapsed = time.perf_counter() - started
+            if end_event is not None:
+                end_event.record()
+            self._phases.append((phase, self._stats["denoising_steps"], elapsed, start_event, end_event))
+
+    def _sparse_request(self, video_state, action_state, selection):
+        query, route = selection.query, selection.route
+        rows = torch.cat((query, self.state.action_indices))
+        columns = torch.cat((route, self.state.action_indices))
+        mask = self.state.full_mask.index_select(0, rows).index_select(1, columns)
+        kv = (self.state.kv if self.config.read_mode == "full" else
+              [{name: value.index_select(1, route) for name, value in layer.items()} for layer in self.state.kv])
+        return dict(video_state=selected_video_state(video_state, query),
+                    action_state=tensor_state(action_state), kv=kv,
+                    query_slots=torch.searchsorted(route, query), mask=mask)
 
     def _restore_router(self, result):
         if "gates" not in result:
@@ -70,34 +100,30 @@ class HybridVisualRuntime:
             self.state.full_mask = self.model.mot.build_attention_mask(
                 video_length=length, action_length=action_length,
                 video_tokens_per_frame=frame_size, device=current.device)
+            self.state.action_indices = torch.arange(action_length, device=current.device) + length
         decision = self.plan.decision(StepContext(step_index, num_steps))
         effective = decision.operation
         if effective == "sparse" and q_count == length and kv_count == length:
             effective = "dense"
-        action_indices = torch.arange(action_length, device=current.device) + length
+        action_indices = self.state.action_indices
         selection = None
         if effective == "dense":
             result = self._call("dense", dict(video_state=tensor_state(video_state, video=True),
                                               action_state=tensor_state(action_state)))
-            self.state.commit_dense(result, current, step_index)
-            selection = select(self.config, self.model, video_state, action_state, self.state, anchor=True)
-            self.state.pack(selection.route, step_index, full_read=self.config.read_mode == "full")
+            self._measure("cache_commit", lambda: self.state.commit_dense(result, current, step_index))
+            selection = self._measure("selection", lambda: select(
+                self.config, self.model, video_state, action_state, self.state, anchor=True))
+            self._measure("pack", lambda: self.state.pack(
+                selection.route, step_index, full_read=self.config.read_mode == "full"))
             q_rows, kv_rows = length, length
         elif effective == "sparse":
-            selection = select(self.config, self.model, video_state, action_state, self.state)
+            selection = self._measure("selection", lambda: select(
+                self.config, self.model, video_state, action_state, self.state))
             query, route = selection.query, selection.route
-            rows = torch.cat((query, action_indices))
-            columns = torch.cat((route, action_indices))
-            mask = self.state.full_mask.index_select(0, rows).index_select(1, columns)
-            kv = (self.state.kv if self.config.read_mode == "full" else
-                  [{name: value.index_select(1, route) for name, value in layer.items()}
-                   for layer in self.state.kv])
-            result = self._call("sparse", dict(
-                video_state=selected_video_state(video_state, query),
-                action_state=tensor_state(action_state), kv=kv,
-                query_slots=torch.searchsorted(route, query), mask=mask))
-            self.state.commit_sparse(result, current, query, route, step_index,
-                                     full_read=self.config.read_mode == "full")
+            request = self._measure("prepare", lambda: self._sparse_request(video_state, action_state, selection))
+            result = self._call("sparse", request)
+            self._measure("cache_commit", lambda: self.state.commit_sparse(
+                result, current, query, route, step_index, full_read=self.config.read_mode == "full"))
             q_rows, kv_rows = query.numel(), route.numel()
         else:
             if self.state.output is None:
@@ -150,6 +176,7 @@ class HybridVisualRuntime:
             self.dispatch.begin_request()
             self.state.clear()
             self._active = True
+            self._phases = []
             self._request_id += 1
             self._stats = dict(request_id=self._request_id, plan_hash=self.plan.plan_hash,
                                denoising_steps=0, dense_steps=0, sparse_steps=0, reuse_steps=0,
@@ -167,6 +194,14 @@ class HybridVisualRuntime:
                 raise
             finally:
                 try:
+                    if self.config.diagnostics == "trace":
+                        phases = []
+                        for phase, index, seconds, start, end in self._phases:
+                            if end is not None:
+                                end.synchronize()
+                            phases.append(dict(phase=phase, step_index=index, cpu_seconds=seconds,
+                                cuda_stream_span_seconds=start.elapsed_time(end) / 1000 if end else None))
+                        self._stats["phase_timings"] = phases
                     for row in self._stats["steps"]:
                         if "route" in row:
                             route = row["route"].cpu().tolist()
@@ -181,6 +216,7 @@ class HybridVisualRuntime:
                 finally:
                     self.state.clear()
                     self._times = None
+                    self._phases = []
                     self._active = False
 
         conditioned = self.model._forward_conditioned

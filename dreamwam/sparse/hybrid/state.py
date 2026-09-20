@@ -18,6 +18,7 @@ class VisualState:
         self.layout = None
         self.full_mask = None
         self.action_mask = None
+        self.action_indices = None
 
     def check_layout(self, video, frame_size, action_length):
         layout = (tuple(video.shape), video.dtype, video.device, frame_size, action_length)
