@@ -1,0 +1,56 @@
+{
+  "status": "VERIFIED",
+  "records": 21600,
+  "unique_identities": 21600,
+  "av_mass_sum_max_error": 3.327149897813797e-07,
+  "vv_mass_sum_max_error": 1.7881393432617188e-07,
+  "vv_action_mass_max": 0.0,
+  "ranges": {
+    "av_conditioned_mass": {
+      "min": 1.23272258799546e-31,
+      "median": 0.49444565176963806,
+      "max": 1.0000001192092896
+    },
+    "av_future_mass": {
+      "min": 6.242332802432659e-28,
+      "median": 0.4185917228460312,
+      "max": 0.9989595413208008
+    },
+    "av_action_mass": {
+      "min": 0.0,
+      "median": 0.018651627004146576,
+      "max": 1.0
+    },
+    "vv_conditioned_mass": {
+      "min": 0.0008397915516979992,
+      "median": 0.42011603713035583,
+      "max": 0.9990938901901245
+    },
+    "vv_future_mass": {
+      "min": 0.0009061361197382212,
+      "median": 0.5798839330673218,
+      "max": 0.9991601705551147
+    },
+    "vv_action_mass": {
+      "min": 0.0,
+      "median": 0.0,
+      "max": 0.0
+    },
+    "av_future_aggregate_entropy": {
+      "min": 0.00523403100669384,
+      "median": 0.896552562713623,
+      "max": 0.9997240304946899
+    },
+    "vv_future_aggregate_entropy": {
+      "min": 0.7331639528274536,
+      "median": 0.9596371948719025,
+      "max": 0.9988155364990234
+    },
+    "av_vv_future_aggregate_cosine": {
+      "min": 0.0077492971904575825,
+      "median": 0.6050814688205719,
+      "max": 0.9824499487876892
+    }
+  },
+  "sr": null
+}

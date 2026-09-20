@@ -1,0 +1,242 @@
+{
+  "status": "MEASURED",
+  "start_utc": "2026-09-20T03:05:34.579938+00:00",
+  "argv": [
+    "scripts/sparse/collect_head_attention_stats.py",
+    "--inputs",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-calibration-20260920/inputs-gpu4/manifest.json",
+    "--out-dir",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-calibration-20260920/attention-f489335"
+  ],
+  "git": {
+    "exit_code": 0,
+    "stdout": "f489335143ddd37eb24c6acdb64f3d2a8b76f187",
+    "stderr": ""
+  },
+  "dirty": {
+    "exit_code": 0,
+    "stdout": "?? .venv\n?? pretrained",
+    "stderr": ""
+  },
+  "pid": 348640,
+  "python": "3.10.20",
+  "torch": "2.7.1+cu126",
+  "cuda": "12.6",
+  "cuda_visible_devices": "0",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "input_manifest_sha256": "bcdba90931d4cb9f980d5fe68d2cac26703684d8f5ad4f86a79742962352627a",
+  "inputs": [
+    {
+      "id": "t000-i000",
+      "task_id": 0,
+      "init_index": 0,
+      "task_name": "pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate",
+      "seed": 42,
+      "step_index": 30,
+      "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+      "path": "t000-i000.npz",
+      "sha256": "51f0cd6d93cb1508a4f69b5aae259b27dad5ab992d14da4de874b35097eb3ae2",
+      "state": [
+        -0.21130245923995972,
+        -0.010944196954369545,
+        1.1741831302642822,
+        3.1403753757476807,
+        -0.0002553589583840221,
+        -0.08830346912145615,
+        0.03950710594654083,
+        -0.039506375789642334
+      ],
+      "images": {
+        "agentview": {
+          "shape": [
+            256,
+            256,
+            3
+          ],
+          "dtype": "uint8",
+          "sha256": "e89c17bf7f3f257549bf936dea5b8c9b6173b906a946aef0d3fff17ca0889894",
+          "minimum": 5,
+          "maximum": 239,
+          "stdev": 50.44220688288587
+        },
+        "wrist": {
+          "shape": [
+            256,
+            256,
+            3
+          ],
+          "dtype": "uint8",
+          "sha256": "906413e64a12d251b983d77339ba2d1e37e662bee19b6b8c500d160a53513c2e",
+          "minimum": 0,
+          "maximum": 241,
+          "stdev": 63.28733233048471
+        }
+      }
+    },
+    {
+      "id": "t004-i000",
+      "task_id": 4,
+      "init_index": 0,
+      "task_name": "pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate",
+      "seed": 42,
+      "step_index": 30,
+      "instruction": "pick up the black bowl in the top drawer of the wooden cabinet and place it on the plate",
+      "path": "t004-i000.npz",
+      "sha256": "1088f9e781a81b70847a2229d8540f636b5449bb2ba72dbd04e10ebfd9cfd7cc",
+      "state": [
+        -0.20420049130916595,
+        -8.310344128403813e-05,
+        1.1728999614715576,
+        3.140751600265503,
+        0.0016604462871327996,
+        -0.0888545885682106,
+        0.03950733318924904,
+        -0.039506155997514725
+      ],
+      "images": {
+        "agentview": {
+          "shape": [
+            256,
+            256,
+            3
+          ],
+          "dtype": "uint8",
+          "sha256": "c036c7dbb2fa1c350c508eb01f2105f46c2b42609dd9833bb316abaf7a0a5e01",
+          "minimum": 5,
+          "maximum": 240,
+          "stdev": 51.32590280506075
+        },
+        "wrist": {
+          "shape": [
+            256,
+            256,
+            3
+          ],
+          "dtype": "uint8",
+          "sha256": "64115ea7670bc55df04fa08100bfe4794d1db989d632223c748d493a314d4851",
+          "minimum": 0,
+          "maximum": 245,
+          "stdev": 63.829472096016424
+        }
+      }
+    },
+    {
+      "id": "t008-i000",
+      "task_id": 8,
+      "init_index": 0,
+      "task_name": "pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate",
+      "seed": 42,
+      "step_index": 30,
+      "instruction": "pick up the black bowl next to the plate and place it on the plate",
+      "path": "t008-i000.npz",
+      "sha256": "ce28d3c0ff0625001e67a8d8551ff9379837adca1d2b2b02fa9702d191ea5824",
+      "state": [
+        -0.20867536962032318,
+        -0.012823531404137611,
+        1.1784042119979858,
+        3.1402947902679443,
+        0.0007245042361319065,
+        -0.08845312148332596,
+        0.03950662910938263,
+        -0.03950684517621994
+      ],
+      "images": {
+        "agentview": {
+          "shape": [
+            256,
+            256,
+            3
+          ],
+          "dtype": "uint8",
+          "sha256": "8c9d7723b0ad89e856ada8f179ae1f155f89436e24c1d6773ece20489cb57958",
+          "minimum": 5,
+          "maximum": 237,
+          "stdev": 50.39470094395984
+        },
+        "wrist": {
+          "shape": [
+            256,
+            256,
+            3
+          ],
+          "dtype": "uint8",
+          "sha256": "d78c62870f0e07088c26d463f074e3ea8600a7fcceb310cbd6d3a66d5a8937b5",
+          "minimum": 0,
+          "maximum": 240,
+          "stdev": 63.586930093054065
+        }
+      }
+    }
+  ],
+  "sources": {
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-head-stats-f489335/scripts/sparse/collect_head_attention_stats.py": "027a25a4b5364d1193cc8d10831fd33ea3351421a911396033b90d949d34f77b",
+    "dreamwam/sparse/head_stage_probe.py": "aa4d0a9e678943203adfbc7ceb61801cb2a42d97d2e04ea91f43186e2a5f6664",
+    "dreamwam/mot.py": "35e7cdabbf669298880b8ecc61489f3bd84b06bd391785936428c2d7e34ed2fd",
+    "dreamwam/layers.py": "f1ca0546844cbab07ef5494df64620d436877e88fbd430584c7b1308b9ed0f62",
+    "configs/dreamwam_joint.yaml": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115"
+  },
+  "controls": [
+    {
+      "input_id": "t000-i000",
+      "native_action_bitwise": true,
+      "full_budget_video_bitwise": true,
+      "full_budget_raw_action_bitwise": true,
+      "step_head_records": 7200
+    },
+    {
+      "input_id": "t004-i000",
+      "native_action_bitwise": true,
+      "full_budget_video_bitwise": true,
+      "full_budget_raw_action_bitwise": true,
+      "step_head_records": 7200
+    },
+    {
+      "input_id": "t008-i000",
+      "native_action_bitwise": true,
+      "full_budget_video_bitwise": true,
+      "full_budget_raw_action_bitwise": true,
+      "step_head_records": 7200
+    }
+  ],
+  "stages": [
+    [
+      0,
+      3
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      7,
+      10
+    ]
+  ],
+  "sr": null,
+  "interpretation": "observational joint-softmax statistics; not causal types, SR or speed",
+  "definitions": {
+    "av": "native action queries, full joint [V,A] normalization; mean over action queries",
+    "vv": "future video queries, native mask; mean over future video queries",
+    "entropy": "entropy of the normalized aggregate future-key distribution, divided by log(number of future keys)",
+    "cosine": "cosine between AV and VV aggregate future-key distributions",
+    "stage": "arithmetic mean of step statistics in the fixed 3/4/3 step ranges"
+  },
+  "end_utc": "2026-09-20T03:06:04.375075+00:00",
+  "evaluation": {
+    "action_horizon": 32,
+    "video_frames": 9,
+    "denoising_steps": 10,
+    "replan_steps": 10,
+    "wait_steps": 30,
+    "resolution": 256,
+    "seed": 42,
+    "rand_device": "cpu",
+    "binarize_gripper": true
+  },
+  "step_head_records": 21600,
+  "head_stage_records": 6480,
+  "artifacts": {
+    "step-head-statistics.jsonl": "f91b381aa8662079a71966f9a356b6bdd75f32ac2d3cc9a0a9cfdc16372a7173",
+    "head-stage-attention.json": "9bde5c63c11b09b91e32bab951372a009bf21798b417bd8b5a73d9017f03ac8a"
+  }
+}
