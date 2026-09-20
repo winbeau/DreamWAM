@@ -41,10 +41,37 @@ def choose(score, count, length, device):
 def select(config, model, video_state, action_state, state, *, anchor=False):
     current = video_state["tokens"]
     length = current.shape[1]
-    q_count, _ = config.budgets(length, video_state["tokens_per_frame"])
+    frame_size = video_state["tokens_per_frame"]
+    q_count, kv_count = config.budgets(length, frame_size)
     route = torch.arange(length, device=current.device)
-    if anchor:
+    if anchor and config.read_mode == "full":
         return Selection(route, route)
-    score, probes = scores(config, model, video_state, action_state, state)
+    score, probes = scores(config, model, video_state, action_state, state, anchor=anchor)
+    if config.read_mode == "compact":
+        frames = length // frame_size
+        queries, routes = [], []
+        offset = 0
+        for frame in range(frames):
+            q = q_count // frames + int(frame < q_count % frames)
+            k = kv_count // frames + int(frame < kv_count % frames)
+            start = frame * frame_size
+            local_score = None if score is None else score[start:start + frame_size]
+            if anchor:
+                selected = choose(local_score, k, frame_size, current.device) + start
+            else:
+                query = choose(local_score, q, frame_size, current.device) + start
+                queries.append(query)
+                old = state.route[offset:offset + k]
+                priority = -old.float() if score is None else score.index_select(0, old)
+                already_selected = (old[:, None] == query[None, :]).any(dim=1)
+                priority = priority.masked_fill(already_selected, float("-inf"))
+                remaining = old[priority.argsort(descending=True, stable=True)[:k - q]]
+                selected = torch.cat((query, remaining))
+            routes.append(selected)
+            offset += k
+        # Each newly read key is a freshly computed query; old keys fill the
+        # remaining per-frame quota. Cardinalities never depend on tensor values.
+        query = route if anchor else torch.cat(queries).sort().values
+        return Selection(query, torch.cat(routes).sort().values, probes)
     query = choose(score, q_count, length, current.device).sort().values
     return Selection(query, route, probes)

@@ -1,6 +1,5 @@
 """One opt-in wrapper coordinating plans, selectors, math, and request state."""
 
-from dataclasses import asdict
 from functools import wraps
 import inspect
 
@@ -26,8 +25,8 @@ class HybridVisualRuntime:
         self.config = config if isinstance(config, HybridConfig) else HybridConfig.from_mapping(config)
         if model.training or model.config.setting != "joint":
             raise ValueError("hybrid visual execution requires Joint inference")
-        if self.config.read_mode != "full" or self.config.backend != "eager":
-            raise ValueError("this implementation stage supports full-read eager execution only")
+        if self.config.backend != "eager":
+            raise ValueError("this implementation stage supports eager execution only")
         self.model = model
         self.state = VisualState()
         self._originals = []
