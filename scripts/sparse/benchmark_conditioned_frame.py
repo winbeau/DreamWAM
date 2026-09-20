@@ -25,6 +25,7 @@ import torch
 from benchmark_ffn_context_cache import command, inputs_for, sha256, summary
 from dreamwam.config import load_release_config
 from dreamwam.policy import build_policy
+from dreamwam.sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
 from dreamwam.sparse.conditioned_frame_cache import ConditionedFrameCache, GraphedConditionedFrameCache
 from dreamwam.sparse.dense_graph_control import NativeDenseGraph
 from dreamwam.sparse.visual_cache_graphs import GraphedVisualTokenCache
@@ -36,10 +37,13 @@ def main():
     parser.add_argument("--config", default="configs/dreamwam_joint.yaml")
     parser.add_argument("--reps", type=int, default=24)
     parser.add_argument("--warmup", type=int, default=2)
+    parser.add_argument("--include-guided-control", action="store_true",
+                        help="compare the unchanged guided 10 percent candidate with the strengthened Dense control")
     parser.add_argument("--out-dir", required=True)
     args = parser.parse_args()
-    if args.reps < 24 or args.reps % 24 or args.warmup < 1:
-        parser.error("use a positive multiple of 24 repetitions to balance all eight positions and three inputs")
+    balance = 30 if args.include_guided_control else 24
+    if args.reps < balance or args.reps % balance or args.warmup < 1:
+        parser.error(f"use a positive multiple of {balance} repetitions to balance every position and three inputs")
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=False)
     release = load_release_config(args.config)
@@ -75,16 +79,22 @@ def main():
             "graph_conditioned_dense": GraphedConditionedFrameCache(policy.model, refresh_every=1),
             "graph_conditioned_temporal": GraphedConditionedFrameCache(policy.model, refresh_every=5),
         }
+        if args.include_guided_control:
+            caches["eager_guided"] = ActionGuidedVisualTokenCache(policy.model, keep_ratio=0.1,
+                refresh_every=5, guidance_weight=1.0)
+            caches["graph_guided"] = GraphedVisualTokenCache(policy.model, keep_ratio=0.1,
+                refresh_every=5, guidance_weight=1.0, graph_partial=True)
         variants = ("native_dense", *caches)
         inputs, provenance = inputs_for(argparse.Namespace(inputs_npz=None), policy.image_size)
         inputs.append((inputs[0][0], np.full(8, 0.05, dtype=np.float32),
                        "pick up the red mug and place it in the basket"))
         manifest.update(inputs=provenance, extra_parity_input="input 0 images, state=0.05, red mug instruction",
                         reps_per_variant=args.reps, warmup_per_variant=args.warmup, graph_warmup=3,
+                        include_guided_control=args.include_guided_control,
                         cold_requests=[], parity_requests=[])
         reference_name = {"graph_dense": "native_dense", "graph_temporal": "eager_temporal",
                           "graph_conditioned_dense": "conditioned_dense",
-                          "graph_conditioned_temporal": "conditioned_temporal"}
+                          "graph_conditioned_temporal": "conditioned_temporal", "graph_guided": "eager_guided"}
         references = {}
 
         def predict(name, input_id):
@@ -102,6 +112,8 @@ def main():
 
         def difference(name, input_id, actions):
             original = "eager_temporal" if name.endswith("temporal") else "native_dense"
+            if name.endswith("guided"):
+                original = "eager_guided"  # This candidate is unchanged by the conditioned-frame factor.
             reference = references[original, input_id]
             delta = actions.astype(np.float64) - reference.astype(np.float64)
             return dict(bitwise_prefactor=bool(np.array_equal(actions, reference)),
@@ -122,14 +134,14 @@ def main():
                 if request == 0:
                     manifest["cold_requests"].append(dict(variant=name, seconds=seconds, cache=stats))
                 write()
-            print(f"request {request}, input {input_id}: own-eager parity passed for all eight variants", flush=True)
+            print(f"request {request}, input {input_id}: own-eager parity passed for all {len(variants)} variants", flush=True)
         for name, cache in caches.items():
             if name.startswith("graph_"):
                 stats = cache.graph_stats()
                 required = {"dense"}
-                if name.endswith("temporal"):
+                if name.endswith(("temporal", "guided")):
                     required.add("action")
-                if "conditioned" in name:
+                if "conditioned" in name or name.endswith("guided"):
                     required.add("partial")
                 if set(stats) != required or not all(row["captured"] for row in stats.values()):
                     raise AssertionError(f"missing graph capture: {name}")
@@ -172,6 +184,10 @@ def main():
             graphs={name: cache.graph_stats() for name, cache in caches.items() if name.startswith("graph_")},
             bitwise_own_eager=True, all_bitwise_prefactor=all(row["bitwise_prefactor"] for row in manifest["parity_requests"]),
             gpu_after=inventory(), sr=None)
+        if args.include_guided_control:
+            report.update(guided_vs_dense_graph_before=means["graph_dense"] / means["graph_guided"],
+                          guided_vs_dense_graph_after=means["graph_conditioned_dense"] / means["graph_guided"],
+                          guided_vs_conditioned_temporal=means["graph_conditioned_temporal"] / means["graph_guided"])
         (out / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
         manifest.update(status="MEASURED", end_utc=report["end_utc"])
         write()
