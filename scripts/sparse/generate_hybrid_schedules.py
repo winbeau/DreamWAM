@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+"""Generate a finite hybrid search manifest without torch, weights or GPU access."""
+
+import argparse
+import json
+from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from dreamwam.sparse.hybrid import HybridConfig
+from dreamwam.sparse.hybrid.search import generate_candidates, parse_indices
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--num-steps", type=int, default=10)
+    p.add_argument("--dense-steps", default="0")
+    p.add_argument("--candidate-sparse-steps", default="1:10")
+    p.add_argument("--refresh-counts", default="0,1,2")
+    p.add_argument("--recompute-ratio", type=float, default=0.1)
+    p.add_argument("--read-mode", choices=("full", "compact"), default="compact")
+    p.add_argument("--read-ratio", type=float, default=0.25)
+    p.add_argument("--selection", choices=("uniform", "drift", "action_drift"), default="action_drift")
+    p.add_argument("--backend", choices=("eager", "buffered", "cuda_graph"), default="eager")
+    p.add_argument("--out", type=Path, required=True)
+    args = p.parse_args()
+    try:
+        config = HybridConfig.from_mapping(dict(
+            schedule=dict(kind="periodic", num_steps=args.num_steps, refresh_every=args.num_steps),
+            recompute=dict(keep_ratio=args.recompute_ratio),
+            read=dict(mode=args.read_mode, keep_ratio=args.read_ratio),
+            selection=dict(method=args.selection), execution=dict(backend=args.backend)))
+        candidates = list(generate_candidates(config, parse_indices(args.dense_steps),
+                          parse_indices(args.candidate_sparse_steps), parse_indices(args.refresh_counts)))
+    except (ValueError, TypeError) as exc:
+        p.error(str(exc))
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    with args.out.open("x") as handle:
+        for row in candidates:
+            handle.write(json.dumps(row, sort_keys=True, allow_nan=False) + "\n")
+    print(json.dumps(dict(candidates=len(candidates), output=str(args.out), gpu_used=False)))
+
+
+if __name__ == "__main__":
+    main()

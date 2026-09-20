@@ -16,10 +16,7 @@ Nothing here changes A->V or A->A: action queries keep the joint softmax over
 fused call.
 """
 
-from .attention import sparse_joint_attention
-from .config import SparseConfig
-from .layout import TokenLayout, build_token_layout, video_legality
-from .routing import Route, build_route
+from importlib import import_module
 
 __all__ = [
     "Route",
@@ -30,3 +27,17 @@ __all__ = [
     "sparse_joint_attention",
     "video_legality",
 ]
+
+_EXPORTS = {
+    "sparse_joint_attention": "attention", "SparseConfig": "config",
+    "TokenLayout": "layout", "build_token_layout": "layout", "video_legality": "layout",
+    "Route": "routing", "build_route": "routing",
+}
+
+
+def __getattr__(name):
+    if name not in _EXPORTS:
+        raise AttributeError(name)
+    value = getattr(import_module("." + _EXPORTS[name], __name__), name)
+    globals()[name] = value
+    return value
