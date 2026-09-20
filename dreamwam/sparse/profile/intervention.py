@@ -14,6 +14,10 @@ def intervention_mask(mask, indices, video_length, scope):
         raise ValueError("require original square joint boolean mask")
     if scope not in ("AV", "VV", "joint"):
         raise ValueError("scope must distinguish AV, VV or joint")
+    if not 0 < video_length < mask.shape[0] or indices.ndim != 1 or indices.dtype != torch.long:
+        raise ValueError("require original visual indices and retained action tokens")
+    if ((indices < 0) | (indices >= video_length)).any() or indices.unique().numel() != indices.numel():
+        raise ValueError("indices must be unique original visual positions")
     result = mask.clone()
     start, stop = ((video_length, mask.shape[0]) if scope == "AV" else
                    (0, video_length) if scope == "VV" else (0, mask.shape[0]))

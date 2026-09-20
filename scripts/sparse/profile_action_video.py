@@ -20,6 +20,7 @@ from dreamwam.policy import build_policy
 from dreamwam.sparse.profile.admission import admit_profile
 from dreamwam.sparse.profile.archive import RawArchive, sha256
 from dreamwam.sparse.profile.capture import DenseProfile
+from dreamwam.sparse.profile.intervention import KeyIntervention
 
 
 def stamp():
@@ -96,7 +97,14 @@ def main():
             with np.load(args.inputs.parent / item["path"], allow_pickle=False) as raw:
                 observation = dict(images={k: raw[k].copy() for k in ("agentview", "wrist")},
                     state=raw["state"].copy(), instruction=str(raw["instruction"].item()))
-            expected = policy.predict_action(**observation)
+            # Empty targets call native attention unchanged; capture independent
+            # raw outputs so gripper binarization cannot conceal perturbations.
+            with KeyIntervention(policy.model, {}, operation="delete", scope="joint") as reference:
+                expected = policy.predict_action(**observation)
+                reference_action = reference.raw_action.detach().cpu().clone()
+                reference_video = reference.last_video.detach().cpu().clone()
+            archive.write(item["id"], "reference", dict(request=1),
+                          dict(raw_action=reference_action.float().numpy(), video_latents=reference_video.float().numpy()))
             report["completed_calls"] += 1
             sink = lambda kind, metadata, arrays: archive.write(item["id"], kind, metadata, arrays)
             with DenseProfile(policy.model, steps=sampling["capture_steps"],
@@ -109,10 +117,15 @@ def main():
                     raise AssertionError("real checkpoint token grid differs from audited geometry")
                 if not np.array_equal(actual, expected):
                     raise AssertionError("raw profiling changed native Dense actions")
+                if not torch.equal(profile.raw_action.detach().cpu(), reference_action):
+                    raise AssertionError("raw profiling changed normalized pre-binarization actions")
+                if not torch.equal(profile.last_video.detach().cpu(), reference_video):
+                    raise AssertionError("raw profiling changed native video latents")
                 archive.write(item["id"], "actions", dict(request=profile.request),
                               dict(native=expected, instrumented=actual))
                 report["inputs"].append(dict(input_id=item["id"], sha256=item["sha256"],
-                    action_parity=True, grid=[3, 7, 14], stats=dict(profile.stats)))
+                    action_parity=True, raw_action_parity=True, video_latent_parity=True,
+                    grid=[3, 7, 14], stats=dict(profile.stats)))
             if tuple(p._version for p in policy.model.parameters()) != versions:
                 raise AssertionError("model parameters changed")
             write_report()

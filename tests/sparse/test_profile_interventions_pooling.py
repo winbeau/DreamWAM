@@ -114,3 +114,16 @@ def test_pooling_rejects_mixed_visibility_and_unlabelled_mixed_cache_age():
     ages[8] = 1
     with pytest.raises(ValueError, match="fresh/stale"):
         plan.pack(key, value, mask, ages=ages)
+
+
+def test_manual_pool_groups_cannot_bypass_camera_boundary():
+    grid = TokenGrid(1, 1, 4)
+    plan = PoolPlan(((0, 2), (1, 3)), grid, "count")
+    with pytest.raises(ValueError, match="camera boundary"):
+        plan.pack(torch.ones(1, 4, 8), torch.ones(1, 4, 8), torch.ones(1, 4, dtype=torch.bool))
+
+
+def test_intervention_cannot_target_action_keys_or_wrap_negative_indices():
+    for target in [-1, 6]:
+        with pytest.raises(ValueError, match="visual positions"):
+            intervention_mask(torch.ones(8, 8, dtype=torch.bool), torch.tensor([target]), 6, "AV")

@@ -9,11 +9,13 @@ import math
 
 import torch
 
+from .geometry import TokenGrid
+
 
 @dataclass(frozen=True)
 class PoolPlan:
     groups: tuple[tuple[int, ...], ...]
-    original_length: int
+    grid: TokenGrid
     multiplicity: str
 
     @classmethod
@@ -30,7 +32,11 @@ class PoolPlan:
                 groups.extend((int(x),) for x in region)
             else:
                 groups.append(tuple(map(int, region)))
-        return cls(tuple(sorted(groups, key=lambda group: group[0])), grid.length, multiplicity)
+        return cls(tuple(sorted(groups, key=lambda group: group[0])), grid, multiplicity)
+
+    @property
+    def original_length(self):
+        return self.grid.length
 
     @property
     def packed_length(self):
@@ -45,6 +51,10 @@ class PoolPlan:
         if ages is not None and ages.shape != (self.original_length,):
             raise ValueError("cache ages must cover original visual positions")
         for group in self.groups:
+            frames = {i // self.grid.frame_size for i in group}
+            cameras = {(i % self.grid.width) // (self.grid.width // self.grid.cameras) for i in group}
+            if len(frames) != 1 or len(cameras) != 1:
+                raise ValueError("pool group crosses a frame or camera boundary")
             if not torch.equal(mask[:, group], mask[:, group[:1]].expand(-1, len(group))):
                 raise ValueError("cannot pool keys with different native visibility")
             if ages is not None and not torch.equal(ages[list(group)], ages[group[0]].expand(len(group))):
