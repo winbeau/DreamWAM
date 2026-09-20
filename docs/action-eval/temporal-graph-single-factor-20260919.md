@@ -8,6 +8,11 @@ the same transformer graph scope, **1.964983×**. The 10% token candidate takes
 establishes preserved benchmark quality. The conservative graph pilot completed
 15/15 official successes; its independent 500-identity Spatial run is underway.
 
+Continuation: a [separate K/V copy-schedule factor](visual-kv-staging-single-factor-20260920.md)
+passed 1,008 timed parity checks but added only 0.86% temporal speedup in its
+balanced confirmation under shared load. It remains experimental; the active
+full SR run below still uses its original graph copy schedule.
+
 ## Separate factors and fixed conditions
 
 This follows the [dense/action and partial-refresh graph factors](visual-graph-dispatch-single-factor-20260919.md).

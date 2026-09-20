@@ -1,0 +1,65 @@
+{
+  "utc": "2026-09-20T00:25:00.745382+00:00",
+  "sr": null,
+  "runs": {
+    "dense": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0",
+      "planned": 500,
+      "completed": 298,
+      "successes": 293,
+      "task_failures": 5,
+      "failed": {
+        "t005-i002-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "4b7c1c1c842b0d0d2bedda24d33b9020684ae8d780e9222cae5b04590df6cad9"
+        },
+        "t005-i003-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "b3346245911414cd7c849d2414507eebca303c7e0e21d7a57d9eee7d2be3544f"
+        },
+        "t005-i025-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "ee64d056ba9f36988039d775db0d3d1e5f36f07e5e58436de9487acc5ef8ae86"
+        },
+        "t005-i026-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "a075322cc14435cd90b8c4ab4ac71e2014d200ade7359606c956e16daa8b6dd2"
+        },
+        "t005-i046-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "57493282f86d84ae97a8c790a48fb86496cc5369b4085ccb3b2f7baeb2fd9df1"
+        }
+      },
+      "manifest_sha256": "343a536e8af2273d4e942ed8a99e4b9df9db1cf32d734105ea3f44de4aaa8081",
+      "resolved_sha256": "25021eb8960d7b0ca0ccf7289b3fb1200b377d8479dff4a5af5907c0da780c88"
+    },
+    "graph_temporal": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2/run-20260920T001038Z-cf9e4f10",
+      "planned": 500,
+      "completed": 50,
+      "successes": 50,
+      "task_failures": 0,
+      "failed": {},
+      "manifest_sha256": "6f59948ca8c1bd850574a31b32a06c9aea20335f059c4f401c08478507baabc9",
+      "resolved_sha256": "42878d7939348fa649a009c7d978bcb6b23cb8270d94566e0b5fafd219e159f9"
+    }
+  },
+  "controllers": {
+    "dense": {
+      "pid": 188431,
+      "state": "S",
+      "recovery": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched-recovery-05"
+    },
+    "graph_temporal": {
+      "pid": 192992,
+      "state": "S",
+      "recovery": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01"
+    }
+  },
+  "executed_policy_fingerprint_verified": false
+}

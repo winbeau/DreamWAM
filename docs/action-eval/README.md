@@ -6,6 +6,8 @@ Current continuation: the [conservative temporal graph path and stronger native 
 
 The first-input audit also found different camera-image hashes before any policy-dependent action, including 10 same-Dense identities on the same GPU with identical state vectors. Hashes do not quantify image error, but repeatable reference observations have not been established. The successful pilot counts therefore do not isolate a decision-preservation effect or prove non-inferiority. See the [input audit and current recovery state](visual-token-cache-single-factor-20260919.md#first-input-repeatability-is-not-established).
 
+The later [K/V copy-schedule factor](visual-kv-staging-single-factor-20260920.md) passed 1,008 timed eager-parity checks. Its balanced confirmation found only **0.86% additional temporal speedup** under shared GPU load, so it remains experimental and does not change the active SR policy. At 2026-09-20 00:25 UTC, independently audited full coverage was Dense 298/500 (293 successes, five task failures) and temporal graph 50/500 successes, with both controllers live. All earlier snapshots remain historical records.
+
 ## Provenance and verification
 
 Upstream: hustvl/DreamWAM, reference commit `7c35d7d094b86fc65721cd26dfbc3194addb8fd0`. Earlier server pilot: Spatial tasks 0/1/2 × 10 initial states, 30/30 success; six native aborts required recovery. This is not four-suite evidence. See action-eval `docs/verification/P3-DREAMWAM-PILOT-COMPLETE.md`.

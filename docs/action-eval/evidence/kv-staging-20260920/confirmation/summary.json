@@ -1,0 +1,273 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-20T00:30:54.446278+00:00",
+  "latency_seconds": {
+    "native_dense": {
+      "samples": 42,
+      "mean": 0.4581020502373576,
+      "p50": 0.4579677749425173,
+      "p95": 0.4625724159181118,
+      "min": 0.45143068954348564,
+      "max": 0.4652575198560953,
+      "stdev": 0.002773179648306914
+    },
+    "eager_dense": {
+      "samples": 42,
+      "mean": 0.46366724828701644,
+      "p50": 0.46333646308630705,
+      "p95": 0.4680574143305421,
+      "min": 0.4571334347128868,
+      "max": 0.5018711406737566,
+      "stdev": 0.0066167122314458445
+    },
+    "eager_guided": {
+      "samples": 42,
+      "mean": 0.28051353716069743,
+      "p50": 0.28026418946683407,
+      "p95": 0.2831632659770548,
+      "min": 0.274662546813488,
+      "max": 0.30289855413138866,
+      "stdev": 0.004129437501661992
+    },
+    "buffered_dense": {
+      "samples": 42,
+      "mean": 0.4714042529286373,
+      "p50": 0.4710655538365245,
+      "p95": 0.47625651601701974,
+      "min": 0.46777631901204586,
+      "max": 0.48209729604423046,
+      "stdev": 0.002876171128451445
+    },
+    "buffered_guided": {
+      "samples": 42,
+      "mean": 0.2839606466392676,
+      "p50": 0.28406688477844,
+      "p95": 0.2874112920835614,
+      "min": 0.27944718301296234,
+      "max": 0.2886158488690853,
+      "stdev": 0.002194539959228145
+    },
+    "graphed_dense": {
+      "samples": 42,
+      "mean": 0.32625783638407785,
+      "p50": 0.3310099374502897,
+      "p95": 0.33523555342108013,
+      "min": 0.28655598126351833,
+      "max": 0.3937773946672678,
+      "stdev": 0.015878954431828813
+    },
+    "graphed_guided": {
+      "samples": 42,
+      "mean": 0.16446775450770343,
+      "p50": 0.16624115593731403,
+      "p95": 0.17317935107275842,
+      "min": 0.153163468465209,
+      "max": 0.17753366008400917,
+      "stdev": 0.006145211205497676
+    },
+    "graphed_partial_dense": {
+      "samples": 42,
+      "mean": 0.3212102897287834,
+      "p50": 0.32891529239714146,
+      "p95": 0.33379413541406394,
+      "min": 0.28681601770222187,
+      "max": 0.34307454340159893,
+      "stdev": 0.012520309515886788
+    },
+    "graphed_partial_guided": {
+      "samples": 42,
+      "mean": 0.15322140196249598,
+      "p50": 0.1558270826935768,
+      "p95": 0.16171383718028665,
+      "min": 0.137663371860981,
+      "max": 0.16229363530874252,
+      "stdev": 0.007764735788360512
+    },
+    "eager_temporal": {
+      "samples": 42,
+      "mean": 0.27843262822855086,
+      "p50": 0.27833198569715023,
+      "p95": 0.2821125348098576,
+      "min": 0.27426697686314583,
+      "max": 0.28487521409988403,
+      "stdev": 0.0023282834879724793
+    },
+    "graphed_temporal": {
+      "samples": 42,
+      "mean": 0.16104690127429508,
+      "p50": 0.16593087185174227,
+      "p95": 0.16824694173410534,
+      "min": 0.14363472908735275,
+      "max": 0.1856614463031292,
+      "stdev": 0.009925839402479132
+    },
+    "graphed_native_dense": {
+      "samples": 42,
+      "mean": 0.3218512377657351,
+      "p50": 0.3277897937223315,
+      "p95": 0.33283372819423673,
+      "min": 0.28503959253430367,
+      "max": 0.34568045660853386,
+      "stdev": 0.01196858615497386
+    },
+    "graphed_staged_temporal": {
+      "samples": 42,
+      "mean": 0.15967572808620475,
+      "p50": 0.16319186706095934,
+      "p95": 0.16668863836675882,
+      "min": 0.1423686370253563,
+      "max": 0.16821857169270515,
+      "stdev": 0.008210580458357299
+    },
+    "graphed_staged_guided": {
+      "samples": 42,
+      "mean": 0.15196929676901727,
+      "p50": 0.15461617056280375,
+      "p95": 0.16029778933152555,
+      "min": 0.1367781814187765,
+      "max": 0.16127251461148262,
+      "stdev": 0.007601857664611576
+    }
+  },
+  "speedups": {
+    "guided_vs_matched_eager": 1.6529228962714764,
+    "guided_vs_matched_graphed": 1.9837191634351425,
+    "graph_factor_dense": 1.4211681577547681,
+    "graph_factor_guided": 1.705583796655767,
+    "graph_vs_buffered_dense": 1.444882544901358,
+    "graph_vs_buffered_guided": 1.7265429779183088,
+    "graphed_guided_vs_native": 2.785360884925931,
+    "partial_factor_guided": 1.0733993580606984,
+    "partial_factor_dense_control": 1.015714149940702,
+    "guided_vs_matched_all_graphed": 2.0963800462249136,
+    "all_graphed_guided_vs_native": 2.9898045858468736,
+    "temporal_vs_matched_eager": 1.6652762689379066,
+    "temporal_vs_matched_graphed": 1.994513940890412,
+    "graph_factor_temporal": 1.728891559076473,
+    "token_budget_factor_graphed": 1.0510731478211808,
+    "all_graphed_temporal_vs_native": 2.844525704081187,
+    "native_graph_factor": 1.4233347474984546,
+    "full_budget_export_overhead": 0.9980085581108803,
+    "guided_vs_native_graph": 2.1005631957637005,
+    "temporal_vs_native_graph": 1.9984938252090805,
+    "staging_factor_temporal": 1.0085872361724886,
+    "staging_factor_guided": 1.008239198444024,
+    "staged_temporal_vs_native_graph": 2.0156553636754113,
+    "staged_guided_vs_native_graph": 2.1178701527778108
+  },
+  "graphs": {
+    "buffered_dense": {
+      "dense": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      }
+    },
+    "graphed_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.2938446160405874,
+        "replays": 490
+      }
+    },
+    "buffered_guided": {
+      "dense": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      },
+      "action": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      }
+    },
+    "graphed_guided": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 1.263669390231371,
+        "replays": 49
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.1657265555113554,
+        "replays": 392
+      }
+    },
+    "graphed_partial_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.2730547059327364,
+        "replays": 490
+      }
+    },
+    "graphed_partial_guided": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.26478116400539875,
+        "replays": 49
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.16752631030976772,
+        "replays": 392
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.2623314782977104,
+        "replays": 49
+      }
+    },
+    "graphed_temporal": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.25778214633464813,
+        "replays": 98
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.1652012187987566,
+        "replays": 392
+      }
+    },
+    "graphed_native_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.24793976545333862,
+        "replays": 490
+      }
+    },
+    "graphed_staged_temporal": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.28950472362339497,
+        "replays": 98
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.1584344282746315,
+        "replays": 392
+      }
+    },
+    "graphed_staged_guided": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.3014055285602808,
+        "replays": 49
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.1548436414450407,
+        "replays": 392
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.3777814004570246,
+        "replays": 49
+      }
+    }
+  },
+  "bitwise_own_eager_every_sample": true,
+  "unchanged_parameters": true,
+  "sr": null
+}

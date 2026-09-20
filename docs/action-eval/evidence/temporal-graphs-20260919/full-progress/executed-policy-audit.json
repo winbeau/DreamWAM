@@ -1,0 +1,64 @@
+{
+  "utc": "2026-09-20T00:26:03.056856+00:00",
+  "verified": [
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01/attempt-0001-provenance-before.json",
+      "sha256": "a6bc8abf09532cd6f7e4d1cf77e5070b9f38e41e8e96b161ad01a5ad9d635f55",
+      "pid": 191723
+    },
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01/attempt-0002-provenance-before.json",
+      "sha256": "7594212a9858df7e9d6cf83144a234dab24215a0bcb699938d6774b1637a854d",
+      "pid": 193118
+    },
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01/attempt-0003-provenance-before.json",
+      "sha256": "766427e7234ee15c8af4c1845132bda0d41d224d42119b0e30fc8c6c056cebd9",
+      "pid": 194094
+    },
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01/attempt-0004-provenance-before.json",
+      "sha256": "81cb3ea80ba9ca230f668c02a94eed205d45519a42c0faa5082daaa7ef649538",
+      "pid": 195082
+    },
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01/attempt-0005-provenance-before.json",
+      "sha256": "dabf2b559e392fb76756942832e36bd80402df6dba1453117dbf1a1a8ee32cae",
+      "pid": 195849
+    },
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01/attempt-0006-provenance-before.json",
+      "sha256": "389353b2a9722d2ff623bebf04c1a2e1046440c261ee9d5a7bf0899c1f33f5f6",
+      "pid": 196865
+    },
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01/attempt-0007-provenance-before.json",
+      "sha256": "b0442e7ad08c0e9ef70d5fa2cc9c823c4d7e7354ded82f50aed7a282ef7dcc4d",
+      "pid": 198070
+    },
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01/attempt-0008-provenance-before.json",
+      "sha256": "b9f57a7fa60e7ea81750d844ba7d9728301202286c636b26638d460fd78ce5f0",
+      "pid": 199291
+    },
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2-recovery-01/attempt-0009-provenance-before.json",
+      "sha256": "8627c9cb1eb92c2190f934730bcb18d5f1f46daed8e188e5bea3b7c5bf957bcc",
+      "pid": 200467
+    },
+    {
+      "source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2/run-20260920T001038Z-cf9e4f10/provenance.json",
+      "sha256": "2262fb5c63cf7b2c506fdc848da08279a7af3605ace31abede0203411ac4b1c4",
+      "pid": 201242
+    }
+  ],
+  "startup_only_snapshots": [],
+  "sr": null,
+  "executed_visual_cache": {
+    "refresh_every": 5,
+    "token_keep_ratio": 1.0,
+    "action_guidance_weight": 1.0,
+    "graph_dispatch": "all_transformers"
+  },
+  "limitation": "Live provenance is rewritten during each worker startup. Missing description at that instant is pending metadata, not an option mismatch; completed handover snapshots are audited separately."
+}
