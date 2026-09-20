@@ -43,7 +43,11 @@ def main():
     parser.add_argument("--config", type=Path, default=Path("configs/dreamwam_joint.yaml"))
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--share-gpu5", action="store_true")
+    parser.add_argument("--admission-wait-seconds", type=int, default=0,
+                        help="bounded pre-load admission wait, 0..120 seconds; no prediction retries")
     args = parser.parse_args()
+    if not 0 <= args.admission_wait_seconds <= 120:
+        parser.error("admission wait must be within 0..120 seconds")
     plan = json.loads(args.plan.read_text())
     design = plan["online_followup" if args.stage in ("refresh", "structure") else "online_screen"]
     inputs_path = Path(plan["development"]["profile_inputs"])
@@ -186,7 +190,21 @@ def main():
             raise ValueError("checkpoint differs from frozen profile/diagnostic cohort")
         # Admission is deliberately after all large-file hashing and immediately
         # before model initialization. Failure preserves its full inventory.
-        report["admission"] = admit_profile(visible, share_gpu5=args.share_gpu5)
+        deadline = time.monotonic() + args.admission_wait_seconds
+        report["admission_observations"] = []
+        while True:
+            try:
+                report["admission"] = admit_profile(visible, share_gpu5=args.share_gpu5)
+                break
+            except RuntimeError as exc:
+                report["admission_observations"].append(dict(timestamp_utc=stamp(), error=str(exc)))
+                write()
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise
+                print(json.dumps(dict(stage=args.stage, status="WAITING_FOR_ADMISSION",
+                                      remaining_seconds=round(remaining, 1), model_loaded=False)), flush=True)
+                time.sleep(min(5., remaining))
         if not torch.cuda.is_available() or torch.cuda.device_count() != 1:
             raise RuntimeError("exactly one visible CUDA device is required")
         report["status"] = "RUNNING"
