@@ -11,7 +11,7 @@ import unittest
 
 from dreamwam.sparse.hybrid import HybridConfig, StepContext, compile_plan
 from dreamwam.sparse.hybrid.schedule import Schedule
-from dreamwam.sparse.hybrid.search import generate_candidates, parse_indices, read_candidates
+from dreamwam.sparse.hybrid.search import generate_candidates, generate_sweep, parse_indices, read_candidates
 
 
 def options(n=10):
@@ -20,6 +20,48 @@ def options(n=10):
 
 
 class ScheduleTests(unittest.TestCase):
+    def test_budget_selector_grid_preserves_schedule_and_canonical_identity(self):
+        config = HybridConfig.from_mapping(options())
+        rows = generate_sweep(config, (0,), (2, 5, 8), (1,), read_ratios=(0.25, 0.5),
+                              recompute_ratios=(0.05, 0.1), selections=("uniform", "action_drift"))
+        self.assertEqual(len(rows), 24)
+        self.assertEqual(len({row["candidate_id"] for row in rows}), 24)
+        for row in rows:
+            effective = HybridConfig.from_mapping(row["options"])
+            self.assertEqual(effective.policy_hash, row["candidate_id"])
+            self.assertEqual(effective.schedule.operations.count("sparse"), 1)
+        self.assertEqual(generate_sweep(config, (0,), (5,), (1,)),
+                         list(generate_candidates(config, (0,), (5,), (1,))))
+
+    def test_grid_rejects_bad_axes_and_bound_before_writing_any_manifest(self):
+        config = HybridConfig.from_mapping(options())
+        for kwargs in (dict(read_ratios=()), dict(read_ratios=(0.25, 0.25)),
+                       dict(read_ratios=(0.25, float("nan"))), dict(read_ratios=(0.05,)),
+                       dict(selections=("unknown",)), dict(recompute_ratios=(True,)),
+                       dict(max_candidates=0), dict(max_candidates=1, read_ratios=(0.25, 0.5))):
+            with self.subTest(kwargs=kwargs), self.assertRaises(ValueError):
+                generate_sweep(config, (0,), (5,), (1,), **kwargs)
+        with self.assertRaisesRegex(ValueError, "empty schedule"):
+            generate_sweep(config, (0,), (5,), ())
+
+    def test_grid_cli_is_finite_exclusive_and_roundtrips(self):
+        script = Path(__file__).resolve().parents[2] / "scripts/sparse/generate_hybrid_schedules.py"
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "sweep.jsonl"
+            command = [sys.executable, str(script), "--candidate-sparse-steps", "5",
+                       "--refresh-counts", "1", "--read-ratios", "0.125,0.25,0.5,0.75",
+                       "--backend", "cuda_graph", "--out", str(path)]
+            subprocess.run(command, check=True, capture_output=True)
+            self.assertEqual(len(read_candidates(path)), 4)
+            original = path.read_bytes()
+            self.assertNotEqual(subprocess.run(command, capture_output=True).returncode, 0)
+            self.assertEqual(path.read_bytes(), original)
+            invalid = Path(tmp) / "invalid.jsonl"
+            for extra in (["--read-ratio", "0.5"], ["--max-candidates", "2"]):
+                self.assertNotEqual(subprocess.run(command[:-1] + [str(invalid)] + extra,
+                                                    capture_output=True).returncode, 0)
+                self.assertFalse(invalid.exists())
+
     def test_exact_search_spaces_and_nonperiodic_last_step(self):
         config = HybridConfig.from_mapping(options())
         small = list(generate_candidates(config, (0,), tuple(range(1, 10)), (0, 1, 2)))

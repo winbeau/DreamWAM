@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import replace
-from itertools import combinations
+from itertools import combinations, product
 import json
+import math
 
 from .config import HybridConfig
 from .schedule import Schedule, integer, mapping
@@ -48,6 +49,41 @@ def generate_candidates(config, dense_steps, sparse_steps, refresh_counts):
             candidate = replace(config, schedule=Schedule(n, operations))
             yield dict(schema_version=1, candidate_id=candidate.policy_hash,
                        sparse_steps=list(selected), options=candidate.describe())
+
+
+def generate_sweep(config, dense_steps, sparse_steps, refresh_counts, *,
+                   read_ratios=None, recompute_ratios=None, selections=None,
+                   max_candidates=512):
+    """A bounded Cartesian grid; invalid/duplicate cells fail instead of disappearing.
+
+    Budget/selector axes are independent of schedule enumeration. The resulting
+    manifest uses the existing canonical identities and can be replayed/exported
+    by the same benchmark without putting any search logic in the online policy.
+    """
+    integer(max_candidates, "max_candidates")
+    axes = []
+    for name, values, default in (("read_ratios", read_ratios, config.read_ratio),
+                                  ("recompute_ratios", recompute_ratios, config.recompute_ratio),
+                                  ("selections", selections, config.selection)):
+        values = (default,) if values is None else tuple(values)
+        if not values or len(values) != len(set(values)):
+            raise ValueError(f"{name} must be nonempty and unique")
+        axes.append(values)
+    # Validate every schedule index/count before computing its cardinality.
+    if next(generate_candidates(config, dense_steps, sparse_steps, refresh_counts), None) is None:
+        raise ValueError("empty schedule search")
+    schedule_count = sum(math.comb(len(sparse_steps), k) for k in refresh_counts)
+    count = math.prod(len(axis) for axis in axes) * schedule_count
+    if count > max_candidates:
+        raise ValueError(f"grid has {count} candidates, exceeds max_candidates={max_candidates}")
+    rows = []
+    for read_ratio, recompute_ratio, selection in product(*axes):
+        variant = replace(config, read_ratio=read_ratio, recompute_ratio=recompute_ratio,
+                          selection=selection)
+        rows.extend(generate_candidates(variant, dense_steps, sparse_steps, refresh_counts))
+    if len({row["candidate_id"] for row in rows}) != count:
+        raise ValueError("grid contains duplicate canonical candidates")
+    return rows
 
 
 def read_candidates(path):

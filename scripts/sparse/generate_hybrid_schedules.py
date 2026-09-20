@@ -9,7 +9,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from dreamwam.sparse.hybrid import HybridConfig
-from dreamwam.sparse.hybrid.search import generate_candidates, parse_indices
+from dreamwam.sparse.hybrid.search import generate_sweep, parse_indices
 
 
 def main():
@@ -18,15 +18,23 @@ def main():
     p.add_argument("--dense-steps", default="0")
     p.add_argument("--candidate-sparse-steps", default="1:10")
     p.add_argument("--refresh-counts", default="0,1,2")
-    p.add_argument("--recompute-ratio", type=float, default=0.1)
+    recompute = p.add_mutually_exclusive_group()
+    recompute.add_argument("--recompute-ratio", type=float, default=0.1)
+    recompute.add_argument("--recompute-ratios", help="comma-separated finite budget grid")
     p.add_argument("--read-mode", choices=("full", "compact"), default="compact")
-    p.add_argument("--read-ratio", type=float, default=0.25)
-    p.add_argument("--selection", choices=("uniform", "drift", "action_drift"), default="action_drift")
+    read = p.add_mutually_exclusive_group()
+    read.add_argument("--read-ratio", type=float, default=0.25)
+    read.add_argument("--read-ratios", help="comma-separated finite budget grid")
+    selectors = p.add_mutually_exclusive_group()
+    selectors.add_argument("--selection", choices=("uniform", "drift", "action_drift"), default="action_drift")
+    selectors.add_argument("--selections", help="comma-separated selector grid")
     p.add_argument("--guidance-weight", type=float, default=1.0)
     p.add_argument("--frame-quota", choices=("none", "balanced"),
                    help="full defaults to global queries; use balanced for matched compact-read ablations")
     p.add_argument("--backend", choices=("eager", "buffered", "cuda_graph"), default="eager")
     p.add_argument("--out", type=Path, required=True)
+    p.add_argument("--max-candidates", type=int, default=512,
+                   help="reject, never truncate, a larger Cartesian search")
     args = p.parse_args()
     try:
         selection = dict(method=args.selection, guidance_weight=args.guidance_weight)
@@ -34,11 +42,17 @@ def main():
             selection["frame_quota"] = args.frame_quota
         config = HybridConfig.from_mapping(dict(
             schedule=dict(kind="periodic", num_steps=args.num_steps, refresh_every=args.num_steps),
-            recompute=dict(keep_ratio=args.recompute_ratio),
-            read=dict(mode=args.read_mode, keep_ratio=args.read_ratio),
+            recompute=dict(keep_ratio=float(args.recompute_ratios.split(",")[0])
+                          if args.recompute_ratios is not None else args.recompute_ratio),
+            read=dict(mode=args.read_mode, keep_ratio=float(args.read_ratios.split(",")[0])
+                      if args.read_ratios is not None else args.read_ratio),
             selection=selection, execution=dict(backend=args.backend)))
-        candidates = list(generate_candidates(config, parse_indices(args.dense_steps),
-                          parse_indices(args.candidate_sparse_steps), parse_indices(args.refresh_counts)))
+        candidates = generate_sweep(config, parse_indices(args.dense_steps),
+            parse_indices(args.candidate_sparse_steps), parse_indices(args.refresh_counts),
+            read_ratios=None if args.read_ratios is None else tuple(map(float, args.read_ratios.split(","))),
+            recompute_ratios=None if args.recompute_ratios is None else tuple(map(float, args.recompute_ratios.split(","))),
+            selections=None if args.selections is None else tuple(args.selections.split(",")),
+            max_candidates=args.max_candidates)
     except (ValueError, TypeError) as exc:
         p.error(str(exc))
     args.out.parent.mkdir(parents=True, exist_ok=True)
