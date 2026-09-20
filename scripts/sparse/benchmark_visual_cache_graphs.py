@@ -30,6 +30,7 @@ from dreamwam.sparse.action_guided_visual_token_cache import ActionGuidedVisualT
 from dreamwam.sparse.visual_cache_graphs import GraphedVisualTokenCache
 from dreamwam.sparse.visual_step_cache import VisualStepCache
 from dreamwam.sparse.dense_graph_control import NativeDenseGraph
+from dreamwam.sparse.visual_kv_staging import StagedVisualKVCache
 
 
 def main():
@@ -44,12 +45,16 @@ def main():
                         help="compare full visual refresh against 10 percent with all-transformer capture fixed")
     parser.add_argument("--include-native-graph-control", action="store_true",
                         help="also graph the native Dense path without exporting unused visual K/V")
+    parser.add_argument("--include-kv-staging-factor", action="store_true",
+                        help="stage read-only action K/V only after a visual refresh; keep graph scope fixed")
     parser.add_argument("--out-dir", required=True)
     args = parser.parse_args()
     if min(args.warmup, args.graph_warmup) < 1 or args.reps < 2:
         parser.error("positive warmups and at least two repetitions required")
     if args.include_temporal_control and not args.include_partial_factor:
         parser.error("temporal budget comparison requires --include-partial-factor for matched graph scope")
+    if args.include_kv_staging_factor and not (args.include_temporal_control and args.include_native_graph_control):
+        parser.error("K/V staging requires temporal and native graph controls")
     out = Path(args.out_dir)
     out.mkdir(parents=True, exist_ok=False)
     release = load_release_config(args.config)
@@ -63,14 +68,18 @@ def main():
                     sources={name: sha256(name) for name in (
                         "dreamwam/sparse/visual_cache_graphs.py", "dreamwam/sparse/visual_step_cache.py",
                         "dreamwam/sparse/dense_graph_control.py",
+                        "dreamwam/sparse/visual_kv_staging.py",
                         "dreamwam/sparse/visual_token_cache.py", "dreamwam/sparse/action_guided_visual_token_cache.py",
                         "scripts/sparse/benchmark_visual_cache_graphs.py", "pyproject.toml", "requirements.txt", args.config)},
-                    factor=("visual refresh budget at fixed interval 5 and all-transformer graph dispatch"
+                    factor=("read-only action K/V staging once per visual refresh with fixed graph scope"
+                            if args.include_kv_staging_factor else
+                            "visual refresh budget at fixed interval 5 and all-transformer graph dispatch"
                             if args.include_temporal_control else
                             "CUDA graph dispatch for dense Joint and cached-video action transformer calls"),
                     include_partial_factor=args.include_partial_factor,
                     include_temporal_control=args.include_temporal_control,
                     include_native_graph_control=args.include_native_graph_control,
+                    include_kv_staging_factor=args.include_kv_staging_factor,
                     scope="selection and all policy/pre/post-DiT/RNG/scheduler logic remain eager; partial capture is a separate optional factor",
                     environment="existing .venv reused unchanged; no install or sync; uv.lock absent",
                     latency_boundary="synchronized full predict_action through CPU action output",
@@ -120,11 +129,19 @@ def main():
         if args.include_native_graph_control:
             caches["graphed_native_dense"] = NativeDenseGraph(policy.model, graph_warmup=args.graph_warmup)
             variants += ("graphed_native_dense",)
+        if args.include_kv_staging_factor:
+            for label, keep in (("temporal", 1.0), ("guided", 0.1)):
+                name = f"graphed_staged_{label}"
+                caches[name] = StagedVisualKVCache(
+                    policy.model, keep_ratio=keep, refresh_every=5, guidance_weight=1.0,
+                    graph_warmup=args.graph_warmup, graph_partial=True)
+                variants += (name,)
         manifest["variant_options"] = {
             name: dict(refresh_every=cache.refresh_every, token_keep_ratio=cache.keep_ratio,
                        action_guidance_weight=getattr(cache, "guidance_weight", 0.0),
                        graph_enabled=getattr(cache, "graph_enabled", False),
-                       graph_partial=getattr(cache, "graph_partial", False))
+                       graph_partial=getattr(cache, "graph_partial", False),
+                       refresh_scoped_kv_staging=isinstance(cache, StagedVisualKVCache))
             for name, cache in caches.items()}
 
         def reference_for(variant):
@@ -168,7 +185,7 @@ def main():
         for name in (key for key in variants if key.startswith("graphed")):
             graph_stats = caches[name].graph_stats()
             required = {"dense", "action"} if name.endswith(("guided", "temporal")) else {"dense"}
-            if name == "graphed_partial_guided":
+            if name in ("graphed_partial_guided", "graphed_staged_guided"):
                 required.add("partial")
             if set(graph_stats) != required or not all(value["captured"] for value in graph_stats.values()):
                 raise AssertionError(f"required CUDA graph missing: {name}")
@@ -186,6 +203,9 @@ def main():
                     reference_variant = reference_for(variant)
                     if not np.array_equal(actual, references[(reference_variant, input_id)]):
                         raise AssertionError(f"timed bitwise parity failed: {variant}, input {input_id}")
+                    if variant.startswith("graphed_staged_"):
+                        if stats["action_kv_stage_batches"] != 2 or stats["action_kv_skip_batches"] != 6:
+                            raise AssertionError("K/V staging did not execute exactly two refresh copies and six skips")
                     difference = actual.astype(np.float64) - references[("native_dense", input_id)].astype(np.float64)
                     row = dict(repeat=repeat, order=list(order), variant=variant, input_id=input_id,
                                seconds=seconds, bitwise_own_eager=True, cache=stats,
@@ -231,6 +251,12 @@ def main():
                     guided_vs_native_graph=mean("graphed_native_dense") / mean("graphed_partial_guided"))
             if args.include_temporal_control:
                 report["speedups"]["temporal_vs_native_graph"] = mean("graphed_native_dense") / mean("graphed_temporal")
+        if args.include_kv_staging_factor:
+            report["speedups"].update(
+                staging_factor_temporal=mean("graphed_temporal") / mean("graphed_staged_temporal"),
+                staging_factor_guided=mean("graphed_partial_guided") / mean("graphed_staged_guided"),
+                staged_temporal_vs_native_graph=mean("graphed_native_dense") / mean("graphed_staged_temporal"),
+                staged_guided_vs_native_graph=mean("graphed_native_dense") / mean("graphed_staged_guided"))
         (out / "summary.json").write_text(json.dumps(report, indent=2) + "\n")
         manifest.update(status="MEASURED", exit_code=0, end_utc=report["end_utc"], gpu_after=inventory(),
                         peak_allocated_mib=torch.cuda.max_memory_allocated() / 2**20,
