@@ -13,6 +13,14 @@ predeclared 3-pair development pilot only after offline gates. No automatic
 expansion. This supersedes the historical unspecified tolerance and 50-per-arm
 screening scope below. See `docs/implementation/dido-sparse-profile/PROGRESS.md`.
 
+Latest hardware amendment: GPU 0 was reclaimed and must remain unused by this
+task. The user explicitly permits flexible sharing of **GPU 5** with their other
+project. For GPU 5 this supersedes the leave-last-card rule below; admit bounded
+real work with fresh memory/utilization checks and adequate headroom. Do not
+signal the other project's processes. The final "算了…灵活使用5卡" supersedes the
+preceding dummy-load reservation request: no idle torch utilization loop is
+needed. Release this task's resources when its finite work finishes.
+
 ## Active isolated-worktree handoff (2026-09-20)
 
 The user explicitly requested a separate DIDO-guided action/video sparse-profile

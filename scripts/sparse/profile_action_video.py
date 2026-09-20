@@ -57,7 +57,9 @@ def main():
     visible = os.environ.get("CUDA_VISIBLE_DEVICES", "")
     if not visible.startswith("GPU-") or "," in visible:
         parser.error("select exactly one explicitly admitted H100 GPU UUID")
-    admission = admit_profile(visible, authorized=tuple(plan["authorized_h100_gpu_indices"]))
+    admission_options = dict(authorized=tuple(plan["authorized_h100_gpu_indices"]),
+                             share_gpu5=plan.get("allow_explicit_gpu5_sharing", False))
+    admission = admit_profile(visible, **admission_options)
     if not torch.cuda.is_available() or torch.cuda.device_count() != 1:
         parser.error("CUDA is required; CPU checkpoint fallback is forbidden")
     release = load_release_config(args.config)
@@ -68,6 +70,7 @@ def main():
     args.out_dir.mkdir(parents=True, exist_ok=False)
     archive = RawArchive(args.out_dir / "raw", max_bytes=sampling["max_profile_raw_bytes"])
     report = dict(status="RUNNING", start_utc=stamp(), source_commit=source, argv=sys.argv,
+        raw_schema_version=1, input_kind="self_captured_observations", protocol=plan["protocol"],
         pid=os.getpid(), checkpoint_sha256=plan["checkpoint_sha256"],
         config_sha256=sha256(args.config), plan_sha256=sha256(args.plan),
         input_manifest_sha256=sha256(args.inputs), sampling=sampling, admission=admission,
@@ -90,7 +93,7 @@ def main():
     policy = None
     try:
         # Admission is refreshed immediately before model loading, after hashing.
-        report["load_admission"] = admit_profile(visible, authorized=tuple(plan["authorized_h100_gpu_indices"]))
+        report["load_admission"] = admit_profile(visible, **admission_options)
         policy = build_policy(release, device="cuda", prompt_cache={"capacity": 8})
         versions = tuple(p._version for p in policy.model.parameters())
         for item in entries:

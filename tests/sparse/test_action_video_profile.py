@@ -153,6 +153,24 @@ def test_admission_never_consumes_last_available_card(monkeypatch):
         admit_profile("GPU-2")
 
 
+def test_explicit_gpu5_sharing_retains_capacity_and_scope_checks(monkeypatch):
+    inventory = "0, GPU-0, NVIDIA H100, 4, 81559, 0\n3, GPU-3, NVIDIA H100, 24000, 81559, 100\n5, GPU-5, NVIDIA H100, 2937, 81559, 0\n"
+    monkeypatch.setattr("dreamwam.sparse.profile.admission.subprocess.check_output", lambda *a, **k: inventory)
+    shared = admit_profile("GPU-5", share_gpu5=True)
+    assert shared["selected_gpu_sharing"] and shared["last_available_exception"]
+    assert not shared["reservation"]
+    with pytest.raises(RuntimeError):
+        admit_profile("GPU-0", share_gpu5=True)
+    with pytest.raises(RuntimeError):
+        admit_profile("GPU-5")
+    inventory = inventory.replace("2937, 81559, 0", "40000, 81559, 0")
+    with pytest.raises(RuntimeError):
+        admit_profile("GPU-5", share_gpu5=True)
+    inventory = inventory.replace("40000, 81559, 0", "2937, 81559, 100")
+    with pytest.raises(RuntimeError):
+        admit_profile("GPU-5", share_gpu5=True)
+
+
 @pytest.mark.skipif(not torch.cuda.is_available(), reason="requires separately admitted CUDA")
 def test_actual_cuda_profile_preserves_native_eager():
     model, inputs = model_and_inputs()

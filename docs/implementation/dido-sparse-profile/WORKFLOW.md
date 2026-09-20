@@ -81,7 +81,11 @@ PYTHONPATH to the detached run worktree and record that revision.
 Prior H100 authorization covers GPUs 3/4/5. GPU 3 was used previously; its recorded
 UUID is `GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30`. This is not a reservation:
 recheck UUIDs, memory, utilization and processes before every launch; leave another
-available authorized card unused. CPU rendering has no render GPU. Do not use
+available authorized card unused, except for the user's latest explicit flexible
+GPU 5 sharing authorization. GPU 0 was subsequently reclaimed; do not use it.
+The profiler's GPU 5 exception requires at least 50,000 MiB free and utilization
+at most 10% before model loading. It does not reserve the card or signal other
+projects. No dummy-load reservation is run. CPU rendering has no render GPU. Do not use
 other GPUs/hosts, revive historical queues, train the checkpoint, or alter the
 scientific protocol without further authority.
 

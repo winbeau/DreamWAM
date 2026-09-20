@@ -10,6 +10,15 @@ at 50 episodes in total across all arms and attempts. First proposed rollout is
 No rollout has started in this branch. A tiny pilot cannot establish statistical
 non-inferiority at the 5-point margin.
 
+Latest hardware amendment: the user permits flexible GPU 5 sharing with their
+other project, overriding the last-available-card restriction for GPU 5 only.
+GPU 0 was reclaimed. At 18:11:34 UTC GPU 5 used 2,937 MiB (78,144 MiB free),
+0% utilization; other-project PID 385222 is left untouched. Next bounded run:
+small synthetic CUDA check, then the predeclared 9 observations / 18 native
+predict calls / 2 GiB raw cap, estimated 5–15 minutes; zero closed-loop episodes.
+The preceding dummy-load request is superseded by the latest flexible-use
+instruction. Availability is rechecked immediately before the real model load.
+
 ## Requirement and evidence ledger
 
 | GOAL section | Required evidence | Current state / next gate |

@@ -5,6 +5,8 @@
   "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
   "authorized_h100_gpu_indices": [3, 4, 5],
   "leave_last_available_authorized_gpu_unused": true,
+  "allow_explicit_gpu5_sharing": true,
+  "gpu5_sharing_amendment": "2026-09-20 user permits flexible GPU 5 sharing with their other project, including the last available authorized card; GPU 0 authorization withdrawn. No dummy reservation job. Require >=50000 MiB free and <=10% utilization immediately before loading; do not signal the other project.",
   "closed_loop_total_episode_attempt_cap": 50,
   "closed_loop_attempts_used": 0,
   "sr_drop_margin_percentage_points": 5,
