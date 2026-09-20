@@ -33,6 +33,9 @@ def main():
     parser.add_argument("--steps", default="1,5,9")
     parser.add_argument("--methods", default="uniform,action,bottom_action,visual_context,action_context")
     parser.add_argument("--remove-ratio", type=float, default=0.1)
+    parser.add_argument("--scope", choices=("all", "future"), default="all")
+    parser.add_argument("--group-count", type=int, default=0,
+                        help="also remove each disjoint within-frame index group; 0 disables")
     args = parser.parse_args()
     steps, methods = parse_indices(args.steps), args.methods.split(",")
     release = load_release_config(args.config)
@@ -42,6 +45,9 @@ def main():
         parser.error("unsupported/duplicate intervention methods")
     if not 0 < args.remove_ratio < 1:
         parser.error("remove-ratio must be in (0, 1)")
+    if args.group_count == 1 or args.group_count < 0:
+        parser.error("group-count must be zero or at least two")
+    interventions = [(method, None) for method in methods] + [("group", i) for i in range(args.group_count)]
     visible = os.environ.get("CUDA_VISIBLE_DEVICES", "")
     if not visible or "," in visible or not torch.cuda.is_available() or torch.cuda.device_count() != 1:
         parser.error("select one explicitly authorized CUDA device")
@@ -65,7 +71,8 @@ def main():
         inputs_sha256=sha256(args.inputs), checkpoint_sha256=sha256(release.paths.checkpoint),
         hardware=command("nvidia-smi", "--query-gpu=index,uuid,memory.used,utilization.gpu", "--format=csv"),
         gpu=visible, torch=torch.__version__, cuda=torch.version.cuda, shared_host=True,
-        split="exposed debug inputs; not held-out", planned=len(observations) * len(steps) * len(methods),
+        split="exposed debug inputs; not held-out", scope=args.scope, group_count=args.group_count,
+        planned=len(observations) * len(steps) * len(interventions),
         completed=0, baselines={}, interventions=[], sr=None,
         limitations=["first-layer attention proxy is not a causal oracle",
             "future-latent distance to Dense is not video quality or real-world prediction error",
@@ -77,7 +84,7 @@ def main():
         policy = build_policy(release, device="cuda", prompt_cache={"capacity": 8})
         versions = tuple(p._version for p in policy.model.parameters())
         for name, observation in observations.items():
-            with DependencyAudit(policy.model, collect=True, ratio=args.remove_ratio) as audit:
+            with DependencyAudit(policy.model, collect=True, ratio=args.remove_ratio, scope=args.scope) as audit:
                 dense = policy.predict_action(**observation)
             video = audit.future_latents.cpu().float().numpy()
             np.savez_compressed(args.out_dir / (name + "-dense.npz"), action=dense, future_latents=video)
@@ -86,16 +93,19 @@ def main():
                 raise AssertionError("diagnostic instrumentation changed Dense actions")
             report["baselines"][name] = dict(records=audit.records, stability=route_stability(audit.records))
             for step in steps:
-                for method in methods:
+                for method, group_index in interventions:
                     with DependencyAudit(policy.model, remove_step=step, method=method,
-                                         ratio=args.remove_ratio) as intervention:
+                                         ratio=args.remove_ratio, scope=args.scope,
+                                         group_index=group_index, group_count=args.group_count) as intervention:
                         actual = policy.predict_action(**observation)
                     if intervention.modified_layers != policy.model.mot.num_layers:
                         raise AssertionError("intervention did not cover exactly the requested layer-step")
                     actual_video = intervention.future_latents.cpu().float().numpy()
-                    output = args.out_dir / f"{name}-{step:02d}-{method}.npz"
+                    label = method if group_index is None else f"group_{group_index:02d}"
+                    output = args.out_dir / f"{name}-{step:02d}-{label}.npz"
                     np.savez_compressed(output, action=actual, future_latents=actual_video)
-                    report["interventions"].append(dict(input_id=name, step=step, method=method,
+                    report["interventions"].append(dict(input_id=name, step=step, method=label,
+                        group_index=group_index, scope=args.scope,
                         removed=intervention.removed.cpu().tolist(), layers=intervention.modified_layers,
                         action=diagnostics(actual, dense),
                         executed_prefix=diagnostics(actual[:release.evaluation["replan_steps"]], dense[:release.evaluation["replan_steps"]]),

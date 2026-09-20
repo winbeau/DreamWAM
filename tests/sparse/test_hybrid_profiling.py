@@ -37,3 +37,18 @@ def test_rank_direction_and_removal_cannot_empty_frames():
     assert balanced_indices(score, 12, 4, 0.25, bottom=True).tolist() == [0, 4, 8]
     with pytest.raises(ValueError):
         balanced_indices(score, 12, 4, 0.99)
+
+
+def test_future_group_interventions_partition_keys_without_touching_observed_frame():
+    model, inputs = model_and_inputs()
+    expected = model.sample_action(**inputs)
+    groups = []
+    for index in range(2):
+        with DependencyAudit(model, remove_step=2, method="group", scope="future",
+                             group_index=index, group_count=2) as audit:
+            assert torch.isfinite(model.sample_action(**inputs)).all()
+        groups.append(set(audit.removed.tolist()))
+        assert not groups[-1] & set(range(4))
+    assert not groups[0] & groups[1]
+    assert groups[0] | groups[1] == set(range(4, 12))
+    assert torch.equal(model.sample_action(**inputs), expected)
