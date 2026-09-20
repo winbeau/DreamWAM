@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/configs/experiments/dreamwam-prompt-guided-quick50.yaml
+experiment  : dreamwam-prompt-guided-quick50 (DreamWAM Joint guided token sparsity (exploratory Spatial 50))
+fingerprint : 3ceef6544922242f846b648613820f60b7a1588d08cb8b9d021748d364d6b80b
+benchmark   : libero_spatial tasks=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] inits=[0, 1, 2, 3, 4]
+episodes    : 50 planned (10 tasks x 5 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

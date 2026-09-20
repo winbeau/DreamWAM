@@ -5,6 +5,13 @@ Date: **2026-09-20 UTC**. This source review responds to the user's question
 about action/video classification, AV–VV bridging and sparse execution. It
 does not change any frozen rollout or the paper's TeX.
 
+Current execution is **paused at the user's request, 06:21 UTC**. The latest
+common prompt-cache factor raises the guided path to **1.872×** on real inputs;
+the complete 15-pair pilot is not benchmark SR evidence. Head × Stage compact
+execution subsequently measured **0.907×** versus the same mask and remains
+outside the fast path. See the [consolidated results](sparse-results-paused-20260920.md)
+for the complete measured status and the deferred 50-episode screening plan.
+
 Update: the user subsequently requested offline classification. The
 [full M1 sensitivity sweep and combined allocation test are complete](head-stage-calibration-20260920.md):
 6,480 interventions, 2,160 typed units and 21 combined profile/input records.

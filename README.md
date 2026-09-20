@@ -1,4 +1,4 @@
-> **Evaluation fork — `main`**: [paper-evaluation status](docs/action-eval/README.md), [agent rules](AGENTS.md). Active work measures Joint visual reuse/selection under unchanged action sampling and official paired SR. Full-request latency has reached ≥1.5×; complete benchmark SR preservation remains unproven. Upstream instructions below are preserved for reference; execution remains server-only and existing dependency versions are preserved.
+> **Evaluation fork — `main`**: [paper-evaluation status](docs/action-eval/README.md), [agent rules](AGENTS.md), [consolidated results](docs/action-eval/sparse-results-paused-20260920.md). Sparse-WAM GPU work is paused at the user's request (2026-09-20); its cards have been released. The guided sparse candidate measures 1.872× warm full-request acceleration; complete benchmark SR preservation remains unproven. Screening is now 50 episodes per candidate, with full tests deferred until method selection. Upstream instructions below are preserved for reference; execution remains server-only and existing dependency versions are preserved.
 
 <div align="center">
 

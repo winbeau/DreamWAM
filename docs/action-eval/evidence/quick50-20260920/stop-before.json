@@ -1,0 +1,643 @@
+{
+  "utc": "2026-09-20T06:08:16.614186+00:00",
+  "reason": "User requests 50-episode quick experiments; defer unified full testing until method selection",
+  "controller_pid": 453956,
+  "runs": [
+    {
+      "arm": "dense",
+      "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/prompt-cache-paired-20260920/full-spatial/dense-spatial-gpu2-render4/run",
+      "runner_pid": 454021,
+      "policy_pid": 454174,
+      "snapshot": {
+        "planned": 500,
+        "outcomes": {
+          "t000-i000-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "58ca15704053a8a6a5b1f9af929018e5ecefb0f37af45a6e0e6b5433cdd2fce8"
+          },
+          "t000-i001-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "aa923743aa41436a75130a579babdb77f154d32804a353e7a3584b5bf0ba960a"
+          },
+          "t000-i002-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c83d24be9d784bed405c40ff4ce1a8deee33f083368ea09421bb4677f4a72532"
+          },
+          "t000-i003-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "b3b002e7ddc8ddca58344d603ebb4eb1fc6a22a617d6da571100ff1a6f232276"
+          },
+          "t000-i004-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "363b7731f7d7b08b3b12695ed40d941092dd8b6d8c11f1f2b43a5532ec91a435"
+          },
+          "t000-i005-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "11d8ab135313781728770fcdb1464ae5384f54db4e2022286af0784fa3b13f91"
+          },
+          "t000-i006-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "31658d8a58848bbfbf3296150be6ac4d09743de9c0ea61f065b6e5072df878a7"
+          },
+          "t000-i007-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "4ea758a3a23eb8254e7c0e7af03a5c36369205ba869b889fccf506607651a050"
+          },
+          "t000-i008-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "81e7dbe4e668ca9bb2ac20f497efd61e56e7ad58ea69ecabc0c8b6adddfe4919"
+          },
+          "t000-i009-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "b946a9af3591fc372fd3bb3bca3d5408f3e6c9ee1548143461d6ca81dcb238f4"
+          },
+          "t000-i010-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "12502fb135597a7bcb82e5366b000b62b219550984db5f641bbdc870f603c3f4"
+          },
+          "t000-i011-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ac8ca90962c427363b2fb0637bcd04398e96b3d58d16c8e210b937c18000a92d"
+          },
+          "t000-i012-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "925d1e3b3accf9f67d8e08159f3d63c08fac78bf8e0ea07bbea9cffbeab91940"
+          },
+          "t000-i013-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "2c08445af80597dfc3382cbfbdec80995ccd4d3f1ad9b51a2e59b4724feeb596"
+          },
+          "t000-i014-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3712b3408f82336b52692e6e15977af2df516397db792138df994ba8fb0406d8"
+          },
+          "t000-i015-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "7fc9b376765f09d2c73ba274979660ee80adf76fb8828d9399237ff268fc795b"
+          },
+          "t000-i016-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3583428d8e8222aebacc4ff390be1d891d1f0392dc30d670606ad97bac5fd31f"
+          },
+          "t000-i017-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "68e4332486616ac5a8a5d757cf59bb3b1a2608d6d760b87f60caf2de31e07906"
+          },
+          "t000-i018-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "a3726ba33df32d5a1940b70ee78a1621ba695db2fdf43ddb4c63e664fb5e20a9"
+          },
+          "t000-i019-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "cdaab93f76943c9a81f52cb4e57c966eaa2b4331bfc358e2dd3ca86688e2d7d2"
+          },
+          "t000-i020-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "4f8f85385b6321a430d48c431b84ff0fa2d93037bdff6d737ce82e72dec1ad6e"
+          },
+          "t000-i021-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "2850cbd96a8a29819bdb7791e7137ad429fb744dc14134741846ae80de32acf6"
+          },
+          "t000-i022-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c8a1b4ea0e92bfec5fa0589f7ee7a972a5a5bbb6328462802145fd77f106f7d1"
+          },
+          "t000-i023-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3a876624f105b739bd1896b4f9fd15d650c4a19241ccf8653ae0f71ce5365f72"
+          },
+          "t000-i024-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c58a786803fa0ea41845474b6c5cd33f475149074b358129d5987e993a6ad0d4"
+          },
+          "t000-i025-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "6a5462d355f191de8f7dbe9c235ecd08d3e41b8e42ffdc7966531c37b42f006d"
+          },
+          "t000-i026-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ef4ab7ed17b17d5cf330c1bb8e90136472efb5695be5229b5f18852b671e26c9"
+          },
+          "t000-i027-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "a325832912325898c1afdb84154088b69fef1a2c9e08f2bc12755ebe04238c4f"
+          },
+          "t000-i028-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ef312487949d237aaff827e87bd55210e978baeeed581e90f353a694bab0d93c"
+          },
+          "t000-i029-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c465103331d9c75add8327702609eb3d1911c752804f5c5eb0e5543acbdb42d6"
+          },
+          "t000-i030-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "d7053edf2f3256f29f2802968ba60d652f8bf964edb148d4be03076da182f4c1"
+          },
+          "t000-i031-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "431ac2e6833c0a431e6b87caad6bc10fb7648f8b96625e91b979080837ea402a"
+          },
+          "t000-i032-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "a7d082dde61cf6a800f3b34c1ad62b1100329473047ed20309a9ff5392b5f262"
+          },
+          "t000-i033-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "13ef7cf352274dafbe9dc10e2d75c71c6ee78f7f93ba5f9008ed650cda3a64fa"
+          },
+          "t000-i034-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "7c73112a9511eda2645c57810497214679906f66ef16dcd91eec8ae6564877a1"
+          },
+          "t000-i035-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c93f3e78b6120ce722ccd86ce0762d1c8ec9b9ccd9e09ea86031a1c26d10dfa8"
+          },
+          "t000-i036-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "47534692ab65de2b4b2ef5872d2d68a6e7fb133feda8efcb0ba6f7be15072023"
+          },
+          "t000-i037-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "fa269b1e34d83af7f5fdae4d1472243cb484e44498580c28e327edaa177b90f3"
+          },
+          "t000-i038-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "cdd0425e352386afb34df0090bb8e8313b323a4e77f67587ac937b9302bf6fd9"
+          },
+          "t000-i039-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c0209d95febf5417b0174d6b23b56901244fb337747781d005921797452ab500"
+          },
+          "t000-i040-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "4252d2618ec851d3595e1d014ee093c909ea65df399e94140c14859ce63628e8"
+          },
+          "t000-i041-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "689cee791628aaf7966faee28b0fe4aba262ba2e05ac9d18d71cfa86cdf6b406"
+          },
+          "t000-i042-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "1dc2aa358a37f01ff160fd588794941bdd8f019212d23e5cfd14b69a2ff92212"
+          },
+          "t000-i043-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "1fc1a4d645c42c164128ba74bde3c335b08d6471469662c30e4e18b3dc3b9720"
+          },
+          "t000-i044-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "5ba17b48d7e3ddbcfbc88d5572d6f8bf0b54271444d8500fb40b96f1c8c41a37"
+          },
+          "t000-i045-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "727cdfa9a69558f981d6a30879401612ac4b004feef1e7039acbc038ae0385ee"
+          },
+          "t000-i046-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "491d2e1e4f46e78a7f6c879208a7774c02e68927ef67b4a6941495d1fd3a29cf"
+          },
+          "t000-i047-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "34876e7de837cea740130506b5a75f654925ade7f2e76b130d02397fa6085e3f"
+          },
+          "t000-i048-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "e468772a573bca8adba16aee305d72260225fc41341084f5d7740e96b3641388"
+          },
+          "t000-i049-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "217120925126640a292080a53911f56b162934e994451536ad4713a036bd39f6"
+          },
+          "t001-i000-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3510c570b346f823f54841ca512bcb33829bb44408a9683f3b3b0740a23fb3ad"
+          },
+          "t001-i001-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ed280a00473dd28a2fa886a086f429413f9ef1a1477841fca8085827852520a4"
+          },
+          "t001-i002-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c43a489b2307defcb900a27d20a40117428ee07999c6a0e6a9e72dc588c15584"
+          },
+          "t001-i003-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "2efe62621aaebf040aaff2c561f2ca720f167d26e1832c3537571ba8ca521eab"
+          },
+          "t001-i004-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "2e29b25ddcf371b7a64ab8fb6166ada32544f9df6452a6b6834d87b6b1e12e01"
+          },
+          "t001-i005-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "dcede9a7d69cc723f06fb2149051857f17886e997cd9bcca297a8208180ab129"
+          },
+          "t001-i006-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "bb8c7f18dbb7a17e1b342a29a2e21093a9c653928d540a350c0cdea05f01a222"
+          },
+          "t001-i007-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "037691ff18071481f0b3928575e1074a8ed58055a8bb2b30b80b5fce7aa7e744"
+          },
+          "t001-i008-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "7ead4770c456cb81d42ed2b5b27539e6e42c99ab22410e056599253704778280"
+          },
+          "t001-i009-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c85ee058e56dd327b892def3b6cafb0233fc7f8ee9d1799bf2efd271b6c576ac"
+          },
+          "t001-i010-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "6f833164610f8b363b1b6165e638d93af4c62ca79fcd7d2d4fab0d847e971205"
+          },
+          "t001-i011-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3f50eca2cc20c3781bbee0bd3d5b7f7f518ceb10736159e370c5ebbe8b130c75"
+          },
+          "t001-i012-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "d7590c0ff7d53b6c87045a8899ce31baa0f73018073d95ff7519f3c5f994e812"
+          },
+          "t001-i013-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ec76253e8e1b5abf9cf4c3dbdfb8c00afc8ce5180bfe51829e7bf672d9665eec"
+          },
+          "t001-i014-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "0137939e9a830ed36dd54f466d288d0faf909940e793b6a694a8b12a301ba4b8"
+          },
+          "t001-i015-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "fa5efd565266adaa0c4b9a3fe5d951426c7f51841ffce9d5b74f999ad47834ae"
+          },
+          "t001-i016-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "608aadf74d4b20e7544a45fcf6a1cc8a3f9630e32ef03a3e069af2339b1a2550"
+          },
+          "t001-i017-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "321ebd9c7569ca7cf260c2ec7d334ae1945127b7a29fe3028d366a18ec722c44"
+          },
+          "t001-i018-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "bad186e634b8addfbfa689cb57d6dbea62e5d2e409b1397f43f7e531cc721989"
+          },
+          "t001-i019-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "59b7eaa664bfcaf446e175ea0bccf037a858bca8e68549c48b5e883fedd3bde1"
+          },
+          "t001-i020-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "cf52d9777de7afc0d19b6403b1c6974b2b5805457fe21ca9222f06d6eb2a3c7d"
+          },
+          "t001-i021-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "b2e457ce7e024b201f90daaaceaf3fe872706493032d964861c3777e57005757"
+          },
+          "t001-i022-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ccb312e1e776f4f0f923927db3a26d7a827ab3d25fa2d6ccf406ee168877410f"
+          },
+          "t001-i023-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3ff7bebeb1a1e7a0864ce5d3f80de91c59d7b6947ceefd7c8975c7056f0b3f75"
+          },
+          "t001-i024-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "d454a3ef0f634b03ca1d14bae5d0c991d7ba5e822d9a3df637bd9e15da192833"
+          },
+          "t001-i025-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "95c22b32b798edbb166848506cc3366189981087dbdb1aa97f699498ad5fe04d"
+          },
+          "t001-i026-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "5b4b780ae91d33390795dcc162deec2df8276683e33079c835d1f8eb06f83f52"
+          },
+          "t001-i027-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "1ae82458e4070712fe468345e756f633bcaf57dc8e287d8eff15e9a20915d310"
+          },
+          "t001-i028-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3f0e9ffdab802bc946a9af3342c3020b562cb1f0c443e8b86dc4c61cdd57ae96"
+          },
+          "t001-i029-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "4e439b647d7d7094eac0ac27c53900449cd44c7d12104ceb82dc3ae4e2fb3cca"
+          },
+          "t001-i030-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ccdff265d01ce8afada3d4385f35ca5ea972ca40fb14587bfed0431d0a16f865"
+          },
+          "t001-i031-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "50aaf519acebd1a53f31c6ff4263715071a98cdabfafb5881177f575312cbcdf"
+          },
+          "t001-i032-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "8a6287528dff5e953154a690948bf0d80bb374cd25704cbca36bd96a842f431f"
+          },
+          "t001-i033-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "f98b113a447a8d899db06281f4585cbe3ce0814cf01e8f7fc27d18822f338e91"
+          },
+          "t001-i034-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "f6f92a7388e9f021ff53bb9b8e085b2a2c0babdc7c43e251726ed9597d55a56f"
+          },
+          "t001-i035-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "1348f6cdb0d90c57e68397d7bf46d23e5051b317724e183495cf9c259ae3d44f"
+          },
+          "t001-i036-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "4461a3c8b97d54def3613cebaf03dae7f13987d463931419a688306a6c5d8d9a"
+          },
+          "t001-i037-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "6e53925770116a38bf5a30059c87cf17f9395a6fe3ba5eda1e182d3f2dc8144d"
+          },
+          "t001-i038-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "39ddaeaa1b9b52b7cc43bda31a7e2c722fde78432757532921e6e83636cac962"
+          },
+          "t001-i039-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "cc154f382abd954ca55547c388b2f7bf6f065034a844b0ab8476970c7cf39680"
+          },
+          "t001-i040-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "de7860be41f05fbaa3e758301102621ed5445336a5046e24bcafcd891978e008"
+          },
+          "t001-i041-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "8e86daade7ff50cb23fc92134a67b31ad12680c3ce493fd8b59e3bdc4a9e7c9c"
+          },
+          "t001-i042-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "3fe2e083e7942e8dcd8ef9cb2ee0ae1aa56963e68d66cdabb5b9eecd2d1c3a70"
+          },
+          "t001-i043-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "58fc595e996d8c937e15057631a90dc0ad3b5edaba0ed82857f4d4ea7e35263c"
+          },
+          "t001-i044-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "ea1c4ccd3fd0d5f6e5a8cad8f0d8db84298c9c7259828247c279e25f710b2794"
+          },
+          "t001-i045-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "5fb176d6192c9383f37368051e7b3778ed726db179b2bfce17de3b338b76fcfa"
+          },
+          "t001-i046-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "edd7caf19b6212cfd100c201647c8b2ce59a8a0a997775c4a06a90a26d630b6b"
+          },
+          "t001-i047-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "025295f4c174b861774a3d35dc30e6b3579b9c14c748b93374ed873bbb52336d"
+          },
+          "t001-i048-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "d2ba6abc81012f5745e35880e9aef409c7ed7eae1a870b0fe0daabd2e45205c1"
+          },
+          "t001-i049-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "72ed51df98aad862a4f5e5fe8825d786046d6583c61f67516acc0fb0227d5dd0"
+          },
+          "t002-i000-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "c0bf124a16affa9b943aba9cc1e698ccaf509856991d6957963f691fae32217f"
+          },
+          "t002-i001-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "4fb0a733195ed2bb0a1fd3a73388b43c0e44a748086b883cdc163af50941e90b"
+          },
+          "t002-i002-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "108ea4149e3d99d9251fe028ec56515781ec66a5919f6f096fa56623cd701b34"
+          },
+          "t002-i003-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "a920bb8b87b94b3e7ae01f136d0c66576f7ad53014457a191ff8e3b74ce0afdd"
+          },
+          "t002-i004-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "09b2280624252e9be2d9c66c8d345547cc3f489509ed5fd5bbf1a38a4c84d9fa"
+          },
+          "t002-i005-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "70aa5971da8ecc82d3914210288bffb32ee3622dba7530476e05e99bbdd1b718"
+          },
+          "t002-i006-r00-s42": {
+            "attempt": 1,
+            "status": "succeeded",
+            "sha256": "abd2f04ac9b0e1af894c18089b65843264431b8ef77a3e0026336ec841122f67"
+          }
+        },
+        "manifest_sha256": "af65fcc838a4f2a9d12b4936d8a7bbdc9350149ed5e62bd7092f15810a64a407",
+        "resolved_sha256": "b20794675418f7827bf15b671bc08b475f94a9d58676d3e0bf6bf60df549087d"
+      }
+    }
+  ],
+  "legacy_long": {
+    "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-suite-expansion-20260920/long-gpu3/runs/run-20260920T020549Z-1cb163e4",
+    "snapshot": {
+      "planned": 500,
+      "outcomes": {
+        "t000-i000-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "c2e03cffb69ea8a73b244964238d1177c511710b0188d76f51e5d8dd20bbbd50"
+        },
+        "t000-i001-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "8b90b334a5df88d2ce49e1b75085065f08e3e5ae2548d5a0951f521a85abc51a"
+        },
+        "t000-i002-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "df2d83ba1b56adce762002790a69d25bd04cc18222c4738e6525baa554e3cbf9"
+        },
+        "t000-i003-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "e235d68107cd3942f0b8c4cda6b34521391afceb60db825a4c4b9f3b1ade9571"
+        },
+        "t000-i004-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "93a72088d207741a74e74f013fd4b407395943ecae4a2039b94f2855aef3973f"
+        },
+        "t000-i005-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "e9a5fe444a1b4a4e3130e11da1b07221c01c37d1a51d17358fabc900f454179b"
+        },
+        "t000-i006-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "1b131da938cab35f87dd428ae6b1b2a4c4b2a5eaeb2a0cae5eeb53f7d73097fe"
+        },
+        "t000-i007-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "a56fffa73dffd0efe44e9367633634c7ee59ee93d8922fdce71e947f5d40c551"
+        },
+        "t000-i008-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "251f63b2fe030dab609be051ffde8b20acb092ec33fb1903620d204513951e4d"
+        },
+        "t000-i009-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "e7277e5738518ef37f2c956925eb40473b9aaf048cca6b9f6b7ad1e1af48233b"
+        },
+        "t000-i010-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "328d422b38cdb86c9125d3d445646b561f3b4cc652a177403a1feb8c2fd7fcd2"
+        },
+        "t000-i011-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "b59d6d18a52a4d4921daa1479f498e5203191c0ee36d21e05a92619760f69664"
+        },
+        "t000-i012-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "928ab6cc8748e7eb8fecc583b1629a119acbcf56481b2c92728749699da5c3c9"
+        },
+        "t000-i013-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "eb0ed0c2700d91d59080e8812f6b12afc41d562921cc13a11f823fa7743ff2f9"
+        },
+        "t000-i014-r00-s42": {
+          "attempt": 1,
+          "status": "succeeded",
+          "sha256": "59f1a9979f87c4e3e842befc7045a8d9974c7b09f5747be4373161d1d9e6f60b"
+        }
+      },
+      "manifest_sha256": "87d31d0af3ab0023d842513aa64c357ce2bbfb4b2a15cc267f7c1a0da379d3ba",
+      "resolved_sha256": "54ea2a1b7bb6a8c8d11fc79d3697a8cd3b6a69cdfac6aa233c9c701fa6024712"
+    },
+    "policy_pid": 458706,
+    "known_wrapper_pid": 349412,
+    "known_supervisor_pid": 349415
+  }
+}

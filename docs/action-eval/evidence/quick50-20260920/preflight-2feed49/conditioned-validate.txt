@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/configs/experiments/dreamwam-prompt-conditioned-quick50.yaml
+experiment  : dreamwam-prompt-conditioned-quick50 (DreamWAM Joint matched Dense prompt cache (exploratory Spatial 50))
+fingerprint : cadd1459b444c602804ac9e1413ea12ab6ea731fe3e5cb038b9e7594ec138131
+benchmark   : libero_spatial tasks=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] inits=[0, 1, 2, 3, 4]
+episodes    : 50 planned (10 tasks x 5 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

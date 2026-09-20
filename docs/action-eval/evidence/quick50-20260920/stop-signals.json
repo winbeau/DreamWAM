@@ -1,0 +1,95 @@
+{
+  "reason": "User requested 50-episode quick experiments and deferred unified full evaluation",
+  "events": [
+    {
+      "controller": {
+        "pid": 453956,
+        "ppid": 1,
+        "pgid": 453956,
+        "state": "S",
+        "start": "1344869079"
+      },
+      "descendants": [
+        {
+          "pid": 454021,
+          "ppid": 453956,
+          "pgid": 454021,
+          "state": "S",
+          "start": "1344869483"
+        },
+        {
+          "pid": 470236,
+          "ppid": 453956,
+          "pgid": 453956,
+          "state": "D",
+          "start": "1345038522"
+        },
+        {
+          "pid": 454174,
+          "ppid": 454021,
+          "pgid": 454174,
+          "state": "R",
+          "start": "1344871180"
+        },
+        {
+          "pid": 469536,
+          "ppid": 349415,
+          "pgid": 469536,
+          "state": "S",
+          "start": "1345033864"
+        },
+        {
+          "pid": 469630,
+          "ppid": 469536,
+          "pgid": 469630,
+          "state": "R",
+          "start": "1345034470"
+        }
+      ],
+      "signal": "SIGTERM"
+    },
+    {
+      "controller": {
+        "pid": 349415,
+        "ppid": 349412,
+        "pgid": 349396,
+        "state": "S",
+        "start": "1343917755"
+      },
+      "descendants": [
+        {
+          "pid": 469536,
+          "ppid": 349415,
+          "pgid": 469536,
+          "state": "S",
+          "start": "1345033864"
+        },
+        {
+          "pid": 469630,
+          "ppid": 469536,
+          "pgid": 469630,
+          "state": "R",
+          "start": "1345034470"
+        }
+      ],
+      "signal": "SIGTERM"
+    },
+    {
+      "pid": 454021,
+      "signal": "SIGINT"
+    },
+    {
+      "pid": 454174,
+      "signal": "SIGINT"
+    },
+    {
+      "pid": 469536,
+      "signal": "SIGINT"
+    },
+    {
+      "pid": 469630,
+      "signal": "SIGINT"
+    }
+  ],
+  "live_at_20s": []
+}

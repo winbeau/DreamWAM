@@ -167,5 +167,8 @@ instruction cache; visual/action state remains local to each request. Cache hits
 and actual visual/action work are emitted with each prediction. The current
 measurement meets the latency target but does **not** yet meet the complete
 paired-SR acceptance criterion or establish a full SR/latency Pareto frontier.
-The [new closed-loop record](prompt-cache-paired-20260920.md) contains the completed
-15-pair pilot and the independently running full Spatial comparison.
+The [closed-loop record](prompt-cache-paired-20260920.md) contains the completed
+15-pair pilot and the subsequently interrupted full Spatial comparison.
+The user reduced screening to [50 episodes per candidate](quick50-20260920.md)
+and then paused GPU work to release the cards. No benchmark-quality acceptance
+is inferred from the timing or pilot checks.

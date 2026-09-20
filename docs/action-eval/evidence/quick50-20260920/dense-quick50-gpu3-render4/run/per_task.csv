@@ -1,0 +1,11 @@
+task_id,task_name,planned,succeeded,failed,errors,cancelled,not_run,completed,coverage,success_rate,observed_sr,success_lower_bound,wilson_low,wilson_high
+0,pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate,5,5,0,0,0,0,5,1.0,1.0,1.0,1.0,0.5655175352168251,1.0
+1,pick_up_the_black_bowl_next_to_the_ramekin_and_place_it_on_the_plate,5,0,0,0,0,5,0,0.0,,,0.0,0.0,0.43448246478317476
+2,pick_up_the_black_bowl_from_table_center_and_place_it_on_the_plate,5,0,0,0,0,5,0,0.0,,,0.0,0.0,0.43448246478317476
+3,pick_up_the_black_bowl_on_the_cookie_box_and_place_it_on_the_plate,5,0,0,0,0,5,0,0.0,,,0.0,0.0,0.43448246478317476
+4,pick_up_the_black_bowl_in_the_top_drawer_of_the_wooden_cabinet_and_place_it_on_the_plate,5,0,0,0,0,5,0,0.0,,,0.0,0.0,0.43448246478317476
+5,pick_up_the_black_bowl_on_the_ramekin_and_place_it_on_the_plate,5,0,0,0,0,5,0,0.0,,,0.0,0.0,0.43448246478317476
+6,pick_up_the_black_bowl_next_to_the_cookie_box_and_place_it_on_the_plate,5,0,0,0,0,5,0,0.0,,,0.0,0.0,0.43448246478317476
+7,pick_up_the_black_bowl_on_the_stove_and_place_it_on_the_plate,5,0,0,0,0,5,0,0.0,,,0.0,0.0,0.43448246478317476
+8,pick_up_the_black_bowl_next_to_the_plate_and_place_it_on_the_plate,5,0,0,0,0,5,0,0.0,,,0.0,0.0,0.43448246478317476
+9,pick_up_the_black_bowl_on_the_wooden_cabinet_and_place_it_on_the_plate,5,0,0,0,0,5,0,0.0,,,0.0,0.0,0.43448246478317476

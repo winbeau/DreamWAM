@@ -1,5 +1,12 @@
 # Temporal graph four-suite coverage and preserved Dense baselines
 
+**Current amendment, 2026-09-20 06:21 UTC:** this effort's legacy recovery is
+stopped. Long GPU 3 preserves 15/500 accepted outcomes, all successes. The user
+first reduced screening to 50 episodes per candidate and then paused all of
+this effort's GPU work to release cards. Do not resume the historical full-suite
+plan below without a new user instruction; full unified tests are deferred
+until method selection. See [the consolidated results](sparse-results-paused-20260920.md).
+
 Status: **INCOMPLETE; no candidate benchmark SR**. This expansion uses the
 existing frozen interval-5/all-token graph policy, without the new
 [conditioned-frame factor](conditioned-frame-single-factor-20260920.md).

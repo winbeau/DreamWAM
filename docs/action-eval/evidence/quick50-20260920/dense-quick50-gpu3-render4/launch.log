@@ -1,0 +1,31 @@
+{"selected": 50, "planned": 50, "render_gpu": "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4", "policy_gpus": ["GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba"]}
+[robosuite WARNING] No private macro file found! (macros.py:53)
+[robosuite WARNING] It is recommended to use a private macro file (macros.py:54)
+[robosuite WARNING] To setup, run: python /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/.venv/lib/python3.10/site-packages/robosuite/scripts/setup_macros.py (macros.py:55)
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[info] using task orders [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[Warning]: datasets path /data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO/libero/datasets does not exist!
+[libero] creating environment for task 0 (pick_up_the_black_bowl_between_the_plate_and_the_ramekin_and_place_it_on_the_plate.bddl) at 256x256
+[libero] environment for task 0 ready
+[OK  ] t000-i000-r00-s42 steps=74 policy_calls=8 wall=13.1s (success)
+[OK  ] t000-i001-r00-s42 steps=75 policy_calls=8 wall=8.4s (success)
+[OK  ] t000-i002-r00-s42 steps=74 policy_calls=8 wall=7.7s (success)
+[OK  ] t000-i003-r00-s42 steps=75 policy_calls=8 wall=9.2s (success)
+
+[action-eval] received signal 2; finishing the current episode
+[OK  ] t000-i004-r00-s42 steps=74 policy_calls=8 wall=8.3s (success)
+[libero] closing environment for task 0
+[libero] environment for task 0 closed
+{"selected": 50, "completed": 5, "selection_complete": false, "full_suite_success_rate": null}

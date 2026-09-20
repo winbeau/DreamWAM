@@ -1,0 +1,250 @@
+[
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "10b991442b55eface3407989c599cbee51bdc608329802aa953d3b41f20900e2",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "72b233484e415ed58e871f2198bfa87f50431b104d00f3b1685f3b2b0726f250",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "71a025bce57491e055e4a78fbefdc0db1f1001602271e3fe761f482313d6d0e2",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 30
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "fe5e77c46b2383e512b9437e19514ed059aee64b62beb845e355585a82d15c75",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "47c0aaac5b22a63780d394b782d04a932f51acb7d0f1b9cc9f780983cc350198",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "77716d75a45666942089c7b85fd187d4a11ef90807d41f63ebd24f10d2b0aa49",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 40
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "153348d20104dc9de9f61df49a14ca9421e151caac7e96c4ae59c70f9c61a517",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "6fb918a9561367f8187e4b653b8812433699e0a68e077ac3aa51fed3d964f7b4",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "a0ca13df71851c324a47fb81467fa13799de8f75d60c46e9fde84cd4c8bd257b",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 50
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "798c99231b3dacb4c7170d824fdc22a0de8878713b24ae2dc4e214fe273af7e4",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "f348335bc32051c08acf6dc80f7eca72151a815da7e22361b73dbadb48ee969a",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "4f304f4aa7dd20517992611e0286bf332b725cd7fdb9b5345553b6090e2fbb04",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 60
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "a220e5783ab1eb6fc9be05630b6f83f8b951cac128d4ac9fd455beef10d95f8e",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "cd03fac1480db20efb4fe43ac9eb2b3bfb390fae4536d67b4f10516617b3c630",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "8199368a125c8ededf1dca321a64213da0c71edd4c7b5d2a5a531b303dde3804",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 70
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "9719d33c21a94a16bfe6156cc5c54b5435fa529d2d2db7b89a1720e66edc3b86",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "68f3d248680d976628ece4addfe6d6d697624b0f9750f0d1b731612e2825f2ee",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "2de1a566f55e348c4af256d2d76cd7fc47e086507775f05538c8608b71b9692d",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 80
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "3c69b087fb4bfa2c85e9382a5f27a315b8fe4235e2cbdd86483ca3f418b3dbb4",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "e92cac33bfb17c93eb41f69a3a22455b856a66d9116a38f9e2936449acbe4e77",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "6525a73b4465cb8956123608725825f8d3f28d0ff2c6058c45c944c482c5099d",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 90
+  },
+  {
+    "images": {
+      "agentview": {
+        "dtype": "|u1",
+        "sha256": "8207196a62f6ce28ac0728c7004cb19485fbd8d62f0b4434cc0efa3a8aec556c",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      },
+      "wrist": {
+        "dtype": "|u1",
+        "sha256": "d438b5605427af88a73a4e7b9d2e1f4d22eef3d9c37e0203024e818cab34d648",
+        "shape": [
+          256,
+          256,
+          3
+        ]
+      }
+    },
+    "instruction": "pick up the black bowl between the plate and the ramekin and place it on the plate",
+    "state": {
+      "dtype": "<f4",
+      "sha256": "cfaa44dfa8cae571962ccc82f99589d2f48dad21d9571ade96e7ceefc77d0903",
+      "shape": [
+        8
+      ]
+    },
+    "step_index": 100
+  }
+]

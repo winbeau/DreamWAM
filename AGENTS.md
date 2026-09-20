@@ -1,6 +1,6 @@
 # DreamWAM evaluation fork guidance
 
-This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. CURRENT STATUS: the Sparse-WAM line (branch work on main) is active; the earlier four-suite LIBERO baseline run has finished for Spatial/Object/Goal and is incomplete for Long.
+This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. CURRENT STATUS: Sparse-WAM GPU work is **PAUSED at the user's request, 2026-09-20 06:21 UTC**, to release cards for others. Do not launch or resume experiments until the user requests resumption. The earlier four-suite LIBERO baseline run has finished for Spatial/Object/Goal and is incomplete for Long.
 
 - Install and execute only on the evaluation server, never locally. The current user goal (renewed 2026-09-19) permits idle or lightly occupied GPUs for SR-constrained Sparse-WAM work, superseding the earlier GPU-7-only restriction. Recheck utilization and memory before each launch, declare sharing, and never signal another user's process. Follow action-eval's current shared-host rule to leave the last available card unused.
 - Preserve verified pyproject.toml and uv.lock byte-for-byte when compatible. Record source hashes and justify every necessary version change. Pin added dependencies and build tools exactly; lock on server, then use `uv sync --locked`. Never upgrade implicitly.
@@ -10,6 +10,7 @@ This fork maintains paper-evaluation integration on **main**, also the GitHub de
 - Before adapter/config work, read the corresponding skills in winbeau/action-eval (`skills/action-eval-adapter/SKILL.md`, `skills/action-eval-config/SKILL.md`). The evaluator owns success; the model only returns actions.
 - README states identity, status and entrypoints; docs/action-eval indexes environment, protocol and evidence. Every verification record includes status, timestamp/timezone, commit and checkpoint hashes, command, exit code, artifacts, limitations and next step.
 - Pilot is not benchmark. Errors are not task failures. Incomplete coverage must never yield a complete SR.
+- Current Sparse-WAM screening scale (user amendment, 2026-09-20): use 50 episodes per candidate, covering all 10 Spatial tasks and five initial states each. Stop this effort's 500-episode queue and legacy recovery jobs, preserve their accepted outcomes and original manifests, and defer unified full-suite tests until the method is selected. Label the new matched Dense/Sparse runs exploratory; do not apply this scope change to another effort's baseline jobs.
 
 ## Required development and deployment workflow
 

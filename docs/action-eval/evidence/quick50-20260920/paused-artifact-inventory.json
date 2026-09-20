@@ -1,0 +1,231 @@
+{
+  "utc": "2026-09-20T06:22:45.044166+00:00",
+  "status": "PAUSED_BY_USER",
+  "root": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/quick50-20260920",
+  "files": {
+    "stop-before.json": {
+      "bytes": 24991,
+      "sha256": "c6f67d0613b8a2cd51cf8d23d3ac0139fd542fde964996c9f84bc627989de65f"
+    },
+    "stop-signals.json": {
+      "bytes": 1895,
+      "sha256": "7c25a7fe6ecbb945c3bcbaa35e2dbc63a9376c8c80621033544c375a73352224"
+    },
+    "quick50-pair-controller.json": {
+      "bytes": 4466,
+      "sha256": "24fabacb5d600f2e30ec019e61fc023646be56e5d9f9d4ab3241efbf24a4745f"
+    },
+    "stop-after.json": {
+      "bytes": 29277,
+      "sha256": "c7ace4157a4afb78d45ff3161b4f15ecb491f1fa11ad6dc0b080a3c58ed22371"
+    },
+    "quick50-pair-controller-launch.json": {
+      "bytes": 5901,
+      "sha256": "114de205858a333646038257e7b1250925f2cf639066f353f8e9233e9683945e"
+    },
+    "quick50-pair-controller.log": {
+      "bytes": 1138,
+      "sha256": "dcd8967a2e6d03361a1fc94ed57fa7bac3bdf40c43c9bf5e141c25a0915f6cdd"
+    },
+    "quick50-pair-gpus.jsonl": {
+      "bytes": 26199,
+      "sha256": "641add0ff59f7973533e0094c249d8e940d682ce9d457cfac9541e0936c74abb"
+    },
+    "user-pause-audit.json": {
+      "bytes": 231306,
+      "sha256": "f5f8a66f53bff9f902dabf03d0bddf4f1bb6bb2ff2396a65eac564ecffd7bee1"
+    },
+    "dense-quick50-gpu3-render4/native-reads-476051.log": {
+      "bytes": 20592,
+      "sha256": "baaf4a48562cace9a56e151662e358ecb8ffda5cdb9ad84ee1509e502cb45e22"
+    },
+    "dense-quick50-gpu3-render4/launch.log": {
+      "bytes": 2861,
+      "sha256": "88b5552b24e07b4fb948af12b7f8182314a39a1d6bdbfbd0f1e512880ad49f91"
+    },
+    "dense-quick50-gpu3-render4/supplement-result.json": {
+      "bytes": 105,
+      "sha256": "b0e97f6bf85a1960a237d67237ff885530c31b93c86a6ae5479a187d5a4e7c28"
+    },
+    "dense-quick50-gpu3-render4/supplement-request.json": {
+      "bytes": 1476,
+      "sha256": "b4bd29cd27364ed22e1b91c4b9d6c4422eefa9d3fa8a3c85d4d26fed11db927a"
+    },
+    "dense-quick50-gpu3-render4/run/per_episode.csv": {
+      "bytes": 6639,
+      "sha256": "57224c79f2c05a64d5b0c98f0c31e1601499ec5ea44d895364c384079159f6b4"
+    },
+    "dense-quick50-gpu3-render4/run/resolved.yaml": {
+      "bytes": 2048,
+      "sha256": "af75176cfc2f7c325efe8001a7d1932f8da08575dc9b9036afbe44886b9e1384"
+    },
+    "dense-quick50-gpu3-render4/run/manifest.json": {
+      "bytes": 16737,
+      "sha256": "885640d18802017af37368410510f34fdf5b0d41faf6f89ae33e650a2783c11f"
+    },
+    "dense-quick50-gpu3-render4/run/summary.json": {
+      "bytes": 6721,
+      "sha256": "2814e86c77d9374f9166350a574a79b4b1e45de18d91009a4b6fb1c2d22e164c"
+    },
+    "dense-quick50-gpu3-render4/run/per_task.csv": {
+      "bytes": 1382,
+      "sha256": "f0b885237c2ec22ef39ddeec3dc53f1df45dc19a3ffab2c4d5b8f35c1c962339"
+    },
+    "dense-quick50-gpu3-render4/run/provenance.json": {
+      "bytes": 7933,
+      "sha256": "cbf4abda3e20d87dd937ac9d7bf14e2dcd3268ddb8b5b9dab3f5c9ab2069069e"
+    },
+    "dense-quick50-gpu3-render4/run/policy_worker.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i004-r00-s42/accepted.json": {
+      "bytes": 43,
+      "sha256": "818f08a444b347e4a8c6ef1750cc965d38ebba078f0d2ea19090064d63f52bbe"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i004-r00-s42/attempts/0001/actions.npy": {
+      "bytes": 2200,
+      "sha256": "c1e226950dc58d8fd2f538229d416f5c40ac6d806eed45c63f30cf3ee50e3efa"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i004-r00-s42/attempts/0001/result.json": {
+      "bytes": 1134,
+      "sha256": "e8418d3f278a572b76ab3059b5bdd3abd850e50931e7e6c3b7b9945def480938"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i004-r00-s42/attempts/0001/policy-inputs.json": {
+      "bytes": 5908,
+      "sha256": "b7dd269c313ac020b71101fa454bc42cecc9e44862853b46d038e8db48e6e713"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i004-r00-s42/attempts/0001/prediction_lengths.npy": {
+      "bytes": 192,
+      "sha256": "60931ab5ad69b6ff372bfc52e8c4cabe3bab307cde0e05d749fd01fccdeb1ab3"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i004-r00-s42/attempts/0001/predictions.npy": {
+      "bytes": 7296,
+      "sha256": "110c30ed31523bffa7ff2485eeaa82c861a3dd5a9c0ff195894979e62f3c2b7d"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i000-r00-s42/accepted.json": {
+      "bytes": 43,
+      "sha256": "818f08a444b347e4a8c6ef1750cc965d38ebba078f0d2ea19090064d63f52bbe"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i000-r00-s42/attempts/0001/actions.npy": {
+      "bytes": 2200,
+      "sha256": "9a934cf0514e338b367a4a269250fb43bdda318d69add98becd569257d1bfa30"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i000-r00-s42/attempts/0001/result.json": {
+      "bytes": 1135,
+      "sha256": "d9d9800894c1135189606ac33713cf09356f9c076a1d8ec3433cf2ac30e4375f"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i000-r00-s42/attempts/0001/policy-inputs.json": {
+      "bytes": 5908,
+      "sha256": "f9e671e3ce2ef45893aaf3fdc663eadb6e472056cff71e0f6d4404be86cc2140"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i000-r00-s42/attempts/0001/prediction_lengths.npy": {
+      "bytes": 192,
+      "sha256": "60931ab5ad69b6ff372bfc52e8c4cabe3bab307cde0e05d749fd01fccdeb1ab3"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i000-r00-s42/attempts/0001/predictions.npy": {
+      "bytes": 7296,
+      "sha256": "41845819d3fb02010802befaa1fe50990217e452ace879744447362c5eec9dea"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i003-r00-s42/accepted.json": {
+      "bytes": 43,
+      "sha256": "818f08a444b347e4a8c6ef1750cc965d38ebba078f0d2ea19090064d63f52bbe"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i003-r00-s42/attempts/0001/actions.npy": {
+      "bytes": 2228,
+      "sha256": "c76fbbf3207f47af24c90ab89bd5134a4c6ca47357642df5d309535309b34a49"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i003-r00-s42/attempts/0001/result.json": {
+      "bytes": 1134,
+      "sha256": "8e7099f6356ad1e2ac06b2f0fbfaf8faa07198afa08c13930aeb976c76956cf4"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i003-r00-s42/attempts/0001/policy-inputs.json": {
+      "bytes": 5908,
+      "sha256": "de3f90c727396808b033be78f0e5fbc00360f2ed4d28fb87b92eeed31b9aa42b"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i003-r00-s42/attempts/0001/prediction_lengths.npy": {
+      "bytes": 192,
+      "sha256": "60931ab5ad69b6ff372bfc52e8c4cabe3bab307cde0e05d749fd01fccdeb1ab3"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i003-r00-s42/attempts/0001/predictions.npy": {
+      "bytes": 7296,
+      "sha256": "8e7a2d0212007623d58691ca170f08bf54f360501dfa93ca3fbb67f58a99c9c9"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i002-r00-s42/accepted.json": {
+      "bytes": 43,
+      "sha256": "818f08a444b347e4a8c6ef1750cc965d38ebba078f0d2ea19090064d63f52bbe"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i002-r00-s42/attempts/0001/actions.npy": {
+      "bytes": 2200,
+      "sha256": "878de77cbedfb4a193640b882004fdbe052d7af2d15aaf87dc30bf672b9ce7d3"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i002-r00-s42/attempts/0001/result.json": {
+      "bytes": 1134,
+      "sha256": "0a5f60a99ce6c3f806be1ee590f43bc0679ade51efb78b28dafdd4a68fb9ebd4"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i002-r00-s42/attempts/0001/policy-inputs.json": {
+      "bytes": 5908,
+      "sha256": "fa0c87038ae0f5269b2a4cdcb09093699fb03ec63af396d0e6e60de18b6f36ae"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i002-r00-s42/attempts/0001/prediction_lengths.npy": {
+      "bytes": 192,
+      "sha256": "60931ab5ad69b6ff372bfc52e8c4cabe3bab307cde0e05d749fd01fccdeb1ab3"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i002-r00-s42/attempts/0001/predictions.npy": {
+      "bytes": 7296,
+      "sha256": "fc54c7ac1de1e66ae085967cd21488de1d47ffbbccc87980b0f2bfdcf59a0aeb"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i001-r00-s42/accepted.json": {
+      "bytes": 43,
+      "sha256": "818f08a444b347e4a8c6ef1750cc965d38ebba078f0d2ea19090064d63f52bbe"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i001-r00-s42/attempts/0001/actions.npy": {
+      "bytes": 2228,
+      "sha256": "e0dfcfff2f1a12a6b427a8a78b54aed4e81a6e7d68643efbf65f63da1e2e3ff9"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i001-r00-s42/attempts/0001/result.json": {
+      "bytes": 1132,
+      "sha256": "03978328aa9d37de2a373b657fd7ac2b2018bc2d82f88e43ce827b35de519c67"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i001-r00-s42/attempts/0001/policy-inputs.json": {
+      "bytes": 5908,
+      "sha256": "8978962fc34879f4f8c1972223571061872260cfb3da5e9d4ba3e322d822a584"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i001-r00-s42/attempts/0001/prediction_lengths.npy": {
+      "bytes": 192,
+      "sha256": "60931ab5ad69b6ff372bfc52e8c4cabe3bab307cde0e05d749fd01fccdeb1ab3"
+    },
+    "dense-quick50-gpu3-render4/run/episodes/t000-i001-r00-s42/attempts/0001/predictions.npy": {
+      "bytes": 7296,
+      "sha256": "01db7cc903434624c84967b05bbdc87c5cf8abdecd26997c36ee92ae51b9cbd8"
+    },
+    "preflight-2feed49/conditioned-doctor.txt": {
+      "bytes": 970,
+      "sha256": "0a8d0456ff8f5e61965b850c719fd1863492c8c230770ba76e22e110e837a6a0"
+    },
+    "preflight-2feed49/guided-doctor.txt": {
+      "bytes": 970,
+      "sha256": "0a8d0456ff8f5e61965b850c719fd1863492c8c230770ba76e22e110e837a6a0"
+    },
+    "preflight-2feed49/schema.json": {
+      "bytes": 11359,
+      "sha256": "bbbfd05c1cbeb80cf194e4b1e654f641bd6b9436928d328fd8905de9eb64cb81"
+    },
+    "preflight-2feed49/conditioned-validate.txt": {
+      "bytes": 618,
+      "sha256": "c366295d8d951d7c20ef3a62d8bcbeb9b2ae1cbeb32f589315cfbb1353d60e5b"
+    },
+    "preflight-2feed49/guided-validate.txt": {
+      "bytes": 603,
+      "sha256": "661aed92cf988426ab86a868241ef72ff2df9aa4fdee263cf963d5adc7d60faf"
+    },
+    "preflight-2feed49/tests.log": {
+      "bytes": 240,
+      "sha256": "3294dde7c5f4a09b685be18d607f31c8884be14c65e7421b949378f31129f09b"
+    },
+    "preflight-2feed49/preflight.json": {
+      "bytes": 2826,
+      "sha256": "4f2936425e012904a0df95cc173a86134c93817eb3b1eca632f5295e86572415"
+    }
+  }
+}

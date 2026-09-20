@@ -1,5 +1,14 @@
 # Matched closed-loop validation of the 1.872× guided sparse candidate
 
+**Update at 2026-09-20 06:15 UTC:** the user reduced current screening to
+**50 episodes per candidate** and deferred unified full tests until method
+selection. The full Spatial controller and the legacy Long recovery were
+stopped. Full Spatial Dense retains **129/500 successes**, and queued Sparse
+did not start. The original manifests and accepted result hashes are preserved;
+these incomplete full plans retain null SR. See the separate
+[quick50 record](quick50-20260920.md). The timestamped launch history below
+describes the earlier plan and is not an instruction to resume it.
+
 Status at **2026-09-20 05:52:19 UTC: PILOT PAIR COMPLETE; full Spatial RUNNING;
 official candidate SR null**. Both pilots finished **15/15 successes**, zero
 task failures and zero error attempts. This is a plumbing/quality pilot, not
@@ -26,7 +35,7 @@ The pilot uses Spatial tasks **0/1/2 × initial states 0–4**, 15 episodes per 
 with `dreamwam-release-v1`: max 400, wait 30, 256×256 cameras, replan 10, seed 42.
 Model settings remain horizon 32, ten denoising steps, nine video frames, bf16,
 and fixed-per-predict RNG. The full Spatial configs retain all **500** identities;
-four-suite acceptance still requires **2,000/config**. Pilot counts cannot fill
+the former four-suite plan required **2,000/config** and is now deferred. Pilot counts cannot fill
 the separate full-run denominators or establish acceptable SR loss.
 
 ## Placement and provenance

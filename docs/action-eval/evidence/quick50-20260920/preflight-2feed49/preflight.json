@@ -1,0 +1,84 @@
+{
+  "utc": "2026-09-20T06:16:19.695568+00:00",
+  "evaluator_commit": "2feed4900d43dc52f4b29936ab76ab3e5847a666",
+  "model_commit": "04163905f047169a159b3e366d679afc86392757",
+  "commands": [
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "validate",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/configs/experiments/dreamwam-prompt-conditioned-quick50.yaml"
+      ],
+      "output": "conditioned-validate.txt",
+      "exit_code": 0,
+      "wall_seconds": 0.17028670758008957
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "doctor",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/configs/experiments/dreamwam-prompt-conditioned-quick50.yaml"
+      ],
+      "output": "conditioned-doctor.txt",
+      "exit_code": 0,
+      "wall_seconds": 0.19182536378502846
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "validate",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/configs/experiments/dreamwam-prompt-guided-quick50.yaml"
+      ],
+      "output": "guided-validate.txt",
+      "exit_code": 0,
+      "wall_seconds": 0.16460616327822208
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "doctor",
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/configs/experiments/dreamwam-prompt-guided-quick50.yaml"
+      ],
+      "output": "guided-doctor.txt",
+      "exit_code": 0,
+      "wall_seconds": 0.19109194912016392
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/.venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/",
+        "-q"
+      ],
+      "output": "tests.log",
+      "exit_code": 0,
+      "wall_seconds": 71.55400744825602
+    },
+    {
+      "command": [
+        "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-quick50-2feed49/.venv/bin/python",
+        "-m",
+        "action_eval.cli",
+        "schema"
+      ],
+      "output": "schema.json",
+      "exit_code": 0,
+      "wall_seconds": 0.16297943517565727
+    }
+  ],
+  "dependency_sha256": {
+    "pyproject.toml": "a5e09a5048610cd8e5c3d66c6b0a82593c64acafa8e04aa90a986aaef3b5313a",
+    "uv.lock": "b5b2f17d88cde00f8357056b531606096f6b73eaecd852d1552bc8f9db4e8fe1"
+  },
+  "schema_matches_committed": true,
+  "end_utc": "2026-09-20T06:17:32.135507+00:00"
+}
