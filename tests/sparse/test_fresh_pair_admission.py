@@ -70,8 +70,15 @@ def test_explicit_gpu5_sharing_allows_last_card_but_keeps_strict_headroom(admiss
     assert admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5])
     gpus[5]["util"] = 11
     assert not admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5])
+    gpus[5]["util"] = 50
+    assert admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5], 50)
+    gpus[5]["util"] = 51
+    assert not admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5], 50)
+    with pytest.raises(ValueError, match="10 or 50"):
+        admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5], 100)
     gpus[5].update(util=0, free=49999)
     assert not admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5])
+    assert not admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [3, 4, 5], 50)
     with pytest.raises(ValueError, match="only for GPU 5"):
         admission.admit_shared_gpu5_cpu(gpus, "gpu-0", [0, 3, 4, 5])
     with pytest.raises(ValueError, match="only for GPU 5"):

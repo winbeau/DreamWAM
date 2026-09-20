@@ -32,6 +32,16 @@ signal the other project's processes. The final "算了…灵活使用5卡" supe
 preceding dummy-load reservation request: no idle torch utilization loop is
 needed. Release this task's resources when its finite work finishes.
 
+Operational sharing choice, disclosed 2026-09-20 after the final offline screen:
+keep profiling/timing admission at <=10% utilization. For the already frozen
+adapter check and six-attempt diagnostic pilot, the user's flexible GPU-5 sharing
+authorization is implemented with an explicit moderate ceiling of 50%, still
+requiring >=50000 MiB free. Pass `--max-shared-utilization 50` to the bounded
+controller, record every admission snapshot and label timing as shared-load.
+This is an implementation choice under the existing authorization, not a claim
+that the user specified a numerical ceiling. Defaults and other GPUs are unchanged.
+No reservation/dummy work, no foreign process signals, no unlimited wait or queue.
+
 ## Active isolated-worktree handoff (2026-09-20)
 
 The user explicitly requested a separate DIDO-guided action/video sparse-profile

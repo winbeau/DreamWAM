@@ -7,7 +7,9 @@ plus two controls, with raw arrays and parity/replay checks. The subsequent
 [400-call online screen](../implementation/dido-sparse-profile/ONLINE-RESULTS.md)
 and four CUDA graph cases pass. The [380-call refresh/budget/structure follow-up](../implementation/dido-sparse-profile/FOLLOWUP-RESULTS.md)
 and CPU OSMesa preflight also pass. Final retained-choice timing, adapter and closed-loop
-gates remain open; episode attempts are 0/50. The user
+gates are tracked in the [nine-input result](../implementation/dido-sparse-profile/FINAL-OFFLINE-RESULTS.md):
+warm prediction is about 2.1×, but all new selectors worsen action proxies versus
+inherited uniform. Final adapter and closed-loop gates remain open; attempts are 0/50. The user
 sets a 5-percentage-point SR margin and a cap of 50 **total** episode attempts
 across arms for this effort, superseding the historical per-arm scope below.
 See the [raw-data distinction](../implementation/dido-sparse-profile/SOURCES.md)

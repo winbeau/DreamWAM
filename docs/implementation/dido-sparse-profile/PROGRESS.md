@@ -10,6 +10,28 @@ at 50 episodes in total across all arms and attempts. First proposed rollout is
 No rollout has started in this branch. A tiny pilot cannot establish statistical
 non-inferiority at the 5-point margin.
 
+## Verified nine-input screen; frozen diagnostic pilot pending
+
+The [277-call final offline screen](FINAL-OFFLINE-RESULTS.md) completes at
+20:50:52 UTC, source `41f515a`; all raw arrays, 126 timings and 450 trace steps
+pass independent replay. Across nine exposed inputs the new selectors are
+**worse than inherited uniform**: mean raw-prefix error 0.701–0.715 versus 0.336,
+and 35–36/90 gripper differences versus 6/90. Warm speed remains about 2.1×,
+principally due to visual feature reuse. The two-input benefit does not generalize.
+Do not recommend replacing uniform. Cumulative checkpoint predictions: 1124.
+
+The least-error new candidate, layerwise value-aware R56, is frozen only for
+the predeclared six-attempt diagnostic pilot, after its 22-call adapter check.
+Evaluator configs are committed on a separate `experiment/dido-sparse-profile`
+branch; its complete tests, schema comparison and both validate/doctor commands
+pass at `62c3656`. Source synchronization used Git over a fresh SSH connection
+with temporary agent forwarding after HTTPS/authentication failures; no code
+was copied outside Git. The adapter's first strict admission waited two minutes
+and refused before loading. Per the disclosed operational choice under the
+user's flexible GPU-5 sharing, the frozen adapter/pilot can explicitly use a
+50% utilization ceiling while retaining 50000 MiB free. Timing-screen gates stay
+unchanged. Attempts remain 0/50, the real ledger is uncreated, and goal is active.
+
 ## Verified refresh, budgets and fresh-structure follow-up
 
 [All 380 follow-up predictions](FOLLOWUP-RESULTS.md) and 240 raw trace steps

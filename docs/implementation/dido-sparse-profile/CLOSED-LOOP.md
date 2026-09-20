@@ -20,6 +20,14 @@ native-profile admission limits. It does not reserve the GPU, start dummy work,
 or signal another project's processes. GPU 0 remains unauthorized. The original
 launcher behavior is preserved when this new option is absent.
 
+After the completed nine-input screen, the GPU remained near 40% utilization
+with more than 76000 MiB free. The user-facing operational amendment uses
+`--max-shared-utilization 50` only for the frozen adapter/six-attempt pilot under
+the existing flexible-sharing authorization. The default remains 10; 50 requires
+`--share-gpu5`, retains the 50000-MiB memory floor and is recorded in controller
+metadata with its own source hash. Profiling/timing gates are unchanged. Shared
+execution can increase both projects' latency and is not exclusive-hardware timing.
+
 ## One 50-episode effort ledger
 
 Every invocation for this effort supplies the same `--episode-ledger` path:

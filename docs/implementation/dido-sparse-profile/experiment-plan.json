@@ -428,7 +428,11 @@
     ]
   },
   "online_final": {
-    "status": "PREDECLARED_NOT_RUN",
+    "status": "COMPLETE_AND_INDEPENDENTLY_AUDITED",
+    "completed_predict_calls": 277, "completed_timed_calls": 126,
+    "verified_trace_steps": 450,
+    "result": "All three native candidates worsen nine-input mean raw-prefix error and gripper agreement versus inherited uniform at similar latency. No replacement recommendation.",
+    "diagnostic_pilot_choice": "layerwise_value_action_R56 is the least-error new candidate; use only for the predeclared six-attempt real-control diagnostic, not as an improvement over uniform",
     "input_ids": [
       "t000-i001-r00-s42-c0001",
       "t000-i001-r00-s42-c0004",

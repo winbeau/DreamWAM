@@ -73,12 +73,14 @@ def admit_cpu_rendering(gpus, policy_uuid, authorized_gpus):
     return spares if ready else []
 
 
-def admit_shared_gpu5_cpu(gpus, policy_uuid, authorized_gpus):
-    """Latest explicit H100 GPU-5 exception, with the profile's stricter limits."""
+def admit_shared_gpu5_cpu(gpus, policy_uuid, authorized_gpus, max_utilization=10):
+    """Explicit GPU-5 sharing; moderate admission is a separately recorded choice."""
+    if type(max_utilization) is not int or max_utilization not in (10, 50):
+        raise ValueError("shared GPU utilization limit must be 10 or 50")
     selected = next(g for g in gpus if g["uuid"] == policy_uuid)
     if selected["index"] != 5 or 5 not in authorized_gpus:
         raise ValueError("explicit flexible sharing is authorized only for GPU 5")
-    return selected["util"] <= 10 and selected["free"] >= 50000
+    return selected["util"] <= max_utilization and selected["free"] >= 50000
 
 
 def budget_evidence(runs, status):
@@ -191,7 +193,9 @@ def main():
                         help="must equal each config's complete manifest; pilot configs must be labelled")
     parser.add_argument("--allow-shared-graphics", action="store_true")
     parser.add_argument("--share-gpu5", action="store_true",
-                        help="explicit H100 GPU 5 flexible sharing with CPU rendering; require >=50000 MiB free and <=10%% utilization")
+                        help="explicit H100 GPU 5 flexible sharing with CPU rendering; require >=50000 MiB free")
+    parser.add_argument("--max-shared-utilization", type=int, choices=(10, 50), default=10,
+                        help="GPU 5 only; default 10, or explicitly recorded moderate sharing at 50 for bounded pilots")
     parser.add_argument("--episode-ledger", type=Path,
                         help="shared effort ledger: reserve both complete arms against an immutable 50-episode cap")
     parser.add_argument("--render-backend", choices=("egl", "osmesa"), default="egl")
@@ -215,6 +219,8 @@ def main():
         parser.error("time limits must be positive")
     if args.share_gpu5 and (args.render_backend != "osmesa" or not args.episode_ledger or not args.dense_config):
         parser.error("GPU 5 sharing requires CPU OSMesa, explicit pilot configs and the effort episode ledger")
+    if args.max_shared_utilization != 10 and not args.share_gpu5:
+        parser.error("moderate admission requires the explicit --share-gpu5 mode")
     budget = EpisodeBudget(args.episode_ledger) if args.episode_ledger else None
     if budget is not None and 2 * args.planned_episodes > budget.available():
         parser.error("both complete arm manifests must fit the effort's remaining 50-episode budget")
@@ -229,6 +235,9 @@ def main():
         authorized_gpu_indices=args.authorized_gpus,
         render_backend=args.render_backend,
         shared_gpu5=args.share_gpu5,
+        shared_gpu5_maximum_utilization=args.max_shared_utilization,
+        shared_gpu5_minimum_free_mib=50000,
+        controller_source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         episode_budget=None,
         first_arm=args.first_arm,
         wall_seconds_per_arm=args.wall_seconds, stop_grace_seconds=args.stop_grace_seconds,
@@ -286,7 +295,7 @@ def main():
                           if args.render_backend == "osmesa" else
                           admit_placement(gpus, policy_uuid, render_uuid,
                                           args.authorized_gpus, args.allow_shared_graphics))
-                ready = admit_shared_gpu5_cpu(gpus, policy_uuid, args.authorized_gpus) if args.share_gpu5 else bool(spares)
+                ready = admit_shared_gpu5_cpu(gpus, policy_uuid, args.authorized_gpus, args.max_shared_utilization) if args.share_gpu5 else bool(spares)
                 if ready:
                     row["spares_unused"] = spares
                     row["explicit_gpu5_sharing"] = args.share_gpu5
