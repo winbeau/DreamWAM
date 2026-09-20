@@ -1,5 +1,28 @@
 # DreamWAM evaluation fork guidance
 
+## Active isolated-worktree handoff (2026-09-20)
+
+The user explicitly requested a separate DIDO-guided action/video sparse-profile
+worktree. In this checkout, work on **experiment/dido-sparse-profile**, not main.
+Local root: `/home/winbeau/Papers/ICLR2027-WAM-SA/.trees/dido-sparse-profile`.
+H100 root: `/root/wenbiao_zhao/dreamwam-sr/.trees/dido-sparse-profile`.
+This branch-specific instruction supersedes the main-only workflow below; all
+environment, protocol, provenance and shared-GPU safety rules still apply.
+
+Read `docs/implementation/dido-sparse-profile/WORKFLOW.md` for the verified update
+chain and `docs/implementation/dido-sparse-profile/GOAL.md` for the future task.
+The setup turn is **handoff only**: no new profiling, training, rollout or GPU job
+is started until the user invokes the goal in the new session. Do not confuse a
+saved goal prompt with an already active goal. Do not spawn sub-agents without
+explicit user authorization.
+
+Edit locally, commit and push this branch, then use
+`bash deployment/h100/sync-dido-worktree.sh` to fast-forward the clean H100
+worktree and check exact source equality. That script never installs dependencies
+or launches inference. Run tests and experiments only on H100, with immutable
+per-run revisions. Do not pull into a checkout while a live run uses it; use
+separate detached run worktrees. Preserve the existing main and old run worktrees.
+
 This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. CURRENT STATUS: the user resumed Sparse-WAM on 2026-09-20 and authorized GPUs **4–7**, asking for **10% visual tokens recomputed at every denoising step, without cross-step visual caches**. This supersedes the 06:21 UTC pause for this new experiment, but does not resume the old 500-episode queue. The earlier four-suite LIBERO baseline run has finished for Spatial/Object/Goal and is incomplete for Long.
 
 - Install and execute only on the evaluation server, never locally. The current user goal (renewed 2026-09-19) permits idle or lightly occupied GPUs for SR-constrained Sparse-WAM work, superseding the earlier GPU-7-only restriction. Recheck utilization and memory before each launch, declare sharing, and never signal another user's process. Follow action-eval's current shared-host rule to leave the last available card unused.
