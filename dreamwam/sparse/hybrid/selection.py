@@ -7,6 +7,7 @@ import torch
 from ..action_guided_neuron_cache import joint_video_mass
 from ..reuse import token_drift
 from .routing import TokenScores, decision_scores
+from .native_scores import choose_native, read_quotas
 
 
 @dataclass(frozen=True)
@@ -16,9 +17,22 @@ class Selection:
     action_probe_rows: int = 0
     video_key_probe_rows: int = 0
     video_query_probe_rows: int = 0
+    fallback: torch.Tensor | None = None
 
 
 def scores(config, model, video_state, action_state, state, *, anchor=False):
+    if config.selection == "native":
+        if state.native_scores is None:
+            raise RuntimeError("native read scoring requires a current-request Dense anchor")
+        native = config.native_routing
+        read = None if native.signal == "uniform" else state.native_scores.mean(dim=0)
+        if native.recompute == "uniform" or anchor:
+            query = None if native.recompute == "uniform" else read
+        elif native.recompute == "anchor":
+            query = read
+        else:
+            query = token_drift(video_state["tokens"].float(), state.reference.float()).mean(dim=0)
+        return TokenScores(query, read)
     if config.selection in ("action", "action_context", "visual_context"):
         return decision_scores(config, model, video_state, action_state, state, anchor=anchor)
     current = video_state["tokens"]
@@ -55,21 +69,33 @@ def select(config, model, video_state, action_state, state, *, anchor=False):
         return Selection(route, route)
     ranking = scores(config, model, video_state, action_state, state, anchor=anchor)
     score, read_score = ranking.query, ranking.read
+    native = config.native_routing
+    valid = state.native_valid.all() if native else None
+    fallback = (~valid | (~torch.isfinite(score).all() if score is not None else False)) if native else None
+
+    def pick(value, count, length, device):
+        return choose_native(value, count, length, device, valid=valid) if native else choose(value, count, length, device)
+
     probes = (ranking.action_probe_rows, ranking.video_key_probe_rows, ranking.video_query_probe_rows)
     if config.read_mode == "compact":
         frames = length // frame_size
         queries, routes = [], []
         offset = 0
+        quotas = read_quotas(native, kv_count, frame_size, frames) if native else [
+            kv_count // frames + int(frame < kv_count % frames) for frame in range(frames)]
         for frame in range(frames):
             q = q_count // frames + int(frame < q_count % frames)
-            k = kv_count // frames + int(frame < kv_count % frames)
+            k = quotas[frame]
+            if not anchor and q > k:
+                raise ValueError("per-frame query budget exceeds its explicit read quota")
             start = frame * frame_size
             local_score = None if score is None else score[start:start + frame_size]
             if anchor:
-                selected = choose(None if read_score is None else read_score[start:start + frame_size],
+                local_read = None if read_score is None or (native and frame == 0 and native.observed == "uniform") else read_score[start:start + frame_size]
+                selected = pick(local_read,
                                   k, frame_size, current.device) + start
             else:
-                query = choose(local_score, q, frame_size, current.device) + start
+                query = pick(local_score, q, frame_size, current.device) + start
                 queries.append(query)
                 old = state.route[offset:offset + k]
                 priority = -old.float() if read_score is None else read_score.index_select(0, old)
@@ -82,14 +108,14 @@ def select(config, model, video_state, action_state, state, *, anchor=False):
         # Each newly read key is a freshly computed query; old keys fill the
         # remaining per-frame quota. Cardinalities never depend on tensor values.
         query = route if anchor else torch.cat(queries).sort().values
-        return Selection(query, torch.cat(routes).sort().values, *probes)
+        return Selection(query, torch.cat(routes).sort().values, *probes, fallback)
     if config.frame_quota == "balanced":
         frames = length // frame_size
         query = torch.cat([
-            choose(None if score is None else score[frame * frame_size:(frame + 1) * frame_size],
+            pick(None if score is None else score[frame * frame_size:(frame + 1) * frame_size],
                    q_count // frames + int(frame < q_count % frames), frame_size, current.device)
             + frame * frame_size for frame in range(frames)
         ]).sort().values
     else:
-        query = choose(score, q_count, length, current.device).sort().values
-    return Selection(query, route, *probes)
+        query = pick(score, q_count, length, current.device).sort().values
+    return Selection(query, route, *probes, fallback)

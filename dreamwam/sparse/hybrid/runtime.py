@@ -12,6 +12,9 @@ from .graphs import ExecutionDispatcher
 from .schedule import StepContext, compile_plan, stable_hash
 from .selection import Selection, select
 from .state import VisualState
+from ..profile.geometry import TokenGrid
+from .native_packing import compile_pool_geometry
+from .native_scores import score_work, scoring_heads
 
 
 def scheduler_hash(model):
@@ -27,6 +30,8 @@ class HybridVisualRuntime:
         self.config = config if isinstance(config, HybridConfig) else HybridConfig.from_mapping(config)
         if model.training or model.config.setting != "joint":
             raise ValueError("hybrid visual execution requires Joint inference")
+        if self.config.native_routing:
+            self.config.native_routing.sampled_layers(model.mot.num_layers)
         self.model = model
         self.dispatch = ExecutionDispatcher(model, self.config)
         self.state = VisualState()
@@ -90,6 +95,7 @@ class HybridVisualRuntime:
         batch, length = current.shape[:2]
         frame_size = video_state["tokens_per_frame"]
         action_length = action_state["tokens"].shape[1]
+        native = self.config.native_routing
         self.state.check_layout(current, frame_size, action_length)
         q_count, kv_count = self.config.budgets(length, frame_size)
         if step_index == 0:
@@ -97,9 +103,16 @@ class HybridVisualRuntime:
                                  scheduler_hash=scheduler_hash(self.model))
             self.plan = compile_plan(self.config, num_steps, compatibility=compatibility)
             self._stats["compatibility"] = compatibility
-            self.state.full_mask = self.model.mot.build_attention_mask(
+            mask_device = "cpu" if native and native.packing == "pool" else current.device
+            full_mask = self.model.mot.build_attention_mask(
                 video_length=length, action_length=action_length,
-                video_tokens_per_frame=frame_size, device=current.device)
+                video_tokens_per_frame=frame_size, device=mask_device)
+            if native and native.packing == "pool":
+                self.state.native_geometry = compile_pool_geometry(TokenGrid(*video_state["grid_size"]),
+                    full_mask, native.refine_fraction, current.device)
+                if self.state.native_geometry["packed_length"] != kv_count:
+                    raise ValueError("explicit read count does not match the pooled geometry budget")
+            self.state.full_mask = full_mask.to(current.device)
             self.state.action_indices = torch.arange(action_length, device=current.device) + length
         decision = self.plan.decision(StepContext(step_index, num_steps))
         effective = decision.operation
@@ -111,17 +124,24 @@ class HybridVisualRuntime:
             result = self._call("dense", dict(video_state=tensor_state(video_state, video=True),
                                               action_state=tensor_state(action_state)))
             self._measure("cache_commit", lambda: self.state.commit_dense(result, current, step_index))
-            selection = self._measure("selection", lambda: select(
-                self.config, self.model, video_state, action_state, self.state, anchor=True))
-            self._measure("pack", lambda: self.state.pack(
-                selection.route, step_index, full_read=self.config.read_mode == "full"))
+            if native and native.separate_packing:
+                packed = self._call("pack_native", dict(kv=result["kv"], scores=result["native_scores"],
+                    valid=result["native_valid"], full_mask=self.state.full_mask, grid_size=video_state["grid_size"],
+                    read_count=kv_count, geometry=self.state.native_geometry))
+                self._measure("cache_commit", lambda: self.state.pack_native(packed, step_index))
+                selection = Selection(torch.arange(length, device=current.device), packed["route"], fallback=packed["fallback"])
+            else:
+                selection = self._measure("selection", lambda: select(
+                    self.config, self.model, video_state, action_state, self.state, anchor=True))
+                self._measure("pack", lambda: self.state.pack(
+                    selection.route, step_index, full_read=self.config.read_mode == "full"))
             q_rows, kv_rows = length, length
         elif self.config.reuse_mode == "structure":
             if effective == "sparse":
                 chosen = self._measure("selection", lambda: select(
                     self.config, self.model, video_state, action_state, self.state, anchor=True))
                 selection = Selection(chosen.route, chosen.route, chosen.action_probe_rows,
-                                      chosen.video_key_probe_rows, chosen.video_query_probe_rows)
+                                      chosen.video_key_probe_rows, chosen.video_query_probe_rows, chosen.fallback)
             else:
                 selection = Selection(self.state.route, self.state.route)
             route = selection.route
@@ -148,8 +168,8 @@ class HybridVisualRuntime:
                 raise RuntimeError("reuse requires a current-request dense anchor")
             result = self._call("reuse", dict(action_state=tensor_state(action_state),
                                               kv=self.state.packed, mask=self.state.action_mask))
-            q_rows, kv_rows = 0, self.state.route.numel()
-        if effective != "reuse":
+            q_rows, kv_rows = 0, self.state.route.shape[-1]
+        if effective != "reuse" and not (native and native.separate_packing):
             columns = torch.cat((self.state.route, action_indices))
             self.state.action_mask = self.state.full_mask[length:].index_select(1, columns)
         self._restore_router(result)
@@ -174,11 +194,27 @@ class HybridVisualRuntime:
                    video_key_probe_rows=selection.video_key_probe_rows if selection else 0,
                    video_query_probe_rows=selection.video_query_probe_rows if selection else 0,
                    graph_key=self.dispatch.last_key, graph_replay=self.dispatch.last_replayed)
+        if native:
+            work = score_work(native, layers=len(self.executor.native_layers) if effective == "dense" else 0,
+                              num_heads=self.model.mot.num_heads, video_length=length, action_length=action_length)
+            for key, count in work.items():
+                self._stats[key] += count
+            row.update(**work, native_score_step=self.state.native_score_step,
+                native_score_age=step_index - self.state.native_score_step,
+                native_score_layers=list(self.executor.native_layers) if effective == "dense" else [],
+                native_score_heads=list(scoring_heads(self.model.mot.num_heads, native.heads)) if effective == "dense" else [],
+                read_layout="layerwise" if native.layerwise else "shared", packing=native.packing,
+                represented_visual_rows=length if native.packing == "pool" else kv_count,
+                selector_fallback=None)
+            if selection is not None and selection.fallback is not None:
+                row["_native_fallback"] = selection.fallback.clone()
         if self.config.diagnostics == "trace":
             # Device values are serialized once at request end, not inside a timed step.
             row.update(route=self.state.route.clone(), updated_at=self.state.updated_at.clone(),
                        query=selection.query.clone() if selection else None,
                        video_t=self._times[0].detach(), action_t=self._times[1].detach())
+            if native and native.separate_packing:
+                row.update(read_group_members=self.state.read_members.clone(), read_group_sizes=self.state.read_sizes.clone())
         self._stats["steps"].append(row)
         return dict(video=self.state.output, action=result["action"])
 
@@ -186,7 +222,7 @@ class HybridVisualRuntime:
         if self._originals or getattr(self.model, "_visual_ffn_context_cache", None):
             raise RuntimeError("another inference wrapper is already installed")
         self.model._visual_ffn_context_cache = self
-        self.executor = HybridExecutor(self.model, self.model.mot.forward)
+        self.executor = HybridExecutor(self.model, self.model.mot.forward, self.config.native_routing)
         sample = self.model.sample_action
         signature = inspect.signature(sample)
 
@@ -209,6 +245,9 @@ class HybridVisualRuntime:
                                total_video_token_layers=0, read_video_token_layers=0,
                                action_probe_rows=0, video_key_probe_rows=0, video_query_probe_rows=0,
                                graph_replays=0, steps=[], status="RUNNING")
+            if self.config.native_routing:
+                self._stats.update(native_score_query_head_rows=0, native_score_value_head_rows=0,
+                                   selector_fallback_events=0)
             try:
                 result = sample(*args, **kwargs)
                 if self._stats["denoising_steps"] != self.plan.schedule.num_steps:
@@ -228,6 +267,12 @@ class HybridVisualRuntime:
                             phases.append(dict(phase=phase, step_index=index, cpu_seconds=seconds,
                                 cuda_stream_span_seconds=start.elapsed_time(end) / 1000 if end else None))
                         self._stats["phase_timings"] = phases
+                    native_rows = [row for row in self._stats["steps"] if "_native_fallback" in row]
+                    if native_rows:
+                        events = torch.stack([row.pop("_native_fallback") for row in native_rows]).cpu().tolist()
+                        self._stats["selector_fallback_events"] = sum(events)
+                        for row, event in zip(native_rows, events):
+                            row["selector_fallback"] = event
                     for row in self._stats["steps"]:
                         if "route" in row:
                             route = row["route"].cpu().tolist()
@@ -238,6 +283,9 @@ class HybridVisualRuntime:
                             for name in ("query", "video_t", "action_t"):
                                 value = row[name]
                                 row[name] = value.cpu().tolist() if value is not None else None
+                            for name in ("read_group_members", "read_group_sizes"):
+                                if name in row:
+                                    row[name] = row[name].cpu().tolist()
                     self.last_stats = dict(self._stats)
                 finally:
                     self.state.clear()

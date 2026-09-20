@@ -19,6 +19,12 @@ class VisualState:
         self.full_mask = None
         self.action_mask = None
         self.action_indices = None
+        self.native_scores = None
+        self.native_valid = None
+        self.native_score_step = None
+        self.native_geometry = None
+        self.read_members = None
+        self.read_sizes = None
 
     def check_layout(self, video, frame_size, action_length):
         layout = (tuple(video.shape), video.dtype, video.device, frame_size, action_length)
@@ -31,6 +37,15 @@ class VisualState:
         self.output = result["video"]
         self.reference = current.clone()
         self.updated_at = torch.full((current.shape[1],), step, dtype=torch.long, device=current.device)
+        if "native_scores" in result:
+            self.native_scores = result["native_scores"]
+            self.native_valid = result["native_valid"]
+            self.native_score_step = step
+
+    def pack_native(self, result, step):
+        self.packed, self.action_mask = result["kv"], result["masks"]
+        self.route, self.route_step = result["route"], step
+        self.read_members, self.read_sizes = result["members"], result["sizes"]
 
     def commit_sparse(self, result, current, query, route, step, *, full_read):
         if full_read:

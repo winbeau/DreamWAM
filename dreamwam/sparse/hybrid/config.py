@@ -6,6 +6,7 @@ from dataclasses import dataclass
 import math
 
 from .schedule import Schedule, integer, mapping, stable_hash
+from .native_config import NativeRoutingConfig
 
 
 def number(value, name, low, high=None, *, open_low=False):
@@ -32,6 +33,8 @@ class HybridConfig:
     context_weight: float = 1.0
     support_seed_ratio: float = 0.1
     reuse_mode: str = "features"
+    read_count: int | None = None
+    native_routing: NativeRoutingConfig | None = None
 
     def __post_init__(self):
         if not isinstance(self.schedule, Schedule):
@@ -42,7 +45,7 @@ class HybridConfig:
         number(self.context_weight, "selection.context_weight", 0)
         number(self.support_seed_ratio, "selection.support_seed_ratio", 0, 1, open_low=True)
         enums = ((self.read_mode, ("full", "compact"), "read.mode"),
-                 (self.selection, ("uniform", "drift", "action_drift", "action", "action_context", "visual_context"), "selection.method"),
+                 (self.selection, ("uniform", "drift", "action_drift", "action", "action_context", "visual_context", "native"), "selection.method"),
                  (self.frame_quota, ("balanced", "none"), "selection.frame_quota"),
                  (self.backend, ("eager", "buffered", "cuda_graph"), "execution.backend"),
                  (self.reuse_mode, ("features", "structure"), "reuse.mode"),
@@ -52,28 +55,42 @@ class HybridConfig:
                 raise ValueError(f"{name} must be one of {allowed}")
         if self.read_mode == "full" and self.read_ratio != 1:
             raise ValueError("full read requires keep_ratio=1")
+        if self.read_count is not None:
+            integer(self.read_count, "read.keep_count")
+            if self.read_mode != "compact" or self.read_ratio != 1:
+                raise ValueError("explicit read count requires compact mode and no ratio")
         if self.read_mode == "compact":
-            if self.recompute_ratio > self.read_ratio:
+            if self.read_count is None and self.recompute_ratio > self.read_ratio:
                 raise ValueError("compact recompute budget must not exceed read budget")
             if self.frame_quota != "balanced":
                 raise ValueError("compact read requires balanced frame quotas")
         if self.reuse_mode == "structure":
-            if self.read_mode != "compact" or self.recompute_ratio != self.read_ratio:
+            if self.read_mode != "compact" or (self.read_count is None and self.recompute_ratio != self.read_ratio):
                 raise ValueError("structure reuse requires compact read and equal recompute/read ratios")
-            if self.selection not in ("uniform", "action", "action_context", "visual_context"):
+            if self.selection not in ("uniform", "action", "action_context", "visual_context", "native"):
                 raise ValueError("structure reuse requires a current-input selector")
+        if (self.selection == "native") != (self.native_routing is not None):
+            raise ValueError("native selection requires an explicit native_routing configuration")
+        if self.native_routing is not None:
+            if not isinstance(self.native_routing, NativeRoutingConfig):
+                raise ValueError("native_routing must be a validated NativeRoutingConfig")
+            if self.native_routing.separate_packing:
+                if self.read_mode != "compact" or self.reuse_mode != "features" or "sparse" in self.schedule.operations:
+                    raise ValueError("layerwise/pool reads require compact Dense/reuse feature schedules")
         integer(self.graph_warmup, "graph_warmup")
         integer(self.max_graphs, "max_graphs")
 
     @classmethod
     def from_mapping(cls, payload):
         p = mapping(payload, ("schema_version", "schedule", "recompute", "read", "selection",
-                             "execution", "diagnostics", "reuse"), "hybrid_visual", ("schedule",))
+                             "execution", "diagnostics", "reuse", "native_routing"), "hybrid_visual", ("schedule",))
         version = p.get("schema_version", 1)
         if type(version) is not int or version != 1:
             raise ValueError("unsupported hybrid_visual.schema_version")
         recompute = mapping(p.get("recompute", {}), ("keep_ratio",), "recompute")
-        read = mapping(p.get("read", {}), ("mode", "keep_ratio"), "read")
+        read = mapping(p.get("read", {}), ("mode", "keep_ratio", "keep_count"), "read")
+        if "keep_ratio" in read and "keep_count" in read:
+            raise ValueError("choose read.keep_count or read.keep_ratio")
         select = mapping(p.get("selection", {}), ("method", "guidance_weight", "frame_quota",
                                                   "context_weight", "support_seed_ratio"), "selection")
         execution = mapping(p.get("execution", {}), ("backend", "graph_warmup", "max_graphs"), "execution")
@@ -86,7 +103,8 @@ class HybridConfig:
                    execution.get("backend", "eager"),
                    execution.get("graph_warmup", 3), execution.get("max_graphs", 8),
                    diagnostics.get("level", "counters"), select.get("context_weight", 1.0),
-                   select.get("support_seed_ratio", 0.1), reuse.get("mode", "features"))
+                   select.get("support_seed_ratio", 0.1), reuse.get("mode", "features"), read.get("keep_count"),
+                   NativeRoutingConfig.from_mapping(p["native_routing"]) if "native_routing" in p else None)
 
     def describe(self, *, canonical=False):
         result = dict(schema_version=1, schedule=self.schedule.describe(canonical=canonical),
@@ -103,6 +121,10 @@ class HybridConfig:
                                        support_seed_ratio=float(self.support_seed_ratio))
         if self.reuse_mode != "features":
             result["reuse"] = dict(mode=self.reuse_mode)
+        if self.read_count is not None:
+            result["read"] = dict(mode=self.read_mode, keep_count=self.read_count)
+        if self.native_routing is not None:
+            result["native_routing"] = self.native_routing.describe()
         return result
 
     @property
@@ -114,7 +136,12 @@ class HybridConfig:
         integer(frame_size, "tokens_per_frame")
         if length % frame_size:
             raise ValueError("hybrid requires complete frame grids")
-        q, kv = math.ceil(length * self.recompute_ratio), math.ceil(length * self.read_ratio)
+        q = math.ceil(length * self.recompute_ratio)
+        kv = self.read_count if self.read_count is not None else math.ceil(length * self.read_ratio)
+        if not 1 <= kv <= length or (self.read_mode == "compact" and q > kv):
+            raise ValueError("recompute/read counts must fit the actual grid and each other")
+        if self.reuse_mode == "structure" and q != kv:
+            raise ValueError("structure reuse requires equal actual recompute/read counts")
         if self.read_mode == "compact" and kv < length // frame_size:
             raise ValueError("read budget cannot cover every frame")
         # Only read routes require frame coverage. Query selection may use any rows,

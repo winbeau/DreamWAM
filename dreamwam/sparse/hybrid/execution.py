@@ -3,12 +3,16 @@
 import torch
 
 from dreamwam.layers import scaled_dot_product_attention
+from .native_packing import pack_native_reads
+from .native_scores import native_layer_scores, safe_depth_scores
 
 
 def tensor_state(state, *, video=False):
     keys = ("tokens", "freqs", "time_modulation", "context", "context_mask")
     if video:
         keys += ("tokens_per_frame",)
+        if "grid_size" in state:
+            keys += ("grid_size",)
     return {key: state[key] for key in keys}
 
 
@@ -26,9 +30,11 @@ def selected_video_state(state, index):
 
 
 class HybridExecutor:
-    def __init__(self, model, native_forward):
+    def __init__(self, model, native_forward, native_routing=None):
         self.model = model
         self.native_forward = native_forward
+        self.native_routing = native_routing
+        self.native_layers = native_routing.sampled_layers(model.mot.num_layers) if native_routing else ()
 
     def router_output(self, **result):
         router = self.model.world_residual
@@ -42,6 +48,8 @@ class HybridExecutor:
         original = mot._attention_input
         layers = {id(block): i for i, block in enumerate(mot.video_expert.blocks)}
         captured = {}
+        score_rows = {}
+        original_joint = mot._joint_self_attention
 
         def capture(block, *args, **kwargs):
             result = original(block, *args, **kwargs)
@@ -49,15 +57,35 @@ class HybridExecutor:
                 captured[layers[id(block)]] = dict(k=result[1], v=result[2])
             return result
 
+        def score_attention(**kwargs):
+            layer = kwargs["layer_index"]
+            if layer in self.native_layers:
+                score_rows[layer] = native_layer_scores(self.native_routing,
+                    kwargs["video_io"], kwargs["action_io"], num_heads=mot.num_heads,
+                    frame_size=video_state["tokens_per_frame"], mask=kwargs["attention_mask"])
+            return original_joint(**kwargs)
+
         mot._attention_input = capture
+        if self.native_routing is not None:
+            mot._joint_self_attention = score_attention
         try:
             output = self.native_forward(video_state=video_state, action_state=action_state,
                                          residual_injection=router, sparse=None)
         finally:
             mot._attention_input = original
+            mot._joint_self_attention = original_joint
         if len(captured) != mot.num_layers:
             raise RuntimeError("dense anchor did not capture every visual layer")
-        return self.router_output(**output, kv=[captured[i] for i in range(mot.num_layers)])
+        extra = {}
+        if self.native_routing is not None:
+            if set(score_rows) != set(self.native_layers):
+                raise RuntimeError("native score depth coverage is incomplete")
+            scores, valid = safe_depth_scores(torch.stack([score_rows[i] for i in self.native_layers]))
+            extra.update(native_scores=scores, native_valid=valid)
+        return self.router_output(**output, kv=[captured[i] for i in range(mot.num_layers)], **extra)
+
+    def pack_native(self, **request):
+        return pack_native_reads(self.native_routing, **request)
 
     def sparse(self, *, video_state, action_state, kv, query_slots, mask):
         mot = self.model.mot
@@ -100,7 +128,8 @@ class HybridExecutor:
             io = mot._attention_input(block, action, action_state["freqs"], action_state["time_modulation"])
             mixed = scaled_dot_product_attention(
                 io[0], torch.cat((kv[layer]["k"], io[1]), dim=1),
-                torch.cat((kv[layer]["v"], io[2]), dim=1), mot.num_heads, mask)
+                torch.cat((kv[layer]["v"], io[2]), dim=1), mot.num_heads,
+                mask[layer] if isinstance(mask, list) else mask)
             action = mot._post_attention(block, io[3], mixed, *io[4:],
                                          action_state["context"], action_state["context_mask"])
         return dict(action=action)
