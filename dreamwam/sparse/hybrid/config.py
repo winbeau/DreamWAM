@@ -31,6 +31,7 @@ class HybridConfig:
     diagnostics: str = "counters"
     context_weight: float = 1.0
     support_seed_ratio: float = 0.1
+    reuse_mode: str = "features"
 
     def __post_init__(self):
         if not isinstance(self.schedule, Schedule):
@@ -44,6 +45,7 @@ class HybridConfig:
                  (self.selection, ("uniform", "drift", "action_drift", "action", "action_context", "visual_context"), "selection.method"),
                  (self.frame_quota, ("balanced", "none"), "selection.frame_quota"),
                  (self.backend, ("eager", "buffered", "cuda_graph"), "execution.backend"),
+                 (self.reuse_mode, ("features", "structure"), "reuse.mode"),
                  (self.diagnostics, ("counters", "trace"), "diagnostics.level"))
         for value, allowed, name in enums:
             if not isinstance(value, str) or value not in allowed:
@@ -55,13 +57,18 @@ class HybridConfig:
                 raise ValueError("compact recompute budget must not exceed read budget")
             if self.frame_quota != "balanced":
                 raise ValueError("compact read requires balanced frame quotas")
+        if self.reuse_mode == "structure":
+            if self.read_mode != "compact" or self.recompute_ratio != self.read_ratio:
+                raise ValueError("structure reuse requires compact read and equal recompute/read ratios")
+            if self.selection not in ("uniform", "action", "action_context", "visual_context"):
+                raise ValueError("structure reuse requires a current-input selector")
         integer(self.graph_warmup, "graph_warmup")
         integer(self.max_graphs, "max_graphs")
 
     @classmethod
     def from_mapping(cls, payload):
         p = mapping(payload, ("schema_version", "schedule", "recompute", "read", "selection",
-                             "execution", "diagnostics"), "hybrid_visual", ("schedule",))
+                             "execution", "diagnostics", "reuse"), "hybrid_visual", ("schedule",))
         version = p.get("schema_version", 1)
         if type(version) is not int or version != 1:
             raise ValueError("unsupported hybrid_visual.schema_version")
@@ -71,6 +78,7 @@ class HybridConfig:
                                                   "context_weight", "support_seed_ratio"), "selection")
         execution = mapping(p.get("execution", {}), ("backend", "graph_warmup", "max_graphs"), "execution")
         diagnostics = mapping(p.get("diagnostics", {}), ("level",), "diagnostics")
+        reuse = mapping(p.get("reuse", {}), ("mode",), "reuse")
         return cls(Schedule.from_mapping(p["schedule"]),
                    recompute.get("keep_ratio", 0.1), read.get("mode", "full"), read.get("keep_ratio", 1.0),
                    select.get("method", "drift"), select.get("guidance_weight", 1.0),
@@ -78,7 +86,7 @@ class HybridConfig:
                    execution.get("backend", "eager"),
                    execution.get("graph_warmup", 3), execution.get("max_graphs", 8),
                    diagnostics.get("level", "counters"), select.get("context_weight", 1.0),
-                   select.get("support_seed_ratio", 0.1))
+                   select.get("support_seed_ratio", 0.1), reuse.get("mode", "features"))
 
     def describe(self, *, canonical=False):
         result = dict(schema_version=1, schedule=self.schedule.describe(canonical=canonical),
@@ -93,6 +101,8 @@ class HybridConfig:
         if self.selection in ("action", "action_context", "visual_context") or self.context_weight != 1 or self.support_seed_ratio != 0.1:
             result["selection"].update(context_weight=float(self.context_weight),
                                        support_seed_ratio=float(self.support_seed_ratio))
+        if self.reuse_mode != "features":
+            result["reuse"] = dict(mode=self.reuse_mode)
         return result
 
     @property

@@ -53,3 +53,14 @@ class VisualState:
         self.packed = (self.kv if full_read else
                        [{name: value.index_select(1, route) for name, value in layer.items()}
                         for layer in self.kv])
+
+    def commit_fresh(self, result, current, route, step, *, refresh):
+        """Structure reuse: omitted rows bypass from CURRENT input, not old output."""
+        self.output = current.index_copy(1, route, result["video"])
+        self.reference = current.clone()
+        self.updated_at.index_fill_(0, route, step)
+        self.route = route
+        if refresh:
+            self.route_step = step
+        # Feature buffers are deliberately absent in the structure-only path.
+        self.kv, self.packed = [], []

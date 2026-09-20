@@ -10,7 +10,7 @@ from .config import HybridConfig
 from .execution import HybridExecutor, selected_video_state, tensor_state
 from .graphs import ExecutionDispatcher
 from .schedule import StepContext, compile_plan, stable_hash
-from .selection import select
+from .selection import Selection, select
 from .state import VisualState
 
 
@@ -116,6 +116,24 @@ class HybridVisualRuntime:
             self._measure("pack", lambda: self.state.pack(
                 selection.route, step_index, full_read=self.config.read_mode == "full"))
             q_rows, kv_rows = length, length
+        elif self.config.reuse_mode == "structure":
+            if effective == "sparse":
+                chosen = self._measure("selection", lambda: select(
+                    self.config, self.model, video_state, action_state, self.state, anchor=True))
+                selection = Selection(chosen.route, chosen.route, chosen.action_probe_rows,
+                                      chosen.video_key_probe_rows, chosen.video_query_probe_rows)
+            else:
+                selection = Selection(self.state.route, self.state.route)
+            route = selection.route
+            def prepare_fresh():
+                positions = torch.cat((route, action_indices))
+                return dict(video_state=selected_video_state(video_state, route),
+                            action_state=tensor_state(action_state),
+                            mask=self.state.full_mask.index_select(0, positions).index_select(1, positions))
+            result = self._call("fresh", self._measure("prepare", prepare_fresh))
+            self._measure("cache_commit", lambda: self.state.commit_fresh(
+                result, current, route, step_index, refresh=effective == "sparse"))
+            q_rows = kv_rows = route.numel()
         elif effective == "sparse":
             selection = self._measure("selection", lambda: select(
                 self.config, self.model, video_state, action_state, self.state))
@@ -148,6 +166,8 @@ class HybridVisualRuntime:
         self._stats["graph_replays"] += int(self.dispatch.last_replayed)
         row = dict(step_index=step_index, requested_op=decision.operation, effective_op=effective,
                    q_rows=q_rows, kv_rows=kv_rows, read_mode=decision.read_mode,
+                   reuse_mode=self.config.reuse_mode,
+                   reused_visual_features=effective == "reuse" and self.config.reuse_mode == "features",
                    route_refresh=effective != "reuse", route_age=step_index - self.state.route_step,
                    action_layer_updates=layers, fallback_reason=None,
                    action_probe_rows=selection.action_probe_rows if selection else 0,
@@ -184,6 +204,7 @@ class HybridVisualRuntime:
             self._request_id += 1
             self._stats = dict(request_id=self._request_id, plan_hash=self.plan.plan_hash,
                                denoising_steps=0, dense_steps=0, sparse_steps=0, reuse_steps=0,
+                               reuse_mode=self.config.reuse_mode,
                                action_layer_updates=0, computed_video_token_layers=0,
                                total_video_token_layers=0, read_video_token_layers=0,
                                action_probe_rows=0, video_key_probe_rows=0, video_query_probe_rows=0,

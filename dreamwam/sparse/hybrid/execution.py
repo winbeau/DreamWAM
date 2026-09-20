@@ -70,8 +70,8 @@ class HybridExecutor:
             vb, ab = mot.video_expert.blocks[layer], mot.action_expert.blocks[layer]
             vio = mot._attention_input(vb, video, video_state["freqs"], video_state["time_modulation"])
             aio = mot._attention_input(ab, action, action_state["freqs"], action_state["time_modulation"])
-            key = kv[layer]["k"].index_copy(1, query_slots, vio[1])
-            value = kv[layer]["v"].index_copy(1, query_slots, vio[2])
+            key = vio[1] if kv is None else kv[layer]["k"].index_copy(1, query_slots, vio[1])
+            value = vio[2] if kv is None else kv[layer]["v"].index_copy(1, query_slots, vio[2])
             mixed = scaled_dot_product_attention(
                 torch.cat((vio[0], aio[0]), dim=1), torch.cat((key, aio[1]), dim=1),
                 torch.cat((value, aio[2]), dim=1), mot.num_heads, mask)
@@ -83,6 +83,14 @@ class HybridExecutor:
             packed.append(dict(k=key, v=value))
             updated.append(dict(k=vio[1], v=vio[2]))
         return self.router_output(video=video, action=action, kv=packed, updates=updated)
+
+    def fresh(self, *, video_state, action_state, mask):
+        """Same transformer math, but every read key is computed THIS step.
+
+        No cached K/V is passed in, including through CUDA graph buffers.
+        """
+        return self.sparse(video_state=video_state, action_state=action_state,
+                           kv=None, query_slots=None, mask=mask)
 
     def reuse(self, *, action_state, kv, mask):
         mot = self.model.mot
