@@ -1,9 +1,28 @@
 # Offline Head × Stage sensitivity calibration
 
-Status: **RUNNING — complete classification pending**. Updated **2026-09-20
-03:08 UTC**. The user explicitly requested offline action/video sensitivity
-classification before deciding how to enable it. This executes the first M1
-measurement; it does not change the frozen SR candidates or certify a budget.
+Status: **VERIFIED offline collection, classification and combined allocation
+comparison; M1 speed/SR unverified**. Updated **2026-09-20 UTC**. The complete
+sweep ended **03:41:50 UTC**, its classification/audit passed at **03:42 UTC**,
+and combined inference completed **03:44:38 UTC**, all exit 0. The user
+explicitly requested offline action/video sensitivity classification and a
+trial. The frozen SR candidates are unchanged; this does not certify a budget.
+
+At the same 50% future-key mask budget, the separate check input's normalized
+action relative L2 falls from **0.153968 uniform** to **0.082719 head-only**
+and **0.084239 Head × Stage**. Thus sensitivity-based allocation helps this
+offline proxy, while **Stage has not shown an additional action advantage**
+over head-only. The latter comparison is preserved rather than selecting only
+the favorable uniform baseline. This is not a success-rate or speedup result.
+
+Complete artifacts: [2,160-row type/metric CSV](evidence/head-stage-20260920/head-stage.csv),
+[classification summary](evidence/head-stage-20260920/classification-summary.json),
+[sensitivity heatmap PNG](evidence/head-stage-20260920/head-stage-sensitivity.png)
+/ [PDF](evidence/head-stage-20260920/head-stage-sensitivity.pdf),
+[cross-input stability PNG](evidence/head-stage-20260920/head-stage-stability.png)
+/ [PDF](evidence/head-stage-20260920/head-stage-stability.pdf),
+[full audit](evidence/head-stage-20260920/full-audit.json),
+[combined profiles and raw actions](evidence/head-stage-20260920/combined-report.json),
+[combined audit and executed-prefix metrics](evidence/head-stage-20260920/combined-audit-and-prefix10.json).
 
 The earlier fast visual-cache policies use uniform refresh cadences and, in the
 guided variant, an AV-weighted token-drift score. They have no measured
@@ -77,7 +96,7 @@ analysis update adds provenance, within-stage summaries and optional attention
 statistics without changing this rule or its thresholds. No SR tolerance has
 been chosen; the user will decide after complete Pareto results.
 
-## Verified preparation and live collection
+## Verified preparation and complete collection
 
 Source `ea5ac5f` supplies the probe/capture/collector; `7c79c96` adds the first
 classifier. Tests on the server passed **54/54**, exit 0, covering native
@@ -94,9 +113,13 @@ classification is a pipeline check, not the full M1 result.
 The full `7c79c96` sweep began **02:50:43.732 UTC** on GPU 4
 (`GPU-490b4a76-6210-31b9-4e03-838a113cf5f4`), collector PID 330934. At the
 03:06 audit, 1,872 of 6,480 interventions were journaled and the collector was
-still running. Its result is pending. Physical GPU 7 is deliberately left
-unused; free memory does not imply a reservation, and shared-host load is
-recorded. The separate official SR runs continue in their frozen worktrees.
+still running. It subsequently completed all 6,480 interventions at
+**03:41:50.573 UTC**, exit 0. All three full-budget controls and all 90
+end-of-layer Dense drift checks passed; the collector verifies unchanged
+parameter versions/settings before marking completion. Physical GPU 7 was
+deliberately unused by this task; it later became another evaluation's
+dedicated rendering card. Free memory does not imply a reservation, and
+shared-host load is recorded. Separate SR runs retain their frozen worktrees.
 
 Server artifact root:
 `/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-calibration-20260920`.
@@ -152,11 +175,49 @@ PYTHONPATH="$PWD" CUDA_VISIBLE_DEVICES=0 OMP_NUM_THREADS=1 \
   --out-dir "$ARTIFACT_ROOT/analysis-f489335"
 ```
 
-Next: complete/audit all 6,480 interventions, inspect the exported PNG/PDF and
-publish the type CSV plus stability results. A deployable budget then needs
-combined-intervention tests, measured full-request cost and paired official SR.
-This first sweep alone does not authorize a claim of preserved quality or
-additional acceleration.
+The completed `f489335` analysis joined all 6,480 attention records by exact
+identity and left the original `7c79c96` classification unchanged. The
+`90b3b77` audit verified the complete matrix, target steps/masks, finite
+outputs, control flags and every class assignment. Recomputing all recorded
+denormalized action metrics from raw actions gave **zero discrepancy**. The
+intervention JSONL SHA256 is
+`5d4a854d5024b683ad94ad0e8ea82f42aded13a83a131bb923e067b02f4cdb10`.
+The updated full classification SHA256 is
+`0321feb48e6d43085f3294a5b1329c8df50ab12b612b7ef7c51d7a49177e539f`.
+The large raw matrix and reference arrays remain under the server artifact
+root; small results and exports are committed here. Both figures were viewed.
+
+## Measured relative types and stability
+
+| Relative type | Fitted units | Same type on check input |
+|---|---:|---:|
+| Action-sensitive only | 81 | 55 / 81 |
+| Video-sensitive only | 81 | 12 / 81 |
+| Mixed-sensitive | 459 | 268 / 459 |
+| Low impact | 324 | 65 / 324 |
+| Intermediate | 1,215 | 972 / 1,215 |
+| Total | 2,160 | 1,372 / 2,160 (**63.52%**) |
+
+The fitted action quartiles are 0.00344428 / 0.00460675, and the video
+quartiles 0.00752477 / 0.01851257. The two sensitivity metrics correlate
+strongly (Spearman **0.839**), so this result does not show a clean semantic
+split into action and video heads. Marginal-chance label agreement is 41.67%,
+with Cohen's κ **0.375**. Cross-input action/video rank correlations are
+**0.639 / 0.792**. Within early/middle/late stages, action correlations are
+**0.364 / 0.663 / 0.833**; video correlations are **0.742 / 0.844 / 0.971**.
+Hard relative types therefore have limited stability, especially early.
+
+The low-impact category deserves a precise interpretation: 259 of its 324
+units move to the intermediate category, but **none becomes upper-quartile
+action- or video-sensitive** on this check input. Low exact-label agreement
+does not by itself demonstrate a harmful decision change. Conversely, this
+single small check cannot certify safety. The per-stage dose caveat remains.
+
+Dense A→future attention mass is highly stable across these inputs (rank
+correlation **0.970**) but correlates only **0.173** with measured action
+sensitivity. Future V→V mass correlates **0.486** with action sensitivity.
+These are descriptive associations, not causal evidence for the AV–VV bridge;
+attention magnitude cannot substitute for the intervention measurement.
 
 ## Additional causal control and predeclared combined comparison
 
@@ -199,16 +260,58 @@ required. This is a combined action/video **proxy** comparison: it tests
 nonlinear interaction and allocation at a fixed budget, without claiming an
 optimized operator, additional speed or SR. The complete classification is
 required before the experiment runs. Tests at `1adeeff` passed **13/13** on
-the server, exit 0, including equal executed pair counts, unchanged action
+the server, exit 0, including equal mask-permitted pair counts, unchanged action
 rows under real attention and no use of check-input scores in allocations.
 
 ```bash
-# PLANNED, pending full sensitivity collection and classification.
+# EXECUTED after classification/audit, GPU 4; GPU 1 deliberately left unused.
 # Pinned DreamWAM-head-allocation-1adeeff worktree, freshly admitted GPU.
-PYTHONPATH="$PWD" CUDA_VISIBLE_DEVICES="$ADMITTED_GPU" OMP_NUM_THREADS=1 \
+PYTHONPATH="$PWD" CUDA_VISIBLE_DEVICES=4 OMP_NUM_THREADS=1 \
   MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 .venv/bin/python \
   scripts/sparse/compare_head_stage_allocations.py \
   --inputs "$ARTIFACT_ROOT/inputs-gpu4/manifest.json" \
   --classification "$ARTIFACT_ROOT/analysis-f489335/classification.json" \
   --out-dir "$ARTIFACT_ROOT/combined-1adeeff"
 ```
+
+This run completed **03:43:35.432–03:44:38.537 UTC**, exit 0, on initially
+empty GPU 4, with GPU 1 deliberately left unused at admission. It measured
+all seven profiles on all three inputs (21 records), repeated each profile
+bitwise and included native/start/end Dense controls: **51 complete requests**
+including controls. All three Dense actions also matched the original full
+sweep's saved references bitwise. The recorded profiles were independently
+checked against calibration-only rankings and equal mask cardinalities.
+
+| Allocation | Calibration mean action L2 | Check action L2 | Check video L2 | Check executed-prefix action L2 |
+|---|---:|---:|---:|---:|
+| Dense | 0 | 0 | 0 | 0 |
+| Uniform | 0.164616 | 0.153968 | 0.478101 | 0.088408 |
+| Head-only | 0.095173 | **0.082719** | 0.400961 | **0.042672** |
+| Head × Stage | **0.090754** | 0.084239 | **0.379731** | 0.046430 |
+| Random allocation seed 0 | 0.411782 | 0.293426 | 0.743059 | 0.248743 |
+| Random allocation seed 1 | 0.421112 | 0.242676 | 0.725071 | 0.245445 |
+| Random allocation seed 2 | 0.363392 | 0.215635 | 0.714801 | 0.193963 |
+
+Lower is better. The first two action columns use the **full normalized
+32-step sampler output**, as fixed for classification. The final column
+recomputes relative L2 on the **first ten denormalized controller actions**,
+which the protocol actually executes. These different spaces must not be
+pooled or interpreted as SR percentage-point changes. The prefix also favors
+head-only over Head × Stage on the check input. All 21 records have zero
+gripper sign flips; that alone does not establish task success. Translation,
+rotation and maximum absolute prefix deviations are retained in the audit.
+
+The favorable uniform comparison is real on this limited replay set. Head ×
+Stage also reduces video change more than head-only, while its check-input
+action change is slightly larger. No full benchmark SR or optimized
+full-request latency was measured for these new profiles. **Mask cardinality
+is not executed FLOPs**: these diagnostic masks still run through the full
+fused Dense operator. The current roughly 1.78× / 1.81× cache timings remain
+separate evidence for different policies.
+
+Next: expand calibration beyond these initial scenes and intervention dose,
+retain head-only as the action baseline, and measure the incremental AV/VV
+route and actual sparse execution at matched budgets. Any selected combination
+still requires full paired SR; the user decides tolerance after complete
+Pareto results. The extra Stage factor is not accepted on the strength of
+this one favorable comparison against uniform allocation.

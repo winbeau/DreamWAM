@@ -6,10 +6,13 @@ about action/video classification, AV–VV bridging and sparse execution. It
 does not change any frozen rollout or the paper's TeX.
 
 Update: the user subsequently requested offline classification. The
-[full M1 sensitivity sweep is now running](head-stage-calibration-20260920.md),
-with 6,480 planned single-head/stage interventions and a completed Dense AV/VV
-statistics pass. This replaces the earlier measurement gap with an active
-experiment; complete types and deployable budgets are still pending.
+[full M1 sensitivity sweep and combined allocation test are complete](head-stage-calibration-20260920.md):
+6,480 interventions, 2,160 typed units and 21 combined profile/input records.
+At equal future-key budget, head-only and Head × Stage improve action proxies
+over uniform allocation; Head × Stage does not beat head-only on the separate
+check input's actions. Relative-type agreement is 63.5%. This supplies first
+offline M1 evidence, with broader calibration, optimized execution and paired
+SR still required. It does not change the active fast-policy implementations.
 
 The current approximately **1.78×** temporal and **1.81×** guided speedups
 come from visual computation reuse across denoising steps with transformer
@@ -23,7 +26,7 @@ None of these figures establishes preserved benchmark SR.
 
 | Paper component | Existing implementation | Used by the current fast candidates? | Evidence still required |
 |---|---|---|---|
-| M1: action-sensitive / visual-context-sensitive Head×Stage types and calibrated budgets | The older `collect_action_impact.py` probes whole layers; the new `collect_head_stage_impact.py` probes individual layer/head/stage units. `SparseConfig` accepts per-head/per-stage budgets | **No** in the current fast candidates. Full offline calibration is now running | Complete profiles, their stability and matched-cost uniform/head/head×stage comparisons |
+| M1: action-sensitive / visual-context-sensitive Head×Stage types and calibrated budgets | `collect_head_stage_impact.py` measures all layer/head/stage units; `compare_head_stage_allocations.py` applies calibration-only budgets in combined offline inference | **No** in the current fast candidates; **yes** in the completed offline allocation diagnostic | Broader/dose calibration and full latency/SR; the first equal-mask-budget comparison does not show incremental Stage action benefit |
 | M2: action anchors, VV dependency context and structural support | `routing.py` implements `av` / `av_context` routes and structural handling for sparse VV keys | **No** in the fast visual-cache path. The existing route's mean-Q / block-K affinity is a ranking proxy; its presence is not proof of anchor-conditioned dependency completion | Visual-only, AV-only and AV+context at equal executed budgets, with causal interventions and full paired SR/latency |
 | M3: route reuse, compact/block execution and cost-aware use | Sparse attention has masked/gather implementations and route-scope reuse; earlier execution measurements were negative for net speed | The fast path uses a different approximation: reusing visual K/V and hidden outputs while computing every action step, plus CUDA graph dispatch | Attribute any additional benefit to the actual active mechanism; do not relabel cached visual computation as a successful sparse VV kernel |
 
@@ -76,6 +79,7 @@ in a separate measurement. Charge selection, context construction, gathers,
 graph staging and CPU action output to every complete request; give Dense the
 same applicable common optimizations.
 
-This is an evidence plan, not a claim that those new experiments ran. Full
-Pareto results precede the user's SR-tolerance decision. If the mechanism adds
-no quality or latency benefit, report that result and narrow the paper's claim.
+The linked M1 replay/allocation experiments have now run; the M2/M3 and paired
+SR comparisons above remain outstanding. Full Pareto results precede the
+user's SR-tolerance decision. If a factor adds no quality or latency benefit,
+report that result and narrow the paper's claim.

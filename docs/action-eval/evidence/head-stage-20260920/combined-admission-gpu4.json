@@ -1,0 +1,8 @@
+{
+  "utc": "2026-09-20T03:43:24.154157+00:00",
+  "inventory": "0, GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc, 33, 1626, 141530\n1, GPU-b9157129-ac58-501d-c93d-b1cf622ff61b, 0, 17, 143140\n2, GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074, 0, 623, 142534\n3, GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba, 1, 26257, 116900\n4, GPU-490b4a76-6210-31b9-4e03-838a113cf5f4, 0, 1, 143156\n5, GPU-7d459912-b567-59fb-8abf-57c18713cb84, 76, 24743, 118414\n6, GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5, 0, 1, 143156\n7, GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8, 0, 1, 143156\n",
+  "target_gpu": 4,
+  "spare_gpu": 1,
+  "shared_host": true,
+  "reservation": false
+}

@@ -1,0 +1,49 @@
+{
+  "status": "VERIFIED",
+  "utc": "2026-09-20T03:42:10.885343+00:00",
+  "audit_git": "90b3b779b5cbc3952941da5974b1e5fb19133ec7",
+  "audit_source_sha256": "18eeca25517ce0c197e786c0d0194ba313d59d1b9ba1e444c494afa5dba4c1e2",
+  "interventions": 6480,
+  "units": 2160,
+  "input_ids": [
+    "t000-i000",
+    "t004-i000",
+    "t008-i000"
+  ],
+  "manifest_sha256": "003ac9fc8d59f620dc1832f88693552523746450cb7f87057a6e1eec12d1a0fe",
+  "intervention_sha256": "5d4a854d5024b683ad94ad0e8ea82f42aded13a83a131bb923e067b02f4cdb10",
+  "classification_sha256": "0321feb48e6d43085f3294a5b1329c8df50ab12b612b7ef7c51d7a49177e539f",
+  "identity_scope_controls_finiteness_and_classification_verified": true,
+  "denormalized_action_metrics_recomputed": true,
+  "max_metric_recompute_error": 0.0,
+  "check_label_agreement": 0.6351851851851852,
+  "marginal_chance_agreement": 0.41671296296296295,
+  "cohen_kappa": 0.3745535359949202,
+  "same_label_by_type": {
+    "action_sensitive": {
+      "total": 81,
+      "stable": 55
+    },
+    "intermediate": {
+      "total": 1215,
+      "stable": 972
+    },
+    "low_impact": {
+      "total": 324,
+      "stable": 65
+    },
+    "mixed_sensitive": {
+      "total": 459,
+      "stable": 268
+    },
+    "video_sensitive": {
+      "total": 81,
+      "stable": 12
+    }
+  },
+  "limitations": [
+    "Normalized-action and video scalar errors are audited as recorded outputs of the verified collector; intervention latent tensors were not retained",
+    "Classification agreement is on one related exposed initial observation, not held-out SR"
+  ],
+  "sr": null
+}

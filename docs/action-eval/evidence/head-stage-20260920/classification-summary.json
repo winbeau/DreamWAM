@@ -1,0 +1,250 @@
+{
+  "status": "EXPLORATORY_CLASSIFICATION",
+  "utc": "2026-09-20T03:42:05.590715+00:00",
+  "argv": [
+    "scripts/sparse/classify_head_stage.py",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-calibration-20260920/full-7c79c96",
+    "--attention-dir",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-calibration-20260920/attention-f489335",
+    "--out-dir",
+    "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-calibration-20260920/analysis-f489335"
+  ],
+  "analysis_git": "f489335143ddd37eb24c6acdb64f3d2a8b76f187",
+  "analysis_source_sha256": "4d2cce530e3c36db7262bd9c48c6fecfcbfddfc693480c5ae5622734c2c173b3",
+  "intervention_sha256": "5d4a854d5024b683ad94ad0e8ea82f42aded13a83a131bb923e067b02f4cdb10",
+  "collector_git": {
+    "exit_code": 0,
+    "stdout": "7c79c9615791db75b67af6c594d544bd410cfba7",
+    "stderr": ""
+  },
+  "input_manifest_sha256": "bcdba90931d4cb9f980d5fe68d2cac26703684d8f5ad4f86a79742962352627a",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "future_keep_ratio": 0.0,
+  "calibration_inputs": [
+    "t000-i000",
+    "t004-i000"
+  ],
+  "check_input": "t008-i000",
+  "units": 2160,
+  "rule": "mean of two inputs; high strictly above empirical 75th percentile, low at/below both 25th percentiles; no SR threshold",
+  "thresholds": {
+    "action_q25": 0.003444284320446981,
+    "action_q75": 0.0046067500833854285,
+    "video_q25": 0.0075247657008446515,
+    "video_q75": 0.018512574990874227
+  },
+  "counts": {
+    "intermediate": 1215,
+    "low_impact": 324,
+    "action_sensitive": 81,
+    "mixed_sensitive": 459,
+    "video_sensitive": 81
+  },
+  "check_counts": {
+    "low_impact": 200,
+    "intermediate": 1419,
+    "action_sensitive": 221,
+    "mixed_sensitive": 295,
+    "video_sensitive": 25
+  },
+  "check_label_agreement": 0.6351851851851852,
+  "action_rank_correlation": 0.6387293131753983,
+  "video_rank_correlation": 0.7922368298499531,
+  "between_calibration_action_rank_correlation": 0.5664979043742531,
+  "action_video_rank_correlation": 0.8390204975705037,
+  "per_stage": [
+    {
+      "stage": 0,
+      "step_range": [
+        0,
+        3
+      ],
+      "units": 720,
+      "counts": {
+        "intermediate": 442,
+        "action_sensitive": 4,
+        "low_impact": 118,
+        "video_sensitive": 30,
+        "mixed_sensitive": 126
+      },
+      "check_counts": {
+        "low_impact": 83,
+        "intermediate": 561,
+        "action_sensitive": 25,
+        "mixed_sensitive": 46,
+        "video_sensitive": 5
+      },
+      "check_label_agreement": 0.6027777777777777,
+      "action_rank_correlation": 0.36430194580821434,
+      "video_rank_correlation": 0.7420321669859187,
+      "action_video_rank_correlation": 0.8386932973764738,
+      "calibration_action_median": 0.0036228074104865614,
+      "calibration_video_median": 0.010202562249975147
+    },
+    {
+      "stage": 1,
+      "step_range": [
+        3,
+        7
+      ],
+      "units": 720,
+      "counts": {
+        "low_impact": 100,
+        "intermediate": 366,
+        "mixed_sensitive": 210,
+        "video_sensitive": 34,
+        "action_sensitive": 10
+      },
+      "check_counts": {
+        "intermediate": 480,
+        "low_impact": 54,
+        "action_sensitive": 45,
+        "mixed_sensitive": 134,
+        "video_sensitive": 7
+      },
+      "check_label_agreement": 0.6208333333333333,
+      "action_rank_correlation": 0.6625096689925625,
+      "video_rank_correlation": 0.8435710717034562,
+      "action_video_rank_correlation": 0.9259858075857914,
+      "calibration_action_median": 0.003821812782745759,
+      "calibration_video_median": 0.012816359751581982
+    },
+    {
+      "stage": 2,
+      "step_range": [
+        7,
+        10
+      ],
+      "units": 720,
+      "counts": {
+        "low_impact": 106,
+        "intermediate": 407,
+        "action_sensitive": 67,
+        "mixed_sensitive": 123,
+        "video_sensitive": 17
+      },
+      "check_counts": {
+        "intermediate": 378,
+        "action_sensitive": 151,
+        "low_impact": 63,
+        "mixed_sensitive": 115,
+        "video_sensitive": 13
+      },
+      "check_label_agreement": 0.6819444444444445,
+      "action_rank_correlation": 0.8331131361493109,
+      "video_rank_correlation": 0.9712692668517235,
+      "action_video_rank_correlation": 0.802569449400944,
+      "calibration_action_median": 0.0037913185106795725,
+      "calibration_video_median": 0.009447709272337665
+    }
+  ],
+  "confusion": {
+    "low_impact": {
+      "low_impact": 65,
+      "action_sensitive": 0,
+      "video_sensitive": 0,
+      "mixed_sensitive": 0,
+      "intermediate": 259
+    },
+    "action_sensitive": {
+      "low_impact": 1,
+      "action_sensitive": 55,
+      "video_sensitive": 1,
+      "mixed_sensitive": 9,
+      "intermediate": 15
+    },
+    "video_sensitive": {
+      "low_impact": 3,
+      "action_sensitive": 8,
+      "video_sensitive": 12,
+      "mixed_sensitive": 13,
+      "intermediate": 45
+    },
+    "mixed_sensitive": {
+      "low_impact": 4,
+      "action_sensitive": 51,
+      "video_sensitive": 8,
+      "mixed_sensitive": 268,
+      "intermediate": 128
+    },
+    "intermediate": {
+      "low_impact": 127,
+      "action_sensitive": 107,
+      "video_sensitive": 4,
+      "mixed_sensitive": 5,
+      "intermediate": 972
+    }
+  },
+  "limitations": [
+    "Three exposed official initial observations; no held-out SR claim",
+    "One strong future-VV restriction, not a calibrated deployable budget",
+    "Stages contain 3, 4 and 3 interventions; raw stage differences also reflect this dose",
+    "Relative quartile labels do not establish natural clusters or intrinsic head semantics",
+    "Combined interventions and paired SR remain required before enabling a policy"
+  ],
+  "sr": null,
+  "attention_statistics": {
+    "collector_git": {
+      "exit_code": 0,
+      "stdout": "f489335143ddd37eb24c6acdb64f3d2a8b76f187",
+      "stderr": ""
+    },
+    "sha256": "9bde5c63c11b09b91e32bab951372a009bf21798b417bd8b5a73d9017f03ac8a",
+    "definitions": {
+      "av": "native action queries, full joint [V,A] normalization; mean over action queries",
+      "vv": "future video queries, native mask; mean over future video queries",
+      "entropy": "entropy of the normalized aggregate future-key distribution, divided by log(number of future keys)",
+      "cosine": "cosine between AV and VV aggregate future-key distributions",
+      "stage": "arithmetic mean of step statistics in the fixed 3/4/3 step ranges"
+    },
+    "correlations": {
+      "av_conditioned_mass": {
+        "calibration_action_rank_correlation": -0.2069711663934527,
+        "calibration_video_rank_correlation": -0.1847433637212212,
+        "cross_input_rank_correlation": 0.9732201134640385
+      },
+      "av_future_mass": {
+        "calibration_action_rank_correlation": 0.1729809327091048,
+        "calibration_video_rank_correlation": 0.13114506959461272,
+        "cross_input_rank_correlation": 0.9700442239273266
+      },
+      "av_action_mass": {
+        "calibration_action_rank_correlation": 0.05103195514421383,
+        "calibration_video_rank_correlation": 0.053089049587559216,
+        "cross_input_rank_correlation": 0.976537884444431
+      },
+      "vv_conditioned_mass": {
+        "calibration_action_rank_correlation": -0.4857069394757481,
+        "calibration_video_rank_correlation": -0.47796224259974146,
+        "cross_input_rank_correlation": 0.994763506727051
+      },
+      "vv_future_mass": {
+        "calibration_action_rank_correlation": 0.4857069394757481,
+        "calibration_video_rank_correlation": 0.47796224259974146,
+        "cross_input_rank_correlation": 0.994763506727051
+      },
+      "vv_action_mass": {
+        "calibration_action_rank_correlation": null,
+        "calibration_video_rank_correlation": null,
+        "cross_input_rank_correlation": null
+      },
+      "av_future_aggregate_entropy": {
+        "calibration_action_rank_correlation": -0.18525987528908697,
+        "calibration_video_rank_correlation": -0.2646632809396797,
+        "cross_input_rank_correlation": 0.9690124378694163
+      },
+      "vv_future_aggregate_entropy": {
+        "calibration_action_rank_correlation": 0.07916805421005965,
+        "calibration_video_rank_correlation": 0.03902100007803601,
+        "cross_input_rank_correlation": 0.9672623713882912
+      },
+      "av_vv_future_aggregate_cosine": {
+        "calibration_action_rank_correlation": -0.13672636556301654,
+        "calibration_video_rank_correlation": -0.2072257400508607,
+        "cross_input_rank_correlation": 0.9593090273915288
+      }
+    },
+    "interpretation": "descriptive correlations; class labels remain solely the prespecified perturbation sensitivities"
+  },
+  "full_classification_sha256": "0321feb48e6d43085f3294a5b1329c8df50ab12b612b7ef7c51d7a49177e539f"
+}
