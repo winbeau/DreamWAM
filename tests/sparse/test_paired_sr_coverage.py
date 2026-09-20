@@ -73,6 +73,19 @@ def test_complete_official_outcomes_report_rates_and_correct_one_sided_tail(tmp_
     assert result["success_rate"]["sparse"] == 0.0
     assert result["paired"]["dense_win_sparse_loss"] == 3
     assert result["paired"]["mcnemar_one_sided_sparse_worse_p"] == 0.125
+    assert result["paired"]["bootstrap_degenerate"] is True
+
+
+def test_single_episode_stratum_withholds_false_precision_but_keeps_counts(tmp_path):
+    write_run(tmp_path / "dense", ["succeeded"], planned=1)
+    write_run(tmp_path / "sparse", ["failed"], planned=1)
+    result = compare(tmp_path)
+    assert result["coverage"]["complete"]
+    assert result["success_rate"]["dense"] == 1.0
+    assert result["success_rate"]["dense_wilson95"][0] < 1.0
+    assert result["paired"]["delta_ci95"] is None
+    assert result["paired"]["resamples"] == 0
+    assert "fewer than two" in result["paired"]["bootstrap_withheld_reason"]
 
 
 def test_different_suites_are_rejected(tmp_path):

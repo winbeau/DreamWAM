@@ -17,6 +17,7 @@ Rules this tool enforces, from the evaluation protocol:
   explicitly benchmark-conditional rather than a claim about new tasks;
 * exact McNemar on the discordant pairs is reported alongside, since with one or two
   discordant pairs the bootstrap interval is degenerate and would falsely look precise.
+  With fewer than two episodes in any task stratum, bootstrap intervals are withheld.
 
     python scripts/sparse/paired_sr.py --dense <run-dir> --sparse <run-dir> [--json out.json]
 """
@@ -198,9 +199,15 @@ def main() -> None:
     dense_success = sum(1 for key in paired if dense[key]["success"])
     sparse_success = sum(1 for key in paired if sparse[key]["success"])
     two_sided, one_sided = mcnemar_exact(b, c) if complete else (None, None)
+    bootstrap_eligible = complete and all(len(pairs) >= 2 for pairs in per_task.values())
     bootstrap = (stratified_bootstrap(per_task, resamples=args.resamples, seed=args.seed)
-                 if complete else dict(delta_ci95=None, dense_sr_ci95=None,
-                                       sparse_sr_ci95=None, resamples=0))
+                 if bootstrap_eligible else dict(delta_ci95=None, dense_sr_ci95=None,
+                                                 sparse_sr_ci95=None, resamples=0))
+    bootstrap["bootstrap_withheld_reason"] = (None if bootstrap_eligible else
+        "fewer than two episodes in at least one task stratum" if complete else
+        "incomplete or different planned episode coverage")
+    interval = bootstrap["delta_ci95"]
+    bootstrap["bootstrap_degenerate"] = interval is not None and interval[0] == interval[1]
 
     report = {
         "tool": "scripts/sparse/paired_sr.py",
