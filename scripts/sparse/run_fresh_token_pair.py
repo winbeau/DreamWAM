@@ -66,6 +66,48 @@ def admit_cpu_rendering(gpus, policy_uuid, authorized_gpus):
     return spares if ready else []
 
 
+def completed_outcomes(run_dir):
+    from action_eval.runner.records import accepted_records, TASK_OUTCOME_STATUSES
+    return [r for r in accepted_records(run_dir) if r.status in TASK_OUTCOME_STATUSES]
+
+
+def stop_owned_process(proc, grace_seconds=180):
+    """Allow a CPU-rendered episode to finish; bound cleanup of only this process tree."""
+    if proc.poll() is not None:
+        return False
+    os.killpg(proc.pid, signal.SIGINT)
+    try:
+        proc.wait(timeout=grace_seconds)
+        return False
+    except subprocess.TimeoutExpired:
+        # Policy workers own a separate session. Snapshot descendants before
+        # killing their parent; start ticks protect against PID reuse.
+        snapshot = {}
+        for path in Path("/proc").glob("[0-9]*/stat"):
+            try:
+                fields = path.read_text().rsplit(")", 1)[1].split()
+                snapshot[int(path.parent.name)] = (int(fields[1]), fields[19])
+            except (OSError, ValueError, IndexError):
+                continue
+        owned = {proc.pid}
+        while True:
+            expanded = owned | {pid for pid, (parent, _) in snapshot.items() if parent in owned}
+            if expanded == owned:
+                break
+            owned = expanded
+        for pid in sorted(owned - {proc.pid}, reverse=True):
+            try:
+                fields = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()
+                if fields[19] == snapshot[pid][1]:
+                    os.kill(pid, signal.SIGKILL)
+            except (OSError, IndexError):
+                pass
+        if proc.poll() is None:
+            os.killpg(proc.pid, signal.SIGKILL)
+        proc.wait(timeout=10)
+        return True
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--eval-root", type=Path, required=True)
@@ -78,11 +120,14 @@ def main():
                         help="explicitly authorized physical indices for this host, including an unused spare")
     parser.add_argument("--wall-seconds", type=int, default=3600)
     parser.add_argument("--admission-seconds", type=int, default=120)
+    parser.add_argument("--stop-grace-seconds", type=int, default=180)
     parser.add_argument("--smoke-only", action="store_true",
                         help="stop after the first accepted candidate episode; retain its 50-identity manifest")
     args = parser.parse_args()
     if len(set(args.authorized_gpus)) < 3 or any(i < 0 for i in args.authorized_gpus):
         parser.error("authorize at least three distinct nonnegative GPU indices")
+    if min(args.wall_seconds, args.admission_seconds, args.stop_grace_seconds) <= 0:
+        parser.error("time limits must be positive")
     args.out_dir.mkdir(parents=True, exist_ok=False)
     report = json.loads(args.adapter_report.read_text())
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=args.model_root, text=True).strip()
@@ -93,6 +138,7 @@ def main():
         planned_episodes_per_arm=50, shared_graphics=args.allow_shared_graphics,
         authorized_gpu_indices=args.authorized_gpus,
         render_backend=args.render_backend,
+        wall_seconds_per_arm=args.wall_seconds, stop_grace_seconds=args.stop_grace_seconds,
         smoke_only=args.smoke_only, runs=[], sr=None)
     save = lambda: (args.out_dir / "controller.json").write_text(json.dumps(meta, indent=2) + "\n")
     env = os.environ.copy()
@@ -113,15 +159,6 @@ def main():
         with (args.out_dir / "gpus.jsonl").open("a") as f:
             f.write(json.dumps(row) + "\n")
         return row
-
-    def stop(proc):
-        if proc.poll() is None:
-            os.killpg(proc.pid, signal.SIGINT)
-            try:
-                proc.wait(timeout=25)
-            except subprocess.TimeoutExpired:
-                os.killpg(proc.pid, signal.SIGTERM)
-                proc.wait(timeout=20)
 
     def interrupt(signum, frame):
         raise KeyboardInterrupt(f"signal {signum}")
@@ -195,12 +232,12 @@ def main():
                                     break
                                 entry["fingerprint_verified"] = True
                                 save()
-                        if args.smoke_only and list((root / "run/episodes").glob("*/accepted.json")):
+                        if args.smoke_only and completed_outcomes(root / "run"):
                             violation = "planned_smoke_stop_after_first_accepted_episode"
                             break
                         time.sleep(3)
                 finally:
-                    stop(proc)
+                    entry["forced_cleanup"] = stop_owned_process(proc, args.stop_grace_seconds)
                     entry.update(exit_code=proc.returncode, end_utc=utc(), stop_reason=violation)
                     (root / "launch.exit").write_text(str(proc.returncode) + "\n")
                     save()
@@ -208,7 +245,7 @@ def main():
                 meta["status"] = "SMOKE_STOPPED_FOR_REVIEW" if args.smoke_only else "STOPPED_REQUIRES_REVIEW"
                 return
             manifest = json.loads((root / "run/manifest.json").read_text())
-            accepted = list((root / "run/episodes").glob("*/accepted.json"))
+            accepted = completed_outcomes(root / "run")
             if manifest["planned_episodes"] != 50 or len(accepted) != 50:
                 raise ValueError("run exited without all 50 accepted outcomes")
         meta["status"] = "QUICK50_PAIR_COMPLETE"

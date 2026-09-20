@@ -3,6 +3,7 @@ import importlib.util
 from pathlib import Path
 import sys
 import types
+import subprocess
 
 import pytest
 
@@ -60,3 +61,21 @@ def test_cpu_renderer_uses_only_policy_gpu_and_preserves_a_spare(admission):
     assert admission.admit_cpu_rendering(gpus, "gpu-3", [3, 4, 5]) == []
     with pytest.raises(ValueError, match="outside"):
         admission.admit_cpu_rendering(gpus, "gpu-2", [3, 4, 5])
+
+
+def test_cleanup_bounds_an_unresponsive_worker_without_touching_an_unrelated_process(admission):
+    code = "import signal,time; signal.signal(signal.SIGINT, signal.SIG_IGN); print('ready',flush=True); time.sleep(60)"
+    owned = subprocess.Popen([sys.executable, "-c", code], stdout=subprocess.PIPE,
+                             text=True, start_new_session=True)
+    unrelated = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"],
+                                  start_new_session=True)
+    try:
+        assert owned.stdout.readline().strip() == "ready"
+        assert admission.stop_owned_process(owned, grace_seconds=0.05)
+        assert owned.returncode is not None and unrelated.poll() is None
+    finally:
+        if owned.poll() is None:
+            owned.kill()
+        owned.wait()
+        unrelated.terminate()
+        unrelated.wait()
