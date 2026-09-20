@@ -5,9 +5,11 @@ existing frozen interval-5/all-token graph policy, without the new
 [conditioned-frame factor](conditioned-frame-single-factor-20260920.md).
 The acceptance plan requires Spatial/Object/Goal/Long, ten tasks × 50 states
 each, or **2,000 episodes per configuration**. Spatial alone is insufficient.
-The SR tolerance is still unspecified; report exploratory paired results and
-Pareto tradeoffs without declaring non-inferiority or retrospectively choosing
-a tolerance. Previously inspected official pilot states are not wholly held out.
+The user confirmed on **2026-09-20 UTC**: deliver the complete Pareto results
+first, then decide the acceptable SR decrease. The tolerance remains unset;
+report paired results and latency without declaring non-inferiority or
+retrospectively treating a later tolerance as preregistered. Previously inspected
+official pilot states are not wholly held out.
 
 ## Baseline audit
 
