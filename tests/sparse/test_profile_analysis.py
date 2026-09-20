@@ -9,6 +9,7 @@ from dreamwam.sparse.profile.analysis import analyze_profile
 from dreamwam.sparse.profile.archive import RawArchive, sha256
 from dreamwam.sparse.profile.capture import DenseProfile
 from dreamwam.sparse.profile.intervention import KeyIntervention
+from dreamwam.sparse.profile.summary import summarize_analysis
 from test_visual_step_cache import model_and_inputs
 
 
@@ -61,6 +62,13 @@ def test_independent_replay_exports_equal_budget_routes_and_typed_evidence(captu
     transitions = [json.loads(line) for line in (out / "stability.jsonl").read_text().splitlines()]
     assert {r["axis"] for r in transitions} == {"denoising_step", "layer"}
     assert all(r["jaccard"] == 1 for r in transitions if r["method"] == "uniform" and r["frame"] is None)
+    summary = summarize_analysis(out, tmp_path / "summary")
+    assert summary["input_count"] == 1 and summary["real_model_evidence"] is False
+    assert all(row["mean"] == 1 for row in summary["early_first_layer_to_final_last_layer"] if row["method"] == "uniform")
+    routes_path = out / "selections.jsonl"
+    routes_path.write_text(routes_path.read_text() + "{}\n")
+    with pytest.raises(ValueError, match="hash differs"):
+        summarize_analysis(out, tmp_path / "tampered-summary")
 
 
 @pytest.mark.parametrize("fault,match", [("parity", "parity fails"),
