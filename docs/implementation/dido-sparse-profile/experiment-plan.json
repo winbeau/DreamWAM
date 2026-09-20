@@ -1,5 +1,5 @@
 {
-  "status": "RAW_PROFILE_VERIFIED_DIAGNOSTICS_PREDECLARED",
+  "status": "RAW_PROFILE_AND_BOUNDED_DIAGNOSTICS_VERIFIED_ONLINE_GATES_PENDING",
   "created_utc": "2026-09-20",
   "protocol": "dreamwam-release-v1",
   "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
@@ -68,7 +68,7 @@
   },
   "experiment_matrix": [
     {"id": "raw_profile", "status": "verified", "source_commit": "025be1235d29f4227ba0311e22daabb00ad1e72b", "artifact": "outputs/dido-sparse-profile-20260920/native-025be12/report.json", "factors": ["step", "layer", "head", "frame", "camera", "space"]},
-    {"id": "equal_budget_intervention", "status": "pending", "selectors": ["uniform", "seeded_random", "action", "value_action", "value_dynamic", "visual_context", "action_context"], "read_scopes": ["AV", "VV", "joint"], "operations": ["delete", "replace", "recompute"], "limit": "declare finite subset from profile before launching"},
+    {"id": "equal_budget_intervention", "status": "bounded_partial_design_verified", "source_commit": "89bd1ea2249a552b17e161a3eceaf19595665638", "artifact": "outputs/dido-sparse-profile-20260920/interventions-89bd1ea/report.json", "selectors": ["uniform", "seeded_random", "action", "value_action", "value_dynamic", "visual_context", "action_context"], "read_scopes": ["AV", "VV", "joint"], "operations": ["delete", "replace", "recompute"], "limit": "47 frozen diagnostic cases plus 2 native controls; no automatic extension"},
     {"id": "selector_runtime", "status": "pending", "controls": ["dense_strong", "uniform_feature_reuse"], "independent_factors": ["action", "value", "dynamic", "VV_context", "frame_quota", "Q_budget", "KV_budget", "feature_or_structure_reuse"]},
     {"id": "background_pooling", "status": "pending", "comparison": "fine dynamic + pooled background versus equal packed-budget hard selection"},
     {"id": "refresh_scan", "status": "pending", "single_refresh_steps": [1,2,3,4,5,6,7,8,9], "no_refresh_control": true, "max_multirefresh_candidates": 2, "adaptive": "optional; calibrate and freeze before use"},

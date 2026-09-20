@@ -1,4 +1,6 @@
 {
+  "record_role": "historical CPU stage through 18:01 UTC, retained unchanged below",
+  "latest_execution_record": "EXECUTION-20260920.json",
   "status": "CPU_VERIFIED_GPU_AND_REAL_CHECKPOINT_PENDING",
   "turn_classification": "progress",
   "goal_status": "active",

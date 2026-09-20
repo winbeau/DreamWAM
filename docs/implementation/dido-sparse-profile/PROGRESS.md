@@ -10,10 +10,45 @@ at 50 episodes in total across all arms and attempts. First proposed rollout is
 No rollout has started in this branch. A tiny pilot cannot establish statistical
 non-inferiority at the 5-point margin.
 
+## Verified update through 18:38 UTC
+
+The native profile and finite counterfactual study are complete. See
+[RESULTS.md](RESULTS.md) for every cohort, revision, count, negative finding and
+raw artifact index. Source stages were committed, pushed and exactly synced.
+
+- `025be12`: 39 CPU tests pass (one separately admitted CUDA check initially
+  skipped), then the actual CUDA eager profiler check passes. Nine real native
+  observations / 18 predictions pass all three bitwise parity requirements;
+  567 raw archives and 360 attention records pass independent CPU replay.
+- `b3d4160`: five replay/summary tests pass; complete descriptive summaries and
+  PNG/PDF figures are exported. Adjacent-step A→V support Jaccard is 0.896,
+  sampled-depth Jaccard 0.150. Dynamic current-frame ties inflate agreement;
+  future-only results are explicit. These are proxy observations, not a ranking
+  of causal value or independent-trial statistics.
+- `1cb9370`: 14 study/intervention/pooling CPU checks pass. A second admission
+  check refuses the launch before any checkpoint prediction. Error artifacts
+  and its zero attempt count remain immutable.
+- `89bd1ea`: actual free-memory admission and snapshot errors are covered by
+  three targeted passing tests. The unchanged 49-call design completes: two
+  native references plus 47 AV/VV/joint deletion, replacement and recompute
+  cases. All 49 raw artifacts and metrics replay correctly. The tested new
+  proxies do not consistently establish a better read/update choice than uniform.
+
+Total new real-checkpoint predictions: **67**; closed-loop attempts: **0/50**.
+The finite model job has exited. GPU 5 remains available for flexible sharing
+with the user's other project; no dummy-load process is running. Native/profile
+and diagnostic checks do not close the online CUDA graph, timing or SR gates.
+The full goal remains **active**. This is a progress turn, not completion or a
+job-wait turn. Next: use the multi-depth and separate AV/VV evidence to implement
+and compare bounded online value/dynamic/context and background-pooling variants,
+then explicit refresh schedules, full-predict timing and the small paired pilot.
+
+The earlier chronological entries below are retained as historical evidence.
+
 Latest hardware amendment: the user permits flexible GPU 5 sharing with their
 other project, overriding the last-available-card restriction for GPU 5 only.
 GPU 0 was reclaimed. At 18:11:34 UTC GPU 5 used 2,937 MiB (78,144 MiB free),
-0% utilization; other-project PID 385222 is left untouched. Next bounded run:
+0% utilization; other-project PID 385222 was left untouched. At that point the planned run was:
 small synthetic CUDA check, then the predeclared 9 observations / 18 native
 predict calls / 2 GiB raw cap, estimated 5–15 minutes; zero closed-loop episodes.
 The preceding dummy-load request is superseded by the latest flexible-use
@@ -23,15 +58,15 @@ instruction. Availability is rechecked immediately before the real model load.
 
 | GOAL section | Required evidence | Current state / next gate |
 |---|---|---|
-| 1–2 | Scope, authorized hardware, clean exact Git chain | All implementation stages committed/pushed/synced through `a2aa495`; server tests use separate detached worktrees |
+| 1–2 | Scope, authorized hardware, clean exact Git chain | All implementation stages committed/pushed/synced through `89bd1ea`; server tests and jobs use separate detached worktrees |
 | 3 | Paper/version audit, public implementation status | [Source audit](SOURCES.md); inference refinement separated from training |
 | 4 | Typed raw-data manifest, licenses, frozen splits | Author data absent; 9 self-captured observations hash-verified; [plan](experiment-plan.json) freezes episode identities |
 | 5 | Inherit all prior evidence | All 119 historical indexed artifacts and 9 observations verified, zero mismatches; legacy results remain immutable |
-| 6 | Replayable multi-step/layer/head raw profile | Bounded native capture/NPZ replay implemented and CPU-tested; real-checkpoint capture pending GPU admission |
-| 7 | Equal-budget interventions, action/video errors | Separate AV/VV/joint delete, zero-value replacement and recompute diagnostics CPU-tested; real input study and semantic labels missing |
+| 6 | Replayable multi-step/layer/head raw profile | Complete native capture and independent replay on 9 observations; author semantic labels remain absent |
+| 7 | Equal-budget interventions, action/video errors | 47 real-input AV/VV/joint counterfactuals complete with all raw outputs; tiny partial design, no stable selector win |
 | 8 | Independent selectors and background pooling | Score/selection and region-pooling reference modules CPU-tested; online hybrid integration, calibrated selection and graph validation pending |
 | 9 | Bounded schedule scan, frozen choice | Existing 0/1-refresh negative/positive evidence retained; new selection-specific scan pending |
-| 10 | CPU/CUDA/graph/checkpoint checks; complete paired timing | 33 CPU tests pass, one CUDA test skipped; CUDA/graph/checkpoint/timing gates remain open |
+| 10 | CPU/CUDA/graph/checkpoint checks; complete paired timing | Native profiler CUDA eager and real checkpoint checks pass; new online graph/adapter and timing gates remain open |
 | 11 | Predeclared bounded paired LIBERO pilot | 0/50 episodes attempted; native OSMesa and adapter gates pending |
 | 12 | Code/config/raw arrays/results/reproduction; release resources | Active ledger; no new method speed or SR claim; no owned GPU job |
 

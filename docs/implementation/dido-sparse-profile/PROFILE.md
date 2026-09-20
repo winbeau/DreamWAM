@@ -1,13 +1,16 @@
 # Native action–video profile
 
-Status: implemented; 33 H100 CPU tests pass through `a2aa495`, one CUDA check
-skipped pending admission. Real-checkpoint capture remains unstarted. No new
-selection, speed or SR result is asserted by this instrumentation.
+Status: real H100 capture and independent CPU replay verified at `025be12`.
+Nine self-captured observations, 18 native predictions, 360 attention records
+and 567 raw artifacts are complete; executable actions, raw actions and video
+latents are bitwise unchanged. The small actual-CUDA profiler check passes.
+See [results](RESULTS.md) for descriptive findings and remaining gates.
 
 `scripts/sparse/profile_action_video.py` consumes the committed experiment plan
 and hash-verified self-captured observations. It refuses an unfrozen run checkout,
-changed input/checkpoint, non-CUDA model fallback, or admission that would consume
-the last available authorized H100. A failed/partial capture cannot be marked
+changed input/checkpoint, non-CUDA model fallback, or failed GPU admission. The
+user explicitly permits sharing GPU 5, including the last available card;
+other cards retain the earlier rule. A failed/partial capture cannot be marked
 complete. The script does not train or alter the evaluator.
 
 ## Measurement definitions
@@ -80,6 +83,25 @@ The writer refuses overwrites and stops on its byte limit; incomplete artifacts
 are preserved. Runtime counters reset between requests and all hooks restore on
 success or failure. These checks do not establish candidate CUDA graph parity;
 that gate applies to the separate online runtime implementation.
+
+The independent replay CLI verifies original observations and all artifact
+hashes, exact declared input/step/layer/head coverage, full joint softmax and
+every proxy, both time axes and actual raw/executable parity. It rejects
+checksum-valid arrays that contradict the capture's green parity flags. The
+summary verifies replay-export hashes before calculating descriptive agreement.
+
+```bash
+CUDA_VISIBLE_DEVICES='' python scripts/sparse/analyze_action_video_profile.py \
+  --capture /path/to/native-profile --out-dir /new/path/to/analysis
+CUDA_VISIBLE_DEVICES='' python scripts/sparse/summarize_action_video_profile.py \
+  --analysis /path/to/analysis --out-dir /new/path/to/summary --plot
+```
+
+Outputs include a full token CSV, exact supports, regional/step/layer stability,
+head comparisons, regional proxy means, a JSON summary and standalone PNG/PDF.
+Repeated observations, heads and tokens are not counted as independent trials.
+The final plot panel averages over sampled layers at each step, relative to
+step 0 / layer 0; it therefore includes cross-layer differences even at step 0.
 
 ## Diagnostic interventions and pooling reference
 
