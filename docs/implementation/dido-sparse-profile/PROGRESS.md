@@ -10,7 +10,7 @@ at 50 episodes in total across all arms and attempts. First proposed rollout is
 No rollout has started in this branch. A tiny pilot cannot establish statistical
 non-inferiority at the 5-point margin.
 
-## Verified update through 18:38 UTC
+## Verified update through 18:50 UTC
 
 The native profile and finite counterfactual study are complete. See
 [RESULTS.md](RESULTS.md) for every cohort, revision, count, negative finding and
@@ -35,6 +35,9 @@ raw artifact index. Source stages were committed, pushed and exactly synced.
   proxies do not consistently establish a better read/update choice than uniform.
 
 Total new real-checkpoint predictions: **67**; closed-loop attempts: **0/50**.
+The scripted auditor at `3894ef1` also validates all 49 raw files, original
+Dense parity, frozen traces and all 47 metric rows, exit 0. At 18:50:06 UTC all
+three owned capture/refused/study PIDs are absent; GPU 5 uses 4 MiB at 0%.
 The finite model job has exited. GPU 5 remains available for flexible sharing
 with the user's other project; no dummy-load process is running. Native/profile
 and diagnostic checks do not close the online CUDA graph, timing or SR gates.

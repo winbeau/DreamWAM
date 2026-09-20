@@ -116,6 +116,8 @@ replayed from their actual arrays. Peak allocated/reserved GPU memory was
 | `interventions-89bd1ea/report.json` | `b466774cb73d0c9752bb57f78799b95ccdc19354fefbf465903ed593ac79340d` |
 | `interventions-89bd1ea/frozen-cases.json` | `368c1154ec0accfe88c2e692f4c7db277e62c0a04e70dac1a85191129e24165e` |
 | `interventions-89bd1ea/raw/records.jsonl` | `90be74b1396ebe2bc71f4a7ed4e4f9f7a9b7cedb7859706ba355c3b95c525231` |
+| `intervention-audit-3894ef1/report.json` | `0d99cb8b306fc3beaf15ebccdc325c10e868d223f2d6c8a42d1c368c448500c1` |
+| `intervention-audit-3894ef1/case-metrics.csv` | `75ead146a8518b98919de9e3b240984a3363fc7ab7d091a447b90ac1d68192cb`; complete 47-case table |
 
 The results distinguish direct reads from video-side effects:
 
@@ -151,6 +153,9 @@ CUDA_VISIBLE_DEVICES='' python scripts/sparse/audit_action_video_interventions.p
 
 New real-checkpoint predictions so far: **67** (18 capture + 49 diagnostics;
 the refused launch attempted zero). New closed-loop episodes: **0/50**.
+The scripted audit completed at **18:50:06 UTC**, exit 0; all native-control
+parity, execution traces and 47 metrics reproduce from the archived arrays.
+At that time all owned model PIDs were absent and GPU 5 was at 4 MiB / 0%.
 
 Online scoring/packing, feature versus structure reuse, background pooling,
 explicit refresh scans, CUDA graph parity, matched full-predict timings,

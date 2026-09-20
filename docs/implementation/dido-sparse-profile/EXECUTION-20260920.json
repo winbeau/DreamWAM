@@ -76,6 +76,15 @@
       "peak_allocated_gpu_bytes": 25113829888, "peak_reserved_gpu_bytes": 25249710080,
       "owned_pid": 439702,
       "limitation": "two exposed observations, partial diagnostic design, dense work retained; no stable overall selector win, acceleration or SR claim"
+    },
+    {
+      "id": "scripted-diagnostic-audit",
+      "source_commit": "3894ef1293a8350ee2e0b9f946445163d65962d0",
+      "start_utc": "2026-09-20T18:50:06.241377+00:00", "end_utc": "2026-09-20T18:50:06.378668+00:00", "exit_code": 0,
+      "command": "python scripts/sparse/audit_action_video_interventions.py --study /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/interventions-89bd1ea --out-dir /root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/intervention-audit-3894ef1",
+      "verified_raw_files": 49, "verified_cases": 47,
+      "checks": "actual raw hashes/schema/coverage, frozen cells and native trace, original Dense-control parity, reproduced metrics, AV and final-VV invariants",
+      "limitation": "raw-output consistency, not success or latency evaluation"
     }
   ],
   "artifacts": {
@@ -100,12 +109,22 @@
     "interventions-89bd1ea/frozen-cases.json": "368c1154ec0accfe88c2e692f4c7db277e62c0a04e70dac1a85191129e24165e",
     "interventions-89bd1ea/raw/records.jsonl": "90be74b1396ebe2bc71f4a7ed4e4f9f7a9b7cedb7859706ba355c3b95c525231",
     "interventions-89bd1ea.log": "de69e62265540caf3ffe6bd9961f27440ed1986529be5f031068fcb75da090be",
-    "interventions-89bd1ea.log.exit-code": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    "interventions-89bd1ea.log.exit-code": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "intervention-audit-3894ef1/report.json": "0d99cb8b306fc3beaf15ebccdc325c10e868d223f2d6c8a42d1c368c448500c1",
+    "intervention-audit-3894ef1/case-metrics.csv": "75ead146a8518b98919de9e3b240984a3363fc7ab7d091a447b90ac1d68192cb",
+    "intervention-audit-3894ef1.log": "04754481de1f47d1e6870278e862a9cc38e0f1b9ddf7d7cc8286d026f1c5d49e",
+    "intervention-audit-3894ef1.log.exit-code": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
   },
   "new_real_checkpoint_predict_calls": 67,
   "new_closed_loop_episode_attempts": 0,
   "closed_loop_total_attempt_cap": 50,
   "sr_drop_margin_percentage_points": 5,
   "owned_gpu_jobs": "finite capture and study jobs exited normally; no dummy reservation loop",
-  "next_step": "Complete the scripted diagnostic audit, then online selector/pooling integration, graph checks, finite refresh scans, matched full-predict timing and the predeclared small paired pilot; full goal remains active"
+  "resource_release_verification": {
+    "timestamp_utc": "2026-09-20T18:50:06Z",
+    "command": "ps -p 403641,438041,439702 -o pid,comm,args",
+    "exit_code": 1, "meaning": "none of the three owned capture/refused/study PIDs remains",
+    "gpu_index": 5, "used_mib": 4, "free_mib": 81078, "utilization_percent": 0
+  },
+  "next_step": "Online selector/pooling integration, graph checks, finite refresh scans, matched full-predict timing and the predeclared small paired pilot; full goal remains active"
 }
