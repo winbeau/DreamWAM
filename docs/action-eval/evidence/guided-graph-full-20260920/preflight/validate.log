@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-guided-graph-full-35d0366/configs/experiments/dreamwam-guided-visual-graph-libero-spatial.yaml
+experiment  : dreamwam-guided-visual-graph-libero-spatial (DreamWAM Joint guided visual cache with transformer graphs (full Spatial))
+fingerprint : 4a06c9d185d1496f0c8e547c5db3f99ce84795c486bee4ce2c88b6ad104c5c06
+benchmark   : libero_spatial tasks=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9] inits=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+episodes    : 500 planned (10 tasks x 50 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

@@ -1,0 +1,104 @@
+{
+  "utc": "2026-09-20T00:56:59.616570+00:00",
+  "sr": null,
+  "runs": {
+    "dense": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0",
+      "completed": 363,
+      "planned": 500,
+      "successes": 356,
+      "task_failures": 7,
+      "failed": {
+        "t005-i002-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "4b7c1c1c842b0d0d2bedda24d33b9020684ae8d780e9222cae5b04590df6cad9"
+        },
+        "t005-i003-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "b3346245911414cd7c849d2414507eebca303c7e0e21d7a57d9eee7d2be3544f"
+        },
+        "t005-i025-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "ee64d056ba9f36988039d775db0d3d1e5f36f07e5e58436de9487acc5ef8ae86"
+        },
+        "t005-i026-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "a075322cc14435cd90b8c4ab4ac71e2014d200ade7359606c956e16daa8b6dd2"
+        },
+        "t005-i046-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "57493282f86d84ae97a8c790a48fb86496cc5369b4085ccb3b2f7baeb2fd9df1"
+        },
+        "t006-i002-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "42b4d47f8f6a09f2069150b73087b9d9e740586a0a2ce6b483e90c1a1fc234c1"
+        },
+        "t006-i019-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "5e81931ed9f45e5c0f98363d995e6d920ab5f27421ec96f26be19cc035e8fdbe"
+        }
+      },
+      "manifest_sha256": "343a536e8af2273d4e942ed8a99e4b9df9db1cf32d734105ea3f44de4aaa8081",
+      "resolved_sha256": "25021eb8960d7b0ca0ccf7289b3fb1200b377d8479dff4a5af5907c0da780c88"
+    },
+    "eager_temporal": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1/run-20260919T215351Z-7f224961",
+      "completed": 172,
+      "planned": 500,
+      "successes": 172,
+      "task_failures": 0,
+      "failed": {},
+      "manifest_sha256": "220ab29833458a81817e3e3c953d7c5532e4913f91e2fe37aea5ee8c10631215",
+      "resolved_sha256": "9f621deb83a7843555efb69c28ee45ffe168df6ac41fbd3c5a63e8ff7ddd904c"
+    },
+    "graph_temporal": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2/run-20260920T001038Z-cf9e4f10",
+      "completed": 134,
+      "planned": 500,
+      "successes": 134,
+      "task_failures": 0,
+      "failed": {},
+      "manifest_sha256": "6f59948ca8c1bd850574a31b32a06c9aea20335f059c4f401c08478507baabc9",
+      "resolved_sha256": "42878d7939348fa649a009c7d978bcb6b23cb8270d94566e0b5fafd219e159f9"
+    },
+    "graph_guided": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/guided-visual-graph-libero-spatial-20260920/gpu4/run-20260920T005437Z-4a06c9d1",
+      "completed": 0,
+      "planned": 500,
+      "successes": 0,
+      "task_failures": 0,
+      "failed": {},
+      "manifest_sha256": "9d530d10ad1c3f555bd1e7fabbd68fc53a80b004f8b68c4fa36f6ed80397aa90",
+      "resolved_sha256": "83f20d019c03aa7d57a365847bd0768db1df62394f27dc9d7e46c5958be350c4"
+    },
+    "eager_guided_inactive": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/guided-visual-token-spatial-20260919/guided-gpu1/run-20260919T225943Z-b4cfcb70",
+      "completed": 95,
+      "planned": 500,
+      "successes": 93,
+      "task_failures": 2,
+      "failed": {
+        "t000-i048-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "7a5b0dbb27414ec22f33817518fdef255779240405b04465816d786e3964bbeb"
+        },
+        "t001-i036-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "859d133397a89ac134e0191668ac633309f09eadb826e298ca47e961372120fd"
+        }
+      },
+      "manifest_sha256": "829208c595a4098c9916ee07af412a693a8aa8b44758b61d2073df66469e6f3a",
+      "resolved_sha256": "010e9e38aaaf9866dd175ad0009c03ddadf43718cab7b9c162b4c28c841e80a8"
+    }
+  },
+  "guided_graph_executed_options_verified": true
+}

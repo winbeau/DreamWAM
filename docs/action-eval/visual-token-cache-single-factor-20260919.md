@@ -3,6 +3,10 @@
 Status: **MEASURED latency; official quality validation in progress**.
 Date: 2026-09-19 UTC. The SR-constrained acceleration goal remains unproven.
 
+At 2026-09-20 00:54 UTC, an [independent guided graph full run](guided-graph-full-spatial-20260920.md)
+started on GPU 4 to measure all 500 identities. Its initial renderer abort and
+bounded recovery remain separate from the 95 accepted eager outcomes below.
+
 Latest continuation: [temporal graphs and native Dense graph control](temporal-graph-single-factor-20260919.md)
 measure 1.965× for conservative temporal reuse and 2.046× for guided 10%. Guided
 still retains the 95 outcomes below and is inactive. Eager temporal stopped at
