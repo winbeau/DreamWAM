@@ -18,3 +18,17 @@ This fork maintains paper-evaluation integration on **main**, also the GitHub de
 All projects: local clone/edit → local `git add`, `git commit`, `git push` on main → server `git pull --ff-only` → verified environment → authorized evaluation. Never modify application code on the compute server or bypass Git with copied deployments. Check for server edits before pulling; never discard them. Pin live runs to separate Git worktrees. Weights/data/cache are external to Git. When a compatible committed lock exists, use `uv sync --locked`; the current DreamWAM environment has no recovered lock and is reused unchanged, not implicitly synced or upgraded. If a lock must be generated on the server, return it for local review/commit/push and pull the committed version before execution. The current acceleration goal authorizes implementation and evaluation; it does not authorize training or changing the scientific protocol.
 
 Start with [the handoff plan](docs/action-eval/README.md).
+
+## H100 deployment (user authorization, 2026-09-20)
+
+The user additionally authorizes deployment and experiments via `ssh h100-server`
+under the existing `/root/wenbiao_zhao` directory. Use its separate `dreamwam-sr`
+subdirectory, frozen model `6c52f36` and evaluator `e0d9e80`; do not restart the
+deferred H200 SR runs. The initial H100 inventory has six visible devices: use
+policy GPU 3 / renderer GPU 4 with GPU 5 unused, subject to fresh admission.
+Pass `--authorized-gpus 3 4 5` to the bounded launcher. The user explicitly
+requires Hugging Face downloads through `hf-mirror.com`; verify against the
+reference H200 hashes. Preserve model and simulator versions. Keep required
+graphics libraries private to the deployment and matched to driver 590.48.01.
+H100 results form a new hardware/rendering cohort, with 50 episodes per arm;
+do not pool them with H200 timing or historical outcomes.

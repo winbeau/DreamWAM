@@ -28,8 +28,30 @@ def inventory():
     return [dict(index=i, uuid=g.findtext("uuid"),
         util=int(g.findtext("utilization/gpu_util").split()[0]),
         free=int(g.findtext("fb_memory_usage/free").split()[0]),
+        used=int(g.findtext("fb_memory_usage/used").split()[0]),
         processes=[dict(pid=int(p.findtext("pid")), type=p.findtext("type"))
                    for p in g.findall("processes/process_info")]) for i, g in enumerate(xml.findall("gpu"))]
+
+
+def admit_placement(gpus, policy_uuid, render_uuid, authorized_gpus, allow_shared_graphics=False):
+    """Require the declared placement and a spare; hidden processes cannot imply an empty renderer."""
+    if policy_uuid == render_uuid:
+        raise ValueError("split policy and rendering GPUs")
+    p = next(g for g in gpus if g["uuid"] == policy_uuid)
+    r = next(g for g in gpus if g["uuid"] == render_uuid)
+    if p["index"] not in authorized_gpus or r["index"] not in authorized_gpus:
+        raise ValueError("placement is outside the explicitly authorized GPU indices")
+    spares = [g["index"] for g in gpus if g["index"] in authorized_gpus
+        and g["uuid"] not in (policy_uuid, render_uuid) and g["util"] <= 20 and g["free"] >= 35000
+        and not any("G" in x["type"] for x in g["processes"])]
+    empty_renderer = not r["processes"] and r["used"] <= 32
+    shared_renderer = (allow_shared_graphics and bool(r["processes"])
+                       and all(x["type"] == "G" for x in r["processes"]))
+    ready = (p["util"] <= 20 and p["free"] >= 35000
+             and not any("G" in x["type"] for x in p["processes"])
+             and (empty_renderer or shared_renderer) and r["util"] <= 20
+             and r["free"] >= 35000 and bool(spares))
+    return spares if ready else []
 
 
 def main():
@@ -39,11 +61,15 @@ def main():
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--adapter-report", type=Path, required=True)
     parser.add_argument("--allow-shared-graphics", action="store_true")
+    parser.add_argument("--authorized-gpus", type=int, nargs="+", default=[4, 5, 6, 7],
+                        help="explicitly authorized physical indices for this host, including an unused spare")
     parser.add_argument("--wall-seconds", type=int, default=3600)
     parser.add_argument("--admission-seconds", type=int, default=120)
     parser.add_argument("--smoke-only", action="store_true",
                         help="stop after the first accepted candidate episode; retain its 50-identity manifest")
     args = parser.parse_args()
+    if len(set(args.authorized_gpus)) < 3 or any(i < 0 for i in args.authorized_gpus):
+        parser.error("authorize at least three distinct nonnegative GPU indices")
     args.out_dir.mkdir(parents=True, exist_ok=False)
     report = json.loads(args.adapter_report.read_text())
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=args.model_root, text=True).strip()
@@ -52,6 +78,7 @@ def main():
     meta = dict(status="ADMISSION", start_utc=utc(), pid=os.getpid(), model_commit=commit,
         evaluator_commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=args.eval_root, text=True).strip(),
         planned_episodes_per_arm=50, shared_graphics=args.allow_shared_graphics,
+        authorized_gpu_indices=args.authorized_gpus,
         smoke_only=args.smoke_only, runs=[], sr=None)
     save = lambda: (args.out_dir / "controller.json").write_text(json.dumps(meta, indent=2) + "\n")
     env = os.environ.copy()
@@ -97,15 +124,10 @@ def main():
             while True:
                 gpus = inventory()
                 row = record(gpus, arm, "admission")
-                p = next(g for g in gpus if g["uuid"] == policy_uuid)
                 r = next(g for g in gpus if g["uuid"] == render_uuid)
-                if p["index"] not in (4, 5, 6, 7) or r["index"] not in (4, 5, 6, 7):
-                    raise ValueError("this experiment is authorized on GPUs 4-7")
-                spares = [g["index"] for g in gpus if g["index"] in (4, 5, 6, 7)
-                    and g["uuid"] not in (policy_uuid, render_uuid) and g["util"] <= 20 and g["free"] >= 35000
-                    and not any("G" in x["type"] for x in g["processes"])]
-                render_ok = not r["processes"] or (args.allow_shared_graphics and all(x["type"] == "G" for x in r["processes"]))
-                if p["util"] <= 20 and p["free"] >= 35000 and not any("G" in x["type"] for x in p["processes"]) and render_ok and r["util"] <= 20 and r["free"] >= 35000 and spares:
+                spares = admit_placement(gpus, policy_uuid, render_uuid,
+                                         args.authorized_gpus, args.allow_shared_graphics)
+                if spares:
                     row["spares_unused"] = spares
                     break
                 if time.monotonic() >= deadline:
