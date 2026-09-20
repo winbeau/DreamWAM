@@ -1,5 +1,5 @@
 {
-  "status": "PREDECLARED_NOT_LAUNCHED",
+  "status": "RAW_PROFILE_VERIFIED_DIAGNOSTICS_PREDECLARED",
   "created_utc": "2026-09-20",
   "protocol": "dreamwam-release-v1",
   "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
@@ -26,6 +26,25 @@
     "max_profile_raw_bytes": 2147483648,
     "gpu_run_estimate_minutes": [5, 15]
   },
+  "diagnostic_study": {
+    "input_ids": ["t000-i001-r00-s42-c0004", "t001-i001-r00-s42-c0006"],
+    "role": "two historically exposed middle-trajectory observations; finite counterfactual screening",
+    "primary_step_layer": [5, 19],
+    "primary_methods": ["uniform", "random", "action", "value_action", "value_video_time", "visual_context", "action_context_support"],
+    "secondary_methods": ["uniform", "value_action", "value_video_time", "action_context_support"],
+    "endpoint_step_layers": [[1, 0], [9, 29]],
+    "selected_count": 56,
+    "max_predict_calls": 49,
+    "expected_interventions": 47,
+    "max_raw_bytes": 16777216,
+    "gpu_run_estimate_minutes": [3, 8],
+    "scopes": ["AV", "VV", "joint"],
+    "operations": ["delete", "replace_value_zero", "recompute"],
+    "design": "primary 7 selectors x 3 scopes; secondary 4 x 2 scopes; uniform/dynamic at two endpoints x 2 scopes; 3 selectors x replacement/recompute in AV; bottom dynamic and value-norm controls x AV/VV. Two fresh native reference calls, no extra warmup or automatic expansion.",
+    "location_rule": "central sampled cell plus early/shallow and final/deep endpoints, frozen before observing intervention outcomes; these joint depth/time endpoints do not independently identify a depth or time effect",
+    "interpretation": "Dense-derived indices are offline diagnostic targets only. Compare within operation/scope/input/location. Dynamic observed-frame scores are all zero; retained ties are explicit. No speed/SR or semantic-label claim.",
+    "closed_loop_episodes": 0
+  },
   "confirmation": {
     "suite": "libero_spatial",
     "reserved_tasks": [3, 4, 5],
@@ -48,7 +67,7 @@
     "launch_gates": ["fresh GPU admission", "CPU and actual CUDA graph checks", "real checkpoint adapter parity", "immutable candidate config", "native OSMesa read smoke", "episode ledger total <= 50"]
   },
   "experiment_matrix": [
-    {"id": "raw_profile", "status": "pending", "factors": ["step", "layer", "head", "frame", "camera", "space"]},
+    {"id": "raw_profile", "status": "verified", "source_commit": "025be1235d29f4227ba0311e22daabb00ad1e72b", "artifact": "outputs/dido-sparse-profile-20260920/native-025be12/report.json", "factors": ["step", "layer", "head", "frame", "camera", "space"]},
     {"id": "equal_budget_intervention", "status": "pending", "selectors": ["uniform", "seeded_random", "action", "value_action", "value_dynamic", "visual_context", "action_context"], "read_scopes": ["AV", "VV", "joint"], "operations": ["delete", "replace", "recompute"], "limit": "declare finite subset from profile before launching"},
     {"id": "selector_runtime", "status": "pending", "controls": ["dense_strong", "uniform_feature_reuse"], "independent_factors": ["action", "value", "dynamic", "VV_context", "frame_quota", "Q_budget", "KV_budget", "feature_or_structure_reuse"]},
     {"id": "background_pooling", "status": "pending", "comparison": "fine dynamic + pooled background versus equal packed-budget hard selection"},
