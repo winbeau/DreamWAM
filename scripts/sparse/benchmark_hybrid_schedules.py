@@ -272,6 +272,9 @@ def main():
                         raise AssertionError("timed output differs from own eager reference")
                     if variant in configs and counters["plan_hash"] != variant:
                         raise AssertionError("executed plan differs from candidate identity")
+                    if variant in configs and counters["dense_steps"] == release.evaluation["denoising_steps"]:
+                        if not np.array_equal(actions, refs["dense_strong", input_id]):
+                            raise AssertionError("all-dense hybrid control differs from stronger Dense")
                     action_path = args.out_dir / "actions" / (cell["request_id"] + ".npy")
                     np.save(action_path, actions, allow_pickle=False)
                     row = dict(**cell, seconds=seconds, counters=counters, own_eager_parity=True,

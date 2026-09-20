@@ -70,6 +70,10 @@ class ScheduleTests(unittest.TestCase):
                 parse_indices(indices)
         with self.assertRaises(ValueError):
             list(generate_candidates(config, (0,), (0, 1), (1,)))
+        self.assertEqual(parse_indices(""), ())
+        dense = list(generate_candidates(config, tuple(range(10)), (), (0,)))
+        self.assertEqual(len(dense), 1)
+        self.assertEqual(dense[0]["options"]["schedule"]["operations"], ["dense"] * 10)
 
     def test_profile_requires_hash_budget_and_layout_agreement(self):
         config = HybridConfig.from_mapping(options())

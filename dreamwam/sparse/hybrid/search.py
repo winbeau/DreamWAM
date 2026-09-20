@@ -12,6 +12,8 @@ from .schedule import Schedule, integer, mapping
 
 def parse_indices(value):
     """Comma-separated integers and half-open ranges, rejecting duplicates."""
+    if not value.strip():
+        return ()
     result = []
     for part in value.split(","):
         if ":" in part:
