@@ -1,0 +1,381 @@
+{
+  "status": "MEASURED",
+  "end_utc": "2026-09-20T00:45:55.183353+00:00",
+  "latency_seconds": {
+    "native_dense": {
+      "samples": 48,
+      "mean": 0.4736163119475047,
+      "p50": 0.473326756618917,
+      "p95": 0.4778520814143121,
+      "min": 0.46886684373021126,
+      "max": 0.4810292609035969,
+      "stdev": 0.00259860983456398
+    },
+    "eager_dense": {
+      "samples": 48,
+      "mean": 0.4770085516308124,
+      "p50": 0.47706521674990654,
+      "p95": 0.48023401461541654,
+      "min": 0.4735317323356867,
+      "max": 0.48166042752563953,
+      "stdev": 0.001949187778194883
+    },
+    "eager_guided": {
+      "samples": 48,
+      "mean": 0.2867155650552983,
+      "p50": 0.28649027086794376,
+      "p95": 0.2889076816849411,
+      "min": 0.28450153954327106,
+      "max": 0.2891249507665634,
+      "stdev": 0.0012618975484346945
+    },
+    "buffered_dense": {
+      "samples": 48,
+      "mean": 0.4865759889750431,
+      "p50": 0.4864210467785597,
+      "p95": 0.4901762324385345,
+      "min": 0.4835288356989622,
+      "max": 0.4909479673951864,
+      "stdev": 0.001946628708222326
+    },
+    "buffered_guided": {
+      "samples": 48,
+      "mean": 0.2917274225425596,
+      "p50": 0.29114736057817936,
+      "p95": 0.2941973522305489,
+      "min": 0.29012807086110115,
+      "max": 0.29605209082365036,
+      "stdev": 0.0013982575375944516
+    },
+    "graphed_dense": {
+      "samples": 48,
+      "mean": 0.2891721896206339,
+      "p50": 0.287233117967844,
+      "p95": 0.3056126146577299,
+      "min": 0.28682035207748413,
+      "max": 0.3062873613089323,
+      "stdev": 0.005723746248185184
+    },
+    "graphed_guided": {
+      "samples": 48,
+      "mean": 0.1563875232435142,
+      "p50": 0.1554184379056096,
+      "p95": 0.1643537122756243,
+      "min": 0.15485673770308495,
+      "max": 0.16683411039412022,
+      "stdev": 0.002951229844598293
+    },
+    "graphed_partial_dense": {
+      "samples": 48,
+      "mean": 0.2893218092697983,
+      "p50": 0.28738951683044434,
+      "p95": 0.3057927513495088,
+      "min": 0.28703267127275467,
+      "max": 0.30663083121180534,
+      "stdev": 0.005728971412927585
+    },
+    "graphed_partial_guided": {
+      "samples": 48,
+      "mean": 0.13968665486512086,
+      "p50": 0.1384429708123207,
+      "p95": 0.14959022412076592,
+      "min": 0.1381674688309431,
+      "max": 0.15069103613495827,
+      "stdev": 0.003546574360088442
+    },
+    "eager_temporal": {
+      "samples": 48,
+      "mean": 0.2874154232364769,
+      "p50": 0.28711168747395277,
+      "p95": 0.29031295524910095,
+      "min": 0.28482221253216267,
+      "max": 0.2907667011022568,
+      "stdev": 0.0015704334149999172
+    },
+    "graphed_temporal": {
+      "samples": 48,
+      "mean": 0.14561875517635295,
+      "p50": 0.14440274611115456,
+      "p95": 0.1554169596172869,
+      "min": 0.14415830001235008,
+      "max": 0.15571018680930138,
+      "stdev": 0.0033512884185013057
+    },
+    "graphed_native_dense": {
+      "samples": 48,
+      "mean": 0.28695005147407454,
+      "p50": 0.28498578537255526,
+      "p95": 0.30337578924372793,
+      "min": 0.2845588382333517,
+      "max": 0.3035759348422289,
+      "stdev": 0.005676952059514254
+    },
+    "buffered_boundaries_dense": {
+      "samples": 48,
+      "mean": 0.2879554132620494,
+      "p50": 0.2861538901925087,
+      "p95": 0.30444285469129684,
+      "min": 0.28553285263478756,
+      "max": 0.3047078251838684,
+      "stdev": 0.005591035160148467
+    },
+    "graphed_boundaries_dense": {
+      "samples": 48,
+      "mean": 0.2870528113950665,
+      "p50": 0.2850788300856948,
+      "p95": 0.30346542401239274,
+      "min": 0.28455444425344467,
+      "max": 0.30373560823500156,
+      "stdev": 0.005679971605635381
+    },
+    "buffered_boundaries_temporal": {
+      "samples": 48,
+      "mean": 0.14671644126065075,
+      "p50": 0.1454848675057292,
+      "p95": 0.15633785631507635,
+      "min": 0.14513066783547401,
+      "max": 0.15654968842864037,
+      "stdev": 0.0033279723177152072
+    },
+    "graphed_boundaries_temporal": {
+      "samples": 48,
+      "mean": 0.1456069677369669,
+      "p50": 0.14438205771148205,
+      "p95": 0.15556683018803596,
+      "min": 0.14413091354072094,
+      "max": 0.15589644387364388,
+      "stdev": 0.0034573192669972923
+    }
+  },
+  "speedups": {
+    "guided_vs_matched_eager": 1.6636995328063637,
+    "guided_vs_matched_graphed": 1.8490745528999648,
+    "graph_factor_dense": 1.6495657907373518,
+    "graph_factor_guided": 1.8333659815613785,
+    "graph_vs_buffered_dense": 1.682651397471465,
+    "graph_vs_buffered_guided": 1.8654136627530375,
+    "graphed_guided_vs_native": 3.028478884533692,
+    "partial_factor_guided": 1.119559512642918,
+    "partial_factor_dense_control": 0.9994828607993915,
+    "guided_vs_matched_all_graphed": 2.071220114399351,
+    "all_graphed_guided_vs_native": 3.390562344017908,
+    "temporal_vs_matched_eager": 1.6596484150342339,
+    "temporal_vs_matched_graphed": 1.9868444069543956,
+    "graph_factor_temporal": 1.9737527826576993,
+    "token_budget_factor_graphed": 1.0424671942853814,
+    "all_graphed_temporal_vs_native": 3.2524403286783166,
+    "native_graph_factor": 1.6505183028004968,
+    "full_budget_export_overhead": 1.0082654029282794,
+    "guided_vs_native_graph": 2.0542409849469787,
+    "temporal_vs_native_graph": 1.970556959689437,
+    "boundary_graph_factor_dense": 0.9996420173678406,
+    "boundary_graph_factor_temporal": 1.000080953814019,
+    "boundary_graph_vs_buffered_dense": 1.0031443756380447,
+    "boundary_graph_vs_buffered_temporal": 1.0076196458241482,
+    "temporal_vs_native_graph_with_boundaries": 1.9714222187060153
+  },
+  "graphs": {
+    "buffered_dense": {
+      "dense": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      }
+    },
+    "graphed_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.3608190696686506,
+        "replays": 550
+      }
+    },
+    "buffered_guided": {
+      "dense": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      },
+      "action": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      }
+    },
+    "graphed_guided": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.32149743661284447,
+        "replays": 55
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.17729121819138527,
+        "replays": 440
+      }
+    },
+    "graphed_partial_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.2573379445821047,
+        "replays": 550
+      }
+    },
+    "graphed_partial_guided": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.33050285652279854,
+        "replays": 55
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.1873225849121809,
+        "replays": 440
+      },
+      "partial": {
+        "captured": true,
+        "capture_seconds": 0.32016981579363346,
+        "replays": 55
+      }
+    },
+    "graphed_temporal": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.27443663589656353,
+        "replays": 110
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.1593206450343132,
+        "replays": 440
+      }
+    },
+    "graphed_native_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.24623514339327812,
+        "replays": 550
+      }
+    },
+    "buffered_boundaries_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.2448411900550127,
+        "replays": 550
+      },
+      "dit_video_pre": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      },
+      "dit_action_pre": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      },
+      "dit_video_post": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      },
+      "dit_action_post": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      }
+    },
+    "graphed_boundaries_dense": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.25618409737944603,
+        "replays": 550
+      },
+      "dit_video_pre": {
+        "captured": true,
+        "capture_seconds": 0.05537003092467785,
+        "replays": 550
+      },
+      "dit_action_pre": {
+        "captured": true,
+        "capture_seconds": 0.0464260708540678,
+        "replays": 550
+      },
+      "dit_video_post": {
+        "captured": true,
+        "capture_seconds": 0.07768512703478336,
+        "replays": 550
+      },
+      "dit_action_post": {
+        "captured": true,
+        "capture_seconds": 0.04474765993654728,
+        "replays": 550
+      }
+    },
+    "buffered_boundaries_temporal": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.31430324725806713,
+        "replays": 110
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.15961553156375885,
+        "replays": 440
+      },
+      "dit_video_pre": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      },
+      "dit_action_pre": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      },
+      "dit_video_post": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      },
+      "dit_action_post": {
+        "captured": false,
+        "capture_seconds": 0.0,
+        "replays": 0
+      }
+    },
+    "graphed_boundaries_temporal": {
+      "dense": {
+        "captured": true,
+        "capture_seconds": 0.2458836231380701,
+        "replays": 110
+      },
+      "action": {
+        "captured": true,
+        "capture_seconds": 0.1461892481893301,
+        "replays": 440
+      },
+      "dit_video_pre": {
+        "captured": true,
+        "capture_seconds": 0.05077141150832176,
+        "replays": 550
+      },
+      "dit_action_pre": {
+        "captured": true,
+        "capture_seconds": 0.04579991102218628,
+        "replays": 550
+      },
+      "dit_video_post": {
+        "captured": true,
+        "capture_seconds": 0.09683097153902054,
+        "replays": 550
+      },
+      "dit_action_post": {
+        "captured": true,
+        "capture_seconds": 0.0546286478638649,
+        "replays": 550
+      }
+    }
+  },
+  "bitwise_own_eager_every_sample": true,
+  "unchanged_parameters": true,
+  "sr": null
+}

@@ -13,6 +13,11 @@ passed 1,008 timed parity checks but added only 0.86% temporal speedup in its
 balanced confirmation under shared load. It remains experimental; the active
 full SR run below still uses its original graph copy schedule.
 
+The subsequent [DiT pre/post factor](dit-boundary-graphs-single-factor-20260920.md)
+also found no useful gain. Its baseline independently measured 1.970557× for the
+unchanged temporal graph path. At 00:47 UTC full coverage was Dense 344/500,
+eager temporal 142/500 and temporal graph 108/500; all three were active.
+
 ## Separate factors and fixed conditions
 
 This follows the [dense/action and partial-refresh graph factors](visual-graph-dispatch-single-factor-20260919.md).
