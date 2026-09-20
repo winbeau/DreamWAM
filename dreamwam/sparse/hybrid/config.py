@@ -24,7 +24,7 @@ class HybridConfig:
     read_ratio: float = 1.0
     selection: str = "drift"
     guidance_weight: float = 1.0
-    frame_quota: str = "balanced"
+    frame_quota: str = "none"
     backend: str = "eager"
     graph_warmup: int = 3
     max_graphs: int = 8
@@ -69,7 +69,8 @@ class HybridConfig:
         return cls(Schedule.from_mapping(p["schedule"]),
                    recompute.get("keep_ratio", 0.1), read.get("mode", "full"), read.get("keep_ratio", 1.0),
                    select.get("method", "drift"), select.get("guidance_weight", 1.0),
-                   select.get("frame_quota", "balanced"), execution.get("backend", "eager"),
+                   select.get("frame_quota", "balanced" if read.get("mode", "full") == "compact" else "none"),
+                   execution.get("backend", "eager"),
                    execution.get("graph_warmup", 3), execution.get("max_graphs", 8),
                    diagnostics.get("level", "counters"))
 

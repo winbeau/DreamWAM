@@ -73,5 +73,13 @@ def select(config, model, video_state, action_state, state, *, anchor=False):
         # remaining per-frame quota. Cardinalities never depend on tensor values.
         query = route if anchor else torch.cat(queries).sort().values
         return Selection(query, torch.cat(routes).sort().values, probes)
-    query = choose(score, q_count, length, current.device).sort().values
+    if config.frame_quota == "balanced":
+        frames = length // frame_size
+        query = torch.cat([
+            choose(None if score is None else score[frame * frame_size:(frame + 1) * frame_size],
+                   q_count // frames + int(frame < q_count % frames), frame_size, current.device)
+            + frame * frame_size for frame in range(frames)
+        ]).sort().values
+    else:
+        query = choose(score, q_count, length, current.device).sort().values
     return Selection(query, route, probes)

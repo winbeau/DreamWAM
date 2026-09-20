@@ -22,15 +22,21 @@ def main():
     p.add_argument("--read-mode", choices=("full", "compact"), default="compact")
     p.add_argument("--read-ratio", type=float, default=0.25)
     p.add_argument("--selection", choices=("uniform", "drift", "action_drift"), default="action_drift")
+    p.add_argument("--guidance-weight", type=float, default=1.0)
+    p.add_argument("--frame-quota", choices=("none", "balanced"),
+                   help="full defaults to global queries; use balanced for matched compact-read ablations")
     p.add_argument("--backend", choices=("eager", "buffered", "cuda_graph"), default="eager")
     p.add_argument("--out", type=Path, required=True)
     args = p.parse_args()
     try:
+        selection = dict(method=args.selection, guidance_weight=args.guidance_weight)
+        if args.frame_quota is not None:
+            selection["frame_quota"] = args.frame_quota
         config = HybridConfig.from_mapping(dict(
             schedule=dict(kind="periodic", num_steps=args.num_steps, refresh_every=args.num_steps),
             recompute=dict(keep_ratio=args.recompute_ratio),
             read=dict(mode=args.read_mode, keep_ratio=args.read_ratio),
-            selection=dict(method=args.selection), execution=dict(backend=args.backend)))
+            selection=selection, execution=dict(backend=args.backend)))
         candidates = list(generate_candidates(config, parse_indices(args.dense_steps),
                           parse_indices(args.candidate_sparse_steps), parse_indices(args.refresh_counts)))
     except (ValueError, TypeError) as exc:

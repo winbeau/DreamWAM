@@ -12,6 +12,7 @@ from test_visual_step_cache import model_and_inputs
 
 
 def compact(operations=("dense", "sparse", "reuse", "sparse"), **kwargs):
+    kwargs.setdefault("frame_quota", "balanced")
     return config(operations, read_mode="compact", read_ratio=0.5, diagnostics="trace", **kwargs)
 
 
@@ -119,3 +120,23 @@ def test_full_budget_compact_control_is_native():
     conf = replace(compact(("dense", "sparse", "sparse", "sparse")), recompute_ratio=1, read_ratio=1)
     with HybridVisualRuntime(model, conf):
         assert torch.equal(model.sample_action(**inputs), expected)
+
+
+@pytest.mark.parametrize("method", ["uniform", "drift", "action_drift"])
+def test_balanced_queries_match_across_read_modes_given_identical_causal_inputs(monkeypatch, method):
+    from dreamwam.sparse.hybrid.selection import select
+    model, inputs = model_and_inputs()
+    conf = compact(("dense", "sparse", "reuse", "reuse"), selection=method)
+    checked = []
+    with HybridVisualRuntime(model, conf) as runtime:
+        original = runtime._sparse_request
+        def compare(video, action, selection):
+            full = replace(conf, read_mode="full", read_ratio=1)
+            expected = select(full, model, video, action, runtime.state)
+            assert torch.equal(selection.query, expected.query)
+            assert len(expected.route) == 12 and len(selection.route) == 6
+            checked.append(True)
+            return original(video, action, selection)
+        monkeypatch.setattr(runtime, "_sparse_request", compare)
+        model.sample_action(**inputs)
+    assert checked == [True]

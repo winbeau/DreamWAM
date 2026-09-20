@@ -78,6 +78,7 @@ def summarize(cells, rows, candidate_ids):
         by_variant[row["variant"]].append(row)
         lookup[row["group"], row["repeat"], row["input_id"], row["variant"]] = row
     results = []
+    controls = sorted({cell["variant"] for cell in cells} - set(candidate_ids))
     for candidate in candidate_ids:
         measured = by_variant[candidate]
         expected = sum(cell["variant"] == candidate for cell in cells)
@@ -87,10 +88,19 @@ def summarize(cells, rows, candidate_ids):
         sparse_time = statistics.fmean(row["seconds"] for row, _ in paired) if paired else None
         dense_time = statistics.fmean(row["seconds"] for _, row in paired) if paired else None
         complete = len(measured) == expected and len(paired) == expected
+        versus_controls = {}
+        for name in controls:
+            matches = [(row, lookup.get((row["group"], row["repeat"], row["input_id"], name)))
+                       for row in measured]
+            matches = [(row, control) for row, control in matches if control is not None]
+            versus_controls[name] = (statistics.fmean(control["seconds"] for _, control in matches)
+                                      / statistics.fmean(row["seconds"] for row, _ in matches)
+                                      if len(matches) == expected else None)
         results.append(dict(candidate_id=candidate, complete=complete,
             coverage=dict(completed=len(measured), planned=expected, paired=len(paired)),
             seconds=distribution([r["seconds"] for r in measured]),
             paired_speedup=dense_time / sparse_time if complete else None,
+            paired_speedup_vs_controls=versus_controls,
             mean_action_relative_l2=statistics.fmean(r["action_diagnostics"]["relative_l2"] for r in measured)
                 if measured else None,
             sr=None))
