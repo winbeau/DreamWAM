@@ -9,7 +9,6 @@ correlated and repetitions of a deterministic model are not quality samples.
 import argparse
 import csv
 import hashlib
-import io
 import json
 from pathlib import Path
 import statistics
@@ -88,7 +87,8 @@ def main():
         candidate_cases=sum(len(r["rows"]) for r in reports), sr=None,
         limitations=["quality diagnostics, not SR", "same episodes are not independent samples",
                      "shared hardware; no timing outlier removed"])
-    args.out.write_text(json.dumps(result, indent=2) + "\n")
+    with args.out.open("x") as handle:
+        handle.write(json.dumps(result, indent=2) + "\n")
     rows = [row for report in reports for row in report["rows"]]
     with args.csv.open("x", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
