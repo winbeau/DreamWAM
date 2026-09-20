@@ -24,7 +24,7 @@ admission; a low-utilization compute-only card was left unused by this task.
 Other jobs continued on the shared host. This is a warm full-`predict_action`
 measurement through CPU action output, including image preprocessing and VAE.
 
-| Variant | Mean ms | p50 ms | p95 ms | Sparse / matched Dense speedup |
+| Variant | Mean ms | p50 ms | p95 ms | Speedup vs matched Dense |
 |---|---:|---:|---:|---:|
 | Strengthened Dense, uncached instruction | 269.838 | 269.815 | 270.141 | — |
 | Guided token sparsity, uncached instruction | 150.159 | 150.142 | 150.622 | 1.797× |
@@ -104,6 +104,13 @@ The following explicit adapter options expose the measured implementations.
 **Integration verification is pending** until the new constructor/lifecycle
 tests and real-checkpoint adapter check complete. Existing live SR jobs keep
 their frozen options and outputs.
+
+The first CPU integration test invocation at `eaf5add` returned **1 failed,
+58 passed, 3 CUDA-skipped** (4.87 s, exit 1). The failure was the new test
+requiring an action-guidance counter from eager conditioned Dense, which does
+not construct guidance or publish that counter. Its action comparison and
+cache hit/miss checks had passed. The test now treats an absent counter as zero;
+no model computation or measured result was changed. The failed log is retained.
 
 Sparse `policy.options`:
 

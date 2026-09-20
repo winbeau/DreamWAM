@@ -110,7 +110,7 @@ def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypa
         assert stats["dense_video_steps"] == 1
         assert stats["partial_video_steps"] == (3 if conditioned else 1)
         assert stats["reused_video_steps"] == (0 if conditioned else 2)
-        assert stats["action_mass_builds"] == (0 if conditioned else 1)
+        assert stats.get("action_mass_builds", 0) == (0 if conditioned else 1)
         assert stats["action_layer_updates"] == 8
         assert len(stats["selected_indices"][0]) == (8 if conditioned else 3)
         assert not policy.policy._visual_cache_runtime.video_kv
