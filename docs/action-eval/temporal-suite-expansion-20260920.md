@@ -135,3 +135,75 @@ attempt at the stopped suites. GPU assignment is part of the frozen config
 fingerprint, so a hardware move requires a separately labelled run, rather
 than editing `resolved.yaml` or pooling its outcomes with a different run.
 Full Long Dense coverage and a valid four-suite paired comparison remain required.
+
+## Matched Dense Spatial complete; Long moves to an independent GPU 3 run
+
+At **2026-09-20 02:04:55 UTC**, matched Dense Spatial
+`visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0`
+has **500/500 terminal outcomes: 492 successes, eight official task failures,
+SR 98.4%**. The evaluator summary is complete, with zero errors, cancelled or
+unrun identities. Every CSV row agrees with its accepted result record and
+frozen manifest; all accepted record hashes are retained. Recovery batch 08
+ended with `complete_coverage` after 15 invocations, final runner exit 0 and
+supervisor exit 0. The worker is absent. The policy remains **28845c6**,
+`refresh_every: 1`, evaluator **4701ac2**, the checkpoint hash above and
+`dreamwam-release-v1`. Provenance's untracked `.venv` / `pretrained` links are
+retained in the evidence rather than relabelled as a clean checkout.
+
+The full paired comparison with original Dense Spatial, executed on the server
+using `scripts/sparse/paired_sr.py` at **e453bec**, also exits 0:
+
+| Measure | Original Dense → matched refresh-1 Dense |
+|---|---:|
+| Terminal pairs / planned | 500 / 500 |
+| SR | 98.6% → 98.4% |
+| Absolute change | −0.2 percentage points |
+| Original success → new failure | 6 |
+| Original failure → new success | 5 |
+| Unchanged outcomes | 489 |
+| Task-stratified paired bootstrap 95% interval | [−1.4, +1.0] percentage points |
+| Exact two-sided McNemar p | 1.0 |
+
+The bootstrap uses 10,000 resamples and seed 42; its interval is conditional
+on these benchmark tasks. This comparison does not prove equivalence or set
+the user's SR tolerance. It records baseline repetition variability alongside
+the earlier first-input camera-hash discrepancy. The two runs use the same
+scientific protocol but different recorded model/evaluator revisions, so the
+11 discordant pairs do not isolate a single source of variability. Episode
+wall time is not full-request model latency.
+
+```bash
+# Server, DreamWAM-conditioned-guided-e453bec; existing environment unchanged.
+.venv/bin/python scripts/sparse/paired_sr.py \
+  --dense "$ORIGINAL_DENSE_SPATIAL" --sparse "$MATCHED_DENSE_SPATIAL" \
+  --label 'native-Dense repetition (matched refresh1)' \
+  --json "$SPATIAL_OUTPUT/dense-repetition-paired.json"
+```
+
+The [complete Dense evidence](evidence/temporal-suite-expansion-20260920/dense-complete/)
+contains its manifest, 500-row CSV, evaluator summary, strict accepted-record
+audit, public provenance and full paired statistics.
+
+At **02:11:14 UTC**, eager temporal Spatial has **328/500 (327 successes,
+one failure)**; graph temporal has **312/500 (310 successes, two failures)**.
+Eager's failure is `t005-i033-r00-s42`; graph's are `t005-i028-r00-s42` and
+`t006-i003-r00-s42`. Both Dense controls succeeded on the first and third;
+original Dense failed on `t005-i028` while matched Dense succeeded. These
+accepted outcomes and hashes are preserved in the paired-record evidence.
+Neither candidate has complete SR. Graph batch 05 stopped at its 20-attempt
+limit with recent progress. After the old controller and worker exited and
+GPU 2 was verified empty, batch 06 resumed that same frozen run with the same
+20-attempt / three-zero-progress limits. Eager batch 07 remains active.
+
+Dense's completion released GPU 0. A fresh inventory confirmed GPUs 0 and 3
+empty; **GPU 0 is now left unused**. At **02:05:49 UTC**, a new independently
+labelled Long run starts on GPU 3:
+`long-gpu3/runs/run-20260920T020549Z-1cb163e4`, fingerprint
+`1cb163e41a00508f2d815941d9a9dc59a99879d4054aa08595eefeb6e26b390f`.
+Its actual-GPU `validate` and `doctor` checks pass with exit 0. It retains
+config **334d28c**, model **2c02c5c**, evaluator **4701ac2** and the official
+500-identity Long / max-700 protocol. Native renderer and policy both use
+physical GPU 3 (`GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba`). At the audit,
+runner 277918 and policy 277942 are live with no terminal outcomes yet.
+The stopped GPU 6 run remains unchanged and its outcomes are not pooled.
+No renderer workaround, precision, weights, RNG or protocol change is enabled.

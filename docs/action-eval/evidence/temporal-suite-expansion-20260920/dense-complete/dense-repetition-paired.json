@@ -1,0 +1,132 @@
+{
+  "coverage": {
+    "complete": true,
+    "dense_episodes": 500,
+    "excluded_non_terminal": 0,
+    "expected_dense_episodes": 500,
+    "expected_sparse_episodes": 500,
+    "missing_dense_rows": 0,
+    "missing_sparse_rows": 0,
+    "paired_terminal": 500,
+    "planned_identity_difference": 0,
+    "shared_episodes": 500,
+    "sparse_episodes": 500,
+    "sparse_non_terminal_detail": {},
+    "unpaired": 0
+  },
+  "dense_run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/dreamwam-libero-spatial/run-20260919T004630Z-e33992a8",
+  "label": "native-Dense repetition (matched refresh1)",
+  "paired": {
+    "delta_ci95": [
+      -0.014000000000000002,
+      0.01
+    ],
+    "dense_loss_sparse_win": 5,
+    "dense_sr_ci95": [
+      0.976,
+      0.994
+    ],
+    "dense_win_sparse_loss": 6,
+    "mcnemar_one_sided_sparse_worse_p": 0.5,
+    "mcnemar_two_sided_p": 1.0,
+    "resamples": 10000,
+    "sparse_sr_ci95": [
+      0.9720000000000001,
+      0.994
+    ],
+    "unchanged": 489
+  },
+  "per_task": {
+    "0": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 50,
+      "dense_win_sparse_loss": 0,
+      "pairs": 50,
+      "sparse_success": 50
+    },
+    "1": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 50,
+      "dense_win_sparse_loss": 0,
+      "pairs": 50,
+      "sparse_success": 50
+    },
+    "2": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 50,
+      "dense_win_sparse_loss": 0,
+      "pairs": 50,
+      "sparse_success": 50
+    },
+    "3": {
+      "dense_loss_sparse_win": 1,
+      "dense_success": 49,
+      "dense_win_sparse_loss": 0,
+      "pairs": 50,
+      "sparse_success": 50
+    },
+    "4": {
+      "dense_loss_sparse_win": 1,
+      "dense_success": 49,
+      "dense_win_sparse_loss": 0,
+      "pairs": 50,
+      "sparse_success": 50
+    },
+    "5": {
+      "dense_loss_sparse_win": 3,
+      "dense_success": 45,
+      "dense_win_sparse_loss": 3,
+      "pairs": 50,
+      "sparse_success": 45
+    },
+    "6": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 50,
+      "dense_win_sparse_loss": 2,
+      "pairs": 50,
+      "sparse_success": 48
+    },
+    "7": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 50,
+      "dense_win_sparse_loss": 0,
+      "pairs": 50,
+      "sparse_success": 50
+    },
+    "8": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 50,
+      "dense_win_sparse_loss": 1,
+      "pairs": 50,
+      "sparse_success": 49
+    },
+    "9": {
+      "dense_loss_sparse_win": 0,
+      "dense_success": 50,
+      "dense_win_sparse_loss": 0,
+      "pairs": 50,
+      "sparse_success": 50
+    }
+  },
+  "sparse_run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0",
+  "success_rate": {
+    "delta_absolute": -0.002,
+    "dense": 0.986,
+    "dense_wilson95": [
+      0.9713865738597492,
+      0.9932022969282127
+    ],
+    "sparse": 0.984,
+    "sparse_wilson95": [
+      0.9687485245822888,
+      0.9918708446797967
+    ],
+    "withheld_reason": null
+  },
+  "timing_seconds": {
+    "dense_mean": 16.319734,
+    "note": "wall time includes simulator stepping and render aborts, so it is not the model's own latency; the operator-level cost is measured separately",
+    "sparse_mean": 13.465732
+  },
+  "tool": "scripts/sparse/paired_sr.py"
+}

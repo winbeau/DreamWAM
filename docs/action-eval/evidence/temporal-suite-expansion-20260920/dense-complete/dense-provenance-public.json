@@ -1,0 +1,178 @@
+{
+  "schema_version": "action-eval/provenance/v1",
+  "run_id": "run-20260919T220834Z-87c8f1d0",
+  "created_at": "2026-09-20T02:04:30Z",
+  "config_fingerprint": "87c8f1d0ee291acad1b19a8a318f4d0de9c41c97b8753e87ed1eb23999d8ebb6",
+  "config_sha256": "25021eb8960d7b0ca0ccf7289b3fb1200b377d8479dff4a5af5907c0da780c88",
+  "protocol_sha256": null,
+  "repo": {
+    "policy": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6",
+      "commit": "28845c608e51b885ba18d8d918fee19f70eeea39",
+      "dirty": true,
+      "dirty_files": [
+        "?? .venv",
+        "?? pretrained"
+      ],
+      "state": "dirty"
+    },
+    "evaluator": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+      "commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b",
+      "dirty": true,
+      "dirty_files": [
+        "?? .venv"
+      ],
+      "state": "dirty"
+    }
+  },
+  "files": [
+    {
+      "label": "policy.checkpoint",
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/checkpoints/dreamwam_joint.pt",
+      "exists": true,
+      "sha256": null,
+      "size_bytes": 12063469113,
+      "error": null
+    },
+    {
+      "label": "policy.model_config",
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/configs/dreamwam_joint.yaml",
+      "exists": true,
+      "sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+      "size_bytes": 2506,
+      "error": null
+    },
+    {
+      "label": "adapter.entrypoint",
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/evaluation/action_eval/infer.py",
+      "exists": true,
+      "sha256": "93211858ad42fe0e877daa08a38c8285e321f9fff5a99a63097c36a9334d907e",
+      "size_bytes": 17960,
+      "error": null
+    }
+  ],
+  "gpus": [
+    {
+      "index": 0,
+      "uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 1
+    },
+    {
+      "index": 1,
+      "uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 25479
+    },
+    {
+      "index": 2,
+      "uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 26047
+    },
+    {
+      "index": 3,
+      "uuid": "GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 1
+    },
+    {
+      "index": 4,
+      "uuid": "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 47239
+    },
+    {
+      "index": 5,
+      "uuid": "GPU-7d459912-b567-59fb-8abf-57c18713cb84",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 49135
+    },
+    {
+      "index": 6,
+      "uuid": "GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 49135
+    },
+    {
+      "index": 7,
+      "uuid": "GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 47173
+    }
+  ],
+  "shared_machine": {
+    "note": "GPU inventory is a snapshot taken at run start. It is not a reservation: other users' jobs can change free memory at any time.",
+    "gpu_count_visible": 8
+  },
+  "policy_worker": {
+    "description": {
+      "observation_profile": "dreamwam-libero-2cam-v1",
+      "action_profile": "libero-osc-pose-v1",
+      "rng_mode": "fixed_per_predict",
+      "action_horizon": 32,
+      "fingerprint": {
+        "adapter": "dreamwam",
+        "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/configs/dreamwam_joint.yaml",
+        "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+        "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-sr-28845c6/checkpoints/dreamwam_joint.pt",
+        "checkpoint_source": "policy.checkpoint",
+        "checkpoint_size_bytes": 12063469113,
+        "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+        "checkpoint_conflict": null,
+        "setting": "joint",
+        "action_horizon": 32,
+        "denoising_steps": 10,
+        "video_frames": 9,
+        "replan_steps": 10,
+        "wait_steps": 30,
+        "binarize_gripper": true,
+        "model_seed": 42,
+        "rng_mode": "fixed_per_predict",
+        "sparse": {
+          "enabled": false,
+          "selection": "av_context",
+          "backend": "masked",
+          "block_size": 14,
+          "future_ratio": 1.0,
+          "conditional_keep_ratio": 1.0,
+          "context_weight": 1.0,
+          "min_anchor_mass": 0.0,
+          "fallback": "recency",
+          "num_stages": 1,
+          "anchor_refresh": "layer",
+          "anchor_layer": 0,
+          "sparse_layers": null,
+          "head_blocks": null,
+          "stage_blocks": null
+        },
+        "sparse_config_hash": "10d80b7ca00e97b5",
+        "visual_cache": {
+          "refresh_every": 1
+        }
+      },
+      "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+    },
+    "requested_gpu_uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+    "gpu_resolved": true,
+    "cuda_visible_devices": "0",
+    "startup": {
+      "protocol_version": "action-eval-proto/v1",
+      "adapter_target": "evaluation/action_eval/infer.py:create_policy",
+      "device": "cuda:0",
+      "python": "3.10.20",
+      "pid": 275077
+    },
+    "predict_calls": 48
+  },
+  "recorded_utc": "2026-09-20T02:13:24.451325+00:00"
+}

@@ -1,0 +1,78 @@
+{
+  "utc": "2026-09-20T02:13:24.583659+00:00",
+  "sr": null,
+  "pairs": {
+    "t005-i028-r00-s42": {
+      "dense_original": {
+        "attempt": 1,
+        "status": "failed",
+        "sha256": "fde94746e9bc2ce88b6db9970901b5ec1933be20db8cc041fc2c20f8a382aed9"
+      },
+      "dense_matched": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "3b2998af48b2e583331699a49310f3aa362cf185c1d094df905ee8e45d6fe8fa"
+      },
+      "eager_temporal": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "d42793f327a54f21eedaee3709933f749cda9f235b3a6782508bc48ddbf48365"
+      },
+      "graph_temporal": {
+        "attempt": 1,
+        "status": "failed",
+        "sha256": "9e2931c596865df64ef59f82c96c10523b99f037001704697b6cef7a22f3340a"
+      }
+    },
+    "t005-i033-r00-s42": {
+      "dense_original": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "11dd8a95aed0c39d9361bee09225140b4a3a04522b7a70171afd502df2a09384"
+      },
+      "dense_matched": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "c660851dd5d7d540a78ae7caf564dbf41445f1e13684e3bdcf74a1c809c4643e"
+      },
+      "eager_temporal": {
+        "attempt": 1,
+        "status": "failed",
+        "sha256": "006a2033778910b2dc8d60a7ff9cf152542fd394388c0d2b7515e460a04d06de"
+      },
+      "graph_temporal": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "688e061b6becd77e75888797bc13e350235c2a6b3264ac6a7d573c8dec9c3b08"
+      }
+    },
+    "t006-i003-r00-s42": {
+      "dense_original": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "bb5702a43be7d820f6099c471f8781459794df0af2f6d2e5f7c4c32f3e10e65b"
+      },
+      "dense_matched": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "68c3cf4a939e9622c07be6e497fc00a73ad41572f0d27fe54c66d1625909d0f8"
+      },
+      "eager_temporal": {
+        "attempt": 1,
+        "status": "succeeded",
+        "sha256": "ef1ea25e1abe92df04aba2edadcfd2b01c5302f5edaa70bb9fd9456de6ee9faf"
+      },
+      "graph_temporal": {
+        "attempt": 1,
+        "status": "failed",
+        "sha256": "a03e8e8c344c2d72715c4e56f6986ef7ee72eb32d5c1d3af4a0daa018a93bf81"
+      }
+    }
+  },
+  "runs": {
+    "dense_original": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/dreamwam-libero-spatial/run-20260919T004630Z-e33992a8",
+    "dense_matched": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0",
+    "eager_temporal": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1/run-20260919T215351Z-7f224961",
+    "graph_temporal": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2/run-20260920T001038Z-cf9e4f10"
+  }
+}
