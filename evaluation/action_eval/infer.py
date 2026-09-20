@@ -206,7 +206,8 @@ class DreamWAMPolicy:
         self._sparse_options = options.get("sparse")
         self.policy = build_policy(release, device=device, sparse=self._sparse_options,
                                    visual_cache=options.get("visual_cache"),
-                                   prompt_cache=options.get("prompt_cache"))
+                                   prompt_cache=options.get("prompt_cache"),
+                                   fresh_visual_tokens=options.get("fresh_visual_tokens"))
         self._sparse_hash = config_hash(self.policy.sparse_config)
 
         # ``build_policy`` gives the policy its own reference to the release YAML's
@@ -266,6 +267,9 @@ class DreamWAMPolicy:
         }
         if self.policy.prompt_cache_config is not None:
             self._fingerprint["prompt_cache"] = self.policy.prompt_cache_config
+        if self.policy.fresh_visual_config is not None:
+            self._fingerprint["fresh_visual_tokens"] = self.policy.fresh_visual_config
+            self._fingerprint["fresh_visual_semantics"] = "per-step frame-quota selection; current-input bypass; no visual cache"
         notes = (
             "DreamWAM released checkpoint through its own build_policy; the benchmark "
             "flips the images and DreamWAM center-crops, resizes and concatenates them "
@@ -355,6 +359,8 @@ class DreamWAMPolicy:
             diagnostics["visual_cache"] = dict(visual_cache.last_stats)
         if self.policy._prompt_cache_runtime is not None:
             diagnostics["prompt_cache"] = self.policy._prompt_cache_runtime.stats()
+        if self.policy._fresh_visual_runtime is not None:
+            diagnostics["fresh_visual_tokens"] = dict(self.policy._fresh_visual_runtime.last_stats)
         if self.policy.sparse_config.enabled:
             # Executed density, not the requested one: a budget can be clamped by the
             # structural floor or replaced by a fallback route.

@@ -23,12 +23,15 @@ from benchmark_ffn_context_cache import command, sha256
 from evaluation.action_eval.infer import create_policy
 from dreamwam.sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
 from dreamwam.sparse.conditioned_frame_cache import ConditionedFrameCache
+from dreamwam.sparse.fresh_visual_tokens import FreshVisualTokenSparsity
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--inputs", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
+    parser.add_argument("--fresh-visual-tokens", action="store_true",
+                        help="verify the every-step 10% non-cached visual candidate")
     args = parser.parse_args()
     args.out_dir.mkdir(parents=True, exist_ok=False)
     root = Path(__file__).resolve().parents[2]
@@ -59,22 +62,28 @@ def main():
         for arm, options in configs.items():
             adapter = None
             try:
+                fresh = args.fresh_visual_tokens and arm == "sparse"
+                if fresh:
+                    options = dict(keep_ratio=0.1, selection="action", graph_dispatch="all_transformers")
+                option_key = "fresh_visual_tokens" if fresh else "visual_cache"
                 adapter = create_policy(dict(model_root=str(root),
                     model_config=str(root / "configs/dreamwam_joint.yaml"),
                     checkpoint=str(root / "checkpoints/dreamwam_joint.pt"),
-                    visual_cache=options, prompt_cache={"capacity": 8}), "cuda:0")
+                    **{option_key: options}, prompt_cache={"capacity": 8}), "cuda:0")
                 description = adapter.describe()
-                if description.fingerprint["visual_cache"] != options or description.fingerprint["prompt_cache"] != {"capacity": 8}:
+                if description.fingerprint[option_key] != options or description.fingerprint["prompt_cache"] != {"capacity": 8}:
                     raise AssertionError("effective options differ from requested options")
                 policy = adapter.policy
                 version = {name: p._version for name, p in policy.model.named_parameters()}
                 evaluation = dict(policy.evaluation)
                 if evaluation["denoising_steps"] != 10 or evaluation["action_horizon"] != 32:
                     raise AssertionError("released action sampling changed")
-                runtime, prompt = policy._visual_cache_runtime, policy._prompt_cache_runtime
+                runtime = policy._fresh_visual_runtime if fresh else policy._visual_cache_runtime
+                prompt = policy._prompt_cache_runtime
                 runtime.__exit__(None, None, None)
                 policy.text_encoder = prompt.encoder
                 eager = (ConditionedFrameCache(policy.model, refresh_every=1) if arm == "dense" else
+                         FreshVisualTokenSparsity(policy.model, keep_ratio=0.1, selection="action") if fresh else
                          ActionGuidedVisualTokenCache(policy.model, refresh_every=5,
                                                      keep_ratio=0.1, guidance_weight=1.0))
                 try:
@@ -99,9 +108,11 @@ def main():
                         raise AssertionError("adapter differs from its uncached eager reference")
                     if prediction.diagnostics["prompt_cache"]["last_hit"] != expected_hit:
                         raise AssertionError("instruction cache hit/miss boundary changed")
-                    stats = prediction.diagnostics["visual_cache"]
-                    if stats["action_layer_updates"] != 300 or stats["computed_video_token_layers"] != (61740 if arm == "dense" else 9720):
+                    stats = prediction.diagnostics[option_key]
+                    if stats["action_layer_updates"] != 300 or stats["computed_video_token_layers"] != (61740 if arm == "dense" else 9000 if fresh else 9720):
                         raise AssertionError("executed budget changed")
+                    if fresh and (stats["reused_visual_steps"] != 0 or stats["selection_builds"] != 10):
+                        raise AssertionError("fresh candidate used visual reuse or skipped selection")
                     saved[f"adapter_{index}"] = prediction.actions.copy()
                     record["requests"].append(dict(input_id=input_id, seconds_including_setup=seconds,
                         bitwise_own_uncached_eager=True, diagnostics=prediction.diagnostics))
@@ -112,7 +123,7 @@ def main():
                 record["actions_sha256"] = sha256(args.out_dir / f"{arm}-actions.npz")
                 record["graphs"] = runtime.graph_stats()
                 adapter.close(); adapter = None
-                if runtime.graphs or prompt.entries:
+                if (runtime.replay is not None if fresh else bool(runtime.graphs)) or prompt.entries:
                     raise AssertionError("close did not release caches")
                 record["close_released_caches"] = True
                 del runtime, prompt, eager, policy

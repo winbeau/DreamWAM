@@ -12,14 +12,16 @@ import dreamwam.policy as policy_module
 from dreamwam.sparse.config import config_hash
 from dreamwam.sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
 from dreamwam.sparse.conditioned_frame_cache import ConditionedFrameCache
+from dreamwam.sparse.fresh_visual_tokens import FreshVisualTokenSparsity
 from test_visual_step_cache import model_and_inputs
 
 
-@pytest.mark.parametrize("graph_mode,conditioned", [
-    (None, False), ("dense_action", False), ("all_transformers", False),
-    (None, True), ("all_transformers", True),
+@pytest.mark.parametrize("graph_mode,conditioned,fresh", [
+    (None, False, False), ("dense_action", False, False), ("all_transformers", False, False),
+    (None, True, False), ("all_transformers", True, False),
+    (None, False, True), ("all_transformers", False, True),
 ])
-def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypatch, tmp_path, graph_mode, conditioned):
+def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypatch, tmp_path, graph_mode, conditioned, fresh):
     if graph_mode and not torch.cuda.is_available():
         pytest.skip("actual graph/adapter execution requires CUDA on the evaluation server")
     device = "cuda" if graph_mode else "cpu"
@@ -31,7 +33,8 @@ def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypa
     model.to(device=device, dtype=dtype)
     inputs = {key: value.to(device=device, dtype=dtype if value.is_floating_point() else value.dtype)
               if isinstance(value, torch.Tensor) else value for key, value in inputs.items()}
-    reference = (ConditionedFrameCache(model, refresh_every=1) if conditioned else
+    reference = (FreshVisualTokenSparsity(model, keep_ratio=0.25) if fresh else
+                 ConditionedFrameCache(model, refresh_every=1) if conditioned else
                  ActionGuidedVisualTokenCache(model, keep_ratio=0.25, refresh_every=2))
     with reference:
         expected = model.sample_action(**inputs).squeeze(0).float().cpu().numpy()
@@ -82,16 +85,18 @@ def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypa
         "build_policy": policy_module.DreamWAMPolicy,
         "config_hash": config_hash,
     })
-    options = (dict(refresh_every=1, conditioned_frame_reuse=True) if conditioned else
+    options = (dict(keep_ratio=0.25, selection="action") if fresh else
+               dict(refresh_every=1, conditioned_frame_reuse=True) if conditioned else
                dict(refresh_every=2, token_keep_ratio=0.25, action_guidance_weight=1.0))
     if graph_mode:
         options["graph_dispatch"] = graph_mode
+    option_key = "fresh_visual_tokens" if fresh else "visual_cache"
     policy = adapter.create_policy(dict(model_root=str(tmp_path), model_config=str(release_file),
-                                        visual_cache=options, prompt_cache={"capacity": 2}), device=device)
-    cache = policy.policy._visual_cache_runtime
+                                        **{option_key: options}, prompt_cache={"capacity": 2}), device=device)
+    cache = policy.policy._fresh_visual_runtime if fresh else policy.policy._visual_cache_runtime
     prompt_cache = policy.policy._prompt_cache_runtime
     try:
-        assert policy.describe().fingerprint["visual_cache"] == options
+        assert policy.describe().fingerprint[option_key] == options
         assert policy.describe().fingerprint["prompt_cache"] == {"capacity": 2}
         policy.reset(dict(episode_id="fixture", seed=42))
         observation = dict(
@@ -106,15 +111,23 @@ def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypa
         assert prediction.diagnostics["prompt_cache"]["last_hit"] is True
         assert encoder.calls == 1
         assert prediction.actions.shape == (4, 7)
-        stats = prediction.diagnostics["visual_cache"]
-        assert stats["dense_video_steps"] == 1
-        assert stats["partial_video_steps"] == (3 if conditioned else 1)
-        assert stats["reused_video_steps"] == (0 if conditioned else 2)
-        assert stats.get("action_mass_builds", 0) == (0 if conditioned else 1)
+        stats = prediction.diagnostics[option_key]
+        if fresh:
+            assert stats["denoising_steps"] == stats["selection_builds"] == 4
+            assert stats["computed_video_token_layers"] == 24
+            assert stats["reused_visual_steps"] == 0
+            assert not cache._indices
+        else:
+            assert stats["dense_video_steps"] == 1
+            assert stats["partial_video_steps"] == (3 if conditioned else 1)
+            assert stats["reused_video_steps"] == (0 if conditioned else 2)
+            assert stats.get("action_mass_builds", 0) == (0 if conditioned else 1)
+            assert not policy.policy._visual_cache_runtime.video_kv
         assert stats["action_layer_updates"] == 8
         assert len(stats["selected_indices"][0]) == (8 if conditioned else 3)
-        assert not policy.policy._visual_cache_runtime.video_kv
-        if graph_mode:
+        if graph_mode and fresh:
+            assert stats["graph_replays"] == 4 and cache.graph_stats()["captured"]
+        elif graph_mode:
             assert stats["dense_graph_replays"] == 1
             assert stats["action_graph_replays"] == (0 if conditioned else 2)
             assert stats["partial_graph_replays"] == (3 if conditioned else int(graph_mode == "all_transformers"))
@@ -129,5 +142,7 @@ def test_adapter_executes_guided_tokens_and_publishes_effective_options(monkeypa
         policy.close()
     assert not getattr(model, "_visual_ffn_context_cache", None)
     assert not prompt_cache.entries
-    if graph_mode:
+    if graph_mode and fresh:
+        assert cache.replay is None
+    elif graph_mode:
         assert not cache.graphs
