@@ -44,3 +44,19 @@ def test_raw_screen_audit_rejects_invalid_output_contract(auditor, tmp_path, kin
     np.savez_compressed(path, action=action, raw_action=np.zeros((1, 32, 7), dtype=np.float32))
     with pytest.raises(ValueError, match="contract"):
         auditor.raw_output(tmp_path, dict(actions_path="actions/one.npz", actions_sha256=sha256(path)))
+
+
+def test_trace_audit_rejects_a_new_read_with_no_recomputation(auditor):
+    from dreamwam.sparse.hybrid.native_experiment import native_candidates
+    from dreamwam.sparse.hybrid.schedule import stable_hash
+    config = dict(native_candidates("refresh"))["context_sparse_1"]
+    old = list(range(19)) + list(range(98, 117)) + list(range(196, 214))
+    new = sorted(set(old) - {18} | {30})
+    query = list(range(10)) + list(range(98, 108)) + list(range(196, 206))
+    steps = [dict(effective_op=op, route=old if i == 0 else new,
+                  route_hash=stable_hash(old if i == 0 else new), query=query if i == 1 else None)
+             for i, op in enumerate(config.schedule.operations)]
+    with pytest.raises(ValueError, match="not freshly recomputed"):
+        auditor.audit_route_trace(config, {"steps": steps})
+    steps[1]["query"] = sorted(set(query) - {9} | {30})
+    assert auditor.audit_route_trace(config, {"steps": steps}) == 10

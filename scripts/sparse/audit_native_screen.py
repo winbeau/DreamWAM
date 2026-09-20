@@ -16,7 +16,8 @@ import numpy as np
 
 from dreamwam.sparse.hybrid.config import HybridConfig
 from dreamwam.sparse.hybrid.experiment import distribution, read_journal
-from dreamwam.sparse.hybrid.native_experiment import planned_calls
+from dreamwam.sparse.hybrid.native_experiment import planned_calls, uniform_feature_control
+from dreamwam.sparse.hybrid.schedule import stable_hash
 from dreamwam.sparse.profile.archive import sha256
 
 
@@ -68,6 +69,40 @@ def audit_native_counters(config, counters):
         raise ValueError("native total token/layer budget changed")
 
 
+def audit_route_trace(config, counters):
+    """Verify archived hard-route membership, including newly read Sparse rows."""
+    if config.native_routing and config.native_routing.packing != "hard":
+        raise ValueError("this route trace audit covers hard selection, not pooled groups")
+    q_count, read_count = config.budgets(294, 98)
+    previous = None
+    for step in counters["steps"]:
+        route = np.asarray(step["route"])
+        if (route.dtype.kind not in "iu" or route.ndim not in (1, 2) or
+            route.shape[-1] != read_count or (route < 0).any() or (route >= 294).any() or
+            stable_hash(step["route"]) != step["route_hash"]):
+            raise ValueError("invalid archived route shape/range/hash")
+        layerwise = config.native_routing is not None and config.native_routing.layerwise
+        if route.shape != ((30, read_count) if layerwise else (read_count,)):
+            raise ValueError("archived route depth layout changed")
+        for layer in route.reshape(-1, read_count):
+            if len(set(layer.tolist())) != read_count or any(not np.any(layer // 98 == frame) for frame in range(3)):
+                raise ValueError("route duplicates rows or omits a frame")
+        op = step["effective_op"]
+        if op == "sparse" and config.reuse_mode == "features":
+            query = np.asarray(step["query"])
+            if route.ndim != 1 or query.shape != (q_count,) or query.dtype.kind not in "iu" or len(set(query.tolist())) != q_count:
+                raise ValueError("Sparse query budget or route layout changed")
+            new, old, updated = set(route.tolist()), set(previous.tolist()), set(query.tolist())
+            if not new - old <= updated <= new:
+                raise ValueError("newly read row was not freshly recomputed, or query is outside read set")
+        elif op == "reuse" and previous is not None and not np.array_equal(previous, route):
+            raise ValueError("Reuse step unexpectedly changed its structure")
+        # At a shared Dense anchor, the historical query field denotes the
+        # route seed; q_rows=294 records the actual full Dense computation.
+        previous = route
+    return len(counters["steps"])
+
+
 def audit(root):
     root = Path(root)
     report = json.loads((root / "report.json").read_text())
@@ -105,6 +140,7 @@ def audit(root):
             refs[identity] = arrays[row["call_id"]]
     if raw_bytes != report["raw_bytes"] or len(list((root / "actions").glob("*.npz"))) != len(calls):
         raise ValueError("raw bytes or archive-file coverage changed")
+    traced_calls, traced_steps = 0, 0
     for row in calls:
         actual = arrays[row["call_id"]]
         reference = refs[row["group"], row["variant"], row["input_id"]]
@@ -120,6 +156,11 @@ def audit(root):
                 raise ValueError("native uniform differs from the inherited uniform control")
         if row["counters"]["action_layer_updates"] != 300:
             raise ValueError("action denoising/layer budget changed")
+        if row["phase"] == "eager_reference" and report.get("eager_reference_diagnostics") == "trace" and row["variant"] != "dense_strong":
+            trace_config = (uniform_feature_control() if row["variant"] == "uniform_features" else
+                            HybridConfig.from_mapping(report["candidates"][row["variant"]]))
+            traced_steps += audit_route_trace(trace_config, row["counters"])
+            traced_calls += 1
     timed = read_journal(root / "requests.jsonl", report["cells"])
     if len(timed) != budget["timed"]:
         raise ValueError("timed journal is incomplete")
@@ -173,6 +214,7 @@ def audit(root):
         source_commit=report["source_commit"], checkpoint_sha256=report["checkpoint_sha256"],
         input_manifest_sha256=report["input_manifest_sha256"], stage=report["stage"], gpu_uuid=report["gpu_uuid"],
         verified_calls=len(calls), verified_timed=len(timed), verified_native_counter_rows=checked_native,
+        verified_trace_calls=traced_calls, verified_trace_steps=traced_steps,
         candidates=summaries, metrics=metrics, sr=None)
 
 
