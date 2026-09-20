@@ -2,6 +2,15 @@
 
 This page records DreamWAM Joint integration with [action-eval](https://github.com/winbeau/action-eval). **main** is the maintained evaluation branch and default. Execution has resumed under the current user goal: preserve official paired SR while targeting ≥1.5× full-request acceleration.
 
+The [fixed-budget compact Head/Stage execution trial](head-stage-execution-20260920.md)
+completed 300 timings: compact Head × Stage is **338.48 ms** versus **306.95 ms**
+for the same mask, a negative **0.907×** result. All evidence is preserved.
+The user's renewed priority is a working sparse method, so current development
+returns to the existing action-guided visual token recomputation candidate.
+The next [single common factor](prompt-cache-single-factor-20260920.md) tests
+exact prompt encoding reuse on both strengthened Dense and that unchanged
+sparse candidate. It is not yet a new performance or SR result.
+
 [Offline Head × Stage calibration](head-stage-calibration-20260920.md) is **complete**: 6,480 interventions, 2,160 typed units and a matched-budget combined test, with controls/audits passed. Check-input action relative L2 improves from **0.154 uniform to 0.084 Head × Stage**, while **head-only is slightly better at 0.083**. Relative-type agreement is 63.5%; Stage's incremental action benefit is unproven. The CSV, heatmaps, stability plots and all combined actions are available in the record. These masks were exercised in full offline inference; the fast SR policies remain frozen and do not load them. No new M1 speed or SR claim is made.
 
 [Paper-mechanism audit](paper-mechanism-status-20260920.md): the current fast paths do **not** activate the paper's Head×Stage classification or complete AV–VV context route. Their measured acceleration comes from visual temporal reuse and transformer graphs; the guided path adds AV-conditioned drift selection. These results cannot be labelled as end-to-end validation of M1–M3. The new [interval-10 single-factor control](visual-cadence-single-factor-20260920.md) measures **1.973×** (265.09 → 134.36 ms) against the same strengthened Dense, but has **no official SR** and no action-guided selection. Both full timing sets, including a shared-load 1.922× result, are preserved.

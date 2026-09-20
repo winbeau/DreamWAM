@@ -1,6 +1,43 @@
 # Fixed-budget Head/Stage execution comparison
 
-Status: **PLANNED; no new speed or SR result**. Date: **2026-09-20 UTC**.
+Status: **MEASURED negative execution result; no SR**.
+Date: **2026-09-20 UTC**.
+All 300 timed requests completed at **04:31:54 UTC**, exit 0. Compact
+Head × Stage takes **338.48 ms**, versus **306.95 ms** with the identical
+mask: **0.9068×**, or 10.3% higher latency. Native Dense takes 303.96 ms;
+the additional conditioned-frame Dense control takes **269.81 ms**. This
+implementation is not promoted as a fast candidate.
+
+Complete [comparison CSV](evidence/head-stage-execution-20260920/comparison.csv),
+[raw requests](evidence/head-stage-execution-20260920/requests.jsonl),
+[summary](evidence/head-stage-execution-20260920/summary.json),
+[manifest and all eager actions](evidence/head-stage-execution-20260920/manifest.json),
+and [completion audit](evidence/head-stage-execution-20260920/execution-audit.json)
+are retained, including the initial missing-checkpoint error log.
+
+| Budget | Masked ms | Compact ms | Compact / identical-mask speedup |
+|---|---:|---:|---:|
+| Full Dense | 306.85 | 309.69 | 0.991× |
+| Uniform 50% future keys | 306.92 | 312.75 | 0.981× |
+| Head-only, same total budget | 307.02 | 338.46 | 0.907× |
+| Head × Stage, same total budget | 306.95 | 338.48 | 0.907× |
+
+Compact 50% budgets submit 1,939,104 SDPA matrix pairs per layer, versus
+2,550,624 for full-mask execution (24% less); this is a matrix-extent count,
+not measured hardware FLOPs. Grouping and copying remain part of the measured
+implementation, whose net latency increased. All 390 complete calls including
+quality checks and warmups passed; the 300 timed outputs matched their own
+eager actions bitwise. The 12 masked input/profile pairs reproduce the prior
+combined experiment's actions exactly. The audit recomputed means and action
+relative L2 with zero discrepancy, and verified all stage/replay counts.
+
+The separate check input retains the prior quality pattern: normalized action
+relative L2 is **0.15317 uniform, 0.08289 Head-only, 0.08386 Head × Stage**
+for compact execution. Compact versus masked action L2 is nonzero, about
+0.0035–0.0043; even compact full Dense has 0.00362 relative L2 versus native.
+Thus compact execution is not bitwise equivalent to the mask reference.
+No new SR tolerance or decision-preservation claim is inferred.
+
 This follows the completed [offline classification and allocation test](head-stage-calibration-20260920.md).
 The single factor is execution of those exact masks: expanded-mask joint SDPA
 versus per-budget head groups with physically shorter future-video K/V inputs.
@@ -57,7 +94,30 @@ PYTHONPATH="$PWD" CUDA_VISIBLE_DEVICES="$ADMITTED_GPU" OMP_NUM_THREADS=1 \
   --out-dir "$EXECUTION_OUTPUT"
 ```
 
-Source commit, admission, commands, exit codes and measured artifacts will be
-recorded after execution. Incomplete runs and negative measurements are retained.
+Source **`570f5b0`** was committed/pushed locally, pulled into the clean server
+checkout and frozen at `DreamWAM-head-execution-570f5b0`. Server CPU checks
+passed **12 tests**, with three CUDA checks skipped, in **12.77 s**, exit 0.
+The subsequently admitted physical GPU 4 checks passed **9 tests**, including
+all three released bf16/CUDA replay cases, in **18.38 s**, exit 0. The latter
+set overlaps the six CPU implementation checks; these are not 21 unique tests.
+Logs and GPU admission/exit records are under
+`outputs/head-stage-execution-20260920/tests-{cpu,cuda}-570f5b0*` on the server.
+
+The initial `graph-570f5b0` launch exited **1** before loading a model because
+the new worktree lacked its external checkpoint link. Its log, admission and
+exit file are retained. Adding a symlink to the unchanged authoritative
+checkpoint fixed this data-mount omission; application code and weights did
+not change. Subsequent resource admission polls preserved one available card.
+
+The actual benchmark manifest began **2026-09-20 04:28:30 UTC**, collector
+PID **403422**, on GPU 4 (`GPU-490b4a76-6210-31b9-4e03-838a113cf5f4`),
+with GPU 2 left unused by this task at admission. At **04:28:53 UTC** the
+collector was confirmed live, still in model preparation. Runtime artifacts:
+`/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-execution-20260920/graph-570f5b0-rerun/`.
+The command above used those exact completed-calibration paths and this output
+directory. The outer `.log`, `.pid`, `.exit` and `-admission.json` preserve the
+process and shared-host resource history. The completed results are above.
+
+Incomplete runs and negative measurements are retained.
 This remains an exposed-input proxy study; complete official paired SR and
 M2 bridge comparisons remain outstanding.

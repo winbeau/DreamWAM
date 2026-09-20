@@ -1,0 +1,85 @@
+{
+  "status": "VERIFIED",
+  "utc": "2026-09-20T04:35:14.949850+00:00",
+  "run": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/head-stage-execution-20260920/graph-570f5b0-rerun",
+  "source_commit": {
+    "exit_code": 0,
+    "stdout": "570f5b051ba001ac80cf705735a2d64d0fbccd3f",
+    "stderr": ""
+  },
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "input_manifest_sha256": "bcdba90931d4cb9f980d5fe68d2cac26703684d8f5ad4f86a79742962352627a",
+  "classification_sha256": "0321feb48e6d43085f3294a5b1329c8df50ab12b612b7ef7c51d7a49177e539f",
+  "timed_requests": 300,
+  "variants": 10,
+  "inputs": 3,
+  "each_variant_input_order_position_once": true,
+  "max_recomputed_mean_error": 0.0,
+  "max_recomputed_normalized_action_l2_error": 0.0,
+  "graph_calls_and_stages_verified": true,
+  "conditioned_dense_counts_verified": true,
+  "full_budget_native_parity_enforced": true,
+  "prior_combined_masked_action_pairs_bitwise": [
+    [
+      "t000-i000",
+      "masked_dense"
+    ],
+    [
+      "t000-i000",
+      "masked_uniform"
+    ],
+    [
+      "t000-i000",
+      "masked_head_only"
+    ],
+    [
+      "t000-i000",
+      "masked_head_stage"
+    ],
+    [
+      "t004-i000",
+      "masked_dense"
+    ],
+    [
+      "t004-i000",
+      "masked_uniform"
+    ],
+    [
+      "t004-i000",
+      "masked_head_only"
+    ],
+    [
+      "t004-i000",
+      "masked_head_stage"
+    ],
+    [
+      "t008-i000",
+      "masked_dense"
+    ],
+    [
+      "t008-i000",
+      "masked_uniform"
+    ],
+    [
+      "t008-i000",
+      "masked_head_only"
+    ],
+    [
+      "t008-i000",
+      "masked_head_stage"
+    ]
+  ],
+  "prior_combined_sha256": "f9eb4a841efb1a929e8568b45bb7be5f64c6c7e32eada3079e891d8b4d39b11e",
+  "complete_requests_including_quality_and_warmup": 390,
+  "limits": [
+    "Only exposed real initial observations; no SR",
+    "No continuous exclusive-GPU assertion",
+    "Numerical backend differences remain nonzero"
+  ],
+  "files": {
+    "manifest.json": "185e136451f33bf9c106991970f9002e1633fb82ac643e5b20c167f73aa88e8a",
+    "summary.json": "36f4f092b4021065ee9c6b93d2e3a65f9828553046fcc7da3d3051a3236a1f23",
+    "requests.jsonl": "e337af9fcf59a645ff797a9f48f462bb219e951b107c432facab3db0f46f53ff"
+  },
+  "sr": null
+}
