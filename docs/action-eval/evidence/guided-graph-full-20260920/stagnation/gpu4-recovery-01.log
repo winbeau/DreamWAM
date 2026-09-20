@@ -1,0 +1,11 @@
+{"attempt": 1, "return_code": -6, "new_task_outcomes": 0, "completed": 0, "planned": 500, "stagnant": 1}
+{"attempt": 2, "return_code": -6, "new_task_outcomes": 0, "completed": 0, "planned": 500, "stagnant": 2}
+{
+  "reason": "stagnation_limit",
+  "attempts": 2,
+  "planned": 500,
+  "completed": 0,
+  "sr": null,
+  "successes": 0,
+  "task_failures": 0
+}

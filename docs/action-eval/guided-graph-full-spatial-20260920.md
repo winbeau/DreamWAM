@@ -1,6 +1,7 @@
 # Guided graph full Spatial: independent coverage in progress
 
-Status: **IN PROGRESS; no complete SR**. A new full run of the same policy as the
+Status: **STOPPED at native-renderer stagnation limit; 0/500 terminal outcomes**.
+A new full run of the same policy as the
 completed [15-episode guided graph pilot](visual-graph-dispatch-single-factor-20260919.md)
 started **2026-09-20 00:54:36 UTC**. It is a separate 500-identity matrix, not an
 extension or aggregation of earlier pilot or eager outcomes. The two accepted
@@ -67,7 +68,26 @@ preflights, manifests, startup provenance and counts are retained in the
 [evidence bundle](evidence/guided-graph-full-20260920/), with authoritative server
 artifacts under `dreamwam-sr/outputs/guided-visual-graph-libero-spatial-20260920`.
 
-## Other full runs continue independently
+## Stagnation cap reached
+
+Both recovery invocations also exited with native SIGABRT and no new terminal
+outcomes. Together with the initial run, three consecutive invocations made zero
+progress. The helper stopped with `stagnation_limit`, exit 1, and supervisor
+225929 was confirmed absent. This is **0 successes, 0 task failures, 0/500
+coverage**, not a measured task failure rate. The run is not restarted under
+unchanged conditions. The [stagnation evidence](evidence/guided-graph-full-20260920/stagnation/)
+retains both error logs, per-attempt counts, summary and a fresh progress audit.
+
+At **01:04:51 UTC**, the productive full runs had Dense **372/500** terminal
+outcomes (365 successes, seven task failures), eager temporal **199/500 successes**
+and temporal graph **158/500 successes**. Their live supervisors were respectively
+**229197** (Dense batch 07), **217246** and **223555**. Dense batch 06 had stopped
+at a transient resource gate with 369 outcomes; GPU 0 was later verified empty
+at 0% utilization before batch 07 resumed. Accepted outcomes remain unchanged.
+These three runs continue; the overall SR-constrained acceleration goal is still
+active and incomplete.
+
+## Earlier full-run snapshot
 
 The same timestamped audit found:
 
