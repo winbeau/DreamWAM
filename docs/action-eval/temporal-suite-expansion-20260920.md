@@ -112,12 +112,24 @@ discordant pair, not an overall rate or isolated causal explanation. The new
 eighth Dense Spatial failure is **t008-i037-r00-s42**; it is retained along with
 the previous seven. No settled task is retried to obtain a better outcome.
 
+At **01:49:28 UTC**, Long's second recovery also exited with native SIGABRT
+without a terminal outcome. Together with the initial launch, three invocations
+made no progress. The helper stopped with `stagnation_limit`, exit 1; PID 255603
+is absent. Long stays **0/500, zero successes and zero task failures**. Object,
+Goal and Long are now all stopped at their respective caps, not restarted under
+unchanged conditions. The refreshed strict audit has Dense Spatial **466/500
+(458 successes, eight failures)**, eager temporal **277/500 successes** and
+graph temporal **267/500 successes**. All three Spatial supervisors remain live:
+255824 (Dense batch 08), 261798 (eager batch 07) and 255822 (graph batch 05).
+
 The [evidence bundle](evidence/temporal-suite-expansion-20260920/) contains the
 baseline audit with all accepted record hashes, protocol and policy fingerprints,
 actual-GPU preflights, initial exit logs, bounded-recovery summaries and timestamped
 progress snapshots. Live startup provenance may temporarily omit a policy
 description while loading; earlier completed startup evidence remains authoritative.
-Next: finish the productive Spatial plans, preserve all negative evidence,
-continue Long only within its current bounds, and use a documented changed
-hardware condition before retrying stopped Object/Goal runs. Full Long Dense
-coverage and a valid four-suite paired comparison remain required.
+Next: finish the productive Spatial plans and preserve all negative evidence.
+A documented changed hardware condition is required before another bounded
+attempt at the stopped suites. GPU assignment is part of the frozen config
+fingerprint, so a hardware move requires a separately labelled run, rather
+than editing `resolved.yaml` or pooling its outcomes with a different run.
+Full Long Dense coverage and a valid four-suite paired comparison remain required.

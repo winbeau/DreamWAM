@@ -1,0 +1,9 @@
+{
+  "reason": "stagnation_limit",
+  "attempts": 2,
+  "planned": 500,
+  "completed": 0,
+  "sr": null,
+  "successes": 0,
+  "task_failures": 0
+}
