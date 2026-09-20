@@ -167,7 +167,12 @@ def test_explicit_gpu5_sharing_retains_capacity_and_scope_checks(monkeypatch):
     with pytest.raises(RuntimeError):
         admit_profile("GPU-5", share_gpu5=True)
     inventory = inventory.replace("40000, 81559, 0", "2937, 81559, 100")
-    with pytest.raises(RuntimeError):
+    with pytest.raises(RuntimeError, match="not currently admitted.*") as failure:
+        admit_profile("GPU-5", share_gpu5=True)
+    assert "2937, 81559, 100" in str(failure.value)
+    # Reserved memory must not be mistaken for available model capacity.
+    inventory = "5, GPU-5, NVIDIA H100, 30000, 81559, 49000, 0\n"
+    with pytest.raises(RuntimeError, match="not currently admitted"):
         admit_profile("GPU-5", share_gpu5=True)
 
 
