@@ -6,7 +6,7 @@ import torch
 from dreamwam.sparse.hybrid.config import HybridConfig
 from dreamwam.sparse.hybrid.native_config import NativeRoutingConfig
 from dreamwam.sparse.hybrid.native_packing import compile_pool_geometry, pool_read_count, pooled_layer
-from dreamwam.sparse.hybrid.native_scores import native_layer_scores, native_read_route
+from dreamwam.sparse.hybrid.native_scores import native_layer_scores, native_read_route, scoring_heads
 from dreamwam.sparse.hybrid.runtime import HybridVisualRuntime
 from dreamwam.sparse.hybrid.schedule import Schedule
 from dreamwam.sparse.profile.geometry import TokenGrid
@@ -43,19 +43,22 @@ def test_configuration_roundtrip_exact_budgets_and_unsupported_combinations():
 @pytest.mark.parametrize("signal,offline", [("action", "action"), ("value_norm", "value_norm"),
     ("value_action", "value_action"), ("dynamic", "value_video_time"),
     ("visual_context", "visual_context"), ("action_context", "action_context_support")])
-def test_native_scores_match_independent_complete_joint_profile(signal, offline):
+@pytest.mark.parametrize("heads,limit", [(2, 2), (24, 4), (7, 4)])
+def test_native_scores_match_independent_complete_joint_profile(signal, offline, heads, limit):
     grid = TokenGrid(3, 2, 2)
     model, _ = model_and_inputs()
     mask = model.mot.build_attention_mask(video_length=12, action_length=4, video_tokens_per_frame=4, device="cpu")
-    video = tuple(torch.randn(1, 12, 8) for _ in range(3))
-    action = tuple(torch.randn(1, 4, 8) for _ in range(3))
-    q, k, v = [torch.cat((video[i], action[i]), dim=1)[0].reshape(16, 2, 4).transpose(0, 1) for i in range(3)]
+    video = tuple(torch.randn(1, 12, heads * 4) for _ in range(3))
+    action = tuple(torch.randn(1, 4, heads * 4) for _ in range(3))
+    ids = list(scoring_heads(heads, limit))
+    q, k, v = [torch.cat((video[i], action[i]), dim=1)[0].reshape(16, heads, 4).transpose(0, 1)[ids]
+               for i in range(3)]
     expected = token_signals(joint_probabilities(q, k, mask), v, grid)[offline].mean(dim=0)
-    config = NativeRoutingConfig(signal=signal, heads=2)
-    actual = native_layer_scores(config, video, action, num_heads=2, frame_size=4, mask=mask)
+    config = NativeRoutingConfig(signal=signal, heads=limit)
+    actual = native_layer_scores(config, video, action, num_heads=heads, frame_size=4, mask=mask)
     torch.testing.assert_close(actual, expected, atol=1e-7, rtol=1e-6)
     fusion = replace(config, signal="fusion", weights=((signal, 1.), ("visual_context" if signal != "visual_context" else "action", 0.)))
-    normalized = native_layer_scores(fusion, video, action, num_heads=2, frame_size=4, mask=mask)
+    normalized = native_layer_scores(fusion, video, action, num_heads=heads, frame_size=4, mask=mask)
     torch.testing.assert_close(normalized, actual / actual.mean().clamp_min(1e-30))
 
 
@@ -151,9 +154,14 @@ def test_nonfinite_score_falls_back_to_uniform_and_is_audited(monkeypatch):
 def test_native_routing_graphs_replay_changed_inputs_and_overwrite_every_buffer(device, backend, placement):
     if device == "cuda" and not torch.cuda.is_available():
         pytest.skip("requires fresh separate GPU admission")
-    model, inputs = model_and_inputs()
-    model = model.to(device)
-    inputs = {name: value.to(device) if isinstance(value, torch.Tensor) else value for name, value in inputs.items()}
+    # RoPE tensors are ordinary attributes, so Module.to alone does not move
+    # them. Construct on the target device, as the existing CUDA tests do.
+    with torch.device(device):
+        model, inputs = model_and_inputs()
+    dtype = torch.bfloat16 if device == "cuda" else torch.float32
+    model.to(dtype=dtype)
+    inputs = {name: value.to(device=device, dtype=dtype if value.is_floating_point() else value.dtype)
+              if isinstance(value, torch.Tensor) else value for name, value in inputs.items()}
     if placement in ("layerwise", "pool"):
         config = native_config(("dense", "reuse", "dense", "reuse"), layerwise=placement == "layerwise",
             packing="pool" if placement == "pool" else "hard", observed="full" if placement == "pool" else "score",

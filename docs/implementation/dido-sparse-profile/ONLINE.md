@@ -5,6 +5,17 @@ speed or SR result is claimed yet. This extends the inherited hybrid executor;
 it does not replace the uniform feature-reuse control or change model inputs,
 checkpoint, resolution, action horizon or denoising steps.
 
+First verification, 2026-09-20 19:18 UTC, source
+`bdabd8b37ce859a4964a5d1708239b36e38dac14`: the eight related CPU test modules
+passed (65 passed, 9 skipped, 16 subtests; exit 0). The four new actual CUDA graph
+cases failed (exit 1), before checkpoint or rollout work. Their logs are retained
+under H100 `outputs/dido-sparse-profile-20260920/native-checks-bdabd8b/`.
+One cause was an implicit CPU-to-CUDA head-index transfer inside capture; the
+other was a test fixture constructed on CPU whose ordinary RoPE attributes did
+not move with `Module.to`. The corrective change selects static head views on
+device and constructs CUDA fixtures on CUDA, with BF16 matching the checkpoint.
+No checkpoint was loaded by these toy-model checks. Reverification is pending.
+
 ## Signals and their age
 
 `selection.method: native` enables an explicit `native_routing` configuration.

@@ -24,7 +24,11 @@ def score_work(config, *, layers, num_heads, video_length, action_length):
 
 def to_heads(value, num_heads, ids):
     batch, length, width = value.shape
-    return value.reshape(batch, length, num_heads, width // num_heads).permute(0, 2, 1, 3)[:, ids].float()
+    heads = value.reshape(batch, length, num_heads, width // num_heads).permute(0, 2, 1, 3)
+    # Python advanced-index tuples create a host index tensor and copy it to CUDA,
+    # which is forbidden during graph capture. Static views plus stack stay on
+    # the input device, including unevenly spaced head subsets.
+    return torch.stack([heads[:, head] for head in ids], dim=1).float()
 
 
 def native_layer_scores(config, video_io, action_io, *, num_heads, frame_size, mask):
