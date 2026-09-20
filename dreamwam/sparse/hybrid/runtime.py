@@ -7,6 +7,7 @@ import torch
 
 from .config import HybridConfig
 from .execution import HybridExecutor, selected_video_state, tensor_state
+from .graphs import ExecutionDispatcher
 from .schedule import StepContext, compile_plan, stable_hash
 from .selection import select
 from .state import VisualState
@@ -25,9 +26,8 @@ class HybridVisualRuntime:
         self.config = config if isinstance(config, HybridConfig) else HybridConfig.from_mapping(config)
         if model.training or model.config.setting != "joint":
             raise ValueError("hybrid visual execution requires Joint inference")
-        if self.config.backend != "eager":
-            raise ValueError("this implementation stage supports eager execution only")
         self.model = model
+        self.dispatch = ExecutionDispatcher(model, self.config)
         self.state = VisualState()
         self._originals = []
         self._active = False
@@ -38,7 +38,7 @@ class HybridVisualRuntime:
         return compile_plan(self.config, num_steps)
 
     def _call(self, operation, request):
-        return getattr(self.executor, operation)(**request)
+        return self.dispatch(operation, getattr(self.executor, operation), request)
 
     def _restore_router(self, result):
         if "gates" not in result:
@@ -117,11 +117,13 @@ class HybridVisualRuntime:
         self._stats["total_video_token_layers"] += batch * length * layers
         self._stats["read_video_token_layers"] += batch * kv_rows * layers
         self._stats["action_probe_rows"] += selection.action_probe_rows if selection else 0
+        self._stats["graph_replays"] += int(self.dispatch.last_replayed)
         row = dict(step_index=step_index, requested_op=decision.operation, effective_op=effective,
                    q_rows=q_rows, kv_rows=kv_rows, read_mode=decision.read_mode,
                    route_refresh=effective != "reuse", route_age=step_index - self.state.route_step,
                    action_layer_updates=layers, fallback_reason=None,
-                   action_probe_rows=selection.action_probe_rows if selection else 0)
+                   action_probe_rows=selection.action_probe_rows if selection else 0,
+                   graph_key=self.dispatch.last_key, graph_replay=self.dispatch.last_replayed)
         if self.config.diagnostics == "trace":
             # Device values are serialized once at request end, not inside a timed step.
             row.update(route=self.state.route.clone(), updated_at=self.state.updated_at.clone(),
@@ -145,6 +147,7 @@ class HybridVisualRuntime:
             bound = signature.bind(*args, **kwargs)
             bound.apply_defaults()
             self.plan = self.validate_num_steps(bound.arguments["num_steps"])
+            self.dispatch.begin_request()
             self.state.clear()
             self._active = True
             self._request_id += 1
@@ -152,7 +155,7 @@ class HybridVisualRuntime:
                                denoising_steps=0, dense_steps=0, sparse_steps=0, reuse_steps=0,
                                action_layer_updates=0, computed_video_token_layers=0,
                                total_video_token_layers=0, read_video_token_layers=0,
-                               action_probe_rows=0, steps=[], status="RUNNING")
+                               action_probe_rows=0, graph_replays=0, steps=[], status="RUNNING")
             try:
                 result = sample(*args, **kwargs)
                 if self._stats["denoising_steps"] != self.plan.schedule.num_steps:
@@ -202,6 +205,10 @@ class HybridVisualRuntime:
 
     def close_graphs(self):
         self.reset()
+        self.dispatch.clear()
+
+    def graph_stats(self):
+        return self.dispatch.stats()
 
     def __exit__(self, exc_type, exc_value, traceback):
         for owner, name, original in reversed(self._originals):

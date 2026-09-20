@@ -13,6 +13,8 @@ from .sparse import SparseConfig
 from .sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
 from .sparse.conditioned_frame_cache import ConditionedFrameCache, GraphedConditionedFrameCache
 from .sparse.fresh_visual_tokens import FreshVisualTokenSparsity, fresh_visual_options
+from .sparse.hybrid import HybridConfig
+from .sparse.hybrid.runtime import HybridVisualRuntime
 from .sparse.prompt_cache import PromptEncodingCache, prompt_cache_options
 from .sparse.visual_cache_graphs import GraphedVisualTokenCache
 from .sparse.visual_step_cache import VisualStepCache, visual_cache_options
@@ -50,6 +52,7 @@ class DreamWAMPolicy:
         visual_cache: dict | None = None,
         prompt_cache: dict | None = None,
         fresh_visual_tokens: dict | None = None,
+        hybrid_visual: dict | None = None,
     ):
         self.config = config
         self.evaluation = config.evaluation
@@ -63,9 +66,17 @@ class DreamWAMPolicy:
         self.visual_cache_config = visual_cache_options(visual_cache)
         self.prompt_cache_config = prompt_cache_options(prompt_cache)
         self.fresh_visual_config = fresh_visual_options(fresh_visual_tokens)
+        hybrid_config = HybridConfig.from_mapping(hybrid_visual) if hybrid_visual is not None else None
+        self.hybrid_visual_config = hybrid_config.describe() if hybrid_config is not None else None
+        self._hybrid_visual_runtime = None
         self._visual_cache_runtime = None
         self._prompt_cache_runtime = None
         self._fresh_visual_runtime = None
+        if hybrid_config is not None:
+            if self.visual_cache_config is not None or self.fresh_visual_config is not None or self.sparse_config.enabled:
+                raise ValueError("hybrid_visual must not be combined with another visual/sparse wrapper")
+            if hybrid_config.backend == "cuda_graph" and self.device.type != "cuda":
+                raise ValueError("hybrid_visual cuda_graph requires a CUDA device")
         if self.fresh_visual_config is not None:
             if self.visual_cache_config is not None or self.sparse_config.enabled:
                 raise ValueError("fresh_visual_tokens must be measured without visual_cache or sparse attention")
@@ -139,14 +150,28 @@ class DreamWAMPolicy:
                 graph_enabled=bool(options.get("graph_dispatch")),
             )
             self._fresh_visual_runtime.__enter__()
+        if hybrid_config is not None:
+            self._hybrid_visual_runtime = HybridVisualRuntime(self.model, hybrid_config)
+            self._hybrid_visual_runtime.__enter__()
+
+    def validate_inference_options(self):
+        """Validate after any adapter overrides, before text/VAE/model execution."""
+        if self._hybrid_visual_runtime is not None:
+            self._hybrid_visual_runtime.validate_num_steps(int(self.evaluation["denoising_steps"]))
 
     def reset(self) -> None:
         """Charge each episode its first instruction encoding; visual state is request-local."""
         if self._prompt_cache_runtime is not None:
             self._prompt_cache_runtime.clear()
+        if self._hybrid_visual_runtime is not None:
+            self._hybrid_visual_runtime.reset()
 
     def close(self) -> None:
         """Remove inference wrappers before the adapter releases model modules."""
+        if self._hybrid_visual_runtime is not None:
+            self._hybrid_visual_runtime.__exit__(None, None, None)
+            self._hybrid_visual_runtime.close_graphs()
+            self._hybrid_visual_runtime = None
         if self._fresh_visual_runtime is not None:
             self._fresh_visual_runtime.__exit__(None, None, None)
             self._fresh_visual_runtime.close_graphs()
@@ -198,6 +223,7 @@ class DreamWAMPolicy:
         state: np.ndarray,
         instruction: str,
     ) -> np.ndarray:
+        self.validate_inference_options()
         state = np.asarray(state, dtype=np.float32)
         if state.shape != (self.config.model.proprio_dim,):
             raise ValueError(
@@ -247,9 +273,11 @@ def build_policy(
     visual_cache: dict | None = None,
     prompt_cache: dict | None = None,
     fresh_visual_tokens: dict | None = None,
+    hybrid_visual: dict | None = None,
 ) -> DreamWAMPolicy:
     checkpoint = Path(config.paths.checkpoint)
     if not checkpoint.is_file():
         raise FileNotFoundError(f"Missing DreamWAM checkpoint: {checkpoint}")
     return DreamWAMPolicy(config, device=device, sparse=sparse, visual_cache=visual_cache,
-                         prompt_cache=prompt_cache, fresh_visual_tokens=fresh_visual_tokens)
+                         prompt_cache=prompt_cache, fresh_visual_tokens=fresh_visual_tokens,
+                         hybrid_visual=hybrid_visual)

@@ -207,7 +207,8 @@ class DreamWAMPolicy:
         self.policy = build_policy(release, device=device, sparse=self._sparse_options,
                                    visual_cache=options.get("visual_cache"),
                                    prompt_cache=options.get("prompt_cache"),
-                                   fresh_visual_tokens=options.get("fresh_visual_tokens"))
+                                   fresh_visual_tokens=options.get("fresh_visual_tokens"),
+                                   hybrid_visual=options.get("hybrid_visual"))
         self._sparse_hash = config_hash(self.policy.sparse_config)
 
         # ``build_policy`` gives the policy its own reference to the release YAML's
@@ -221,6 +222,12 @@ class DreamWAMPolicy:
         for key in ("action_horizon", "video_frames", "denoising_steps"):
             if int(self._evaluation[key]) <= 0:
                 raise ValueError(f"evaluation.{key} must be positive")
+        if getattr(self.policy, "_hybrid_visual_runtime", None) is not None:
+            try:
+                self.policy.validate_inference_options()
+            except BaseException:
+                self.policy.close()
+                raise
 
         self._action_horizon = int(self._evaluation["action_horizon"])
         self._rng_mode = str(options.get("rng_mode") or RNG_MODE_FIXED_PER_PREDICT)
@@ -270,6 +277,11 @@ class DreamWAMPolicy:
         if self.policy.fresh_visual_config is not None:
             self._fingerprint["fresh_visual_tokens"] = self.policy.fresh_visual_config
             self._fingerprint["fresh_visual_semantics"] = "per-step frame-quota selection; current-input bypass; no visual cache"
+        if getattr(self.policy, "hybrid_visual_config", None) is not None:
+            runtime = self.policy._hybrid_visual_runtime
+            self._fingerprint["hybrid_visual"] = self.policy.hybrid_visual_config
+            self._fingerprint["hybrid_plan_hash"] = runtime.config.policy_hash
+            self._fingerprint["hybrid_operations"] = list(runtime.config.schedule.operations)
         notes = (
             "DreamWAM released checkpoint through its own build_policy; the benchmark "
             "flips the images and DreamWAM center-crops, resizes and concatenates them "
@@ -361,6 +373,8 @@ class DreamWAMPolicy:
             diagnostics["prompt_cache"] = self.policy._prompt_cache_runtime.stats()
         if self.policy._fresh_visual_runtime is not None:
             diagnostics["fresh_visual_tokens"] = dict(self.policy._fresh_visual_runtime.last_stats)
+        if getattr(self.policy, "_hybrid_visual_runtime", None) is not None:
+            diagnostics["hybrid_visual"] = dict(self.policy._hybrid_visual_runtime.last_stats)
         if self.policy.sparse_config.enabled:
             # Executed density, not the requested one: a budget can be clamped by the
             # structural floor or replaced by a fallback route.
