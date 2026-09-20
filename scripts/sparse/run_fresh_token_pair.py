@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Bounded exploratory fresh-token evaluation, with explicit graphics sharing.
+"""Bounded paired evaluation, defaulting to the historical fresh-token quick50.
 
 Run with the frozen evaluator interpreter and its src plus LIBERO on PYTHONPATH.
 Never resume/overwrite an existing output, retry a native crash, or kill foreign
 processes. The existing native-read guard is enabled for every episode.
+Explicit config pairs and an episode count support separately labelled pilots.
 """
 
 import argparse
@@ -71,6 +72,34 @@ def completed_outcomes(run_dir):
     return [r for r in accepted_records(run_dir) if r.status in TASK_OUTCOME_STATUSES]
 
 
+def validate_pair_configs(loaded, planned_episodes, policy_uuid, render_uuid):
+    """An explicit pilot changes its manifest size, never its pairing/protocol."""
+    dense, sparse = (loaded[arm] for arm in ("dense", "sparse"))
+    for item in (dense, sparse):
+        if item.config.benchmark.planned_episodes != planned_episodes:
+            raise ValueError("config episode count differs from the declared pilot/screening size")
+        runtime = item.config.runtime
+        if list(runtime.policy_gpu_uuids) != [policy_uuid] or runtime.render_gpu_uuid != render_uuid:
+            raise ValueError("config GPU/renderer differs from the explicit placement")
+    for key in ("benchmark", "protocol", "runtime"):
+        if dense.resolved[key] != sparse.resolved[key]:
+            raise ValueError(f"paired configs differ in {key}")
+    dpolicy, spolicy = dense.resolved["policy"], sparse.resolved["policy"]
+    if {k: v for k, v in dpolicy.items() if k != "options"} != {
+            k: v for k, v in spolicy.items() if k != "options"}:
+        raise ValueError("paired model paths/interpreter differ")
+    for key in ("action_horizon", "denoising_steps", "rng_mode", "prompt_cache"):
+        if dpolicy["options"].get(key) != spolicy["options"].get(key):
+            raise ValueError(f"paired common model option differs: {key}")
+
+
+def fingerprint_matches(fingerprint, options, checkpoint_sha256):
+    keys = ["action_horizon", "denoising_steps", "rng_mode", "prompt_cache"]
+    methods = [key for key in ("visual_cache", "fresh_visual_tokens", "hybrid_visual") if key in options]
+    return (len(methods) == 1 and all(fingerprint.get(k) == options[k] for k in keys + methods)
+            and fingerprint.get("checkpoint_sha256") == checkpoint_sha256)
+
+
 def stop_owned_process(proc, grace_seconds=180):
     """Allow a CPU-rendered episode to finish; bound cleanup of only this process tree."""
     if proc.poll() is not None:
@@ -114,6 +143,10 @@ def main():
     parser.add_argument("--model-root", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--adapter-report", type=Path, required=True)
+    parser.add_argument("--dense-config", type=Path)
+    parser.add_argument("--sparse-config", type=Path)
+    parser.add_argument("--planned-episodes", type=int, default=50,
+                        help="must equal each config's complete manifest; pilot configs must be labelled")
     parser.add_argument("--allow-shared-graphics", action="store_true")
     parser.add_argument("--render-backend", choices=("egl", "osmesa"), default="egl")
     parser.add_argument("--first-arm", choices=("sparse", "dense"), default="sparse",
@@ -126,6 +159,10 @@ def main():
     parser.add_argument("--smoke-only", action="store_true",
                         help="stop after the first accepted candidate episode; retain its 50-identity manifest")
     args = parser.parse_args()
+    if bool(args.dense_config) != bool(args.sparse_config):
+        parser.error("supply both explicit configs or neither")
+    if args.planned_episodes < 1 or (not args.dense_config and args.planned_episodes != 50):
+        parser.error("non-50 pilots require explicit labelled configs and a positive episode count")
     if len(set(args.authorized_gpus)) < 3 or any(i < 0 for i in args.authorized_gpus):
         parser.error("authorize at least three distinct nonnegative GPU indices")
     if min(args.wall_seconds, args.admission_seconds, args.stop_grace_seconds) <= 0:
@@ -137,7 +174,7 @@ def main():
         raise ValueError("require verified adapter report for this frozen model")
     meta = dict(status="ADMISSION", start_utc=utc(), pid=os.getpid(), model_commit=commit,
         evaluator_commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=args.eval_root, text=True).strip(),
-        planned_episodes_per_arm=50, shared_graphics=args.allow_shared_graphics,
+        planned_episodes_per_arm=args.planned_episodes, shared_graphics=args.allow_shared_graphics,
         authorized_gpu_indices=args.authorized_gpus,
         render_backend=args.render_backend,
         first_arm=args.first_arm,
@@ -156,6 +193,16 @@ def main():
     render_uuid = env["RENDER_GPU_UUID"] if args.render_backend == "egl" else None
     if policy_uuid == render_uuid:
         raise ValueError("split policy and rendering GPUs")
+    suffix = "-osmesa" if args.render_backend == "osmesa" else ""
+    configs = dict(dense=args.dense_config or args.eval_root / f"configs/experiments/dreamwam-fresh-control-quick50{suffix}.yaml",
+                   sparse=args.sparse_config or args.eval_root / f"configs/experiments/dreamwam-fresh-token10-quick50{suffix}.yaml")
+    loaded_configs = {arm: load_experiment(path, require_paths=True) for arm, path in configs.items()}
+    validate_pair_configs(loaded_configs, args.planned_episodes, policy_uuid, render_uuid)
+    for arm, loaded in loaded_configs.items():
+        reference = report["arms"][arm]["fingerprint"]
+        if not fingerprint_matches(reference, loaded.config.policy.options, reference["checkpoint_sha256"]):
+            raise ValueError("adapter report does not validate the requested model options")
+    meta["configs"] = {arm: str(path) for arm, path in configs.items()}
 
     def record(gpus, arm, phase):
         row = dict(utc=utc(), arm=arm, phase=phase, gpus=gpus)
@@ -173,14 +220,7 @@ def main():
         if args.first_arm == "dense":
             arms.reverse()
         for arm, kind in arms:
-            suffix = "-osmesa" if args.render_backend == "osmesa" else ""
-            config = args.eval_root / f"configs/experiments/dreamwam-fresh-{kind}-quick50{suffix}.yaml"
-            loaded = load_experiment(config, require_paths=True)
-            if loaded.config.runtime.render_gpu_uuid != render_uuid:
-                raise ValueError("config renderer differs from the explicit execution backend")
-            benchmark = loaded.config.benchmark
-            assert list(benchmark.task_ids) == list(range(10))
-            assert list(benchmark.initial_state_indices) == list(range(5)) and benchmark.repeats == 1
+            config, loaded = configs[arm], loaded_configs[arm]
             deadline = time.monotonic() + args.admission_seconds
             while True:
                 gpus = inventory()
@@ -230,9 +270,7 @@ def main():
                             fingerprint = json.loads(path.read_text()).get("policy_worker", {}).get("description", {}).get("fingerprint")
                             if fingerprint:
                                 expected = loaded.config.policy.options
-                                keys = ["action_horizon", "denoising_steps", "rng_mode", "prompt_cache",
-                                        "fresh_visual_tokens" if arm == "sparse" else "visual_cache"]
-                                if any(fingerprint.get(k) != expected[k] for k in keys) or fingerprint["checkpoint_sha256"] != report["arms"][arm]["fingerprint"]["checkpoint_sha256"]:
+                                if not fingerprint_matches(fingerprint, expected, report["arms"][arm]["fingerprint"]["checkpoint_sha256"]):
                                     violation = "policy_fingerprint_mismatch"
                                     break
                                 entry["fingerprint_verified"] = True
@@ -251,9 +289,9 @@ def main():
                 return
             manifest = json.loads((root / "run/manifest.json").read_text())
             accepted = completed_outcomes(root / "run")
-            if manifest["planned_episodes"] != 50 or len(accepted) != 50:
-                raise ValueError("run exited without all 50 accepted outcomes")
-        meta["status"] = "QUICK50_PAIR_COMPLETE"
+            if manifest["planned_episodes"] != args.planned_episodes or len(accepted) != args.planned_episodes:
+                raise ValueError("run exited without all declared accepted outcomes")
+        meta["status"] = "QUICK50_PAIR_COMPLETE" if args.planned_episodes == 50 else "PILOT_PAIR_COMPLETE"
     except KeyboardInterrupt:
         meta["status"] = "INTERRUPTED"
         raise

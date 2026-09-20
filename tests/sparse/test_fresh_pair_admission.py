@@ -63,6 +63,43 @@ def test_cpu_renderer_uses_only_policy_gpu_and_preserves_a_spare(admission):
         admission.admit_cpu_rendering(gpus, "gpu-2", [3, 4, 5])
 
 
+def test_explicit_pilot_checks_count_protocol_and_common_options(admission):
+    from copy import deepcopy
+    from types import SimpleNamespace
+
+    def item():
+        return SimpleNamespace(config=SimpleNamespace(
+            benchmark=SimpleNamespace(planned_episodes=3),
+            runtime=SimpleNamespace(policy_gpu_uuids=("gpu-3",), render_gpu_uuid=None)),
+            resolved=dict(benchmark={"tasks": [0, 1, 2]}, protocol={"max_steps": 400},
+                runtime={"policy_gpu_uuids": ["gpu-3"], "render_gpu_uuid": None},
+                policy={"repo_root": "/frozen/model", "options": {
+                    "action_horizon": 32, "denoising_steps": 10, "rng_mode": "fixed_per_predict",
+                    "prompt_cache": {"capacity": 8}}}))
+    pair = {"dense": item(), "sparse": item()}
+    admission.validate_pair_configs(pair, 3, "gpu-3", None)
+    with pytest.raises(ValueError, match="episode count"):
+        admission.validate_pair_configs(pair, 50, "gpu-3", None)
+    for section, key, value in (("protocol", "max_steps", 200), ("benchmark", "tasks", [1, 2, 3])):
+        changed = deepcopy(pair)
+        changed["sparse"].resolved[section][key] = value
+        with pytest.raises(ValueError, match=section):
+            admission.validate_pair_configs(changed, 3, "gpu-3", None)
+    changed = deepcopy(pair)
+    changed["sparse"].resolved["policy"]["options"]["denoising_steps"] = 5
+    with pytest.raises(ValueError, match="common model option"):
+        admission.validate_pair_configs(changed, 3, "gpu-3", None)
+
+
+def test_hybrid_fingerprint_rejects_wrong_options_and_checkpoint(admission):
+    options = dict(action_horizon=32, denoising_steps=10, rng_mode="fixed_per_predict",
+                   prompt_cache={"capacity": 8}, hybrid_visual={"read": {"mode": "compact"}})
+    fingerprint = dict(options, checkpoint_sha256="verified-checkpoint")
+    assert admission.fingerprint_matches(fingerprint, options, "verified-checkpoint")
+    assert not admission.fingerprint_matches(fingerprint, options, "another-checkpoint")
+    assert not admission.fingerprint_matches(fingerprint, dict(options, hybrid_visual={}), "verified-checkpoint")
+
+
 def test_cleanup_bounds_an_unresponsive_worker_without_touching_an_unrelated_process(admission):
     code = "import signal,time; signal.signal(signal.SIGINT, signal.SIG_IGN); print('ready',flush=True); time.sleep(60)"
     owned = subprocess.Popen([sys.executable, "-c", code], stdout=subprocess.PIPE,

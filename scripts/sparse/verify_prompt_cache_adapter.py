@@ -9,6 +9,7 @@ This is an integration check, not closed-loop SR or another timing benchmark.
 
 import argparse
 from datetime import datetime, timezone
+from dataclasses import replace
 import gc
 import json
 import os
@@ -24,15 +25,26 @@ from evaluation.action_eval.infer import create_policy
 from dreamwam.sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
 from dreamwam.sparse.conditioned_frame_cache import ConditionedFrameCache
 from dreamwam.sparse.fresh_visual_tokens import FreshVisualTokenSparsity
+from dreamwam.sparse.hybrid import HybridConfig
+from dreamwam.sparse.hybrid.runtime import HybridVisualRuntime
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--inputs", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
-    parser.add_argument("--fresh-visual-tokens", action="store_true",
+    method = parser.add_mutually_exclusive_group()
+    method.add_argument("--fresh-visual-tokens", action="store_true",
                         help="verify the every-step 10% non-cached visual candidate")
+    method.add_argument("--hybrid-options", type=Path,
+                        help="JSON model-options fragment or evaluation YAML containing hybrid_visual")
     args = parser.parse_args()
+    hybrid = None
+    if args.hybrid_options:
+        import yaml
+        payload = yaml.safe_load(args.hybrid_options.read_text())
+        options = payload["policy"]["options"] if "policy" in payload else payload
+        hybrid = HybridConfig.from_mapping(options["hybrid_visual"])
     args.out_dir.mkdir(parents=True, exist_ok=False)
     root = Path(__file__).resolve().parents[2]
     report = dict(status="RUNNING", start_utc=datetime.now(timezone.utc).isoformat(),
@@ -40,6 +52,8 @@ def main():
         torch=torch.__version__, cuda=torch.version.cuda,
         cuda_visible_devices=os.environ.get("CUDA_VISIBLE_DEVICES"),
         input_manifest_sha256=sha256(args.inputs), arms={}, sr=None)
+    if args.hybrid_options:
+        report["hybrid_options_source"] = dict(path=str(args.hybrid_options), sha256=sha256(args.hybrid_options))
     write = lambda: (args.out_dir / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     write()
     try:
@@ -63,9 +77,12 @@ def main():
             adapter = None
             try:
                 fresh = args.fresh_visual_tokens and arm == "sparse"
+                is_hybrid = hybrid is not None and arm == "sparse"
                 if fresh:
                     options = dict(keep_ratio=0.1, selection="action", graph_dispatch="all_transformers")
-                option_key = "fresh_visual_tokens" if fresh else "visual_cache"
+                if is_hybrid:
+                    options = hybrid.describe()
+                option_key = "hybrid_visual" if is_hybrid else "fresh_visual_tokens" if fresh else "visual_cache"
                 adapter = create_policy(dict(model_root=str(root),
                     model_config=str(root / "configs/dreamwam_joint.yaml"),
                     checkpoint=str(root / "checkpoints/dreamwam_joint.pt"),
@@ -78,17 +95,22 @@ def main():
                 evaluation = dict(policy.evaluation)
                 if evaluation["denoising_steps"] != 10 or evaluation["action_horizon"] != 32:
                     raise AssertionError("released action sampling changed")
-                runtime = policy._fresh_visual_runtime if fresh else policy._visual_cache_runtime
+                runtime = (policy._hybrid_visual_runtime if is_hybrid else
+                           policy._fresh_visual_runtime if fresh else policy._visual_cache_runtime)
                 prompt = policy._prompt_cache_runtime
                 runtime.__exit__(None, None, None)
                 policy.text_encoder = prompt.encoder
                 eager = (ConditionedFrameCache(policy.model, refresh_every=1) if arm == "dense" else
+                         HybridVisualRuntime(policy.model, replace(hybrid, backend="eager")) if is_hybrid else
                          FreshVisualTokenSparsity(policy.model, keep_ratio=0.1, selection="action") if fresh else
                          ActionGuidedVisualTokenCache(policy.model, refresh_every=5,
                                                      keep_ratio=0.1, guidance_weight=1.0))
                 try:
                     with eager:
-                        refs = [policy.predict_action(**item).copy() for item in inputs]
+                        refs, reference_stats = [], []
+                        for item in inputs:
+                            refs.append(policy.predict_action(**item).copy())
+                            reference_stats.append(dict(eager.last_stats))
                 finally:
                     policy.text_encoder = prompt
                     runtime.__enter__()
@@ -109,8 +131,12 @@ def main():
                     if prediction.diagnostics["prompt_cache"]["last_hit"] != expected_hit:
                         raise AssertionError("instruction cache hit/miss boundary changed")
                     stats = prediction.diagnostics[option_key]
-                    if stats["action_layer_updates"] != 300 or stats["computed_video_token_layers"] != (61740 if arm == "dense" else 9000 if fresh else 9720):
+                    if stats["action_layer_updates"] != 300 or stats["computed_video_token_layers"] != reference_stats[input_id]["computed_video_token_layers"]:
                         raise AssertionError("executed budget changed")
+                    if is_hybrid and (stats["read_video_token_layers"] != reference_stats[input_id]["read_video_token_layers"]
+                                      or [s["effective_op"] for s in stats["steps"]]
+                                      != [s["effective_op"] for s in reference_stats[input_id]["steps"]]):
+                        raise AssertionError("hybrid execution differs from eager plan/budgets")
                     if fresh and (stats["reused_visual_steps"] != 0 or stats["selection_builds"] != 10):
                         raise AssertionError("fresh candidate used visual reuse or skipped selection")
                     saved[f"adapter_{index}"] = prediction.actions.copy()
@@ -123,7 +149,9 @@ def main():
                 record["actions_sha256"] = sha256(args.out_dir / f"{arm}-actions.npz")
                 record["graphs"] = runtime.graph_stats()
                 adapter.close(); adapter = None
-                if (runtime.replay is not None if fresh else bool(runtime.graphs)) or prompt.entries:
+                graphs_retained = (bool(runtime.dispatch.entries) if is_hybrid else
+                                   runtime.replay is not None if fresh else bool(runtime.graphs))
+                if graphs_retained or prompt.entries:
                     raise AssertionError("close did not release caches")
                 record["close_released_caches"] = True
                 del runtime, prompt, eager, policy
