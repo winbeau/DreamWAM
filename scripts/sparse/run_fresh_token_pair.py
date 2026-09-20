@@ -116,6 +116,8 @@ def main():
     parser.add_argument("--adapter-report", type=Path, required=True)
     parser.add_argument("--allow-shared-graphics", action="store_true")
     parser.add_argument("--render-backend", choices=("egl", "osmesa"), default="egl")
+    parser.add_argument("--first-arm", choices=("sparse", "dense"), default="sparse",
+                        help="use Dense first when establishing a new renderer baseline")
     parser.add_argument("--authorized-gpus", type=int, nargs="+", default=[4, 5, 6, 7],
                         help="explicitly authorized physical indices for this host, including an unused spare")
     parser.add_argument("--wall-seconds", type=int, default=3600)
@@ -138,6 +140,7 @@ def main():
         planned_episodes_per_arm=50, shared_graphics=args.allow_shared_graphics,
         authorized_gpu_indices=args.authorized_gpus,
         render_backend=args.render_backend,
+        first_arm=args.first_arm,
         wall_seconds_per_arm=args.wall_seconds, stop_grace_seconds=args.stop_grace_seconds,
         smoke_only=args.smoke_only, runs=[], sr=None)
     save = lambda: (args.out_dir / "controller.json").write_text(json.dumps(meta, indent=2) + "\n")
@@ -166,8 +169,10 @@ def main():
     signal.signal(signal.SIGTERM, interrupt)
     save()
     try:
-        # Candidate first gives a quick quality signal without waiting for Dense.
-        for arm, kind in (("sparse", "token10"), ("dense", "control")):
+        arms = [("sparse", "token10"), ("dense", "control")]
+        if args.first_arm == "dense":
+            arms.reverse()
+        for arm, kind in arms:
             suffix = "-osmesa" if args.render_backend == "osmesa" else ""
             config = args.eval_root / f"configs/experiments/dreamwam-fresh-{kind}-quick50{suffix}.yaml"
             loaded = load_experiment(config, require_paths=True)
