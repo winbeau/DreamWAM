@@ -1,5 +1,7 @@
 # DreamWAM paper-evaluation handoff
 
+**User decision, 2026-09-20 11:31 UTC:** preserve the fresh-token results and wait for an empty card before SR testing. The matched Dense/Sparse comparison remains 50 episodes per arm; no SR rollout is launched in this update.
+
 This page records DreamWAM Joint integration with [action-eval](https://github.com/winbeau/action-eval). **main** is the maintained evaluation branch and default. The user **resumed GPU 4–7 work** on 2026-09-20 for [every-step 10% visual tokens without cross-step visual caching](fresh-visual-tokens-20260920.md). That new method is numerically verified and measures **1.191×** (269.27 → 226.12 ms) versus strengthened Dense in a shared-load 96-request experiment. It has substantial action differences and no SR result. The shared-renderer smoke failed on its first native read (`unwritten_rgb`, exit 73), before any valid episode; all owned processes exited. The new matched 50-pair comparison awaits an available renderer. The historical pause audit and older cached results are retained in the [earlier consolidated record](sparse-results-paused-20260920.md); old 500-episode queues remain stopped.
 
 The [fixed-budget compact Head/Stage execution trial](head-stage-execution-20260920.md)

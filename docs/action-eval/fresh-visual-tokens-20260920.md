@@ -1,6 +1,7 @@
 # Every-step 10% visual tokens without cross-step reuse
 
 Status at **2026-09-20 09:25 UTC: implementation/latency VERIFIED; renderer smoke FAILED; SR unavailable**.
+User decision recorded **2026-09-20 11:31 UTC: preserve results; defer SR until an empty card is available** ("先保留结果，等空卡再测 SR"). No GPU job is launched in this update. The measured implementation and raw evidence remain unchanged.
 The user resumed work on GPUs 4–7 and requested token sparsity at every step
 instead of the prior visual-cache mechanism. Historical 500-episode queues stay
 stopped. Current screening remains 50 episodes per candidate.
@@ -132,8 +133,8 @@ controller was started, and there is no automatic retry on the failed placement.
 The system loader does not find `OSMesa`; no dependency was installed or changed.
 MuJoCo documents OSMesa as a possible software renderer in its
 [official rendering documentation](https://mujoco.readthedocs.io/en/3.3.1/programming/),
-but that does not make it available in this preserved environment. The user has
-been asked whether GPU 5 or 7 can be made available for rendering. Once available,
+but that does not make it available in this preserved environment. The user chose
+to preserve the results and wait for an empty card before testing SR. Once available,
 recheck its occupancy, use the same card for both arms, rerun a bounded native
 render check, then launch the existing new 50-pair cohort. Prefer an empty
 renderer and omit `--allow-shared-graphics` for that launch; do not assume sharing
