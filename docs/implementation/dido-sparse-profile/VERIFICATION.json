@@ -1,0 +1,56 @@
+{
+  "status": "CPU_VERIFIED_GPU_AND_REAL_CHECKPOINT_PENDING",
+  "turn_classification": "progress",
+  "goal_status": "active",
+  "source_commit": "a2aa495a84c4a2f0883c461078a6b625ba5fdfba",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "checkpoint_loaded_in_tests": false,
+  "host": "h100-server",
+  "worktree": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-run-a2aa495-profile-verification",
+  "artifact_root": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920",
+  "python": "3.10.20",
+  "torch": "2.7.1+cu126",
+  "interpreter": "/root/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-6c52f36/.venv/bin/python",
+  "environment": {"CUDA_VISIBLE_DEVICES": "", "PYTHONPATH": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-run-a2aa495-profile-verification", "OMP_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1"},
+  "verification": {
+    "start_utc": "2026-09-20T18:01:36Z",
+    "end_utc": "2026-09-20T18:01:42Z",
+    "command": "python -m pytest -q tests/sparse/test_action_video_profile.py tests/sparse/test_profile_interventions_pooling.py tests/sparse/test_hybrid_profiling.py tests/sparse/test_trajectory_export.py",
+    "exit_code": 0,
+    "passed": 33,
+    "skipped": 1,
+    "skip_reason": "actual CUDA profile check requires separate admission",
+    "cli_command": "python scripts/sparse/profile_action_video.py --help",
+    "cli_exit_code": 0
+  },
+  "artifacts": {
+    "cpu-a2aa495/pytest.log": "792864df58c7f9fee2113abcecf807f18deed325a8c226902219e373096080c8",
+    "cpu-a2aa495/pytest.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "cpu-a2aa495/environment.log": "513e1e6dd8745e430a39379e3071f4608064718c2e6756d9bfac2dcafe2d18bd",
+    "cpu-a2aa495/start.txt": "fdd7eec567578c05295f512b6750c53f3bf7a673d4523d2fd9a5905cf82417bc",
+    "cpu-a2aa495/end.txt": "79522b318f4e1b2fe3c9ace5c867b77c43dff9cf330ba46970f98dd31a8a3f43",
+    "cpu-a2aa495/cli-help.log": "7914d21e2a52c0f3e6ca1639765eedb471b1ce283123c3581b62bc41c05996e3",
+    "cpu-c2f592c/pytest.log": "34c91cbb6b3d9012ceb6b865db06334c5eff79d622221b06495416971c7416c2",
+    "cpu-c20831e/pytest.log": "2027af721aaeec9ac92bf397e3a1affab74b4a763fc97dd3f8104ffbc48c6b80"
+  },
+  "dependencies_changed": false,
+  "dependency_git_blobs_unchanged_since_fda0235": {
+    "pyproject.toml": "621dda7b23239cf6b1e264d55a8aeb0418956068",
+    "requirements.txt": "93db5b12cc3af04fea70592f850876acda6d9e78",
+    "deployment/h100/model-requirements.lock": "d92a93f88eb96488d98798e81f21789ce420d405",
+    "uv.lock": null
+  },
+  "new_real_checkpoint_predict_calls": 0,
+  "new_closed_loop_episode_attempts": 0,
+  "closed_loop_total_attempt_cap": 50,
+  "sr_drop_margin_percentage_points": 5,
+  "owned_gpu_processes": [],
+  "limitations": [
+    "CPU checks use synthetic small Joint models, not the real checkpoint",
+    "No actual CUDA graph, new timing, intervention-effectiveness or SR evidence",
+    "Author raw data remains unavailable; self-captured data is explicitly distinct",
+    "Reference interventions retain dense computation and are not acceleration",
+    "Pooling reference is not integrated into the online hybrid executor"
+  ],
+  "next_step": "Raw-profile analysis/reporting and fresh authorized GPU admission, then 9-input native checkpoint capture before causal screening and online integration"
+}

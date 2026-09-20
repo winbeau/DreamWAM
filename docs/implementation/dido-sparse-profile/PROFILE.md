@@ -1,6 +1,7 @@
 # Native action–video profile
 
-Status: implemented, pending server tests and real-checkpoint capture. No new
+Status: implemented; 33 H100 CPU tests pass through `a2aa495`, one CUDA check
+skipped pending admission. Real-checkpoint capture remains unstarted. No new
 selection, speed or SR result is asserted by this instrumentation.
 
 `scripts/sparse/profile_action_video.py` consumes the committed experiment plan
@@ -45,6 +46,9 @@ Raw video latents after each sampler update and the final normalized action
 sequence are saved separately; final returned actions retain original policy
 denormalization/binarization. The per-step observed-frame latent is labelled
 before native restoration; the final tensor is after restoration.
+An independent empty-intervention native control captures raw actions and video
+latents. The real runner requires bitwise parity in both as well as returned
+executable actions; gripper binarization cannot conceal a raw-output mismatch.
 
 Camera metadata denotes nominal input-image footprints. Cell `7` is the first
 wrist cell on row 0; cell `14` returns to agentview on row 1. Neither consecutive
@@ -76,3 +80,27 @@ The writer refuses overwrites and stops on its byte limit; incomplete artifacts
 are preserved. Runtime counters reset between requests and all hooks restore on
 success or failure. These checks do not establish candidate CUDA graph parity;
 that gate applies to the separate online runtime implementation.
+
+## Diagnostic interventions and pooling reference
+
+`selection.py` provides exact balanced frame budgets with the inherited uniform
+integer positions, seeded random selection and explicit score rankings. Score
+fusion requires named, nonnegative weights; no learned or heuristic mixture is
+enabled by default. `intervention.py` accepts frozen step/layer/index targets and
+separates action reads (AV), video reads (VV) and both. Delete changes only the
+selected mask entries; zero-value replacement keeps the full key denominator;
+recompute reads current K/V for the selected rows and previous-step K/V for the
+others. Every variant still computes all dense projections/FFNs and is diagnostic,
+not a speed measurement. All action keys remain present.
+
+`pooling.py` builds camera/frame-bounded regions from the real grid and permits
+independently specified fine regions. It averages keys **after original RoPE**
+and values without adding fictitious pooled positions. Original visibility must
+be identical within a group. Count multiplicity adds log(group size) to logits;
+unit multiplicity does not. Count weighting is exact for identical grouped keys,
+but both variants are approximations for differing keys. Mixed cache ages are
+rejected unless a future executor explicitly refreshes or splits the group.
+Full refinement restores native key order and output in CPU checks. Keeping the
+entire current frame gives at least 162 rows, versus 294 full rows. Online
+dynamic-region ranking, fixed packing budgets and CUDA graph execution remain
+separate uncompleted gates.

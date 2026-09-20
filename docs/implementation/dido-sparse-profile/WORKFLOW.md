@@ -2,6 +2,11 @@
 
 Created 2026-09-20 UTC. Setup/handoff only; no new GPU experiments started.
 
+Execution amendment, 2026-09-20: the user has now invoked the saved goal. Follow
+the current [progress ledger](PROGRESS.md) and AGENTS.md amendments: 50 total
+closed-loop episode attempts across arms, SR tolerance 5 percentage points,
+author raw data unavailable. The original setup statement above is historical.
+
 ## Repositories and scope
 
 | Item | Location / identity |
