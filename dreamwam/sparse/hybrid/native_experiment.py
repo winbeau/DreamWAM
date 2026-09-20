@@ -47,8 +47,21 @@ def native_candidates(stage, backend="cuda_graph"):
                 packing="pool", refine_fraction=0.25)
         add("pool198_dynamic_unit", signal="dynamic", observed="full", read_count=198,
             packing="pool", refine_fraction=0.25, multiplicity="unit")
+    elif stage == "refresh":
+        # Exhaust all single Sparse positions; the no-refresh member anchors
+        # this new cohort. Recompute urgency is independent of the AV/VV rank.
+        context = replace(base, native_routing=NativeRoutingConfig(signal="action_context", recompute="drift"))
+        rows.append(("context_no_refresh", context))
+        for step in range(1, 10):
+            operations = list(base.schedule.operations)
+            operations[step] = "sparse"
+            rows.append((f"context_sparse_{step}", replace(context, schedule=Schedule(10, tuple(operations)))))
+    elif stage == "structure":
+        for signal in ("uniform", "action_context"):
+            rows.append(("structure_" + signal, replace(base, recompute_ratio=0.19,
+                reuse_mode="structure", native_routing=NativeRoutingConfig(signal=signal))))
     else:
-        raise ValueError("stage must be selectors, layers or pooling")
+        raise ValueError("unknown bounded native stage")
     if len({config.policy_hash for _, config in rows}) != len(rows):
         raise ValueError("duplicate native candidates")
     return rows

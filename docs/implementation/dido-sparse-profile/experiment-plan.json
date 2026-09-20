@@ -77,6 +77,21 @@
     "weight_calibration": "compare dynamic fractions 0.25/0.5/0.75 plus pure endpoints with identical observed-frame uniform treatment; no fusion chosen by default",
     "scope": "D0/R1-9 feature schedules; separate explicit Sparse refresh scan and structure comparisons follow after this bounded screen"
   },
+  "online_followup": {
+    "status": "PREDECLARED_NOT_RUN",
+    "input_ids": ["t000-i001-r00-s42-c0004", "t001-i001-r00-s42-c0006"],
+    "repeats": 2, "group_size": 2,
+    "stages": {
+      "refresh": {"candidates": 10, "predict_call_cap": 190, "scope": "shared action_context R56/U30: no refresh plus each single Sparse step 1 through 9; U uses current patch drift, rank remains Dense-anchored"},
+      "structure": {"candidates": 2, "predict_call_cap": 38, "scope": "native uniform versus shared action_context; D0, fixed structure at R1-9, all 56 kept visual rows recomputed every step"}
+    },
+    "all_stages_predict_call_cap": 228, "raw_byte_cap": 33554432,
+    "gpu": "H100 GPU 5, fresh >=50000 MiB free and <=10% utilization before each model load",
+    "estimate_minutes": [3, 5], "closed_loop_episodes": 0,
+    "controls": ["dense_strong", "uniform_features_56_of_294"],
+    "selection_rule": "retain non-dominated mean/worst raw executed-prefix error and warm latency; gripper disagreement is reported separately; no adaptive threshold or automatic rollout",
+    "next_bounded_stage": "at most two multi-refresh schedules from the single-step results, then independent read/recompute budgets; predeclare before execution"
+  },
   "confirmation": {
     "suite": "libero_spatial",
     "reserved_tasks": [3, 4, 5],

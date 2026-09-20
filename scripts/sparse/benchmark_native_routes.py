@@ -38,14 +38,14 @@ def stamp():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--stage", choices=("selectors", "layers", "pooling"), required=True)
+    parser.add_argument("--stage", choices=("selectors", "layers", "pooling", "refresh", "structure"), required=True)
     parser.add_argument("--plan", type=Path, default=Path("docs/implementation/dido-sparse-profile/experiment-plan.json"))
     parser.add_argument("--config", type=Path, default=Path("configs/dreamwam_joint.yaml"))
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--share-gpu5", action="store_true")
     args = parser.parse_args()
     plan = json.loads(args.plan.read_text())
-    design = plan["online_screen"]
+    design = plan["online_followup" if args.stage in ("refresh", "structure") else "online_screen"]
     inputs_path = Path(plan["development"]["profile_inputs"])
     if sha256(inputs_path) != plan["development"]["profile_inputs_sha256"]:
         parser.error("development input manifest changed")
@@ -103,7 +103,7 @@ def main():
             "two timing repeats/input; action error cannot establish SR",
             "all online operations and request-local transfers are inside full predict_action timing",
             "raw-output archival and hashing happen after timing; raw observer call overhead is included",
-            "anchor-native scores refresh only at Dense steps; this stage has D0/R1-9",
+            "anchor-native scores refresh only at Dense steps; Sparse recomputation and structure reuse are separate controls",
             "fusion weights are competing calibration settings, not an assumed improvement"])
     write = lambda: write_json(args.out_dir / "report.json", report)
     write()

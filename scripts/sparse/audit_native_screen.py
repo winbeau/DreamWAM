@@ -42,6 +42,32 @@ def raw_output(root, record):
     return result
 
 
+def audit_native_counters(config, counters):
+    """Reject feature-cache accounting passed off as fresh structure execution."""
+    q_count, kv_count = config.budgets(294, 98)
+    steps = counters["steps"]
+    if len(steps) != 10 or counters["action_layer_updates"] != 300:
+        raise ValueError("native step/action budget changed")
+    computed, read, anchor = 0, 0, 0
+    for index, (op, step) in enumerate(zip(config.schedule.operations, steps)):
+        if op == "sparse" and q_count == kv_count == 294:
+            op = "dense"
+        if op == "dense":
+            q, kv, anchor = 294, 294, index
+        else:
+            q = kv_count if config.reuse_mode == "structure" else q_count if op == "sparse" else 0
+            kv = kv_count
+        if (step["effective_op"] != op or step["q_rows"] != q or step["kv_rows"] != kv or
+            step["native_score_age"] != index - anchor or
+            step["reuse_mode"] != config.reuse_mode or
+            step["reused_visual_features"] != (op == "reuse" and config.reuse_mode == "features")):
+            raise ValueError("native counters differ from the frozen schedule/reuse design")
+        computed += q * 30
+        read += kv * 30
+    if counters["computed_video_token_layers"] != computed or counters["read_video_token_layers"] != read:
+        raise ValueError("native total token/layer budget changed")
+
+
 def audit(root):
     root = Path(root)
     report = json.loads((root / "report.json").read_text())
@@ -120,15 +146,7 @@ def audit(root):
             config = HybridConfig.from_mapping(config)
             if config.policy_hash != row["variant"]:
                 raise ValueError("candidate identity changed")
-            steps = row["counters"]["steps"]
-            count = config.budgets(294, 98)[1]
-            if (len(steps) != 10 or steps[0]["q_rows"] != 294 or steps[0]["kv_rows"] != 294 or
-                [step["effective_op"] for step in steps] != ["dense"] + ["reuse"] * 9 or
-                any(step["q_rows"] != 0 or step["kv_rows"] != count for step in steps[1:]) or
-                [step["native_score_age"] for step in steps] != list(range(10)) or
-                row["counters"]["computed_video_token_layers"] != 294 * 30 or
-                row["counters"]["read_video_token_layers"] != (294 + 9 * count) * 30):
-                raise ValueError("native counters differ from the fixed feature-reuse design")
+            audit_native_counters(config, row["counters"])
             checked_native += 1
         metrics.append(dict(stage=report["stage"], group=row["group"], repeat=row["repeat"],
             input_id=row["input_id"], variant=row["variant"], label=report["labels"].get(row["variant"], row["variant"]),
@@ -176,7 +194,7 @@ def main():
         exit_code=0, argv=sys.argv, source_commit=subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
         cohorts=cohorts, artifacts={table.name: sha256(table)},
         limitations=["two exposed development observations per stage; timing repetitions are not independent task samples",
-            "frozen D0/R1-9 feature reuse; no SR or fresh-every-step acceleration claim",
+            "each candidate's frozen schedule/reuse mode is audited; no SR claim from action-vector replay",
             "all phase/raw files verified; reported speedups refer to warm complete predictions with prompt hits",
             "full cold/graph/prompt-miss calls remain separately recorded in source calls.jsonl"])
     (args.out_dir / "report.json").write_text(json.dumps(result, indent=2, allow_nan=False) + "\n")

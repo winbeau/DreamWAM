@@ -33,3 +33,23 @@ def test_pool_hard_controls_match_read_quotas_and_fusion_weights_are_explicit():
                 if config.native_routing.signal == "fusion"]
     assert {dict(native.weights)["dynamic"] for native in mixtures} == {0.25, 0.5, 0.75}
     assert all(sum(dict(native.weights).values()) == 1 for native in mixtures)
+
+
+def test_refresh_scan_covers_every_single_position_and_structure_has_fresh_queries():
+    refresh = dict(native_candidates("refresh"))
+    assert len(refresh) == 10
+    assert [config.schedule.operations.count("sparse") for config in refresh.values()] == [0] + [1] * 9
+    for index in range(1, 10):
+        config = refresh[f"context_sparse_{index}"]
+        assert config.schedule.operations[index] == "sparse"
+        assert config.budgets(294, 98) == (30, 56)
+        assert config.native_routing.signal == "action_context" and config.native_routing.recompute == "drift"
+    for _, config in native_candidates("structure"):
+        assert config.reuse_mode == "structure" and config.budgets(294, 98) == (56, 56)
+        assert "sparse" not in config.schedule.operations
+    for stage, count in (("refresh", 190), ("structure", 38)):
+        configs = [config for _, config in native_candidates(stage)]
+        assert all(HybridConfig.from_mapping(c.describe()).policy_hash == c.policy_hash for c in configs)
+        cells = request_cells([c.policy_hash for c in configs], ["a", "b"], repeats=2,
+                              group_size=2, controls=("dense_strong", "uniform_features"))
+        assert planned_calls(cells, 2)["total"] == count
