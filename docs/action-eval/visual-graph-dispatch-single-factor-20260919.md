@@ -1,5 +1,11 @@
 # Transformer graph dispatch: isolated full-request measurements
 
+Continuation: the [temporal graph budget and native Dense graph control](temporal-graph-single-factor-20260919.md)
+now measure **1.965×** for conservative temporal reuse and **2.046×** for guided
+10% against native Dense with no unused K/V export. Those controls strengthen
+the historical full-budget wrapper comparison below. The temporal graph pilot
+is complete; its independent full Spatial evaluation is running.
+
 Status: **MEASURED**. Adding partial-refresh capture at **e9c50e3** completed
 **2026-09-19 23:28:14 UTC**, exit 0: **142.12 ms** guided versus **293.29 ms**
 equally graphed matched Dense, **2.063626×**. It follows the separately measured

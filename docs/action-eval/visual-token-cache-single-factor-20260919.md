@@ -3,6 +3,12 @@
 Status: **MEASURED latency; official quality validation in progress**.
 Date: 2026-09-19 UTC. The SR-constrained acceleration goal remains unproven.
 
+Latest continuation: [temporal graphs and native Dense graph control](temporal-graph-single-factor-20260919.md)
+measure 1.965× for conservative temporal reuse and 2.046× for guided 10%. Guided
+still retains the 95 outcomes below and is inactive. Eager temporal stopped at
+a GPU resource gate after 142 successes; an independent temporal graph full run
+is now active after its successful 15-episode pilot. No incomplete SR is reported.
+
 Update at **23:36:39 UTC**: the full guided run has **95/500** terminal outcomes
 (93 successes, two official task failures). Dense and the temporal-only control
 succeeded on both failed identities. Guided is now inactive after a bounded

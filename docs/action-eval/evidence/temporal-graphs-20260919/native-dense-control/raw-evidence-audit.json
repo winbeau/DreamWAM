@@ -1,0 +1,247 @@
+{
+  "utc": "2026-09-20T00:12:16.598871+00:00",
+  "runs": {
+    "temporal_budget": {
+      "start_utc": "2026-09-19T23:50:19.373112+00:00",
+      "end_utc": "2026-09-19T23:52:56.074797+00:00",
+      "git": {
+        "exit_code": 0,
+        "stdout": "a6910f3cd69def7e81411cef49ec6184a5b85b5b",
+        "stderr": ""
+      },
+      "timed_requests": 330,
+      "variants": {
+        "native_dense": {
+          "samples": 30,
+          "mean_seconds": 0.4639714241027832,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "eager_dense": {
+          "samples": 30,
+          "mean_seconds": 0.46914790384471416,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "eager_guided": {
+          "samples": 30,
+          "mean_seconds": 0.28190574441105126,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "buffered_dense": {
+          "samples": 30,
+          "mean_seconds": 0.4778805169587334,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "buffered_guided": {
+          "samples": 30,
+          "mean_seconds": 0.28661195331563555,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_dense": {
+          "samples": 30,
+          "mean_seconds": 0.29914608256270486,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_guided": {
+          "samples": 30,
+          "mean_seconds": 0.16058843173086643,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_partial_dense": {
+          "samples": 30,
+          "mean_seconds": 0.29841119777411224,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_partial_guided": {
+          "samples": 30,
+          "mean_seconds": 0.1450692031532526,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "eager_temporal": {
+          "samples": 30,
+          "mean_seconds": 0.28298416702697676,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_temporal": {
+          "samples": 30,
+          "mean_seconds": 0.15104195438325405,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        }
+      },
+      "sha256": {
+        "manifest.json": "e1f36faad4e1ba00ace40976fe15ddfd4b094df997acd5a3c5a02a0e6aca49e2",
+        "summary.json": "21e0125be22466eab7ffd2b52391553f659a051f8f685bf67c85b7cfec056836",
+        "requests.jsonl": "c7332aac35477822654af9ca97426d5d5c95c429942e61cba538f1329dcfcdcf"
+      }
+    },
+    "native_graph_control": {
+      "start_utc": "2026-09-20T00:05:02.499909+00:00",
+      "end_utc": "2026-09-20T00:07:51.018392+00:00",
+      "git": {
+        "exit_code": 0,
+        "stdout": "c8da19a86e413b3dd353f8e456cbd6cb208f3e49",
+        "stderr": ""
+      },
+      "timed_requests": 360,
+      "variants": {
+        "native_dense": {
+          "samples": 30,
+          "mean_seconds": 0.47123462247351805,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "eager_dense": {
+          "samples": 30,
+          "mean_seconds": 0.47371385904649893,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "eager_guided": {
+          "samples": 30,
+          "mean_seconds": 0.2846966323132316,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "buffered_dense": {
+          "samples": 30,
+          "mean_seconds": 0.4840965483337641,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "buffered_guided": {
+          "samples": 30,
+          "mean_seconds": 0.29003007027010125,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_dense": {
+          "samples": 30,
+          "mean_seconds": 0.2959786041950186,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_guided": {
+          "samples": 30,
+          "mean_seconds": 0.15955983276168506,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_partial_dense": {
+          "samples": 30,
+          "mean_seconds": 0.29599947991470493,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_partial_guided": {
+          "samples": 30,
+          "mean_seconds": 0.14369685507069033,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "eager_temporal": {
+          "samples": 30,
+          "mean_seconds": 0.28577799865355097,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_temporal": {
+          "samples": 30,
+          "mean_seconds": 0.14960058368742465,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        },
+        "graphed_native_dense": {
+          "samples": 30,
+          "mean_seconds": 0.2939625509704153,
+          "input_counts": {
+            "0": 10,
+            "1": 10,
+            "2": 10
+          }
+        }
+      },
+      "sha256": {
+        "manifest.json": "2c2fefc2a9da0b5eaa8ccee42929433b9ee386f36702589c96c97ea1ebec2384",
+        "summary.json": "124c5793786b9666612d9e09fd56cf43da74277ec3c8dd511a0232772f33d73e",
+        "requests.jsonl": "2232734ee3c86d4f3dbacce1d38be0bc9ae309bc1ad9424b9f6780b2e8fa0b4c"
+      }
+    }
+  },
+  "sr": null
+}

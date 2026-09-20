@@ -1,0 +1,7 @@
+config      : /data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-temporal-graph-3b1bf18/configs/experiments/dreamwam-temporal-graph-pilot.yaml
+experiment  : dreamwam-temporal-graph-pilot (DreamWAM Joint temporal visual cache with transformer graphs (pilot))
+fingerprint : bde052cbb32f5620655bcd2ff1e5a16959c66c0df89200124fa0ffe1f51de756
+benchmark   : libero_spatial tasks=[0, 1, 2] inits=[0, 1, 2, 3, 4]
+episodes    : 15 planned (3 tasks x 5 inits x 1 repeats)
+protocol    : dreamwam-release-v1 max_steps=400 wait=30 K=10 seed=42
+note        : paths were not verified; run `doctor` for that

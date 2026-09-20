@@ -1,0 +1,212 @@
+{
+  "schema_version": "action-eval/provenance/v1",
+  "run_id": "run-20260919T235542Z-bde052cb",
+  "created_at": "2026-09-20T00:01:47Z",
+  "config_fingerprint": "bde052cbb32f5620655bcd2ff1e5a16959c66c0df89200124fa0ffe1f51de756",
+  "config_source": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-pilot-20260919/gpu2/run-20260919T235542Z-bde052cb/resolved.yaml",
+  "config_sha256": "0acf3fffde347d0631aa8ee1b2f25feafc65fbe31c59021f10bf26e927b12ce4",
+  "protocol_sha256": null,
+  "files": [
+    {
+      "label": "policy.checkpoint",
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/checkpoints/dreamwam_joint.pt",
+      "exists": true,
+      "sha256": null,
+      "size_bytes": 12063469113,
+      "error": null
+    },
+    {
+      "label": "policy.model_config",
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/configs/dreamwam_joint.yaml",
+      "exists": true,
+      "sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+      "size_bytes": 2506,
+      "error": null
+    },
+    {
+      "label": "adapter.entrypoint",
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/evaluation/action_eval/infer.py",
+      "exists": true,
+      "sha256": "93211858ad42fe0e877daa08a38c8285e321f9fff5a99a63097c36a9334d907e",
+      "size_bytes": 17960,
+      "error": null
+    }
+  ],
+  "repo": {
+    "policy": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c",
+      "commit": "2c02c5cde86757479c3e8a2b0ceac094e1403d9c",
+      "dirty": true,
+      "dirty_files": [
+        "?? .venv",
+        "?? pretrained"
+      ],
+      "state": "dirty"
+    },
+    "evaluator": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2",
+      "commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b",
+      "dirty": true,
+      "dirty_files": [
+        "?? .venv"
+      ],
+      "state": "dirty"
+    }
+  },
+  "environment": {
+    "python": "3.10.20",
+    "executable": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/action-eval-visual-4701ac2/.venv/bin/python",
+    "platform": "Linux-6.8.0-110-generic-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "evaluator_commit": "4701ac2d6eed5e0e3e49b840f04c0ed77eb6774b",
+    "env": {
+      "MUJOCO_GL": "egl",
+      "PYOPENGL_PLATFORM": "egl",
+      "CUDA_VISIBLE_DEVICES": "2",
+      "LIBERO_CONFIG_PATH": "/tmp/action-eval-libero-26vjyt2g",
+      "OMP_NUM_THREADS": "1"
+    },
+    "evaluator_dirty": true,
+    "benchmark_root": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/LIBERO"
+  },
+  "gpus": [
+    {
+      "index": 0,
+      "uuid": "GPU-0b850a78-f1db-6bda-8dd5-d96296bc1bfc",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 25515
+    },
+    {
+      "index": 1,
+      "uuid": "GPU-b9157129-ac58-501d-c93d-b1cf622ff61b",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 26357
+    },
+    {
+      "index": 2,
+      "uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 1
+    },
+    {
+      "index": 3,
+      "uuid": "GPU-9aa453a3-63f9-ea74-f4ce-7d119e9e69ba",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 879
+    },
+    {
+      "index": 4,
+      "uuid": "GPU-490b4a76-6210-31b9-4e03-838a113cf5f4",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 57035
+    },
+    {
+      "index": 5,
+      "uuid": "GPU-7d459912-b567-59fb-8abf-57c18713cb84",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 56653
+    },
+    {
+      "index": 6,
+      "uuid": "GPU-8cf0627c-5919-bace-1c42-e5d627c36cb5",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 56653
+    },
+    {
+      "index": 7,
+      "uuid": "GPU-5e07f671-a7e1-b38d-4d14-30316dfd9ce8",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 55443
+    }
+  ],
+  "policy_worker": {
+    "startup": {
+      "protocol_version": "action-eval-proto/v1",
+      "adapter_target": "evaluation/action_eval/infer.py:create_policy",
+      "device": "cuda:0",
+      "python": "3.10.20",
+      "pid": 186592
+    },
+    "description": {
+      "observation_profile": "dreamwam-libero-2cam-v1",
+      "action_profile": "libero-osc-pose-v1",
+      "rng_mode": "fixed_per_predict",
+      "action_horizon": 32,
+      "fingerprint": {
+        "adapter": "dreamwam",
+        "release_config": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/configs/dreamwam_joint.yaml",
+        "release_config_sha256": "ea24363fed171eab3f68fcb089a2b29d3d3a6785ab941d78662c71dc70c8a115",
+        "checkpoint": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/DreamWAM-graph-policy-2c02c5c/checkpoints/dreamwam_joint.pt",
+        "checkpoint_source": "policy.checkpoint",
+        "checkpoint_size_bytes": 12063469113,
+        "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+        "checkpoint_conflict": null,
+        "setting": "joint",
+        "action_horizon": 32,
+        "denoising_steps": 10,
+        "video_frames": 9,
+        "replan_steps": 10,
+        "wait_steps": 30,
+        "binarize_gripper": true,
+        "model_seed": 42,
+        "rng_mode": "fixed_per_predict",
+        "sparse": {
+          "enabled": false,
+          "selection": "av_context",
+          "backend": "masked",
+          "block_size": 14,
+          "future_ratio": 1.0,
+          "conditional_keep_ratio": 1.0,
+          "context_weight": 1.0,
+          "min_anchor_mass": 0.0,
+          "fallback": "recency",
+          "num_stages": 1,
+          "anchor_refresh": "layer",
+          "anchor_layer": 0,
+          "sparse_layers": null,
+          "head_blocks": null,
+          "stage_blocks": null
+        },
+        "sparse_config_hash": "10d80b7ca00e97b5",
+        "visual_cache": {
+          "refresh_every": 5,
+          "token_keep_ratio": 1.0,
+          "action_guidance_weight": 1.0,
+          "graph_dispatch": "all_transformers"
+        }
+      },
+      "notes": "DreamWAM released checkpoint through its own build_policy; the benchmark flips the images and DreamWAM center-crops, resizes and concatenates them inside predict_action, so this adapter applies no preprocessing of its own; note that the model seeds every sampling call from its own config, so repeats of one initial state are not independent samples"
+    },
+    "worker_index": 0,
+    "requested_gpu_uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+    "cuda_visible_devices": "2",
+    "gpu": {
+      "index": 2,
+      "uuid": "GPU-b15ccd2e-b17d-20a9-a130-b4b7eb37a074",
+      "name": "NVIDIA H200 NVL",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 1
+    },
+    "gpu_resolved": true,
+    "predict_calls": 10,
+    "simulator_env": {
+      "OMP_NUM_THREADS": "1 (preserved: already set in the environment)"
+    },
+    "stage": "finished"
+  },
+  "shared_machine": {
+    "note": "GPU inventory is a snapshot taken at run start. It is not a reservation: other users' jobs can change free memory at any time.",
+    "gpu_count_visible": 8
+  },
+  "unknowns": [
+    "policy.checkpoint size recorded but not hashed; pass --hash-checkpoint to include a content hash"
+  ]
+}

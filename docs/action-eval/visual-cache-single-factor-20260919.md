@@ -6,13 +6,14 @@ The complete goal (SR-constrained ≥1.5×, aiming for 2×) remains active and u
 Subsequent [token refresh and action-guidance factors](visual-token-cache-single-factor-20260919.md)
 are measured separately and do not change the frozen V1 full Spatial candidate.
 
-Continuation after **23:38 UTC**: the GPU-1 temporal-only full run has resumed
-from its preserved 118 accepted successes. The guided 10% candidate stopped at
-its recovery cap with 95 terminal outcomes, including two task failures on
-identities where temporal-only and Dense succeeded. Its outcomes remain intact.
-This changes resource priority, not either run's configuration. The [graph-factor
-record](visual-graph-dispatch-single-factor-20260919.md) contains the official
-record audit and new latency evidence; all incomplete full-run SR remains null.
+Continuation at **2026-09-20 00:12 UTC**: eager temporal retains 142/500 successes
+and is inactive after a GPU resource gate; the guided candidate retains 95/500
+terminal outcomes including two failures where temporal and Dense succeeded.
+The [conservative temporal graph path](temporal-graph-single-factor-20260919.md)
+is bitwise V1 on all measured requests and reaches 1.965× against native Dense
+graph. Its independent pilot completed 15/15 paired successes, and its new full
+run has started. These separate runs do not change or supplement V1's frozen
+denominator. All incomplete full-run SR remains null.
 
 The preceding [FFN-only factors](ffn-cache-single-factor-20260919.md) did not provide
 useful speedup. This next experiment changes one broader factor: **how often all

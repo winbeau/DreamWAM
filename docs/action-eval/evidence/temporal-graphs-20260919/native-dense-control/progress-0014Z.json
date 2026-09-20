@@ -1,0 +1,78 @@
+{
+  "utc": "2026-09-20T00:12:16.624800+00:00",
+  "runs": {
+    "dense": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/matched/run-20260919T220834Z-87c8f1d0",
+      "planned": 500,
+      "completed": 274,
+      "successes": 272,
+      "task_failures": 2,
+      "manifest_sha256": "343a536e8af2273d4e942ed8a99e4b9df9db1cf32d734105ea3f44de4aaa8081",
+      "resolved_sha256": "25021eb8960d7b0ca0ccf7289b3fb1200b377d8479dff4a5af5907c0da780c88",
+      "failed": {
+        "t005-i002-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "4b7c1c1c842b0d0d2bedda24d33b9020684ae8d780e9222cae5b04590df6cad9"
+        },
+        "t005-i003-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "b3346245911414cd7c849d2414507eebca303c7e0e21d7a57d9eee7d2be3544f"
+        }
+      }
+    },
+    "eager_temporal": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/visual-cache-spatial-20260919/refresh5-gpu1/run-20260919T215351Z-7f224961",
+      "planned": 500,
+      "completed": 142,
+      "successes": 142,
+      "task_failures": 0,
+      "manifest_sha256": "220ab29833458a81817e3e3c953d7c5532e4913f91e2fe37aea5ee8c10631215",
+      "resolved_sha256": "9f621deb83a7843555efb69c28ee45ffe168df6ac41fbd3c5a63e8ff7ddd904c",
+      "failed": {}
+    },
+    "eager_guided": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/guided-visual-token-spatial-20260919/guided-gpu1/run-20260919T225943Z-b4cfcb70",
+      "planned": 500,
+      "completed": 95,
+      "successes": 93,
+      "task_failures": 2,
+      "manifest_sha256": "829208c595a4098c9916ee07af412a693a8aa8b44758b61d2073df66469e6f3a",
+      "resolved_sha256": "010e9e38aaaf9866dd175ad0009c03ddadf43718cab7b9c162b4c28c841e80a8",
+      "failed": {
+        "t000-i048-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "7a5b0dbb27414ec22f33817518fdef255779240405b04465816d786e3964bbeb"
+        },
+        "t001-i036-r00-s42": {
+          "attempt": 1,
+          "status": "failed",
+          "sha256": "859d133397a89ac134e0191668ac633309f09eadb826e298ca47e961372120fd"
+        }
+      }
+    },
+    "graph_temporal_pilot": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-pilot-20260919/gpu2/run-20260919T235542Z-bde052cb",
+      "planned": 15,
+      "completed": 15,
+      "successes": 15,
+      "task_failures": 0,
+      "manifest_sha256": "c1750098116388de08df9504a02474afe2376bcb6a43bbe11ebfaf8caab9899a",
+      "resolved_sha256": "0acf3fffde347d0631aa8ee1b2f25feafc65fbe31c59021f10bf26e927b12ce4",
+      "failed": {}
+    },
+    "graph_temporal_full": {
+      "path": "/data/chenjiayu/wenbiao_zhao/dreamwam-sr/outputs/temporal-graph-libero-spatial-20260919/gpu2/run-20260920T001038Z-cf9e4f10",
+      "planned": 500,
+      "completed": 6,
+      "successes": 6,
+      "task_failures": 0,
+      "manifest_sha256": "6f59948ca8c1bd850574a31b32a06c9aea20335f059c4f401c08478507baabc9",
+      "resolved_sha256": "42878d7939348fa649a009c7d978bcb6b23cb8270d94566e0b5fafd219e159f9",
+      "failed": {}
+    }
+  },
+  "sr": null
+}

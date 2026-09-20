@@ -1,0 +1,27 @@
+usage: benchmark_visual_cache_graphs.py [-h] [--config CONFIG]
+                                        [--warmup WARMUP]
+                                        [--graph-warmup GRAPH_WARMUP]
+                                        [--reps REPS]
+                                        [--include-partial-factor]
+                                        [--include-temporal-control] --out-dir
+                                        OUT_DIR
+
+Measure only transformer graph dispatch, with equally graphed Dense controls.
+All timings encompass full predict_action and CPU actions. Cold calls, capture
+costs and model loading are reported separately from warmed rotating samples.
+Every buffered/graphed output must be bitwise its own eager variant on every
+request. No compile, fast math, RNG, scheduler or scientific-setting changes.
+
+options:
+  -h, --help            show this help message and exit
+  --config CONFIG
+  --warmup WARMUP
+  --graph-warmup GRAPH_WARMUP
+  --reps REPS
+  --include-partial-factor
+                        add matched Dense and guided variants with partial-
+                        refresh capture enabled
+  --include-temporal-control
+                        compare full visual refresh against 10 percent with
+                        all-transformer capture fixed
+  --out-dir OUT_DIR
