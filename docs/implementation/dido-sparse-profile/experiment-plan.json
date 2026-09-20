@@ -45,6 +45,30 @@
     "interpretation": "Dense-derived indices are offline diagnostic targets only. Compare within operation/scope/input/location. Dynamic observed-frame scores are all zero; retained ties are explicit. No speed/SR or semantic-label claim.",
     "closed_loop_episodes": 0
   },
+  "online_screen": {
+    "status": "PREDECLARED_NOT_LAUNCHED",
+    "input_ids": ["t000-i001-r00-s42-c0004", "t001-i001-r00-s42-c0006"],
+    "role": "historically exposed development observations, already used for diagnostic screening",
+    "backend": "cuda_graph",
+    "repeats": 2,
+    "group_size": 2,
+    "controls": ["dense_strong", "uniform_features_56_of_294"],
+    "stages": {
+      "selectors": {"candidates": 11, "predict_call_cap": 219},
+      "layers": {"candidates": 4, "predict_call_cap": 76},
+      "pooling": {"candidates": 5, "predict_call_cap": 105}
+    },
+    "all_stages_predict_call_cap": 400,
+    "raw_byte_cap": 33554432,
+    "gpu": "H100 GPU 5 with fresh explicit sharing admission before each stage",
+    "estimate_minutes_per_stage": [3, 8],
+    "closed_loop_episodes": 0,
+    "setup_included_in_call_cap": ["own eager references", "graph capture and changed input", "warm graph cold prompt", "restore prompt hits", "all timed calls"],
+    "numerical_gate": "bitwise executable AND raw pre-binarization actions against each variant's own eager reference on every graph call",
+    "launch_gates": ["native CPU checks", "four actual BF16 CUDA graph cases", "unchanged checkpoint hash", "fresh GPU admission"],
+    "weight_calibration": "compare dynamic fractions 0.25/0.5/0.75 plus pure endpoints with identical observed-frame uniform treatment; no fusion chosen by default",
+    "scope": "D0/R1-9 feature schedules; separate explicit Sparse refresh scan and structure comparisons follow after this bounded screen"
+  },
   "confirmation": {
     "suite": "libero_spatial",
     "reserved_tasks": [3, 4, 5],

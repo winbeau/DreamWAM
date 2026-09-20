@@ -16,6 +16,11 @@ not move with `Module.to`. The corrective change selects static head views on
 device and constructs CUDA fixtures on CUDA, with BF16 matching the checkpoint.
 No checkpoint was loaded by these toy-model checks. Reverification is pending.
 
+Correction source `25a704198ef59b5912735f6638a406aea0a12705` passes its CPU
+module (32 passed, 4 skipped; exit 0). The immediately following CUDA admission
+was refused with GPU 5 at 77% utilization, before CUDA tests started. Preserve
+`native-checks-25a7041/` as a resource admission refusal, not a numerical failure.
+
 ## Signals and their age
 
 `selection.method: native` enables an explicit `native_routing` configuration.
@@ -112,3 +117,29 @@ consistency. Graph tests poison float, integer, boolean and complex staging
 buffers between changed requests. After these gates, use a finite checkpoint
 study against stronger Dense and the original uniform feature-reuse control,
 then the predeclared bounded refresh scan and at most the small 3-pair pilot.
+
+## Finite checkpoint screen
+
+The model-owned `native_experiment.py` freezes 11 selector, 4 depth-sharing and
+5 pooling candidates before checkpoint execution. `benchmark_native_routes.py`
+replays the two diagnostic development observations with two timed repetitions,
+and interleaves stronger Dense and the original uniform feature-reuse control
+within every two-candidate group. The inclusive prediction caps are respectively
+219, 76 and 105 (400 total), including own eager references, graph capture,
+changed inputs, prompt misses and hit restoration. Graph-internal transformer
+warmups also count in reported cold latency; they are not complete predictions.
+No new closed-loop episode is part of this screen.
+
+Every graph call must equal its own eager reference for both executable actions
+and raw pre-binarization actions. All calls have hashed raw/executable archives,
+timings, counters and input/phase identities; timed diagnostics separately report
+the executed first 10 actions and gripper signs. Online scoring/packing and all
+request-local transfers remain inside timing. Archival CPU copies and hashing
+follow timing, with the lightweight raw-output observer itself included.
+
+Fusion is a calibration axis: dynamic weights 0.25, 0.5 and 0.75 compete with
+both pure endpoints using identical uniform observed-frame treatment. The pure
+value-action score also has its normal scored-observed-frame arm, separating that
+choice from fusion. No weight, candidate or refresh schedule is selected yet.
+Pool/hard controls read exactly 198 rows with the same complete observed frame;
+uniform region selection and unit/count multiplicity are explicit ablations.
