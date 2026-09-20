@@ -1,5 +1,11 @@
 # Explicit hybrid visual schedules and compact cache reuse
 
+Follow-up: [two three-pair H100 / OSMesa pilots](hybrid-pilot3-osmesa-20260920.md)
+are now complete. KV25 failed 0/3; KV75 succeeded 3/3 against matched Dense 3/3
+and measured 1.775× in a separate warm same-input replay. Cold-inclusive and
+end-to-end speed, broader SR and best-step selection are not established.
+The implementation/debug snapshot below predates those pilots.
+
 Status: **Core implementation and experiment interfaces IMPLEMENTED; CPU, CUDA
 and real-checkpoint debug checks VERIFIED; complete search and SR unmeasured**.
 Last evidence audit: 2026-09-20 12:44 UTC / 05:44 America/Los_Angeles (PDT).
