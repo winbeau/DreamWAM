@@ -80,3 +80,19 @@ def planned_calls(cells, input_count):
     return dict(eager=appearances * input_count, capture=appearances * input_count,
                 prompt_miss=appearances, restore_prompts=len(groups) * input_count,
                 timed=len(cells), total=appearances * (2 * input_count + 1) + len(groups) * input_count + len(cells))
+
+
+def frozen_candidates(design):
+    """Load a bounded next-stage matrix only from the committed experiment plan."""
+    rows = design["candidates"]
+    if not isinstance(rows, list) or not 1 <= len(rows) <= 8:
+        raise ValueError("frozen stage requires one to eight explicit candidates")
+    result = [(row["label"], HybridConfig.from_mapping(row["hybrid_visual"])) for row in rows]
+    if (len({label for label, _ in result}) != len(result) or
+        len({config.policy_hash for _, config in result}) != len(result)):
+        raise ValueError("duplicate frozen label or candidate")
+    for label, config in result:
+        if not isinstance(label, str) or not label or config.backend != "cuda_graph" or config.diagnostics != "counters":
+            raise ValueError("frozen timing candidates require a label, CUDA graph and counter diagnostics")
+        config.budgets(294, 98)
+    return result

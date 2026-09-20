@@ -8,6 +8,7 @@ closed-loop success computation, automatic retry, or candidate expansion occurs.
 
 import argparse
 from datetime import datetime, timezone
+from dataclasses import replace
 import json
 import os
 from pathlib import Path
@@ -25,7 +26,7 @@ from benchmark_hybrid_schedules import close_runtime, make_runtime, write_json, 
 from dreamwam.config import load_release_config
 from dreamwam.policy import build_policy
 from dreamwam.sparse.hybrid.experiment import request_cells, summarize
-from dreamwam.sparse.hybrid.native_experiment import native_candidates, planned_calls, uniform_feature_control
+from dreamwam.sparse.hybrid.native_experiment import frozen_candidates, native_candidates, planned_calls, uniform_feature_control
 from dreamwam.sparse.hybrid.runtime import HybridVisualRuntime
 from dreamwam.sparse.profile.admission import admit_profile
 from dreamwam.sparse.profile.archive import sha256
@@ -38,7 +39,8 @@ def stamp():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--stage", choices=("selectors", "layers", "pooling", "refresh", "structure"), required=True)
+    parser.add_argument("--stage", choices=("selectors", "layers", "pooling", "refresh", "structure", "frozen"), required=True)
+    parser.add_argument("--design-key", help="committed plan section containing an explicit frozen candidate matrix")
     parser.add_argument("--plan", type=Path, default=Path("docs/implementation/dido-sparse-profile/experiment-plan.json"))
     parser.add_argument("--config", type=Path, default=Path("configs/dreamwam_joint.yaml"))
     parser.add_argument("--out-dir", type=Path, required=True)
@@ -49,7 +51,9 @@ def main():
     if not 0 <= args.admission_wait_seconds <= 120:
         parser.error("admission wait must be within 0..120 seconds")
     plan = json.loads(args.plan.read_text())
-    design = plan["online_followup" if args.stage in ("refresh", "structure") else "online_screen"]
+    if bool(args.design_key) != (args.stage == "frozen"):
+        parser.error("--design-key is required exactly for --stage frozen")
+    design = plan[args.design_key or ("online_followup" if args.stage in ("refresh", "structure") else "online_screen")]
     inputs_path = Path(plan["development"]["profile_inputs"])
     if sha256(inputs_path) != plan["development"]["profile_inputs_sha256"]:
         parser.error("development input manifest changed")
@@ -68,16 +72,17 @@ def main():
             observations[name] = dict(images={key: data[key].copy() for key in ("agentview", "wrist")},
                 state=data["state"].copy(), instruction=str(data["instruction"].item()))
         input_metadata[name] = item
-    if len(observations) != 2 or design["repeats"] != 2 or design["group_size"] != 2:
-        parser.error("this finite screen requires the declared two inputs, two repeats and two candidates/group")
-    candidates = native_candidates(args.stage)
+    if not 2 <= len(observations) <= 9 or design["repeats"] != 2 or design["group_size"] != 2:
+        parser.error("finite screens require 2..9 declared inputs, two repeats and two candidates/group")
+    candidates = frozen_candidates(design) if args.stage == "frozen" else native_candidates(args.stage)
     configs = {config.policy_hash: config for _, config in candidates}
     labels = {config.policy_hash: label for label, config in candidates}
     controls = ("dense_strong", "uniform_features")
     cells = request_cells(list(configs), list(observations), repeats=design["repeats"],
                           group_size=design["group_size"], controls=controls, seed=42)
     budget = planned_calls(cells, len(observations))
-    if budget["total"] != design["stages"][args.stage]["predict_call_cap"] or len(configs) != design["stages"][args.stage]["candidates"]:
+    declared = dict(predict_call_cap=design["predict_call_cap"], candidates=len(design["candidates"])) if args.stage == "frozen" else design["stages"][args.stage]
+    if budget["total"] != declared["predict_call_cap"] or len(configs) != declared["candidates"]:
         parser.error("declared candidate/call cap differs from the frozen executable design")
     source = command("git", "rev-parse", "HEAD")
     dirty = command("git", "status", "--porcelain")
@@ -94,7 +99,8 @@ def main():
     report = dict(status="PREPARING", exit_code=None, start_utc=stamp(), argv=sys.argv, pid=os.getpid(),
         source_commit=source["stdout"].strip(), plan_sha256=sha256(args.plan), config_sha256=sha256(args.config),
         input_manifest_sha256=sha256(inputs_path), inputs=input_metadata,
-        input_kind="self_captured_observations", split_role="development", stage=args.stage,
+        input_kind="self_captured_observations", split_role="development", stage=args.design_key or args.stage,
+        eager_reference_diagnostics="trace" if design.get("trace_eager", False) else "counters",
         torch=torch.__version__, cuda=torch.version.cuda, python=sys.version, gpu_uuid=visible,
         shared_host=True, selected_gpu_sharing=args.share_gpu5, gpu_snapshots=[],
         checkpoint_sha256=None, evaluation=dict(release.evaluation),
@@ -103,7 +109,7 @@ def main():
         labels=labels, candidates={name: config.describe() for name, config in configs.items()},
         cells=cells, budget=budget, started_calls=0, completed_calls=0, raw_bytes=0, graphs={}, sr=None,
         closed_loop_episode_attempts=0,
-        limitations=["two historically exposed development observations, not confirmation",
+        limitations=["historically exposed development observations, not confirmation",
             "two timing repeats/input; action error cannot establish SR",
             "all online operations and request-local transfers are inside full predict_action timing",
             "raw-output archival and hashing happen after timing; raw observer call overhead is included",
@@ -174,7 +180,12 @@ def main():
 
     def runtime_for(name, backend):
         if name == "uniform_features":
-            return HybridVisualRuntime(policy.model, uniform_feature_control(backend))
+            config = uniform_feature_control(backend)
+            if backend == "eager" and design.get("trace_eager", False):
+                config = replace(config, diagnostics="trace")
+            return HybridVisualRuntime(policy.model, config)
+        if name in configs and backend == "eager" and design.get("trace_eager", False):
+            return HybridVisualRuntime(policy.model, replace(configs[name], backend="eager", diagnostics="trace"))
         return make_runtime(policy.model, name, configs, backend)
 
     def snapshot(phase):

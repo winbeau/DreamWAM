@@ -1,6 +1,6 @@
 from dreamwam.sparse.hybrid.config import HybridConfig
 from dreamwam.sparse.hybrid.experiment import request_cells
-from dreamwam.sparse.hybrid.native_experiment import native_candidates, planned_calls, uniform_feature_control
+from dreamwam.sparse.hybrid.native_experiment import frozen_candidates, native_candidates, planned_calls, uniform_feature_control
 
 
 def test_predeclared_stages_and_inclusive_call_cap():
@@ -53,3 +53,24 @@ def test_refresh_scan_covers_every_single_position_and_structure_has_fresh_queri
         cells = request_cells([c.policy_hash for c in configs], ["a", "b"], repeats=2,
                               group_size=2, controls=("dense_strong", "uniform_features"))
         assert planned_calls(cells, 2)["total"] == count
+
+
+def test_committed_frozen_matrices_fit_inclusive_budgets_and_preserve_read_query_separation():
+    import json
+    from pathlib import Path
+    import pytest
+    plan = json.loads((Path(__file__).resolve().parents[2] /
+        "docs/implementation/dido-sparse-profile/experiment-plan.json").read_text())
+    for design in (value for value in plan.values() if isinstance(value, dict) and isinstance(value.get("candidates"), list)):
+        configs = frozen_candidates(design)
+        cells = request_cells([c.policy_hash for _, c in configs], design["input_ids"], repeats=2,
+                              group_size=2, controls=("dense_strong", "uniform_features"))
+        assert planned_calls(cells, len(design["input_ids"]))["total"] == design["predict_call_cap"]
+        with pytest.raises(ValueError, match="duplicate"):
+            frozen_candidates({"candidates": [design["candidates"][0]] * 2})
+    rows = dict(frozen_candidates(plan["online_budget_followup"]))
+    for count in (28, 56, 84):
+        assert rows[f"context_S9_R{count}_U15"].budgets(294, 98) == (15, count)
+    assert rows["context_S9_R56_U45"].budgets(294, 98) == (45, 56)
+    assert rows["context_S4_S9"].schedule.operations.count("sparse") == 2
+    assert rows["context_S1_S4_S9"].schedule.operations.count("sparse") == 3

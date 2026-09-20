@@ -92,6 +92,341 @@
     "selection_rule": "retain non-dominated mean/worst raw executed-prefix error and warm latency; gripper disagreement is reported separately; no adaptive threshold or automatic rollout",
     "next_bounded_stage": "at most two multi-refresh schedules from the single-step results, then independent read/recompute budgets; predeclare before execution"
   },
+  "online_budget_followup": {
+    "status": "PREDECLARED_NOT_RUN",
+    "selection_source": "outputs/dido-sparse-profile-20260920/native-followup-audit-6c9a8bd/refresh/report.json",
+    "decision": "Every single Sparse refresh worsened mean raw-prefix error versus no refresh on the two exposed inputs. The least-error single positions are 9,4,1 (0.124374,0.138186,0.139701); use these only for two bounded multi-refresh controls. No-refresh R56 remains retained.",
+    "input_ids": [
+      "t000-i001-r00-s42-c0004",
+      "t001-i001-r00-s42-c0006"
+    ],
+    "repeats": 2,
+    "group_size": 2,
+    "predict_call_cap": 152,
+    "raw_byte_cap": 33554432,
+    "trace_eager": true,
+    "gpu": "H100 GPU 5, unchanged strict admission with at most 120 seconds waiting",
+    "estimate_minutes": [
+      3,
+      5
+    ],
+    "closed_loop_episodes": 0,
+    "contrasts": "No-refresh read budgets 28/56/84; fixed S9/U15 reads 28/56/84; fixed S9/R56 queries 15/30/45. R56 no-refresh and S9/U30 were measured in the immediately preceding frozen cohort; contemporaneous Dense and historical uniform repeat in every group.",
+    "candidates": [
+      {
+        "label": "context_no_refresh_R28",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.05
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 28
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "recompute": "drift"
+          }
+        }
+      },
+      {
+        "label": "context_no_refresh_R84",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.1
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 84
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "recompute": "drift"
+          }
+        }
+      },
+      {
+        "label": "context_S9_R28_U15",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "sparse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.05
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 28
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "recompute": "drift"
+          }
+        }
+      },
+      {
+        "label": "context_S9_R56_U15",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "sparse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.05
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 56
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "recompute": "drift"
+          }
+        }
+      },
+      {
+        "label": "context_S9_R84_U15",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "sparse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.05
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 84
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "recompute": "drift"
+          }
+        }
+      },
+      {
+        "label": "context_S9_R56_U45",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "sparse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.15
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 56
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "recompute": "drift"
+          }
+        }
+      },
+      {
+        "label": "context_S4_S9",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "reuse",
+              "reuse",
+              "reuse",
+              "sparse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "sparse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.1
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 56
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "recompute": "drift"
+          }
+        }
+      },
+      {
+        "label": "context_S1_S4_S9",
+        "hybrid_visual": {
+          "schedule": {
+            "kind": "explicit",
+            "num_steps": 10,
+            "operations": [
+              "dense",
+              "sparse",
+              "reuse",
+              "reuse",
+              "sparse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "reuse",
+              "sparse"
+            ]
+          },
+          "recompute": {
+            "keep_ratio": 0.1
+          },
+          "read": {
+            "mode": "compact",
+            "keep_count": 56
+          },
+          "selection": {
+            "method": "native",
+            "frame_quota": "balanced"
+          },
+          "execution": {
+            "backend": "cuda_graph"
+          },
+          "native_routing": {
+            "signal": "action_context",
+            "recompute": "drift"
+          }
+        }
+      }
+    ]
+  },
   "confirmation": {
     "suite": "libero_spatial",
     "reserved_tasks": [3, 4, 5],
