@@ -175,6 +175,8 @@ def render_explainer(source, destination, *, font):
                   source_trace_sha256=sha256(source / "trace.json"), tensors_sha256=meta["tensors_sha256"],
                   font_sha256=sha256(font), images=gallery,
                   artifacts={p.name: sha256(p) for p in sorted(destination.iterdir()) if p.is_file()})
+    report["quick_start"] = next((f"s{r['step']:02d}-read-this-first.png" for r in ordered
+        if r["operation"] == "sparse" and f"s{r['step']:02d}-read-this-first.png" in gallery), gallery[0])
     (destination / "render.json").write_text(json.dumps(report, indent=2) + "\n")
     return report
 
@@ -187,6 +189,17 @@ if __name__ == "__main__":
     args = parser.parse_args()
     sources = [args.source] if (args.source / "trace.json").is_file() else sorted(p.parent for p in args.source.glob("*/trace.json"))
     if not sources: raise ValueError("no trace captures found")
+    reports = []
     for source in sources:
         report = render_explainer(source, args.out_dir / source.name, font=args.font)
+        reports.append((source.name, report))
         print(json.dumps(dict(capture=source.name, status=report["status"], pngs=len(report["images"]))), flush=True)
+    links = "\n".join(f'<li>{name}：<a href="{name}/{report["quick_start"]}">先看四格导读</a>'
+        f' · <a href="{name}/index.html">全部图和行列解释</a></li>' for name, report in reports)
+    (args.out_dir / "index.html").write_text('<!doctype html><meta charset="utf-8"><title>M1–M3 中文读图入口</title>'
+        '<style>body{font:20px system-ui;max-width:1100px;margin:2em auto;line-height:1.8}</style>'
+        '<h1>M1–M3：从原图读到实际计算</h1><p>每个链接对应一个真实 chunk。优先打开实际 Sparse 步的四格导读。</p>'
+        '<p>① 原图和 token 编号 → ② AV 注意力 → ③ VV 支持 → ④ 实际读/算。'
+        '九格图横向三列是指标，纵向三行是真实首帧和两个未来 latent。</p>'
+        '<p>绿色 +=本步重算；蓝色=读取；灰色=未读。注意力图中的灰色斜线表示缺失或被原始掩码禁止，'
+        '深色才是有效位置的低数值。大块浅灰文字框表示本步没有运行探针。</p><ul>' + links + '</ul>', encoding="utf-8")
