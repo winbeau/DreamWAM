@@ -21,7 +21,7 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def export(run, out):
+def export(run, out, *, all_calls=False):
     manifest, planned = load_manifest(run)
     sources = {}
     for path in sorted(run.glob("episodes/*/attempts/*/policy-observations.json")):
@@ -42,7 +42,9 @@ def export(run, out):
         split_role="development", source_run=str(run), source_manifest_sha256=sha256(run / "manifest.json"),
         episode_split_sha256=hashlib.sha256(json.dumps(sorted(planned)).encode()).hexdigest(),
         protocol=manifest["protocol"], suite=manifest["benchmark"]["suite"],
-        selection="first, floor((calls-1)/2), last; all terminal episodes regardless of success",
+        selection=("all contiguous policy calls; all terminal episodes regardless of success" if all_calls else
+                   "first, floor((calls-1)/2), last; all terminal episodes regardless of success"),
+        complete_call_history=all_calls,
         limitations=["observations within an episode are correlated", "exposed development, not confirmation"],
         inputs=[], sr=None)
     try:
@@ -50,8 +52,11 @@ def export(run, out):
             expected = json.loads((trace_path.parent / "policy-inputs.json").read_text())
             if len(expected) != len(rows):
                 raise ValueError("observation/hash trace lengths disagree")
-            for index in sorted({0, (len(rows) - 1) // 2, len(rows) - 1}):
+            indices = range(len(rows)) if all_calls else sorted({0, (len(rows) - 1) // 2, len(rows) - 1})
+            for index in indices:
                 entry = rows[index]
+                if entry.get("call_index") != index + 1:
+                    raise ValueError("source observation call order is incomplete")
                 path = run / entry["path"]
                 if sha256(path) != entry["sha256"]:
                     raise ValueError("source observation archive hash mismatch")
@@ -87,8 +92,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--out-dir", type=Path, required=True)
+    parser.add_argument("--all-calls", action="store_true", help="preserve causal contiguous history for M1")
     args = parser.parse_args()
-    result = export(args.run, args.out_dir)
+    result = export(args.run, args.out_dir, all_calls=args.all_calls)
     print(json.dumps(dict(status=result["status"], inputs=len(result["inputs"]), sr=None)))
 
 

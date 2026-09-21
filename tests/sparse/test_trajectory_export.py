@@ -72,3 +72,31 @@ def test_export_refuses_incomplete_coverage_and_input_tampering(tmp_path):
     with pytest.raises(ValueError, match="instruction"):
         module().export(tmp_path / "run", tmp_path / "tampered")
     assert json.loads((tmp_path / "tampered/manifest.json").read_text())["status"] == "ERROR"
+
+
+def test_all_calls_export_preserves_contiguous_history(tmp_path):
+    fixture_run(tmp_path / "run")
+    result = module().export(tmp_path / "run", tmp_path / "all", all_calls=True)
+    assert result["complete_call_history"] is True
+    assert [row["call_index"] for row in result["inputs"]] == [1, 2, 3, 4, 5] * 2
+
+
+def test_m1_loader_rejects_snapshot_history_and_missing_calls(tmp_path):
+    fixture_run(tmp_path / "run")
+    module().export(tmp_path / "run", tmp_path / "all", all_calls=True)
+    scripts = Path(__file__).resolve().parents[2] / "scripts/sparse"
+    spec = importlib.util.spec_from_file_location("m1_observations", scripts / "observation_sequences.py")
+    loader = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(loader)
+    path = tmp_path / "all/manifest.json"
+    manifest, sequences = loader.load_sequences(path)
+    assert len(sequences) == 2 and sum(map(len, sequences.values())) == 10
+    manifest["complete_call_history"] = False
+    path.write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match="complete-call-history"):
+        loader.load_sequences(path)
+    manifest["complete_call_history"] = True
+    manifest["inputs"].pop(2)
+    path.write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match="missing"):
+        loader.load_sequences(path)
