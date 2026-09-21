@@ -1,0 +1,652 @@
+{
+  "status": "COMPLETE_OBSERVED_SR_DROP_EXCEEDS_5PP",
+  "timestamp_utc": "2026-09-21T03:15:00.893083+00:00",
+  "host": "h100-server",
+  "output_root": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921",
+  "new_episode_attempts": 20,
+  "total_episode_attempts": 32,
+  "charged_slots": 32,
+  "total_cap": 50,
+  "errors": 0,
+  "retries": 0,
+  "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+  "evaluator_commit": "91b0765fc94836ab519cd5049c488460d5e597b3",
+  "controller_commit": "dcc8af80c7a8e5fa10af8a99666ca6e4d3875864",
+  "auditor_commit": "d79e7db7498ba0607a6d1e1c87946a31e8523f6a",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "commands": {
+    "controller_tests": "python -m pytest tests/sparse/test_fresh_pair_admission.py tests/sparse/test_episode_budget.py -q",
+    "controller_tests_exit": 0,
+    "controller_tests_passed": 16,
+    "renderer_probe": "scripts/probe-libero-render.py configs/experiments/dreamwam-dido-dense-h100-tenpairs-a.yaml --reads 80 --init-index 3 --import-order benchmark-first --check-writes",
+    "renderer_probe_exit": 0,
+    "run": "bash /root/wenbiao_zhao/dreamwam-sr/.trees/dido-controller-dcc8af8-tenpairs/deployment/h100/run-dido-tenpairs.sh /root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs /root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921",
+    "run_exit": 0,
+    "audit": "python scripts/sparse/audit_dido_tenpairs.py --root /root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921 --out /root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/audit-d79e7db",
+    "audit_exit": 0
+  },
+  "controllers": {
+    "a": {
+      "status": "PILOT_PAIR_COMPLETE",
+      "start_utc": "2026-09-21T03:02:17.729765+00:00",
+      "pid": 3715328,
+      "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+      "evaluator_commit": "91b0765fc94836ab519cd5049c488460d5e597b3",
+      "planned_episodes_per_arm": 5,
+      "shared_graphics": false,
+      "authorized_gpu_indices": [
+        3,
+        4,
+        5
+      ],
+      "render_backend": "osmesa",
+      "shared_gpu5": false,
+      "shared_gpu5_maximum_utilization": 10,
+      "shared_gpu5_minimum_free_mib": 50000,
+      "controller_source_sha256": "f4410d80bf8e08c0b792331198f281cf06e3cf2b901acc74cfb5c84956bfd14e",
+      "episode_budget": {
+        "path": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json",
+        "reservation_id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a",
+        "charged": 10,
+        "total_charged": 32,
+        "cap": 50,
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 10,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t000-i003-r00-s42/attempts/0001/result.json": "edc0c4df8994278036697bae1ac52e0c1d29f08cf3dbcb2202ffc3b3e2cad9e4",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t001-i003-r00-s42/attempts/0001/result.json": "df96934a6e2c3c51b3ede97df9d6e4d1286815d211606e0fc9c633b19ddd5149",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t002-i003-r00-s42/attempts/0001/result.json": "3a15d9a20194e35b32d4605145dabbe80ff4ca75904dbc1def8cf7b2a8a50592",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t003-i003-r00-s42/attempts/0001/result.json": "ea0eb2320947dbdc013017d70e1588f2436580dbed7534c012ee82718681b0be",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t004-i003-r00-s42/attempts/0001/result.json": "954f53b9e12492f17540ecfb39328c146c55e2f65170fce0b5fd36f51bcc82cd",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t000-i003-r00-s42/attempts/0001/result.json": "ecb6874d3c1eef7383b17065e54647743e9228aa4bc28f2eb0b9f25c090ca0c3",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t001-i003-r00-s42/attempts/0001/result.json": "75e7ffd3708331f2988dba152a5ef9379f82514f527a42c993e92e7407ebe20a",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t002-i003-r00-s42/attempts/0001/result.json": "dde608c218d0b075b177f6dd8ffef02b252158866fab7e1789552b92284fd743",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t003-i003-r00-s42/attempts/0001/result.json": "83b4f1de498bfcc9a76bd4caa80f94e6de116e909f9b1ffd1987c6b556a2eb04",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t004-i003-r00-s42/attempts/0001/result.json": "5107e45f501d4ca07b557c8867899347fd49a3f5de35a8bd9c7858d965d58076"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        }
+      },
+      "first_arm": "dense",
+      "wall_seconds_per_arm": 0,
+      "stop_grace_seconds": 120,
+      "smoke_only": false,
+      "runs": [
+        {
+          "arm": "dense",
+          "start_utc": "2026-09-21T03:02:19.022840+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-dense-h100-tenpairs-a.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense",
+            "--check-native-writes"
+          ],
+          "admission": {
+            "utc": "2026-09-21T03:02:19.022520+00:00",
+            "arm": "dense",
+            "phase": "admission",
+            "gpus": [
+              {
+                "index": 0,
+                "uuid": "GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f",
+                "util": 1,
+                "free": 77624,
+                "used": 3458,
+                "processes": []
+              },
+              {
+                "index": 1,
+                "uuid": "GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9",
+                "util": 42,
+                "free": 76913,
+                "used": 4169,
+                "processes": [
+                  {
+                    "pid": 3712245,
+                    "type": "C"
+                  }
+                ]
+              },
+              {
+                "index": 2,
+                "uuid": "GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14",
+                "util": 36,
+                "free": 77905,
+                "used": 3177,
+                "processes": []
+              },
+              {
+                "index": 3,
+                "uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 4,
+                "uuid": "GPU-3af22086-0ac4-4277-1486-96909b440d1c",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 5,
+                "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+                "util": 100,
+                "free": 60328,
+                "used": 20753,
+                "processes": []
+              }
+            ],
+            "spares_unused": [
+              4
+            ],
+            "explicit_gpu5_sharing": false,
+            "last_available_exception": false
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense",
+          "fingerprint_verified": true,
+          "pid": 3715418,
+          "forced_cleanup": false,
+          "exit_code": 0,
+          "end_utc": "2026-09-21T03:05:26.418181+00:00",
+          "stop_reason": null
+        },
+        {
+          "arm": "sparse",
+          "start_utc": "2026-09-21T03:05:27.661768+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-native-va56-h100-tenpairs-a.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse",
+            "--check-native-writes"
+          ],
+          "admission": {
+            "utc": "2026-09-21T03:05:27.661451+00:00",
+            "arm": "sparse",
+            "phase": "admission",
+            "gpus": [
+              {
+                "index": 0,
+                "uuid": "GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f",
+                "util": 0,
+                "free": 67540,
+                "used": 13542,
+                "processes": []
+              },
+              {
+                "index": 1,
+                "uuid": "GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9",
+                "util": 22,
+                "free": 8108,
+                "used": 72974,
+                "processes": [
+                  {
+                    "pid": 3712245,
+                    "type": "C"
+                  }
+                ]
+              },
+              {
+                "index": 2,
+                "uuid": "GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14",
+                "util": 0,
+                "free": 77905,
+                "used": 3177,
+                "processes": []
+              },
+              {
+                "index": 3,
+                "uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+                "util": 0,
+                "free": 81078,
+                "used": 4,
+                "processes": []
+              },
+              {
+                "index": 4,
+                "uuid": "GPU-3af22086-0ac4-4277-1486-96909b440d1c",
+                "util": 0,
+                "free": 55772,
+                "used": 25309,
+                "processes": [
+                  {
+                    "pid": 3715543,
+                    "type": "C"
+                  }
+                ]
+              },
+              {
+                "index": 5,
+                "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+                "util": 0,
+                "free": 81078,
+                "used": 4,
+                "processes": []
+              }
+            ],
+            "spares_unused": [
+              4,
+              5
+            ],
+            "explicit_gpu5_sharing": false,
+            "last_available_exception": false
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse",
+          "fingerprint_verified": true,
+          "pid": 3721155,
+          "forced_cleanup": false,
+          "exit_code": 0,
+          "end_utc": "2026-09-21T03:11:00.195469+00:00",
+          "stop_reason": null
+        }
+      ],
+      "sr": null,
+      "configs": {
+        "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-dense-h100-tenpairs-a.yaml",
+        "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-native-va56-h100-tenpairs-a.yaml"
+      },
+      "end_utc": "2026-09-21T03:11:00.198191+00:00"
+    },
+    "b": {
+      "status": "PILOT_PAIR_COMPLETE",
+      "start_utc": "2026-09-21T03:02:17.713532+00:00",
+      "pid": 3715327,
+      "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+      "evaluator_commit": "91b0765fc94836ab519cd5049c488460d5e597b3",
+      "planned_episodes_per_arm": 5,
+      "shared_graphics": false,
+      "authorized_gpu_indices": [
+        3,
+        4,
+        5
+      ],
+      "render_backend": "osmesa",
+      "shared_gpu5": false,
+      "shared_gpu5_maximum_utilization": 10,
+      "shared_gpu5_minimum_free_mib": 50000,
+      "controller_source_sha256": "f4410d80bf8e08c0b792331198f281cf06e3cf2b901acc74cfb5c84956bfd14e",
+      "episode_budget": {
+        "path": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json",
+        "reservation_id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b",
+        "charged": 10,
+        "total_charged": 32,
+        "cap": 50,
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 10,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t005-i003-r00-s42/attempts/0001/result.json": "7ac5db8b69bd3c359ba6a98f88ffbae31e78af595034591f70726fd3840e76fc",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t006-i003-r00-s42/attempts/0001/result.json": "759b6baee665e06f86d0ce166aea89aec2102b9888e87f756e3873e75ece7d3c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t007-i003-r00-s42/attempts/0001/result.json": "05b0d822a436a1f29e8ae2e4524b391ddae6398c954fbff8ada7241e06099332",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t008-i003-r00-s42/attempts/0001/result.json": "b5a2cef6669e93a7862256d15d956d9db85be583d4f0fff9ee695a3f5513be47",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t009-i003-r00-s42/attempts/0001/result.json": "878757091d2385bd56cb657935fe7b76487aa15e91b400c56805a87afd87d0fa",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t005-i003-r00-s42/attempts/0001/result.json": "ff4900c1ee23cecda053bd3e58b1ab99460ebc50ca458fe58ff3a4efd9942f4a",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t006-i003-r00-s42/attempts/0001/result.json": "f4bf78bf398941d260eb84d16b14708d779ae0c9a1f7a0c09ae953f3a67d1c8c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t007-i003-r00-s42/attempts/0001/result.json": "3681554bf60b9b53a17882d172dd6af9531cfa1ca8de0acb2890bcc132715ac6",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t008-i003-r00-s42/attempts/0001/result.json": "67cc35e2f98ab27f350431838b1cfc14d74cffabf390a7124b56e7d01fa5e7de",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t009-i003-r00-s42/attempts/0001/result.json": "0524b0a870389fc30c14c1f5bb7e81f6979c5a3836ff5d7b8c7d50dc3214a64f"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        }
+      },
+      "first_arm": "sparse",
+      "wall_seconds_per_arm": 0,
+      "stop_grace_seconds": 120,
+      "smoke_only": false,
+      "runs": [
+        {
+          "arm": "sparse",
+          "start_utc": "2026-09-21T03:02:19.015466+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-native-va56-h100-tenpairs-b.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse",
+            "--check-native-writes"
+          ],
+          "admission": {
+            "utc": "2026-09-21T03:02:19.015139+00:00",
+            "arm": "sparse",
+            "phase": "admission",
+            "gpus": [
+              {
+                "index": 0,
+                "uuid": "GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f",
+                "util": 1,
+                "free": 77622,
+                "used": 3460,
+                "processes": []
+              },
+              {
+                "index": 1,
+                "uuid": "GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9",
+                "util": 42,
+                "free": 76913,
+                "used": 4169,
+                "processes": [
+                  {
+                    "pid": 3712245,
+                    "type": "C"
+                  }
+                ]
+              },
+              {
+                "index": 2,
+                "uuid": "GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14",
+                "util": 36,
+                "free": 77905,
+                "used": 3177,
+                "processes": []
+              },
+              {
+                "index": 3,
+                "uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 4,
+                "uuid": "GPU-3af22086-0ac4-4277-1486-96909b440d1c",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 5,
+                "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+                "util": 100,
+                "free": 60328,
+                "used": 20753,
+                "processes": []
+              }
+            ],
+            "spares_unused": [
+              3
+            ],
+            "explicit_gpu5_sharing": false,
+            "last_available_exception": false
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse",
+          "fingerprint_verified": true,
+          "pid": 3715416,
+          "forced_cleanup": false,
+          "exit_code": 0,
+          "end_utc": "2026-09-21T03:05:37.683649+00:00",
+          "stop_reason": null
+        },
+        {
+          "arm": "dense",
+          "start_utc": "2026-09-21T03:05:38.537334+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-dense-h100-tenpairs-b.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense",
+            "--check-native-writes"
+          ],
+          "admission": {
+            "utc": "2026-09-21T03:05:38.537012+00:00",
+            "arm": "dense",
+            "phase": "admission",
+            "gpus": [
+              {
+                "index": 0,
+                "uuid": "GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f",
+                "util": 2,
+                "free": 69090,
+                "used": 11992,
+                "processes": []
+              },
+              {
+                "index": 1,
+                "uuid": "GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9",
+                "util": 29,
+                "free": 8108,
+                "used": 72974,
+                "processes": [
+                  {
+                    "pid": 3712245,
+                    "type": "C"
+                  }
+                ]
+              },
+              {
+                "index": 2,
+                "uuid": "GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14",
+                "util": 35,
+                "free": 77905,
+                "used": 3177,
+                "processes": []
+              },
+              {
+                "index": 3,
+                "uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+                "util": 4,
+                "free": 68038,
+                "used": 13043,
+                "processes": [
+                  {
+                    "pid": 3721179,
+                    "type": "C"
+                  }
+                ]
+              },
+              {
+                "index": 4,
+                "uuid": "GPU-3af22086-0ac4-4277-1486-96909b440d1c",
+                "util": 0,
+                "free": 81078,
+                "used": 4,
+                "processes": []
+              },
+              {
+                "index": 5,
+                "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+                "util": 5,
+                "free": 79692,
+                "used": 1389,
+                "processes": []
+              }
+            ],
+            "spares_unused": [
+              3,
+              5
+            ],
+            "explicit_gpu5_sharing": false,
+            "last_available_exception": false
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense",
+          "fingerprint_verified": true,
+          "pid": 3721415,
+          "forced_cleanup": false,
+          "exit_code": 0,
+          "end_utc": "2026-09-21T03:10:10.897238+00:00",
+          "stop_reason": null
+        }
+      ],
+      "sr": null,
+      "configs": {
+        "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-dense-h100-tenpairs-b.yaml",
+        "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-native-va56-h100-tenpairs-b.yaml"
+      },
+      "end_utc": "2026-09-21T03:10:10.900976+00:00"
+    }
+  },
+  "completion_and_holds": {
+    "timestamp_utc": "2026-09-21T03:13:01.678770+00:00",
+    "status": "OLD_HOLDS_RELEASED_RUNS_COMPLETE_NEW_HOLDS_ACTIVE",
+    "new_holds": [
+      {
+        "gpu": 3,
+        "state_path": "/root/wenbiao_zhao/dreamwam-sr/gpu-hold/h100-tenpairs-after-gpu3.json",
+        "pid": 3723276,
+        "status": "HOLDING",
+        "ready_unix": 1789960263.2151182,
+        "allocated_bytes": 67574431744,
+        "lease_seconds": 7200,
+        "seconds_from_controller_end_to_hold_ready": 3.0169272422790527,
+        "owned_identity_verified": true
+      },
+      {
+        "gpu": 4,
+        "state_path": "/root/wenbiao_zhao/dreamwam-sr/gpu-hold/h100-tenpairs-after-gpu4.json",
+        "pid": 3723197,
+        "status": "HOLDING",
+        "ready_unix": 1789960213.9607902,
+        "allocated_bytes": 67574431744,
+        "lease_seconds": 7200,
+        "seconds_from_controller_end_to_hold_ready": 3.059814214706421,
+        "owned_identity_verified": true
+      }
+    ],
+    "old_hold_workers_alive": false,
+    "ledger_sha256": "4d713d262f555676af979198cc47752373f59bd894546fc35446eadf5170660c",
+    "charged": 32,
+    "actual": 32,
+    "gpu_inventory": "3, GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30, 100 %, 65165 MiB, 15916 MiB\n4, GPU-3af22086-0ac4-4277-1486-96909b440d1c, 100 %, 65165 MiB, 15916 MiB\n"
+  },
+  "preflight": {
+    "timestamp_utc": "2026-09-21T03:05:49.282444+00:00",
+    "source": {
+      ".trees/dido-run-41f515a-final": {
+        "commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+        "status": ""
+      },
+      ".trees/dido-controller-dcc8af8-tenpairs": {
+        "commit": "dcc8af80c7a8e5fa10af8a99666ca6e4d3875864",
+        "status": ""
+      },
+      ".trees/dido-eval-91b0765-tenpairs": {
+        "commit": "91b0765fc94836ab519cd5049c488460d5e597b3",
+        "status": ""
+      },
+      "LIBERO": {
+        "commit": "8f1084e3132a39270c3a13ebe37270a43ece2a01",
+        "status": ""
+      },
+      "libero_legacy_pickle_patch_sha256": "4ce6edbb00b3280692f2e2b2e8a14bf6e2d5878965b0484a386c0355a867ecc5"
+    },
+    "preflight_artifacts": {
+      "preflight/controller-tests.log": "dba147114f275ae0f2e9c99e2ca6e034b73a99d3a3f72cbac85fef6cb2d486e1",
+      "preflight/start.txt": "deb407d0596357f19c6ff828aee7933599f3532f90b461bb82580252a010b061",
+      "preflight/a-dense-validate.initial-invalid.log": "444389f75d703f5777bc3054649649572df8d19e67435cd5f6de8c3d0b5317ac",
+      "preflight/final-start.txt": "65a4af8ff3e608f09b7a1261a97ee08262c1e6bfa21681d589f8d771d218e095",
+      "preflight/a-dense-validate.log": "a25423069521e24fe2b0fa4c9b45976c035bd34597e00c5457ccfb591d4fa1b3",
+      "preflight/a-dense-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+      "preflight/a-native-va56-validate.log": "9d299590bd1a2bab16dff36129ed4c4f93b7332456938d635d8bb7da0136c28a",
+      "preflight/a-native-va56-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+      "preflight/b-dense-validate.log": "244a26bd5a61daa5fae49e7febfdb8dd7549f2d74ce17e91b3ee639a790d64c4",
+      "preflight/b-dense-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+      "preflight/b-native-va56-validate.log": "b56a262092696ffdcb65dd52ac0d78ed0ff64116a641a0f94bfc5966b34b4709",
+      "preflight/b-native-va56-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+      "preflight/renderer-osmesa.log": "220b853b319b6370fb6d7f9eff054efe32afeb7ebf8e423c8c706a86796bc603",
+      "preflight/renderer-osmesa.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "preflight/final-end.txt": "d87315149968043357659bfc40a4fd218c955d53f11070e37d36d1cc19fc7367",
+      "checkpoint.sha256": "6d6986093d83b582e4c2bd963a7f803e74a4e78a385b3b158a0ed0001caaede2"
+    },
+    "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+    "ledger_return_receipt": {
+      "status": "RETURNED_INTACT_SOLE_WRITER",
+      "timestamp_utc": "2026-09-21T02:37:43.853153+00:00",
+      "ledger_sha256": "73501eee4d96b2419684a8a1cf35b54cd86260089d9eef0a28f5df8c98ce4247",
+      "charged": 12,
+      "actual_attempts": 12,
+      "authoritative_host": "h100-server",
+      "source_host": "H200-target-server",
+      "source_receipt": "outputs/dido-sparse-profile-20260920/ledger-return-to-h100-20260921.json",
+      "reason": "User-directed H100 continuation; original ledger byte-identical, no reset/refund"
+    }
+  },
+  "environment": {
+    "model": {
+      "label": "model",
+      "python": "3.10.20",
+      "executable": "/root/wenbiao_zhao/dreamwam-sr/DreamWAM-fresh-6c52f36/.venv/bin/python",
+      "packages": {
+        "torch": "2.7.1",
+        "numpy": "1.26.4",
+        "mujoco": "3.3.2",
+        "robosuite": "1.4.1",
+        "PyOpenGL": "3.1.10"
+      }
+    },
+    "evaluator": {
+      "label": "evaluator",
+      "python": "3.10.20",
+      "executable": "/root/wenbiao_zhao/dreamwam-sr/action-eval-fresh-e0d9e80/.venv/bin/python",
+      "packages": {
+        "torch": "2.7.1+cu128",
+        "numpy": "1.26.4",
+        "mujoco": "3.3.2",
+        "robosuite": "1.4.1",
+        "pydantic": "2.13.5",
+        "PyOpenGL": "3.1.10"
+      }
+    }
+  },
+  "artifacts": {
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/audit-d79e7db/report.json": "1f1a2940af9a2645f4593686d0adc6850cd7f2fb757e481f1874e3143de026ad",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/audit-d79e7db/lane-a-integrity.json": "babaf6d9d54a306ecdb0946e2fef4006c6d5626930b4f9583409f9f2e6a1a8b7",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/audit-d79e7db/lane-b-integrity.json": "69147490307dc3fce1ea07523a541634a8f15324d93f784a0ec3158037935d5c",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/completion-and-holds.json": "2c6431aaef201763b519a322301d624a9b26b1e2458bd2b79d2f8204ae31eb7f",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight-record.json": "4d08d2be23315c68cb767205aa989fe360b3478aeb184f2c53243253a33cc192",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/handoff.launch.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/hold-release.json": "aca8f3e7bb376281119b5c82af6540ef140604370429cfe00321e9f1de56270c",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/rehold-gpu3.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/rehold-gpu4.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/audit-d79e7db.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/handoff-start.txt": "2edaa2afc08dad2483857558f4c5c511bbaf5fefdb2491eb5a1c2efaa497375a",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/handoff-end.txt": "f231c55345a740f400e49aa9b6ff0b09fdc13a5a7d975a6a916bd41a54214a4b",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json": "4d713d262f555676af979198cc47752373f59bd894546fc35446eadf5170660c",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/ledger-return-from-h200-20260921.json": "1e30911161455abaa49b5405e8d49dc6ac586700049801834c4d6de8f5621496",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/controller-tests.log": "dba147114f275ae0f2e9c99e2ca6e034b73a99d3a3f72cbac85fef6cb2d486e1",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/start.txt": "deb407d0596357f19c6ff828aee7933599f3532f90b461bb82580252a010b061",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/a-dense-validate.initial-invalid.log": "444389f75d703f5777bc3054649649572df8d19e67435cd5f6de8c3d0b5317ac",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/final-start.txt": "65a4af8ff3e608f09b7a1261a97ee08262c1e6bfa21681d589f8d771d218e095",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/a-dense-validate.log": "a25423069521e24fe2b0fa4c9b45976c035bd34597e00c5457ccfb591d4fa1b3",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/a-dense-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/a-native-va56-validate.log": "9d299590bd1a2bab16dff36129ed4c4f93b7332456938d635d8bb7da0136c28a",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/a-native-va56-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/b-dense-validate.log": "244a26bd5a61daa5fae49e7febfdb8dd7549f2d74ce17e91b3ee639a790d64c4",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/b-dense-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/b-native-va56-validate.log": "b56a262092696ffdcb65dd52ac0d78ed0ff64116a641a0f94bfc5966b34b4709",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/b-native-va56-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/renderer-osmesa.log": "220b853b319b6370fb6d7f9eff054efe32afeb7ebf8e423c8c706a86796bc603",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/renderer-osmesa.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/final-end.txt": "d87315149968043357659bfc40a4fd218c955d53f11070e37d36d1cc19fc7367",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/model-versions.json": "1235218e293b50255d89101fb6aa8b719e0a110d7b80b153576cbc352c37c483",
+    "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/preflight/evaluator-versions.json": "d3c6fca5cec52863648b0f7b229cf6b4e004cb9e4610b888d91da084d72f23c6"
+  },
+  "limitations": [
+    "One episode per task; ten pairs cannot certify a five-percentage-point SR margin.",
+    "Closed-loop observations and lengths may differ; model latency ratio is descriptive, not same-input replay.",
+    "Model timing excludes model loading, IPC, physics and CPU rendering.",
+    "H100 GPUs3/4 with CPU OSMesa; no pooling with H200 or historical cohorts."
+  ],
+  "superseded_audit": {
+    "path": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/audit-97c232b/report.json",
+    "reason": "Initial aggregate incorrectly called bootstrap directly on single-episode task strata, producing zero-width intervals. Corrected d79e7db withholds these intervals; original files retained; no episode rerun or outcome/timing change."
+  },
+  "next_step": "No further experiments or tuning. Keep finite user-requested holds until manual release or lease expiry. Do not accept this candidate under the observed five-point SR-drop criterion."
+}

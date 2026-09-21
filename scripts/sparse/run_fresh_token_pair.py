@@ -197,7 +197,9 @@ def main():
     parser.add_argument("--max-shared-utilization", type=int, choices=(10, 50), default=10,
                         help="GPU 5 only; default 10, or explicitly recorded moderate sharing at 50 for bounded pilots")
     parser.add_argument("--episode-ledger", type=Path,
-                        help="shared effort ledger: reserve both complete arms against an immutable 50-episode cap")
+                        help="conserved effort ledger; reserve both complete arms before starting")
+    parser.add_argument("--episode-cap", type=int, default=50,
+                        help="must match the ledger; increases require a prior recorded user amendment")
     parser.add_argument("--render-backend", choices=("egl", "osmesa"), default="egl")
     parser.add_argument("--first-arm", choices=("sparse", "dense"), default="sparse",
                         help="use Dense first when establishing a new renderer baseline")
@@ -224,9 +226,11 @@ def main():
         parser.error("GPU 5 sharing requires CPU OSMesa, explicit pilot configs and the effort episode ledger")
     if args.max_shared_utilization != 10 and not args.share_gpu5:
         parser.error("moderate admission requires the explicit --share-gpu5 mode")
-    budget = EpisodeBudget(args.episode_ledger) if args.episode_ledger else None
+    if args.episode_cap != 50 and not args.episode_ledger:
+        parser.error("a changed episode cap requires the conserved effort ledger")
+    budget = EpisodeBudget(args.episode_ledger, cap=args.episode_cap) if args.episode_ledger else None
     if budget is not None and 2 * args.planned_episodes > budget.available():
-        parser.error("both complete arm manifests must fit the effort's remaining 50-episode budget")
+        parser.error("both complete arm manifests must fit the effort's remaining episode budget")
     args.out_dir.mkdir(parents=True, exist_ok=False)
     report = json.loads(args.adapter_report.read_text())
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=args.model_root, text=True).strip()

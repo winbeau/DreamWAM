@@ -1,5 +1,15 @@
 # DIDO-guided sparse-profile: isolated iteration chain
 
+New authorization, 2026-09-21 UTC: [50-pair H100 comparison](H100-FIFTYPAIRS-20260921.md),
+100 new attempts; cumulative ledger cap explicitly amended50→132 with32 retained.
+This supersedes the previous completed-cohort stop below only for this fixed run.
+
+Latest closeout, 2026-09-21: the separately requested [H100 ten-pair run](H100-TENPAIRS-REPORT.md)
+is complete at32 cumulative attempts. Dense9/10 versus candidate8/10 misses the
+user's5pp observed SR-drop limit. No further queue is active. GPU3/4 retain the
+user-requested finite holds; current state paths and release commands are in
+that report. The following H100 setup/earlier12-attempt closeout is historical.
+
 Created 2026-09-20 UTC. Setup/handoff only; no new GPU experiments started.
 
 Execution amendment, 2026-09-20: the user has now invoked the saved goal. Follow

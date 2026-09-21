@@ -1,5 +1,16 @@
 # DIDO profile execution ledger
 
+New authorization, 2026-09-21 UTC: [50-pair H100 comparison](H100-FIFTYPAIRS-20260921.md),
+100 new attempts; cumulative ledger cap explicitly amended50→132 with32 retained.
+This supersedes the previous completed-cohort stop below only for this fixed run.
+
+Latest, 2026-09-21 03:11 UTC: [H100 ten-pair continuation complete](H100-TENPAIRS-REPORT.md).
+Dense9/10, candidate8/10: observed loss10pp exceeds the allowed5pp. Descriptive
+warm prediction1.994×, but whole-episode time19.34% longer. Twenty new attempts,
+zero errors/retries, cumulative32/50. All ten initial input pairs and523 artifact
+hashes verify. GPU3/4 automatically return to finite holds in about3seconds;
+no further evaluation or tuning follows. The chronology below is historical.
+
 H200 continuation, 2026-09-21 02:22 UTC: ten new pairs are authorized but
 remain unstarted. [GPU6 native rendering failed twice](H200-RENDERER-20260921.md)
 before its first image. GPU7's requested finite hold remains active; the

@@ -9,6 +9,7 @@ every reserved episode ran. A reservation is not proof of a live process.
 from contextlib import contextmanager
 from datetime import datetime, timezone
 import fcntl
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -20,8 +21,8 @@ def utc():
 
 class EpisodeBudget:
     def __init__(self, path, *, cap=50, effort="dido-sparse-profile-20260920"):
-        if type(cap) is not int or not 1 <= cap <= 50:
-            raise ValueError("episode cap must be an integer from 1 to 50")
+        if type(cap) is not int or cap < 1:
+            raise ValueError("episode cap must be a positive integer")
         self.path = Path(path).resolve()
         self.cap, self.effort = cap, effort
 
@@ -36,11 +37,28 @@ class EpisodeBudget:
                     payload.get("effort") != self.effort):
                     raise ValueError("existing episode ledger identity/cap differs")
                 entries = payload["reservations"]
+                amendments = payload.get("cap_amendments", [])
+                if self.cap > 50 and not amendments:
+                    raise ValueError("expanded cap requires a recorded authorization amendment")
+                if amendments:
+                    previous = amendments[0]["from_cap"]
+                    if not 1 <= previous <= 50:
+                        raise ValueError("invalid original episode cap")
+                    for amendment in amendments:
+                        if (amendment["from_cap"] != previous or amendment["to_cap"] <= previous
+                            or not amendment["authorization"].strip()
+                            or len(amendment["previous_ledger_sha256"]) != 64):
+                            raise ValueError("invalid cap amendment history")
+                        previous = amendment["to_cap"]
+                    if previous != self.cap:
+                        raise ValueError("amendment history does not reach current cap")
                 if (len({entry["id"] for entry in entries}) != len(entries) or
                     any(type(entry["charged"]) is not int or entry["charged"] <= 0 for entry in entries) or
                     sum(entry["charged"] for entry in entries) > self.cap):
                     raise ValueError("invalid episode reservation history")
             else:
+                if self.cap > 50:
+                    raise ValueError("expanded cap requires an existing conserved ledger")
                 payload = dict(schema_version=1, effort=self.effort, cap=self.cap,
                                created_utc=utc(), reservations=[])
             yield payload
@@ -62,6 +80,27 @@ class EpisodeBudget:
     def available(self):
         with self.locked() as payload:
             return self.cap - sum(entry["charged"] for entry in payload["reservations"])
+
+    def amend_cap(self, new_cap, *, authorization, expected_charged):
+        """Explicit user scope extension; retain every reservation and a hash chain."""
+        if type(new_cap) is not int or new_cap <= self.cap:
+            raise ValueError("amended cap must increase the existing cap")
+        if not isinstance(authorization, str) or not authorization.strip():
+            raise ValueError("cap amendment requires the explicit user authorization")
+        with self.locked() as payload:
+            if not self.path.exists():
+                raise ValueError("amend an existing ledger, never replace its history")
+            charged = sum(entry["charged"] for entry in payload["reservations"])
+            if charged != expected_charged or any(e["state"] != "FINALIZED" for e in payload["reservations"]):
+                raise ValueError("cap amendment requires the expected finalized history")
+            amendment = dict(from_cap=self.cap, to_cap=new_cap, utc=utc(),
+                authorization=authorization, total_charged=charged,
+                previous_ledger_sha256=hashlib.sha256(self.path.read_bytes()).hexdigest())
+            payload.setdefault("cap_amendments", []).append(amendment)
+            payload["cap"] = new_cap
+            self._write(payload)
+            self.cap = new_cap
+            return amendment
 
     def reserve(self, reservation_id, count, *, metadata):
         if not isinstance(reservation_id, str) or not reservation_id or type(count) is not int or count <= 0:

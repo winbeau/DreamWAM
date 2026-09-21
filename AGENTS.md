@@ -1,5 +1,36 @@
 # DreamWAM evaluation fork guidance
 
+## Authorized 50-pair H100 comparison (2026-09-21 UTC)
+
+The user explicitly confirmed: “50对：Dense与候选各50条，共100次新增”.
+This supersedes the old total50 cap and the completed32-attempt stop below.
+Amend the conserved H100 ledger from50 to132 with the exact authorization and
+prior-ledger hash; retain all32 historical reservations/attempts. Run exactly
+100 new attempts, no retries, using Spatial tasks0–9 × initial states4–8,
+unchanged frozen model41f515a and release protocol, CPU OSMesa rendering.
+GPU3 runs tasks0–4 Dense first; GPU4 runs tasks5–9 candidate first. Keep the
+current owned holds until preflight completes, release and launch in one shell,
+then rapidly re-hold each card for120 minutes after its lane ends. No tuning.
+Report SR with uncertainty, full warm prediction timing and whole-episode time;
+five-percentage-point Dense-relative SR tolerance remains in force. See
+docs/implementation/dido-sparse-profile/H100-FIFTYPAIRS-20260921.md.
+
+## Latest completed H100 ten-pair result (2026-09-21 03:11 UTC)
+
+The requested20 new episodes completed: Dense9/10, frozen candidate8/10,
+observed SR drop10pp exceeds the user's5pp limit. Warm model time265.45→133.10ms
+(1.994× descriptive); whole-episode time36.83→43.95s. No errors/retries.
+The conserved H100 ledger is FINALIZED at32 actual attempts/32 charged slots.
+Stop evaluation here; no tuning, expansion or further rollout is authorized.
+Both cards automatically returned to finite120-minute holds in about3 seconds:
+GPU3 PID3723276, state gpu-hold/h100-tenpairs-after-gpu3.json;
+GPU4 PID3723197, state gpu-hold/h100-tenpairs-after-gpu4.json.
+Original holds from gpu-hold/h100-gpu.json are stopped. Recheck identity before
+any release; do not signal foreign processes. See
+docs/implementation/dido-sparse-profile/H100-TENPAIRS-REPORT.md for verified
+results, uncertainty, raw artifact paths and commands to release the new holds.
+Earlier execution instructions below are historical, not an active run queue.
+
 ## Resumed H100 continuation (2026-09-21 UTC)
 
 The user reserved H100 GPUs3/4 and explicitly redirects the still-unstarted ten

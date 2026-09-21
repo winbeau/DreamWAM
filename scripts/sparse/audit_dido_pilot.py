@@ -18,12 +18,12 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def audit(root):
+def audit(root, *, expected_cap=50):
     controller = json.loads((root / "controller.json").read_text())
     if controller["status"] != "PILOT_PAIR_COMPLETE":
         raise ValueError("require a complete pilot; incomplete coverage has no full SR")
     receipt = controller["episode_budget"]
-    if not receipt or receipt["cap"] != 50 or receipt["total_charged"] > 50:
+    if not receipt or receipt["cap"] != expected_cap or receipt["total_charged"] > expected_cap:
         raise ValueError("missing or invalid effort budget receipt")
     result, manifests, total_attempts = {}, [], 0
     checkpoint = None

@@ -52,5 +52,49 @@ def test_corrupt_or_changed_ledgers_fail_closed(tmp_path):
     with pytest.raises(json.JSONDecodeError):
         ledger.reserve("x", 3, metadata={})
     assert path.read_text() == "not json"
-    with pytest.raises(ValueError, match="1 to 50"):
-        EpisodeBudget(tmp_path / "too-large.json", cap=51)
+    with pytest.raises(ValueError, match="existing conserved ledger"):
+        EpisodeBudget(tmp_path / "too-large.json", cap=51).available()
+
+
+def test_explicit_extension_preserves_history_and_bounds_concurrent_new_work(tmp_path):
+    import hashlib
+    path = tmp_path / "ledger.json"
+    ledger = EpisodeBudget(path)
+    ledger.reserve("historical", 32, metadata={"frozen": True})
+    ledger.finish("historical", evidence={"recorded_attempts": 32})
+    before = path.read_bytes()
+    amendment = ledger.amend_cap(132, authorization="50 pairs, 100 new episodes", expected_charged=32)
+    after = json.loads(path.read_text())
+    assert after["reservations"] == json.loads(before)["reservations"]
+    assert amendment["previous_ledger_sha256"] == hashlib.sha256(before).hexdigest()
+    assert EpisodeBudget(path, cap=132).available() == 100
+    def reserve(name):
+        return EpisodeBudget(path, cap=132).reserve(name, 50, metadata={})
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        assert len(list(executor.map(reserve, ("lane-a", "lane-b")))) == 2
+    assert EpisodeBudget(path, cap=132).available() == 0
+    with pytest.raises(ValueError, match="exhausted"):
+        EpisodeBudget(path, cap=132).reserve("extra", 1, metadata={})
+    with pytest.raises(ValueError, match="identity/cap"):
+        EpisodeBudget(path).available()
+
+
+def test_extension_rejects_pending_stale_or_unrecorded_scope(tmp_path):
+    path = tmp_path / "ledger.json"
+    ledger = EpisodeBudget(path)
+    ledger.reserve("active", 32, metadata={})
+    before = path.read_bytes()
+    with pytest.raises(ValueError, match="finalized history"):
+        ledger.amend_cap(132, authorization="100 new", expected_charged=32)
+    assert path.read_bytes() == before
+    ledger.finish("active", evidence={})
+    before = path.read_bytes()
+    for authorization, expected in (("", 32), ("100 new", 31)):
+        with pytest.raises(ValueError):
+            ledger.amend_cap(132, authorization=authorization, expected_charged=expected)
+        assert path.read_bytes() == before
+    corrupt = json.loads(before)
+    corrupt["cap"] = 132
+    path.write_text(json.dumps(corrupt))
+    with pytest.raises(ValueError, match="recorded authorization"):
+        EpisodeBudget(path, cap=132).available()

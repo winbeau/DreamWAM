@@ -1,5 +1,13 @@
 # DreamWAM paper-evaluation handoff
 
+Latest [H100 ten-pair continuation](../implementation/dido-sparse-profile/H100-TENPAIRS-REPORT.md),
+2026-09-21: Dense9/10, frozen candidate8/10, observed loss10pp versus allowed5pp.
+Warm model latency improves1.994× while whole-episode time grows19.34%.
+Twenty new attempts completed without errors/retries; cumulative effort32/50.
+All initial pairs and523 artifacts verify. GPU3/4 were automatically re-held
+for120minutes, with no further evaluation queued. This cohort remains separate
+from the earlier12-attempt study below.
+
 Completed isolated branch: [DIDO-guided study final report](../implementation/dido-sparse-profile/REPORT.md)
 and [final verification](../implementation/dido-sparse-profile/FINAL-VERIFICATION.json).
 The study stops at **12 actual episode attempts**, below the user's 50-total cap:
