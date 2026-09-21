@@ -30,6 +30,7 @@ def main():
     p.add_argument("--inputs", type=Path, required=True)
     p.add_argument("--options", type=Path, action="append", required=True)
     p.add_argument("--reps", type=int, default=4)
+    p.add_argument("--authorized-gpus", type=int, nargs="+", required=True)
     p.add_argument("--out-dir", type=Path, required=True)
     args = p.parse_args()
     if not torch.cuda.is_available() or torch.cuda.device_count() != 1:
@@ -68,10 +69,24 @@ def main():
         inventory = command("nvidia-smi", "-i", visible, "--query-gpu=uuid,memory.used,utilization.gpu", "--format=csv,noheader")
         proc = command("nvidia-smi", "-i", visible, "--query-compute-apps=pid,used_gpu_memory", "--format=csv,noheader")
         foreign = [line for line in proc["stdout"].splitlines() if line.split(",")[0].strip() != str(os.getpid())]
+        total_used = int(inventory["stdout"].split(",")[1].split()[0]) if not inventory["exit_code"] else 0
+        own_used = sum(int(line.split(",")[1].split()[0]) for line in proc["stdout"].splitlines()
+                       if line.split(",")[0].strip() == str(os.getpid()))
+        # Some container-external allocations have no visible process entry.
+        unexplained_memory = total_used - own_used
         report["resource_checks"].append(dict(phase=phase, utc=datetime.now(timezone.utc).isoformat(),
-            inventory=inventory, processes=proc, foreign=foreign))
+            inventory=inventory, processes=proc, foreign=foreign, unexplained_mib=unexplained_memory))
+        if phase == "admission":
+            host = command("nvidia-smi", "--query-gpu=index,uuid,memory.free,utilization.gpu", "--format=csv,noheader,nounits")
+            cards = [[v.strip() for v in line.split(",")] for line in host["stdout"].splitlines()]
+            target = inventory["stdout"].split(",")[0].strip()
+            authorized = [c for c in cards if int(c[0]) in args.authorized_gpus]
+            spares = [int(c[0]) for c in authorized if c[1] != target and int(c[2]) >= 35000 and int(c[3]) <= 20]
+            report["admission"] = dict(host=host, authorized_gpus=args.authorized_gpus, unused_spares=spares)
+            if not any(c[1] == target for c in authorized) or not spares or total_used > 32:
+                raise RuntimeError("require an authorized empty policy GPU and an unused available spare")
         save()
-        if proc["exit_code"] or inventory["exit_code"] or foreign:
+        if proc["exit_code"] or inventory["exit_code"] or foreign or unexplained_memory > 128:
             raise RuntimeError("exclusive policy GPU unavailable; retained samples are incomplete")
     adapter, runtimes, rows = None, {}, []
     try:
