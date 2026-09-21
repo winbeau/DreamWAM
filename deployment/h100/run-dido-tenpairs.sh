@@ -10,6 +10,7 @@ export GPU_UUID=GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30
 source "$DIDO_CONTROLLER/deployment/h100/dido-sparse-profile.env.sh"
 export MODEL_ROOT="$DREAMWAM_SR_ROOT/.trees/dido-run-41f515a-final"
 export ACTION_EVAL_ROOT="$DIDO_EVAL_TREE"
+export LIBERO_ROOT="$DREAMWAM_SR_ROOT/LIBERO"
 export PYTHONPATH="$ACTION_EVAL_ROOT/src:$ACTION_EVAL_ROOT/packages/policy-sdk/src:$MODEL_ROOT:$LIBERO_ROOT"
 DIDO_HOLD="$DREAMWAM_SR_ROOT/.trees/dido-hold-64471fb/scripts/sparse/gpu_hold.py"
 DIDO_HOLD_STATE="$DREAMWAM_SR_ROOT/gpu-hold/h100-gpu.json"
