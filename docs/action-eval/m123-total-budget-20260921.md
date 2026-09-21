@@ -1,7 +1,7 @@
 # M1 whole-chunk allocation and readable execution evidence
 
-Status at 2026-09-21 15:28 UTC: implementation, two five-pair pilots, 725 matched
-timings and final trace galleries COMPLETE; Desktop export pending. This continues the user's request to implement
+Status at 2026-09-21 15:49 UTC: implementation, two five-pair pilots, 725 matched
+timings, final trace galleries and verified Desktop export COMPLETE. This continues the user's request to implement
 M1/M2/M3 and make the figures understandable. Historical pilot results remain
 Dense 5/5 versus M1–M3 3/5; the previous 50-pair/full-suite queues stay deferred.
 
@@ -325,3 +325,26 @@ GPU 4 was empty and left unused at admission. State file:
 startup/status/admission snapshots are retained under `OUT/final-*`.
 Only the recorded state/token/start-ticks may be used to stop it; a bare PID is
 not sufficient authority. No evaluation or historical queue remains running.
+
+## Verified Desktop export, 2026-09-21 15:48:42 UTC
+
+**VERIFIED**, exit 0. H100 `total-budget-v2-evidence.tar.gz` was copied with SCP
+to `/mnt/c/Users/genev/Desktop/DreamWAM-M123-20260921/`, checksum-verified,
+extracted into `M1-total-budget-v2/`, and checked with
+`sha256sum --quiet -c SHA256SUMS`. All **1,691 recorded files** pass. Archive SHA256:
+
+`b4a78b7e60d0725bc00cbf01eb6039f097a4ed975c64e9f50792266e8900f0ca`.
+
+The archive contains **478 PNG and 478 PDF**, raw tensors, source metadata,
+timings, both complete pilots, logs and `evidence-index.json`. Of these, 180
+PNG/PDF pairs are final Chinese reading aids; the other plots preserve research
+views, the first capture's fixed screenshot steps and the old-figure example.
+Earlier Desktop exports remain intact. The additional `读图说明.md` is copied
+from the committed Chinese guide and is not part of the archive checksum list.
+
+Open `M1-total-budget-v2/read-this-first-kv75/index.html` for the read-floor
+candidate, or `read-this-first/index.html` for the cap-only control. Each entry
+links directly to its actual Sparse-step four-panel view and the complete row/
+column gallery. Raw capture directories and per-image rendering manifests retain
+the exact source/renderer identities; no model weights were copied. Export
+completion does not remove the method/quality limitations above.
