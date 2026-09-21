@@ -1,0 +1,87 @@
+# Single-factor read-floor control: same total Q caps, selector and step router.
+schema_version: action-eval/v1
+experiment:
+  name: dreamwam-m123-total-budget-kv75-pilot5-osmesa
+  label: DreamWAM whole-chunk M1 with KV75 read floor H100 CPU OSMesa pilot (5 episodes)
+benchmark:
+  backend: libero
+  root: ${LIBERO_ROOT}
+  suite: libero_spatial
+  task_ids: [0, 1, 2, 3, 4]
+  initial_state_indices: [0]
+  repeats: 1
+protocol_file: ${EVAL_ROOT}/configs/protocols/dreamwam-release-v1.yaml
+policy:
+  repo_root: ${MODEL_ROOT}
+  python: ${MODEL_PYTHON}
+  entrypoint: evaluation/action_eval/infer.py:create_policy
+  model_config: configs/dreamwam_joint.yaml
+  checkpoint: checkpoints/dreamwam_joint.pt
+  options:
+    action_horizon: 32
+    denoising_steps: 10
+    rng_mode: fixed_per_predict
+    prompt_cache: {capacity: 8}
+    hybrid_visual:
+      schema_version: 1
+      schedule:
+        kind: explicit
+        num_steps: 10
+        operations: [dense, reuse, reuse, reuse, reuse, sparse, reuse, reuse, reuse, reuse]
+      recompute: {keep_ratio: 0.2}
+      read: {mode: compact, keep_ratio: 0.75}
+      selection:
+        method: action_context
+        guidance_weight: 1.0
+        frame_quota: balanced
+        context_weight: 1.0
+        support_seed_ratio: 0.1
+      reuse: {mode: features}
+      step_router:
+        kind: adaptive
+        sparse_drift: 0.05
+        dense_drift: 0.35
+        max_reuse_steps: 4
+        max_feature_age: 8
+        extra_dense_budget: 1.0
+      execution: {backend: cuda_graph, graph_warmup: 3, max_graphs: 8}
+      diagnostics: {level: counters}
+    chunk_budget:
+      schema_version: 1
+      mode: adaptive
+      fixed_level: 1
+      levels:
+        - {name: low, query_ratio: 0.1, read_ratio: 0.75, chunk_extra_passes: 0.1}
+        - {name: medium, query_ratio: 0.2, read_ratio: 0.75, chunk_extra_passes: 0.2}
+        - {name: high, query_ratio: 0.3, read_ratio: 0.75, chunk_extra_passes: 0.3}
+      thresholds: [3.2113290329774213, 3.6437906324863434]
+      scales:
+        rgb_change: 0.08
+        rgb_innovation: 0.08
+        translation: 0.05
+        rotation: 0.3
+        gripper: 0.02
+        translation_innovation: 0.05
+      history_size: 3
+      thumbnail_size: 32
+      downshift_after: 2
+runtime:
+  executor: local
+  policy_gpu_uuids: ["${GPU_UUID}"]
+  render_gpu_uuid: null
+  workers: 1
+  gpu_sharing: explicit
+  startup_timeout_s: 900
+  predict_timeout_s: 120
+  error_policy: stop
+  retries: 0
+simulator_env:
+  OMP_NUM_THREADS: "1"
+outputs:
+  root: ${PILOT_OUTPUT_ROOT}
+  video: none
+  save_actions: true
+  save_observations: true
+report:
+  uncertainty: wilson95
+  table_label: H100 CPU OSMesa M1-M3 total-budget KV75 control pilot 5
