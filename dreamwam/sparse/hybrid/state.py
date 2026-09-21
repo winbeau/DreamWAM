@@ -8,6 +8,7 @@ class VisualState:
         self.clear()
 
     def clear(self):
+        self.random_selection_calls = 0
         self.kv = []
         self.packed = []
         self.output = None

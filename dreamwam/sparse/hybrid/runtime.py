@@ -13,6 +13,7 @@ from .graphs import ExecutionDispatcher
 from .schedule import StepContext, compile_plan, stable_hash
 from .selection import Selection, select
 from .state import VisualState
+from .step_routing import observe_and_route
 
 
 def scheduler_hash(model):
@@ -117,9 +118,19 @@ class HybridVisualRuntime:
                 video_tokens_per_frame=frame_size, device=current.device)
             self.state.action_indices = torch.arange(action_length, device=current.device) + length
         decision = self.plan.decision(StepContext(step_index, num_steps))
+        routing = None
+        if self.config.step_router is not None:
+            operation, routing = self._measure("step_routing", lambda: observe_and_route(
+                self.config.step_router, current, self.state, step=step_index, num_steps=num_steps,
+                query_rows=q_count, spent_rows=self._stats["query_rows_spent"]))
+            decision = replace(decision, operation=operation,
+                read_mode="full" if operation == "dense" else self.config.read_mode,
+                requested_q_ratio=1.0 if operation == "dense" else self.config.recompute_ratio if operation == "sparse" else 0.0,
+                route_refresh=operation != "reuse", source="adaptive", reason=routing["reason"])
         effective = decision.operation
         if effective == "sparse" and q_count == length and kv_count == length:
             effective = "dense"
+        self._effective_op = effective
         action_indices = self.state.action_indices
         selection = None
         if effective == "dense":
@@ -175,6 +186,13 @@ class HybridVisualRuntime:
         self._stats["computed_video_token_layers"] += batch * q_rows * layers
         self._stats["total_video_token_layers"] += batch * length * layers
         self._stats["read_video_token_layers"] += batch * kv_rows * layers
+        self._stats["query_rows_spent"] += q_rows
+        if routing is not None:
+            self._stats["step_router_probe_rows"] += routing["probe_token_rows"]
+            self._stats["step_router_seconds"] += routing["signal_seconds"]
+            self._stats["query_row_cap"] = routing["query_row_cap"]
+            if self._stats["query_rows_spent"] > routing["query_row_cap"]:
+                raise AssertionError("adaptive routing exceeded its visual Q-row cap")
         self._stats["action_probe_rows"] += selection.action_probe_rows if selection else 0
         self._stats["video_key_probe_rows"] += selection.video_key_probe_rows if selection else 0
         self._stats["video_query_probe_rows"] += selection.video_query_probe_rows if selection else 0
@@ -189,6 +207,8 @@ class HybridVisualRuntime:
                    video_key_probe_rows=selection.video_key_probe_rows if selection else 0,
                    video_query_probe_rows=selection.video_query_probe_rows if selection else 0,
                    graph_key=self.dispatch.last_key, graph_replay=self.dispatch.last_replayed)
+        if routing is not None:
+            row.update(step_routing=routing, reference_schedule_op=self.plan.schedule.operations[step_index])
         if self.config.diagnostics == "trace":
             # Device values are serialized once at request end, not inside a timed step.
             row.update(route=self.state.route.clone(), updated_at=self.state.updated_at.clone(),
@@ -225,6 +245,7 @@ class HybridVisualRuntime:
                                action_layer_updates=0, computed_video_token_layers=0,
                                total_video_token_layers=0, read_video_token_layers=0,
                                action_probe_rows=0, video_key_probe_rows=0, video_query_probe_rows=0,
+                               query_rows_spent=0, step_router_probe_rows=0, step_router_seconds=0.0,
                                graph_replays=0, steps=[], status="RUNNING")
             try:
                 result = sample(*args, **kwargs)

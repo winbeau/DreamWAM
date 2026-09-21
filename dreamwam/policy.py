@@ -289,7 +289,8 @@ class DreamWAMPolicy:
                     "denoising_steps", "dense_steps", "sparse_steps", "reuse_steps",
                     "computed_video_token_layers", "total_video_token_layers",
                     "read_video_token_layers", "action_probe_rows", "video_key_probe_rows",
-                    "video_query_probe_rows", "action_layer_updates")}
+                    "video_query_probe_rows", "action_layer_updates", "query_rows_spent",
+                    "step_router_probe_rows", "step_router_seconds")}
         return action.numpy()
 
 

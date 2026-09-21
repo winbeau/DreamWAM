@@ -22,6 +22,12 @@ def scores(config, model, video_state, action_state, state, *, anchor=False):
     if config.selection in ("action", "action_context", "visual_context"):
         return decision_scores(config, model, video_state, action_state, state, anchor=anchor)
     current = video_state["tokens"]
+    if config.selection == "random":
+        generator = torch.Generator(device=current.device)
+        generator.manual_seed(config.random_seed + state.random_selection_calls)
+        state.random_selection_calls += 1
+        score = torch.rand(current.shape[1], device=current.device, generator=generator)
+        return TokenScores(score, score)
     drift = (torch.zeros(current.shape[:2], device=current.device) if anchor else
              token_drift(current.float(), state.reference.float()))
     if config.selection != "action_drift" or config.guidance_weight == 0:

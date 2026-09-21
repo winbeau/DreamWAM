@@ -6,6 +6,7 @@ from dataclasses import dataclass
 import math
 
 from .schedule import Schedule, integer, mapping, stable_hash
+from .step_routing import StepRouterConfig
 
 
 def number(value, name, low, high=None, *, open_low=False):
@@ -32,6 +33,8 @@ class HybridConfig:
     context_weight: float = 1.0
     support_seed_ratio: float = 0.1
     reuse_mode: str = "features"
+    step_router: StepRouterConfig | None = None
+    random_seed: int = 17
 
     def __post_init__(self):
         if not isinstance(self.schedule, Schedule):
@@ -42,7 +45,7 @@ class HybridConfig:
         number(self.context_weight, "selection.context_weight", 0)
         number(self.support_seed_ratio, "selection.support_seed_ratio", 0, 1, open_low=True)
         enums = ((self.read_mode, ("full", "compact"), "read.mode"),
-                 (self.selection, ("uniform", "drift", "action_drift", "action", "action_context", "visual_context"), "selection.method"),
+                 (self.selection, ("uniform", "random", "drift", "action_drift", "action", "action_context", "visual_context"), "selection.method"),
                  (self.frame_quota, ("balanced", "none"), "selection.frame_quota"),
                  (self.backend, ("eager", "buffered", "cuda_graph"), "execution.backend"),
                  (self.reuse_mode, ("features", "structure"), "reuse.mode"),
@@ -60,22 +63,30 @@ class HybridConfig:
         if self.reuse_mode == "structure":
             if self.read_mode != "compact" or self.recompute_ratio != self.read_ratio:
                 raise ValueError("structure reuse requires compact read and equal recompute/read ratios")
-            if self.selection not in ("uniform", "action", "action_context", "visual_context"):
+            if self.selection not in ("uniform", "random", "action", "action_context", "visual_context"):
                 raise ValueError("structure reuse requires a current-input selector")
+        if self.step_router is not None:
+            if not isinstance(self.step_router, StepRouterConfig):
+                raise ValueError("step_router must be a validated StepRouterConfig")
+            if self.reuse_mode != "features" or self.schedule.source == "profile":
+                raise ValueError("adaptive step routing requires feature reuse and no frozen profile")
+        integer(self.random_seed, "random_seed", 0)
+        if self.random_seed >= 2**31:
+            raise ValueError("random_seed must be less than 2**31")
         integer(self.graph_warmup, "graph_warmup")
         integer(self.max_graphs, "max_graphs")
 
     @classmethod
     def from_mapping(cls, payload):
         p = mapping(payload, ("schema_version", "schedule", "recompute", "read", "selection",
-                             "execution", "diagnostics", "reuse"), "hybrid_visual", ("schedule",))
+                             "execution", "diagnostics", "reuse", "step_router"), "hybrid_visual", ("schedule",))
         version = p.get("schema_version", 1)
         if type(version) is not int or version != 1:
             raise ValueError("unsupported hybrid_visual.schema_version")
         recompute = mapping(p.get("recompute", {}), ("keep_ratio",), "recompute")
         read = mapping(p.get("read", {}), ("mode", "keep_ratio"), "read")
         select = mapping(p.get("selection", {}), ("method", "guidance_weight", "frame_quota",
-                                                  "context_weight", "support_seed_ratio"), "selection")
+                                                  "context_weight", "support_seed_ratio", "random_seed"), "selection")
         execution = mapping(p.get("execution", {}), ("backend", "graph_warmup", "max_graphs"), "execution")
         diagnostics = mapping(p.get("diagnostics", {}), ("level",), "diagnostics")
         reuse = mapping(p.get("reuse", {}), ("mode",), "reuse")
@@ -86,7 +97,9 @@ class HybridConfig:
                    execution.get("backend", "eager"),
                    execution.get("graph_warmup", 3), execution.get("max_graphs", 8),
                    diagnostics.get("level", "counters"), select.get("context_weight", 1.0),
-                   select.get("support_seed_ratio", 0.1), reuse.get("mode", "features"))
+                   select.get("support_seed_ratio", 0.1), reuse.get("mode", "features"),
+                   StepRouterConfig.from_mapping(p["step_router"]) if "step_router" in p else None,
+                   select.get("random_seed", 17))
 
     def describe(self, *, canonical=False):
         result = dict(schema_version=1, schedule=self.schedule.describe(canonical=canonical),
@@ -103,6 +116,10 @@ class HybridConfig:
                                        support_seed_ratio=float(self.support_seed_ratio))
         if self.reuse_mode != "features":
             result["reuse"] = dict(mode=self.reuse_mode)
+        if self.step_router is not None:
+            result["step_router"] = self.step_router.describe()
+        if self.selection == "random" or self.random_seed != 17:
+            result["selection"]["random_seed"] = self.random_seed
         return result
 
     @property

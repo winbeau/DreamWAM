@@ -282,7 +282,11 @@ class DreamWAMPolicy:
             runtime = self.policy._hybrid_visual_runtime
             self._fingerprint["hybrid_visual"] = self.policy.hybrid_visual_config
             self._fingerprint["hybrid_plan_hash"] = runtime.base_config.policy_hash
-            self._fingerprint["hybrid_operations"] = list(runtime.base_config.schedule.operations)
+            if runtime.base_config.step_router is None:
+                self._fingerprint["hybrid_operations"] = list(runtime.base_config.schedule.operations)
+            else:
+                self._fingerprint["hybrid_operations"] = "adaptive; actual operations in per-prediction diagnostics"
+                self._fingerprint["hybrid_reference_schedule"] = list(runtime.base_config.schedule.operations)
         if getattr(self.policy, "chunk_budget_config", None) is not None:
             self._fingerprint["chunk_budget"] = self.policy.chunk_budget_config
             self._fingerprint["chunk_budget_hash"] = self.policy._chunk_budget_runtime.config.policy_hash

@@ -145,7 +145,7 @@ class HybridTrace:
                 self.executed_route = torch.arange(length, device=request["video_state"]["tokens"].device)
             elif operation in ("sparse", "fresh"):
                 self.executed_route = self.current_selection.route
-                if operation == "fresh" and runtime.plan.schedule.operations[runtime._stats["denoising_steps"]] == "reuse":
+                if operation == "fresh" and runtime._effective_op == "reuse":
                     self.executed_route = runtime.state.route
             else:
                 self.executed_route = runtime.state.route

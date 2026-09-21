@@ -54,6 +54,7 @@ def _decision(stats):
     # Wall-clock cost and monotonically increasing request identity are not decisions.
     result = deepcopy(stats)
     result.pop("controller_seconds", None)
+    result.get("executed", {}).pop("step_router_seconds", None)
     return result
 
 
