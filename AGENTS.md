@@ -1,5 +1,18 @@
 # DreamWAM evaluation fork guidance
 
+## Latest completed H100 50-pair result (2026-09-21 04:02 UTC)
+
+The explicitly requested100 new attempts completed: Dense50/50, candidate42/50;
+SR drop16pp exceeds the allowed5pp, paired bootstrap95% [-24,-8]pp. Warm full
+prediction265.05→130.50ms (2.031× descriptive), episode29.90→41.56s (+39.00%).
+Errors0, retries0; conserved ledger FINALIZED at132 actual/132 charged, cap132.
+Stop evaluation here; no further rollout, tuning or hold renewal is authorized.
+GPU3/4 auto-reheld in2.46/2.77s: PID3744714/3744349, new state paths
+gpu-hold/h100-fiftypairs-after-gpu{3,4}.json. Finite leases end by06:02:24 and
+06:01:32 UTC respectively. Recheck identity before release, preserve protections.
+See docs/implementation/dido-sparse-profile/H100-FIFTYPAIRS-REPORT.md and its
+result/verification JSON. Earlier scopes and running instructions are historical.
+
 ## Authorized 50-pair H100 comparison (2026-09-21 UTC)
 
 The user explicitly confirmed: “50对：Dense与候选各50条，共100次新增”.

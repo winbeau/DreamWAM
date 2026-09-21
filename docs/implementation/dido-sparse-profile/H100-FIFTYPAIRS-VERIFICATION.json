@@ -1,0 +1,1043 @@
+{
+  "status": "COMPLETE_OBSERVED_SR_DROP_EXCEEDS_5PP",
+  "timestamp_utc": "2026-09-21T04:05:18.652591+00:00",
+  "host": "h100-server",
+  "output_root": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921",
+  "new_episode_attempts": 100,
+  "total_episode_attempts": 132,
+  "charged_slots": 132,
+  "total_cap": 132,
+  "errors": 0,
+  "retries": 0,
+  "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+  "evaluator_commit": "5e81bb36199bde9d84f1a46e2ae2fae48245f5d9",
+  "controller_commit": "4c1a2f8ba25bf7fda27a0d485dcbb359da34c7d2",
+  "auditor_commit": "4c1a2f8ba25bf7fda27a0d485dcbb359da34c7d2",
+  "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+  "commands": {
+    "run": "bash /root/wenbiao_zhao/dreamwam-sr/.trees/dido-controller-4c1a2f8-fiftypairs/deployment/h100/run-dido-fiftypairs.sh /root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs /root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921",
+    "audit": "python scripts/sparse/audit_dido_tenpairs.py --root /root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921 --out /root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/audit-4c1a2f8 --initial-states 4 5 6 7 8 --expected-cap 132"
+  },
+  "run_exit": 0,
+  "audit_exit": 0,
+  "controllers": {
+    "a": {
+      "status": "PILOT_PAIR_COMPLETE",
+      "start_utc": "2026-09-21T03:30:20.994716+00:00",
+      "pid": 3731493,
+      "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+      "evaluator_commit": "5e81bb36199bde9d84f1a46e2ae2fae48245f5d9",
+      "planned_episodes_per_arm": 25,
+      "shared_graphics": false,
+      "authorized_gpu_indices": [
+        3,
+        4,
+        5
+      ],
+      "render_backend": "osmesa",
+      "shared_gpu5": false,
+      "shared_gpu5_maximum_utilization": 10,
+      "shared_gpu5_minimum_free_mib": 50000,
+      "controller_source_sha256": "0a1abf6562b6e4b1579a3240c1457a901e434d87fedb8e0155cd2ce2d9b45313",
+      "episode_budget": {
+        "path": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json",
+        "reservation_id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a",
+        "charged": 50,
+        "total_charged": 132,
+        "cap": 132,
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 50,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i004-r00-s42/attempts/0001/result.json": "c22cd1f10584a4f7f48daa4e3a147a045a0b085b26d3830d617761c3918e7891",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i005-r00-s42/attempts/0001/result.json": "77b0204e3d438fb6746d70abccfc0c0ef8b6bc192a3774fb964318fd087dda28",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i006-r00-s42/attempts/0001/result.json": "01dfc3856af059366c0724ab498ac196269c0cf496e38f94e691952cb8bafc8e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i007-r00-s42/attempts/0001/result.json": "c755dc5078e1b2a5c5c4729b4521fdd65e8354584be1bf176466e591e947c336",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i008-r00-s42/attempts/0001/result.json": "c999c7b92ebac85f62f27f080d49640e7939e774e3ac58ff52baf8fe0f8157c2",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i004-r00-s42/attempts/0001/result.json": "ac94919270f32bcead136040f1a7d2cbca96ab548f287c813e6dcf5884c2c55c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i005-r00-s42/attempts/0001/result.json": "98677ff423bbdb1415080aeb784fbc60ed300f93bbc95a28c36c3abcd3dcef77",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i006-r00-s42/attempts/0001/result.json": "4c42f2c001c5cdb521a6590b73e359b470739979a318a3942a0933e009730b38",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i007-r00-s42/attempts/0001/result.json": "26729edfcd7586107097110aeab74648eb19b077e40d789496d6fcfaccc85145",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i008-r00-s42/attempts/0001/result.json": "eafa774222d42d09679f4e544c9af9102d79a63ac3aff2e3520256f41512cd0d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i004-r00-s42/attempts/0001/result.json": "77be8f9104cf4b1c46528ee2ce304dee6e0a7dce44559c62f14cf9d30e50a3f0",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i005-r00-s42/attempts/0001/result.json": "4242fa2922a926b327089956cdc5177dd779d7d2a79d8a8792f99f463ddc5dd8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i006-r00-s42/attempts/0001/result.json": "dfe874e24ad39dadcd81bc6018eb1a19ec7ecafc6fe1950a8942680efc5840e1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i007-r00-s42/attempts/0001/result.json": "af0138e06474c40cf09c4c03b75bbd9551bbfbac4001c947a8d37877b0c1cf64",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i008-r00-s42/attempts/0001/result.json": "d6f403d0113a6b1dd3cdbcf0dd59631af0e110ec021ec4559a7d953433ceb6c1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i004-r00-s42/attempts/0001/result.json": "e239d63a58cbeecb78e973d77eb12798d923c036d6d617098714b77d623cba38",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i005-r00-s42/attempts/0001/result.json": "e7b746a55a1b341bf58bd524e6e59d9d5f892405a894193b0fa6dfa7701b1331",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i006-r00-s42/attempts/0001/result.json": "efb90d09d99b27e500e7863d5024569f31413a5ea26ebaf6323aee0e77bc339d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i007-r00-s42/attempts/0001/result.json": "2c74009266360050822f5fe85b8ecb42b9c3b7864a26a303344146f19d6e6b5d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i008-r00-s42/attempts/0001/result.json": "fe320d1a0f19d1b39c05ca20e10551ee60f336a7bec7c9b2686a4bbb216200b3",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i004-r00-s42/attempts/0001/result.json": "602f34581460f23b8b01d8061fa1573413adf0536f712329d78149aee4c049e1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i005-r00-s42/attempts/0001/result.json": "553e7fb61472da82385bf9c0b776f09b36e4cb6bbd8cad839024d660859c35ad",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i006-r00-s42/attempts/0001/result.json": "ea3b4094f63d3303460b97509ac9a7c5a27b2ae1717279e26553ef45b55942ff",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i007-r00-s42/attempts/0001/result.json": "60676300d06bd46fd4de60f149b088a20e7296a039c2389dd924490cf5fa3555",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i008-r00-s42/attempts/0001/result.json": "3dc5fa0b0302a2e4494463bf7b95c398cca81ca4adaa1748015f54a77db26490",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i004-r00-s42/attempts/0001/result.json": "e6d0998fe42bd8d62da237a70a154dd3cc143b4bbaf327ee56a11f9add004f8a",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i005-r00-s42/attempts/0001/result.json": "f0d392e9b5a8c6417f9ea5e615d072344b18c0c78f6df30c279cf2b9b528f7bb",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i006-r00-s42/attempts/0001/result.json": "15eb0315a7444679661c899b8ee0d435e8ed978a1d7c9e5bdf1c6adb07de393e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i007-r00-s42/attempts/0001/result.json": "4ffa72a92a74d4a3f7d2a809f712a87d708a26479e925bc5bb0d69698e3943d8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i008-r00-s42/attempts/0001/result.json": "3c8195bc86faf0f80cf50d2b68b90dc06af4cf9a26d195523d5386f79a8fc88c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i004-r00-s42/attempts/0001/result.json": "ac17fc6c8fcff8a7f45a02123f1e6afe46ae4a4077a5ab9702dd3b43e4bf5c22",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i005-r00-s42/attempts/0001/result.json": "de55c6a0665a634d7eefe0524932a0c1649b815e35009fb4fc18cc88a5a29db7",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i006-r00-s42/attempts/0001/result.json": "703620185ec07de1a03733be3c3a8e04955c3f130a9af65de83c247befcda65e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i007-r00-s42/attempts/0001/result.json": "8cf5e3ac08acb40b6f751992b4bbb2609f36603d7265c13f34524674b4314096",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i008-r00-s42/attempts/0001/result.json": "f38a69359d5cd050df7ddc35b82161474c9876aea8586dff545677d7fea27b1b",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i004-r00-s42/attempts/0001/result.json": "d5f0a8b72a074ca8c4b0f27723591942e437e0477c9918449c816f24764da7ee",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i005-r00-s42/attempts/0001/result.json": "dd1b627f43ac8b8bc57b87115540a816569023f25efca1243cd646e495f46cf2",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i006-r00-s42/attempts/0001/result.json": "b94bc8e5f29f6db61a23d48c933e16341023d69a5b104f6a6f12f51ef68caef1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i007-r00-s42/attempts/0001/result.json": "116a3ff4672c10b37fbe0062e9cb9e3378d32b5127e7bf0479e7fe4e61fea561",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i008-r00-s42/attempts/0001/result.json": "9edebbdc5c7cbb14149705421e8dfe75bb65749613335f68953dc628841c338c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i004-r00-s42/attempts/0001/result.json": "cafeacb99f6e29e1910fa1a3f5d00fa47eb152d4b444172d39a90757118436f8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i005-r00-s42/attempts/0001/result.json": "36e7d525cb81fc5b87b2112b594cd338c19bf0e476b0c38e9cbb0607d7747bb0",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i006-r00-s42/attempts/0001/result.json": "ae988e7cc330fcc37b5b2c6a1f3149332d4f3e726e26e76a0b570ae7c9552d88",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i007-r00-s42/attempts/0001/result.json": "fcc7ce50466f573079ef09e42586788ab34d4db1667b67573e4177850710131a",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i008-r00-s42/attempts/0001/result.json": "f1a5f5b65e7b9a979a99fdfca9653ce5f364e8f3a50eccec3edd336512d964a9",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i004-r00-s42/attempts/0001/result.json": "99b5c564b8d11b492eef4eeab69c22f94f63d69f1b648058b0ea9faa60432bed",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i005-r00-s42/attempts/0001/result.json": "915ca6243d57796e8f274671359a929f90f63b5d7f1d7539f49a08687a98a53c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i006-r00-s42/attempts/0001/result.json": "af8fe55c106e01b19d8f9166f69d4413d9664a7c1ca39f929eed31880c471fc0",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i007-r00-s42/attempts/0001/result.json": "0d5559f00514fadcad378db2137b64ea220e3286256402df9f131201a8490cd6",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i008-r00-s42/attempts/0001/result.json": "ebea52be32e162ed5bd15660eac9b0076dff918af6e62b266f2919a9822301b8"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        }
+      },
+      "first_arm": "dense",
+      "wall_seconds_per_arm": 0,
+      "stop_grace_seconds": 120,
+      "smoke_only": false,
+      "runs": [
+        {
+          "arm": "dense",
+          "start_utc": "2026-09-21T03:30:22.576291+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-dense-h100-fiftypairs-a.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense",
+            "--check-native-writes"
+          ],
+          "admission": {
+            "utc": "2026-09-21T03:30:22.575965+00:00",
+            "arm": "dense",
+            "phase": "admission",
+            "gpus": [
+              {
+                "index": 0,
+                "uuid": "GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f",
+                "util": 0,
+                "free": 77814,
+                "used": 3268,
+                "processes": []
+              },
+              {
+                "index": 1,
+                "uuid": "GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9",
+                "util": 0,
+                "free": 79256,
+                "used": 1825,
+                "processes": []
+              },
+              {
+                "index": 2,
+                "uuid": "GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14",
+                "util": 2,
+                "free": 76940,
+                "used": 4142,
+                "processes": []
+              },
+              {
+                "index": 3,
+                "uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 4,
+                "uuid": "GPU-3af22086-0ac4-4277-1486-96909b440d1c",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 5,
+                "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              }
+            ],
+            "spares_unused": [
+              4,
+              5
+            ],
+            "explicit_gpu5_sharing": false,
+            "last_available_exception": false
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense",
+          "fingerprint_verified": true,
+          "pid": 3731506,
+          "forced_cleanup": false,
+          "exit_code": 0,
+          "end_utc": "2026-09-21T03:43:08.525733+00:00",
+          "stop_reason": null
+        },
+        {
+          "arm": "sparse",
+          "start_utc": "2026-09-21T03:43:09.412747+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-native-va56-h100-fiftypairs-a.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse",
+            "--check-native-writes"
+          ],
+          "admission": {
+            "utc": "2026-09-21T03:43:09.412492+00:00",
+            "arm": "sparse",
+            "phase": "admission",
+            "gpus": [
+              {
+                "index": 0,
+                "uuid": "GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f",
+                "util": 0,
+                "free": 69148,
+                "used": 11934,
+                "processes": []
+              },
+              {
+                "index": 1,
+                "uuid": "GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9",
+                "util": 0,
+                "free": 78555,
+                "used": 2527,
+                "processes": []
+              },
+              {
+                "index": 2,
+                "uuid": "GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14",
+                "util": 5,
+                "free": 51668,
+                "used": 29414,
+                "processes": []
+              },
+              {
+                "index": 3,
+                "uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 4,
+                "uuid": "GPU-3af22086-0ac4-4277-1486-96909b440d1c",
+                "util": 0,
+                "free": 55772,
+                "used": 25309,
+                "processes": [
+                  {
+                    "pid": 3731533,
+                    "type": "C"
+                  }
+                ]
+              },
+              {
+                "index": 5,
+                "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              }
+            ],
+            "spares_unused": [
+              4,
+              5
+            ],
+            "explicit_gpu5_sharing": false,
+            "last_available_exception": false
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse",
+          "fingerprint_verified": true,
+          "pid": 3734114,
+          "forced_cleanup": false,
+          "exit_code": 0,
+          "end_utc": "2026-09-21T04:02:21.438540+00:00",
+          "stop_reason": null
+        }
+      ],
+      "sr": null,
+      "configs": {
+        "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-dense-h100-fiftypairs-a.yaml",
+        "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-native-va56-h100-fiftypairs-a.yaml"
+      },
+      "end_utc": "2026-09-21T04:02:21.444336+00:00"
+    },
+    "b": {
+      "status": "PILOT_PAIR_COMPLETE",
+      "start_utc": "2026-09-21T03:30:20.976998+00:00",
+      "pid": 3731494,
+      "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+      "evaluator_commit": "5e81bb36199bde9d84f1a46e2ae2fae48245f5d9",
+      "planned_episodes_per_arm": 25,
+      "shared_graphics": false,
+      "authorized_gpu_indices": [
+        3,
+        4,
+        5
+      ],
+      "render_backend": "osmesa",
+      "shared_gpu5": false,
+      "shared_gpu5_maximum_utilization": 10,
+      "shared_gpu5_minimum_free_mib": 50000,
+      "controller_source_sha256": "0a1abf6562b6e4b1579a3240c1457a901e434d87fedb8e0155cd2ce2d9b45313",
+      "episode_budget": {
+        "path": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json",
+        "reservation_id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b",
+        "charged": 50,
+        "total_charged": 132,
+        "cap": 132,
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 50,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i004-r00-s42/attempts/0001/result.json": "fcaf28eb5479da1db061f26a40d71dbcc96ac985319dd6e4937f135a611f4fcd",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i005-r00-s42/attempts/0001/result.json": "5d07c11ecf5b539c18bd5503fb8ad0a2a05ac270a0336e262905b61e883ddae1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i006-r00-s42/attempts/0001/result.json": "d83ee5be8d190d70910160e4c7e384f4adad241c850d5a42cb593860c65c4da6",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i007-r00-s42/attempts/0001/result.json": "39e30bc8591ebeb1ebe5493c3acaa14b5a00704d691d58db89effa2dcfc86f7d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i008-r00-s42/attempts/0001/result.json": "64cff9d06e0b8ca28297216d1f5bc1b72678606f88880edbf1da037d2c192211",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i004-r00-s42/attempts/0001/result.json": "b7c57570883e4428bbd0ae6d6faebb1916faf0dc442a57dfab0aa08364d64600",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i005-r00-s42/attempts/0001/result.json": "04d027753f1a460ba177cc10ffac30030ebd12543825c4ce04e834e1d7d0f040",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i006-r00-s42/attempts/0001/result.json": "4dd727b80cb8652e4fc0c5b1b6612fabb59736c9a53838b329fd800cde9a72e3",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i007-r00-s42/attempts/0001/result.json": "9db00945f7fe98d8fa2fa096c56757173cf8d69148ceed93262ae434b3dfd782",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i008-r00-s42/attempts/0001/result.json": "0e7bd6abc6e3e6179cdf60bebc3ccfa23d865e76e695f0f449d52e10f240d192",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i004-r00-s42/attempts/0001/result.json": "42456015cec5fd08fa4c9487369c83720cbe01946c23d0e5f1a687f8177e06e8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i005-r00-s42/attempts/0001/result.json": "b063081aac2e5a86e6874ea37b458c8e400a589cbb1d9df251a1229747d0668d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i006-r00-s42/attempts/0001/result.json": "c1572436e30399efc442360da64456761f08cc58618cea8a70b0f9cb15500a8c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i007-r00-s42/attempts/0001/result.json": "644e695676ca3522a36d61df2d721c3df460122b787e61a286541473ea5531be",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i008-r00-s42/attempts/0001/result.json": "80bb73e87789d3d9335969c55d523afa0d434f4a187bb6c006be18cc6ee178ce",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i004-r00-s42/attempts/0001/result.json": "68ce79fe7faed461565e6b1f10f775764b9f04d0e672595026fdf4c15dd3ae37",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i005-r00-s42/attempts/0001/result.json": "7e23173f797cf66268cd8eeda2224363694abf00f3cb8ae5b8dfe6751144b870",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i006-r00-s42/attempts/0001/result.json": "e2d1d8f1ac5f8a3c3056e1bed8adb304af69788d59342a14cf3b738792c1406c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i007-r00-s42/attempts/0001/result.json": "d342d83370c537e0c9ea84bbbf3fb899f4d8e150a561a8904e916610980223b8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i008-r00-s42/attempts/0001/result.json": "45c75c834aa2f929e619001b87167645de963433c08f1c79902b05775d0448e1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i004-r00-s42/attempts/0001/result.json": "1b89b981d3eeb8fc1c92da747bf7002f383576f44db6bfd2b670ad2826a32e8d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i005-r00-s42/attempts/0001/result.json": "4ad27b1e438892e6af634177e097c294eb2d6ec448cd23635ac2695ff19490fe",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i006-r00-s42/attempts/0001/result.json": "5be7e39ed6d46d751d6cce5883505d3917afb3f59ec0926393cd5e79021d68eb",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i007-r00-s42/attempts/0001/result.json": "513a6801e76d6976a0c665b64ee21206bf918d56e674468cd6a19d692aec32ab",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i008-r00-s42/attempts/0001/result.json": "5c9a96a3f2872a4206e8f2d715ec1b6123770b3acab4b18a34d26c4b344e8336",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i004-r00-s42/attempts/0001/result.json": "31073798ee29685cc7f9423cb960216a826867a2a4db59906b779163fa945711",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i005-r00-s42/attempts/0001/result.json": "6e4c4bb69fc39dfce107cfd12a68a6565114909c65b07ed26bef3b3ec5311b84",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i006-r00-s42/attempts/0001/result.json": "a42334aaa7ebc857736ed8713b31989fce32b1f971dcb346b5700177ea2d965c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i007-r00-s42/attempts/0001/result.json": "9b3342a80d8ebe63d47481a81455e2d4ace26187b51199595f6b3e5543b4bfde",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i008-r00-s42/attempts/0001/result.json": "c7a103e82faa25c4050fde3cf5ade988acffcbb87a5b0ca6bad76f97d6ae7e9e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i004-r00-s42/attempts/0001/result.json": "e860f1315adb9034809c2e52769b419c56c4291ed3dd12ebd7e699d9ee7707bc",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i005-r00-s42/attempts/0001/result.json": "1614861d8446f1764847a166f94903ddd84a48ef222bbb578060cdcc531927c3",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i006-r00-s42/attempts/0001/result.json": "19e8d107b439bc6d17d7fb33ea752f8d9efb314b0bedc61f338550781af3e087",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i007-r00-s42/attempts/0001/result.json": "9bffb85780bc8844c1d04f0804f976da176ce21ff53be1b29306ae257bb0e698",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i008-r00-s42/attempts/0001/result.json": "fa3614c8adebd1f7b9ad1c7e3799a36959a611c1b0089baa0483deeb2c2013a5",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i004-r00-s42/attempts/0001/result.json": "856ed89700eddf29f0f39d43d3a132c509d9fd51d377276087f2a59df5b4bf86",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i005-r00-s42/attempts/0001/result.json": "63be58825796167f6b14049b7d0e0276a14932c7961d5a0817b36ec8f657ee9e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i006-r00-s42/attempts/0001/result.json": "3166ee6a91ddc34e9193afca42ac1a0d9c4ca9955ae8d8c951da89cabc04145d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i007-r00-s42/attempts/0001/result.json": "1884c2aa0e3cea731b80e6c81e729e55a5cea1e5f861d34571382541e5710c98",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i008-r00-s42/attempts/0001/result.json": "b128ab79dd42573445ba08d0127335cd7c423a71d6651f969d841acdd1734b70",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i004-r00-s42/attempts/0001/result.json": "8a17be5b5cf4974f71f0b43c84d5dad87eaa5fa65d22a687fd80fb9a40128757",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i005-r00-s42/attempts/0001/result.json": "4fda9aae0833dae610ed6a384a1e4cb35cd579890add2291b13ee146c697abcd",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i006-r00-s42/attempts/0001/result.json": "70e772b8d0e3d0a1d3697a62bb630425ac60a378164c19831d0c77f1f1f15075",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i007-r00-s42/attempts/0001/result.json": "fed91ca54f5a94565ecba88775790d43cfe59f3b4ae872ee571838d71fec36e0",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i008-r00-s42/attempts/0001/result.json": "bd91b676bb31585944088163422b84557063662294c3ede93b7bae09950a1b52",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i004-r00-s42/attempts/0001/result.json": "f53e8ad1fc2c29aae135f589755a896957467e0bf22727ce8d771e01653e197d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i005-r00-s42/attempts/0001/result.json": "cda69dc40be7d03e0f6dbaf97561f2a3b675f78820ccaab6c260fd9f598e2b2d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i006-r00-s42/attempts/0001/result.json": "18470d6fb1a2f27205e560cd9f2a84e7de878933588f44b02d0f91c24865e80e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i007-r00-s42/attempts/0001/result.json": "2556f8009522d679984a36459a30eba452e52afc8b6b5cd10ffbec6713f4f07f",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i008-r00-s42/attempts/0001/result.json": "257ee720d9fdb4eb057e919176be8c0542e0e50abb15b45776732ca1837f87b1"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        }
+      },
+      "first_arm": "sparse",
+      "wall_seconds_per_arm": 0,
+      "stop_grace_seconds": 120,
+      "smoke_only": false,
+      "runs": [
+        {
+          "arm": "sparse",
+          "start_utc": "2026-09-21T03:30:22.509071+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-native-va56-h100-fiftypairs-b.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse",
+            "--check-native-writes"
+          ],
+          "admission": {
+            "utc": "2026-09-21T03:30:22.508806+00:00",
+            "arm": "sparse",
+            "phase": "admission",
+            "gpus": [
+              {
+                "index": 0,
+                "uuid": "GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f",
+                "util": 0,
+                "free": 77814,
+                "used": 3268,
+                "processes": []
+              },
+              {
+                "index": 1,
+                "uuid": "GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9",
+                "util": 0,
+                "free": 79256,
+                "used": 1825,
+                "processes": []
+              },
+              {
+                "index": 2,
+                "uuid": "GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14",
+                "util": 2,
+                "free": 76940,
+                "used": 4142,
+                "processes": []
+              },
+              {
+                "index": 3,
+                "uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 4,
+                "uuid": "GPU-3af22086-0ac4-4277-1486-96909b440d1c",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 5,
+                "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              }
+            ],
+            "spares_unused": [
+              3,
+              5
+            ],
+            "explicit_gpu5_sharing": false,
+            "last_available_exception": false
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse",
+          "fingerprint_verified": true,
+          "pid": 3731503,
+          "forced_cleanup": false,
+          "exit_code": 0,
+          "end_utc": "2026-09-21T03:47:35.029286+00:00",
+          "stop_reason": null
+        },
+        {
+          "arm": "dense",
+          "start_utc": "2026-09-21T03:47:36.378696+00:00",
+          "command": [
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/.venv/bin/python",
+            "scripts/supplement-libero.py",
+            "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-dense-h100-fiftypairs-b.yaml",
+            "--render-cpu",
+            "--output",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense",
+            "--check-native-writes"
+          ],
+          "admission": {
+            "utc": "2026-09-21T03:47:36.378426+00:00",
+            "arm": "dense",
+            "phase": "admission",
+            "gpus": [
+              {
+                "index": 0,
+                "uuid": "GPU-7f893bc3-9a65-24c1-47dd-1e4428cec01f",
+                "util": 0,
+                "free": 77776,
+                "used": 3306,
+                "processes": []
+              },
+              {
+                "index": 1,
+                "uuid": "GPU-6ff18a65-da11-8cd4-2dcf-1dc48fe45de9",
+                "util": 60,
+                "free": 67395,
+                "used": 13687,
+                "processes": []
+              },
+              {
+                "index": 2,
+                "uuid": "GPU-c8fff9e2-03b2-c88c-8b8c-568c7f6dde14",
+                "util": 0,
+                "free": 77879,
+                "used": 3203,
+                "processes": []
+              },
+              {
+                "index": 3,
+                "uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+                "util": 0,
+                "free": 55772,
+                "used": 25309,
+                "processes": [
+                  {
+                    "pid": 3734129,
+                    "type": "C"
+                  }
+                ]
+              },
+              {
+                "index": 4,
+                "uuid": "GPU-3af22086-0ac4-4277-1486-96909b440d1c",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              },
+              {
+                "index": 5,
+                "uuid": "GPU-2376be1e-4f31-5c4c-ea37-25c7e9b8e64a",
+                "util": 0,
+                "free": 81081,
+                "used": 0,
+                "processes": []
+              }
+            ],
+            "spares_unused": [
+              3,
+              5
+            ],
+            "explicit_gpu5_sharing": false,
+            "last_available_exception": false
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense",
+          "fingerprint_verified": true,
+          "pid": 3734833,
+          "forced_cleanup": false,
+          "exit_code": 0,
+          "end_utc": "2026-09-21T04:01:28.776602+00:00",
+          "stop_reason": null
+        }
+      ],
+      "sr": null,
+      "configs": {
+        "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-dense-h100-fiftypairs-b.yaml",
+        "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-native-va56-h100-fiftypairs-b.yaml"
+      },
+      "end_utc": "2026-09-21T04:01:28.781432+00:00"
+    }
+  },
+  "ledger": {
+    "schema_version": 1,
+    "effort": "dido-sparse-profile-20260920",
+    "cap": 132,
+    "created_utc": "2026-09-20T21:08:58.204386+00:00",
+    "reservations": [
+      {
+        "id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50",
+        "charged": 6,
+        "created_utc": "2026-09-20T21:08:58.204394+00:00",
+        "state": "FINALIZED",
+        "metadata": {
+          "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+          "evaluator_commit": "0f856c9ce160150286ed31f11001cca0acd04c32",
+          "configs": {
+            "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/configs/experiments/dreamwam-dido-dense-dev3-osmesa.yaml",
+            "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-0f856c9-pilot/configs/experiments/dreamwam-dido-native-va56-dev3-osmesa.yaml"
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50",
+          "controller_pid": 622180
+        },
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 6,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/dense/run/episodes/t000-i001-r00-s42/attempts/0001/result.json": "5984977cd737bd5c16b9d956f737e4fd98b1dffc952569470875ba017bdc2e15",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/dense/run/episodes/t001-i001-r00-s42/attempts/0001/result.json": "2d9cf6d353565a0362dbc51bb9588dea41b72a76a2e1ba8bc5c6d0745c36b904",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/dense/run/episodes/t002-i001-r00-s42/attempts/0001/result.json": "d872c1db5d7d76c8ba0a08ca1a325d72154c41233efe97f56a9aebf5367ec9a6",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/sparse/run/episodes/t000-i001-r00-s42/attempts/0001/result.json": "35669339ac8ea296eda23ae05841e5818c170692aaed5d7e2ec731ba9e512d16",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/sparse/run/episodes/t001-i001-r00-s42/attempts/0001/result.json": "531e8a57cba50cdb871f8ea2ae7539de4e07790af883d01c1be50b0c1ae5dbcf",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/pilot3-native-va56-41f515a-shared50/sparse/run/episodes/t002-i001-r00-s42/attempts/0001/result.json": "3e6b0db9746122d97281aab97a7a826731235c44b15cff72e8be1ce16e2d2880"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        },
+        "finalized_utc": "2026-09-20T21:13:05.546710+00:00"
+      },
+      {
+        "id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50",
+        "charged": 6,
+        "created_utc": "2026-09-20T21:19:29.839481+00:00",
+        "state": "FINALIZED",
+        "metadata": {
+          "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+          "evaluator_commit": "b5952a54369b8fcc11513c8508e5c7fdd3840ff2",
+          "configs": {
+            "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-b5952a5-fixed/configs/experiments/dreamwam-dido-dense-fixed3-osmesa.yaml",
+            "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-b5952a5-fixed/configs/experiments/dreamwam-dido-native-va56-fixed3-osmesa.yaml"
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50",
+          "controller_pid": 623285
+        },
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 6,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run/episodes/t003-i002-r00-s42/attempts/0001/result.json": "b2652143c4ee44495b36818d3d5158b233508e63d3da38688edcbc5fdc026653",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run/episodes/t004-i002-r00-s42/attempts/0001/result.json": "2a8809f6afa0e04f18ec802a8f96f6d9e98dba1d90605fe363b3beb087ebd2b2",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/sparse/run/episodes/t005-i002-r00-s42/attempts/0001/result.json": "b937eee4b8d368c4ecb4e661a6a11935cb1dcd31787139a61de8b7d2b0a74fef",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run/episodes/t003-i002-r00-s42/attempts/0001/result.json": "2b7e62ae467ac423d2d9812ec38b35035d87560b9d2788ea9fcb0512e0b71e32",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run/episodes/t004-i002-r00-s42/attempts/0001/result.json": "8b9b1487718eccc7ea39be16a6010a21ad360a9818ce751ae36a6fea30ebf768",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/fixed3-native-va56-41f515a-shared50/dense/run/episodes/t005-i002-r00-s42/attempts/0001/result.json": "020a0b53908b450258ff23c53ad450d74f32f36c1138bbf1bfb94eceb08224f0"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        },
+        "finalized_utc": "2026-09-20T21:25:02.087689+00:00"
+      },
+      {
+        "id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b",
+        "charged": 10,
+        "created_utc": "2026-09-21T03:02:19.015759+00:00",
+        "state": "FINALIZED",
+        "metadata": {
+          "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+          "evaluator_commit": "91b0765fc94836ab519cd5049c488460d5e597b3",
+          "configs": {
+            "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-dense-h100-tenpairs-b.yaml",
+            "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-native-va56-h100-tenpairs-b.yaml"
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b",
+          "controller_pid": 3715327
+        },
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 10,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t005-i003-r00-s42/attempts/0001/result.json": "7ac5db8b69bd3c359ba6a98f88ffbae31e78af595034591f70726fd3840e76fc",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t006-i003-r00-s42/attempts/0001/result.json": "759b6baee665e06f86d0ce166aea89aec2102b9888e87f756e3873e75ece7d3c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t007-i003-r00-s42/attempts/0001/result.json": "05b0d822a436a1f29e8ae2e4524b391ddae6398c954fbff8ada7241e06099332",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t008-i003-r00-s42/attempts/0001/result.json": "b5a2cef6669e93a7862256d15d956d9db85be583d4f0fff9ee695a3f5513be47",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/sparse/run/episodes/t009-i003-r00-s42/attempts/0001/result.json": "878757091d2385bd56cb657935fe7b76487aa15e91b400c56805a87afd87d0fa",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t005-i003-r00-s42/attempts/0001/result.json": "ff4900c1ee23cecda053bd3e58b1ab99460ebc50ca458fe58ff3a4efd9942f4a",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t006-i003-r00-s42/attempts/0001/result.json": "f4bf78bf398941d260eb84d16b14708d779ae0c9a1f7a0c09ae953f3a67d1c8c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t007-i003-r00-s42/attempts/0001/result.json": "3681554bf60b9b53a17882d172dd6af9531cfa1ca8de0acb2890bcc132715ac6",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t008-i003-r00-s42/attempts/0001/result.json": "67cc35e2f98ab27f350431838b1cfc14d74cffabf390a7124b56e7d01fa5e7de",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-b/dense/run/episodes/t009-i003-r00-s42/attempts/0001/result.json": "0524b0a870389fc30c14c1f5bb7e81f6979c5a3836ff5d7b8c7d50dc3214a64f"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        },
+        "finalized_utc": "2026-09-21T03:10:10.903458+00:00"
+      },
+      {
+        "id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a",
+        "charged": 10,
+        "created_utc": "2026-09-21T03:02:19.024686+00:00",
+        "state": "FINALIZED",
+        "metadata": {
+          "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+          "evaluator_commit": "91b0765fc94836ab519cd5049c488460d5e597b3",
+          "configs": {
+            "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-dense-h100-tenpairs-a.yaml",
+            "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-91b0765-tenpairs/configs/experiments/dreamwam-dido-native-va56-h100-tenpairs-a.yaml"
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a",
+          "controller_pid": 3715328
+        },
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 10,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t000-i003-r00-s42/attempts/0001/result.json": "edc0c4df8994278036697bae1ac52e0c1d29f08cf3dbcb2202ffc3b3e2cad9e4",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t001-i003-r00-s42/attempts/0001/result.json": "df96934a6e2c3c51b3ede97df9d6e4d1286815d211606e0fc9c633b19ddd5149",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t002-i003-r00-s42/attempts/0001/result.json": "3a15d9a20194e35b32d4605145dabbe80ff4ca75904dbc1def8cf7b2a8a50592",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t003-i003-r00-s42/attempts/0001/result.json": "ea0eb2320947dbdc013017d70e1588f2436580dbed7534c012ee82718681b0be",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/dense/run/episodes/t004-i003-r00-s42/attempts/0001/result.json": "954f53b9e12492f17540ecfb39328c146c55e2f65170fce0b5fd36f51bcc82cd",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t000-i003-r00-s42/attempts/0001/result.json": "ecb6874d3c1eef7383b17065e54647743e9228aa4bc28f2eb0b9f25c090ca0c3",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t001-i003-r00-s42/attempts/0001/result.json": "75e7ffd3708331f2988dba152a5ef9379f82514f527a42c993e92e7407ebe20a",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t002-i003-r00-s42/attempts/0001/result.json": "dde608c218d0b075b177f6dd8ffef02b252158866fab7e1789552b92284fd743",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t003-i003-r00-s42/attempts/0001/result.json": "83b4f1de498bfcc9a76bd4caa80f94e6de116e909f9b1ffd1987c6b556a2eb04",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired10-20260921/lane-a/sparse/run/episodes/t004-i003-r00-s42/attempts/0001/result.json": "5107e45f501d4ca07b557c8867899347fd49a3f5de35a8bd9c7858d965d58076"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        },
+        "finalized_utc": "2026-09-21T03:11:00.200019+00:00"
+      },
+      {
+        "id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b",
+        "charged": 50,
+        "created_utc": "2026-09-21T03:30:22.509381+00:00",
+        "state": "FINALIZED",
+        "metadata": {
+          "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+          "evaluator_commit": "5e81bb36199bde9d84f1a46e2ae2fae48245f5d9",
+          "configs": {
+            "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-dense-h100-fiftypairs-b.yaml",
+            "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-native-va56-h100-fiftypairs-b.yaml"
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b",
+          "controller_pid": 3731494
+        },
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 50,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i004-r00-s42/attempts/0001/result.json": "fcaf28eb5479da1db061f26a40d71dbcc96ac985319dd6e4937f135a611f4fcd",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i005-r00-s42/attempts/0001/result.json": "5d07c11ecf5b539c18bd5503fb8ad0a2a05ac270a0336e262905b61e883ddae1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i006-r00-s42/attempts/0001/result.json": "d83ee5be8d190d70910160e4c7e384f4adad241c850d5a42cb593860c65c4da6",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i007-r00-s42/attempts/0001/result.json": "39e30bc8591ebeb1ebe5493c3acaa14b5a00704d691d58db89effa2dcfc86f7d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t005-i008-r00-s42/attempts/0001/result.json": "64cff9d06e0b8ca28297216d1f5bc1b72678606f88880edbf1da037d2c192211",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i004-r00-s42/attempts/0001/result.json": "b7c57570883e4428bbd0ae6d6faebb1916faf0dc442a57dfab0aa08364d64600",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i005-r00-s42/attempts/0001/result.json": "04d027753f1a460ba177cc10ffac30030ebd12543825c4ce04e834e1d7d0f040",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i006-r00-s42/attempts/0001/result.json": "4dd727b80cb8652e4fc0c5b1b6612fabb59736c9a53838b329fd800cde9a72e3",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i007-r00-s42/attempts/0001/result.json": "9db00945f7fe98d8fa2fa096c56757173cf8d69148ceed93262ae434b3dfd782",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t006-i008-r00-s42/attempts/0001/result.json": "0e7bd6abc6e3e6179cdf60bebc3ccfa23d865e76e695f0f449d52e10f240d192",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i004-r00-s42/attempts/0001/result.json": "42456015cec5fd08fa4c9487369c83720cbe01946c23d0e5f1a687f8177e06e8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i005-r00-s42/attempts/0001/result.json": "b063081aac2e5a86e6874ea37b458c8e400a589cbb1d9df251a1229747d0668d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i006-r00-s42/attempts/0001/result.json": "c1572436e30399efc442360da64456761f08cc58618cea8a70b0f9cb15500a8c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i007-r00-s42/attempts/0001/result.json": "644e695676ca3522a36d61df2d721c3df460122b787e61a286541473ea5531be",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t007-i008-r00-s42/attempts/0001/result.json": "80bb73e87789d3d9335969c55d523afa0d434f4a187bb6c006be18cc6ee178ce",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i004-r00-s42/attempts/0001/result.json": "68ce79fe7faed461565e6b1f10f775764b9f04d0e672595026fdf4c15dd3ae37",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i005-r00-s42/attempts/0001/result.json": "7e23173f797cf66268cd8eeda2224363694abf00f3cb8ae5b8dfe6751144b870",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i006-r00-s42/attempts/0001/result.json": "e2d1d8f1ac5f8a3c3056e1bed8adb304af69788d59342a14cf3b738792c1406c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i007-r00-s42/attempts/0001/result.json": "d342d83370c537e0c9ea84bbbf3fb899f4d8e150a561a8904e916610980223b8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t008-i008-r00-s42/attempts/0001/result.json": "45c75c834aa2f929e619001b87167645de963433c08f1c79902b05775d0448e1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i004-r00-s42/attempts/0001/result.json": "1b89b981d3eeb8fc1c92da747bf7002f383576f44db6bfd2b670ad2826a32e8d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i005-r00-s42/attempts/0001/result.json": "4ad27b1e438892e6af634177e097c294eb2d6ec448cd23635ac2695ff19490fe",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i006-r00-s42/attempts/0001/result.json": "5be7e39ed6d46d751d6cce5883505d3917afb3f59ec0926393cd5e79021d68eb",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i007-r00-s42/attempts/0001/result.json": "513a6801e76d6976a0c665b64ee21206bf918d56e674468cd6a19d692aec32ab",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/sparse/run/episodes/t009-i008-r00-s42/attempts/0001/result.json": "5c9a96a3f2872a4206e8f2d715ec1b6123770b3acab4b18a34d26c4b344e8336",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i004-r00-s42/attempts/0001/result.json": "31073798ee29685cc7f9423cb960216a826867a2a4db59906b779163fa945711",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i005-r00-s42/attempts/0001/result.json": "6e4c4bb69fc39dfce107cfd12a68a6565114909c65b07ed26bef3b3ec5311b84",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i006-r00-s42/attempts/0001/result.json": "a42334aaa7ebc857736ed8713b31989fce32b1f971dcb346b5700177ea2d965c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i007-r00-s42/attempts/0001/result.json": "9b3342a80d8ebe63d47481a81455e2d4ace26187b51199595f6b3e5543b4bfde",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t005-i008-r00-s42/attempts/0001/result.json": "c7a103e82faa25c4050fde3cf5ade988acffcbb87a5b0ca6bad76f97d6ae7e9e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i004-r00-s42/attempts/0001/result.json": "e860f1315adb9034809c2e52769b419c56c4291ed3dd12ebd7e699d9ee7707bc",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i005-r00-s42/attempts/0001/result.json": "1614861d8446f1764847a166f94903ddd84a48ef222bbb578060cdcc531927c3",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i006-r00-s42/attempts/0001/result.json": "19e8d107b439bc6d17d7fb33ea752f8d9efb314b0bedc61f338550781af3e087",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i007-r00-s42/attempts/0001/result.json": "9bffb85780bc8844c1d04f0804f976da176ce21ff53be1b29306ae257bb0e698",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t006-i008-r00-s42/attempts/0001/result.json": "fa3614c8adebd1f7b9ad1c7e3799a36959a611c1b0089baa0483deeb2c2013a5",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i004-r00-s42/attempts/0001/result.json": "856ed89700eddf29f0f39d43d3a132c509d9fd51d377276087f2a59df5b4bf86",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i005-r00-s42/attempts/0001/result.json": "63be58825796167f6b14049b7d0e0276a14932c7961d5a0817b36ec8f657ee9e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i006-r00-s42/attempts/0001/result.json": "3166ee6a91ddc34e9193afca42ac1a0d9c4ca9955ae8d8c951da89cabc04145d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i007-r00-s42/attempts/0001/result.json": "1884c2aa0e3cea731b80e6c81e729e55a5cea1e5f861d34571382541e5710c98",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t007-i008-r00-s42/attempts/0001/result.json": "b128ab79dd42573445ba08d0127335cd7c423a71d6651f969d841acdd1734b70",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i004-r00-s42/attempts/0001/result.json": "8a17be5b5cf4974f71f0b43c84d5dad87eaa5fa65d22a687fd80fb9a40128757",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i005-r00-s42/attempts/0001/result.json": "4fda9aae0833dae610ed6a384a1e4cb35cd579890add2291b13ee146c697abcd",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i006-r00-s42/attempts/0001/result.json": "70e772b8d0e3d0a1d3697a62bb630425ac60a378164c19831d0c77f1f1f15075",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i007-r00-s42/attempts/0001/result.json": "fed91ca54f5a94565ecba88775790d43cfe59f3b4ae872ee571838d71fec36e0",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t008-i008-r00-s42/attempts/0001/result.json": "bd91b676bb31585944088163422b84557063662294c3ede93b7bae09950a1b52",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i004-r00-s42/attempts/0001/result.json": "f53e8ad1fc2c29aae135f589755a896957467e0bf22727ce8d771e01653e197d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i005-r00-s42/attempts/0001/result.json": "cda69dc40be7d03e0f6dbaf97561f2a3b675f78820ccaab6c260fd9f598e2b2d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i006-r00-s42/attempts/0001/result.json": "18470d6fb1a2f27205e560cd9f2a84e7de878933588f44b02d0f91c24865e80e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i007-r00-s42/attempts/0001/result.json": "2556f8009522d679984a36459a30eba452e52afc8b6b5cd10ffbec6713f4f07f",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-b/dense/run/episodes/t009-i008-r00-s42/attempts/0001/result.json": "257ee720d9fdb4eb057e919176be8c0542e0e50abb15b45776732ca1837f87b1"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        },
+        "finalized_utc": "2026-09-21T04:01:28.785018+00:00"
+      },
+      {
+        "id": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a",
+        "charged": 50,
+        "created_utc": "2026-09-21T03:30:22.576670+00:00",
+        "state": "FINALIZED",
+        "metadata": {
+          "model_commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+          "evaluator_commit": "5e81bb36199bde9d84f1a46e2ae2fae48245f5d9",
+          "configs": {
+            "dense": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-dense-h100-fiftypairs-a.yaml",
+            "sparse": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-eval-5e81bb3-fiftypairs/configs/experiments/dreamwam-dido-native-va56-h100-fiftypairs-a.yaml"
+          },
+          "output": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a",
+          "controller_pid": 3731493
+        },
+        "evidence": {
+          "controller_status": "PILOT_PAIR_COMPLETE",
+          "recorded_attempts": 50,
+          "recorded_not_run": 0,
+          "terminal_artifacts": {
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i004-r00-s42/attempts/0001/result.json": "c22cd1f10584a4f7f48daa4e3a147a045a0b085b26d3830d617761c3918e7891",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i005-r00-s42/attempts/0001/result.json": "77b0204e3d438fb6746d70abccfc0c0ef8b6bc192a3774fb964318fd087dda28",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i006-r00-s42/attempts/0001/result.json": "01dfc3856af059366c0724ab498ac196269c0cf496e38f94e691952cb8bafc8e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i007-r00-s42/attempts/0001/result.json": "c755dc5078e1b2a5c5c4729b4521fdd65e8354584be1bf176466e591e947c336",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t000-i008-r00-s42/attempts/0001/result.json": "c999c7b92ebac85f62f27f080d49640e7939e774e3ac58ff52baf8fe0f8157c2",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i004-r00-s42/attempts/0001/result.json": "ac94919270f32bcead136040f1a7d2cbca96ab548f287c813e6dcf5884c2c55c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i005-r00-s42/attempts/0001/result.json": "98677ff423bbdb1415080aeb784fbc60ed300f93bbc95a28c36c3abcd3dcef77",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i006-r00-s42/attempts/0001/result.json": "4c42f2c001c5cdb521a6590b73e359b470739979a318a3942a0933e009730b38",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i007-r00-s42/attempts/0001/result.json": "26729edfcd7586107097110aeab74648eb19b077e40d789496d6fcfaccc85145",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t001-i008-r00-s42/attempts/0001/result.json": "eafa774222d42d09679f4e544c9af9102d79a63ac3aff2e3520256f41512cd0d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i004-r00-s42/attempts/0001/result.json": "77be8f9104cf4b1c46528ee2ce304dee6e0a7dce44559c62f14cf9d30e50a3f0",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i005-r00-s42/attempts/0001/result.json": "4242fa2922a926b327089956cdc5177dd779d7d2a79d8a8792f99f463ddc5dd8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i006-r00-s42/attempts/0001/result.json": "dfe874e24ad39dadcd81bc6018eb1a19ec7ecafc6fe1950a8942680efc5840e1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i007-r00-s42/attempts/0001/result.json": "af0138e06474c40cf09c4c03b75bbd9551bbfbac4001c947a8d37877b0c1cf64",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t002-i008-r00-s42/attempts/0001/result.json": "d6f403d0113a6b1dd3cdbcf0dd59631af0e110ec021ec4559a7d953433ceb6c1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i004-r00-s42/attempts/0001/result.json": "e239d63a58cbeecb78e973d77eb12798d923c036d6d617098714b77d623cba38",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i005-r00-s42/attempts/0001/result.json": "e7b746a55a1b341bf58bd524e6e59d9d5f892405a894193b0fa6dfa7701b1331",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i006-r00-s42/attempts/0001/result.json": "efb90d09d99b27e500e7863d5024569f31413a5ea26ebaf6323aee0e77bc339d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i007-r00-s42/attempts/0001/result.json": "2c74009266360050822f5fe85b8ecb42b9c3b7864a26a303344146f19d6e6b5d",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t003-i008-r00-s42/attempts/0001/result.json": "fe320d1a0f19d1b39c05ca20e10551ee60f336a7bec7c9b2686a4bbb216200b3",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i004-r00-s42/attempts/0001/result.json": "602f34581460f23b8b01d8061fa1573413adf0536f712329d78149aee4c049e1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i005-r00-s42/attempts/0001/result.json": "553e7fb61472da82385bf9c0b776f09b36e4cb6bbd8cad839024d660859c35ad",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i006-r00-s42/attempts/0001/result.json": "ea3b4094f63d3303460b97509ac9a7c5a27b2ae1717279e26553ef45b55942ff",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i007-r00-s42/attempts/0001/result.json": "60676300d06bd46fd4de60f149b088a20e7296a039c2389dd924490cf5fa3555",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/dense/run/episodes/t004-i008-r00-s42/attempts/0001/result.json": "3dc5fa0b0302a2e4494463bf7b95c398cca81ca4adaa1748015f54a77db26490",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i004-r00-s42/attempts/0001/result.json": "e6d0998fe42bd8d62da237a70a154dd3cc143b4bbaf327ee56a11f9add004f8a",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i005-r00-s42/attempts/0001/result.json": "f0d392e9b5a8c6417f9ea5e615d072344b18c0c78f6df30c279cf2b9b528f7bb",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i006-r00-s42/attempts/0001/result.json": "15eb0315a7444679661c899b8ee0d435e8ed978a1d7c9e5bdf1c6adb07de393e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i007-r00-s42/attempts/0001/result.json": "4ffa72a92a74d4a3f7d2a809f712a87d708a26479e925bc5bb0d69698e3943d8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t000-i008-r00-s42/attempts/0001/result.json": "3c8195bc86faf0f80cf50d2b68b90dc06af4cf9a26d195523d5386f79a8fc88c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i004-r00-s42/attempts/0001/result.json": "ac17fc6c8fcff8a7f45a02123f1e6afe46ae4a4077a5ab9702dd3b43e4bf5c22",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i005-r00-s42/attempts/0001/result.json": "de55c6a0665a634d7eefe0524932a0c1649b815e35009fb4fc18cc88a5a29db7",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i006-r00-s42/attempts/0001/result.json": "703620185ec07de1a03733be3c3a8e04955c3f130a9af65de83c247befcda65e",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i007-r00-s42/attempts/0001/result.json": "8cf5e3ac08acb40b6f751992b4bbb2609f36603d7265c13f34524674b4314096",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t001-i008-r00-s42/attempts/0001/result.json": "f38a69359d5cd050df7ddc35b82161474c9876aea8586dff545677d7fea27b1b",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i004-r00-s42/attempts/0001/result.json": "d5f0a8b72a074ca8c4b0f27723591942e437e0477c9918449c816f24764da7ee",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i005-r00-s42/attempts/0001/result.json": "dd1b627f43ac8b8bc57b87115540a816569023f25efca1243cd646e495f46cf2",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i006-r00-s42/attempts/0001/result.json": "b94bc8e5f29f6db61a23d48c933e16341023d69a5b104f6a6f12f51ef68caef1",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i007-r00-s42/attempts/0001/result.json": "116a3ff4672c10b37fbe0062e9cb9e3378d32b5127e7bf0479e7fe4e61fea561",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t002-i008-r00-s42/attempts/0001/result.json": "9edebbdc5c7cbb14149705421e8dfe75bb65749613335f68953dc628841c338c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i004-r00-s42/attempts/0001/result.json": "cafeacb99f6e29e1910fa1a3f5d00fa47eb152d4b444172d39a90757118436f8",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i005-r00-s42/attempts/0001/result.json": "36e7d525cb81fc5b87b2112b594cd338c19bf0e476b0c38e9cbb0607d7747bb0",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i006-r00-s42/attempts/0001/result.json": "ae988e7cc330fcc37b5b2c6a1f3149332d4f3e726e26e76a0b570ae7c9552d88",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i007-r00-s42/attempts/0001/result.json": "fcc7ce50466f573079ef09e42586788ab34d4db1667b67573e4177850710131a",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t003-i008-r00-s42/attempts/0001/result.json": "f1a5f5b65e7b9a979a99fdfca9653ce5f364e8f3a50eccec3edd336512d964a9",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i004-r00-s42/attempts/0001/result.json": "99b5c564b8d11b492eef4eeab69c22f94f63d69f1b648058b0ea9faa60432bed",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i005-r00-s42/attempts/0001/result.json": "915ca6243d57796e8f274671359a929f90f63b5d7f1d7539f49a08687a98a53c",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i006-r00-s42/attempts/0001/result.json": "af8fe55c106e01b19d8f9166f69d4413d9664a7c1ca39f929eed31880c471fc0",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i007-r00-s42/attempts/0001/result.json": "0d5559f00514fadcad378db2137b64ea220e3286256402df9f131201a8490cd6",
+            "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-h100-paired50-20260921/lane-a/sparse/run/episodes/t004-i008-r00-s42/attempts/0001/result.json": "ebea52be32e162ed5bd15660eac9b0076dff918af6e62b266f2919a9822301b8"
+          },
+          "exact_attempt_count": true,
+          "accounting": "full declared pair remains charged; incomplete/missing records never refund budget"
+        },
+        "finalized_utc": "2026-09-21T04:02:21.448060+00:00"
+      }
+    ],
+    "cap_amendments": [
+      {
+        "from_cap": 50,
+        "to_cap": 132,
+        "utc": "2026-09-21T03:29:18.787738+00:00",
+        "authorization": "User confirmation: 50对：Dense与候选各50条，共100次新增; retain32 prior attempts, cumulative132.",
+        "total_charged": 32,
+        "previous_ledger_sha256": "4d713d262f555676af979198cc47752373f59bd894546fc35446eadf5170660c"
+      }
+    ]
+  },
+  "ledger_sha256": "16d29711d11ff6e47c319528c033e6f642fea21d1bb768dff0f5c4dfb2ddd949",
+  "preflight": {
+    "status": "AUTHORIZED_CAP_AMENDMENT_APPLIED",
+    "amendment": {
+      "from_cap": 50,
+      "to_cap": 132,
+      "utc": "2026-09-21T03:29:18.787738+00:00",
+      "authorization": "User confirmation: 50对：Dense与候选各50条，共100次新增; retain32 prior attempts, cumulative132.",
+      "total_charged": 32,
+      "previous_ledger_sha256": "4d713d262f555676af979198cc47752373f59bd894546fc35446eadf5170660c"
+    },
+    "ledger_path": "/root/wenbiao_zhao/dreamwam-sr/outputs/dido-sparse-profile-20260920/closed-loop-ledger.json",
+    "after_sha256": "dddd7a689d27e5ca8d7d2c8724ea18a7d1a028a8748992d8ee5956cc1d2d729e",
+    "source": {
+      ".trees/dido-run-41f515a-final": {
+        "commit": "41f515a5480cdcc87a18b147ab393e9cae337e9f",
+        "status": ""
+      },
+      ".trees/dido-controller-4c1a2f8-fiftypairs": {
+        "commit": "4c1a2f8ba25bf7fda27a0d485dcbb359da34c7d2",
+        "status": ""
+      },
+      ".trees/dido-eval-5e81bb3-fiftypairs": {
+        "commit": "5e81bb36199bde9d84f1a46e2ae2fae48245f5d9",
+        "status": ""
+      },
+      "LIBERO": {
+        "commit": "8f1084e3132a39270c3a13ebe37270a43ece2a01",
+        "status": ""
+      }
+    },
+    "checkpoint_sha256": "6c087e5b9e201f19dbe92834b470a7ee18937a18ea9adcbb49886aa1e3ac4c61",
+    "utc": "2026-09-21T03:29:18.795117+00:00",
+    "preflight_sha256": {
+      "preflight/start.txt": "d3083d9b47a92fd0d65bc1d1cfff6c2ca3ca83e529eb6cd5eabb61915ce4af43",
+      "preflight/controller-tests.log": "32ab540a38131473857cc670b28e8afb89531a1b43457df1e34e0d1626b31755",
+      "preflight/renderer-osmesa.log": "700d3bad3c4d02f6cd891e05d1a106e2cdd6027946e17f15def8381bc77e62de",
+      "preflight/statistics-tests.log": "7790208522929d9e553dde98474dc9eb75ab73cb25201482501665496ff537bb",
+      "preflight/renderer-osmesa.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "preflight/a-dense-validate-wrong-cli.log": "3af73840ab19be0c126f443466382369713d3684544083b21df899dbbc848873",
+      "preflight/a-dense-validate.log": "bbb6199af42ed218ea61f285cf6e991d7cdba561bddc167d52a2899c5b27909d",
+      "preflight/a-dense-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+      "preflight/a-native-va56-validate.log": "df430fbd86109f4a4608e13284e06c83a8696ce6467a2199103e8ff8cd013c20",
+      "preflight/a-native-va56-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+      "preflight/b-dense-validate.log": "586c102290f01458f03181c02ee19eceb6fadfac442f66eb53b577ad6d54731c",
+      "preflight/b-dense-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+      "preflight/b-native-va56-validate.log": "b0972cb5ddb6114034a75501dcdef2e9d520e959102d1221d55a00d42c645288",
+      "preflight/b-native-va56-doctor.log": "47bdc8cb97d3b929b8d9a283d01d916a10b52490ec692a0b29ecd1808f37f503",
+      "preflight/auditor-regression.log": "4c33f3b2d5c01456e954232645f6a4d3b7a8ab2e89672afa87dfe67a88984bed",
+      "preflight/configs-tests-end.txt": "ebd347bc9a5672cca125e22693e59d8c694d6dde64261d7cd9ea00ac4bfd74a1",
+      "preflight/renderer-osmesa/reads.log": "cda8447239b6bd908f190724b19cfa73a943651f557c72a0ea1630a71b3a17fc",
+      "preflight/renderer-osmesa/events.jsonl": "a06d744d10e0ff3507861201034b90aef85c63ef202e21c19408e061da824cfc",
+      "preflight/renderer-osmesa/metadata.json": "3e9d622b5f9c23fdcad7b6a8c7e1adeebaa602b94f4b44176fdd19c45f5ca151",
+      "preflight/renderer-osmesa/initial-agentview.png": "44df379a3d067b058929adbdebe5e6e89eccfa58b12dc7bedef9f89e6996d427",
+      "preflight/renderer-osmesa/initial-wrist.png": "15948d04a7c34496a12a42df5b6a44566cc09ab4b1542de4533f32ae159c20b2",
+      "preflight/renderer-osmesa/initial-qpos.npy": "e0af345d0e9817f517e9d20a60eb562496ce3f8ca82083fbcace4cdf308e0f39",
+      "preflight/renderer-osmesa/initial-model.xml": "dda6488c1e716925eb8c51697f9c645aadd84d101e5dc1aa1e77c1861b5c968a",
+      "preflight/renderer-osmesa/initial-native.json": "c029d209b41c49f4f47d91a2671615bb613a22ccad6f5090eb7c0bc0f292db9f",
+      "preflight/renderer-osmesa/initial-observation.json": "549f2d677aaa4b8c8d8208acdff10a733e55dcf022667be15ac831b6744d35d0",
+      "preflight/renderer-osmesa/result.json": "2fcc97a6dba5cbaf23712ba4893caa8bcfb673a2f334652013947bcebfbc93dc",
+      "preflight/prior-cohort-audit/lane-a-integrity.json": "babaf6d9d54a306ecdb0946e2fef4006c6d5626930b4f9583409f9f2e6a1a8b7",
+      "preflight/prior-cohort-audit/lane-b-integrity.json": "69147490307dc3fce1ea07523a541634a8f15324d93f784a0ec3158037935d5c",
+      "preflight/prior-cohort-audit/report.json": "f5685047ea293a1f6ee0ad230002007794ebd498c1d85e3bb64c6ce5c92d538a"
+    },
+    "renderer_note": "80 successful native reads; model-free diagnostic, five zero-action steps; no policy rollout or SR outcome",
+    "tests": {
+      "controller_budget": 18,
+      "statistics": 13,
+      "failed": 0
+    },
+    "cli_correction": "Initial python -m action_eval invocation had no __main__; all four validate/doctor calls passed via action_eval.cli; no model launch"
+  },
+  "start_utc": "2026-09-21T03:30:20.976998+00:00",
+  "end_utc": "2026-09-21T04:02:21.444336+00:00",
+  "elapsed_seconds": 1920.467338,
+  "mean_episode_slowdown_percent": 39.00179603022445,
+  "executed_steps": {
+    "dense": 4984,
+    "sparse": 8351
+  },
+  "integrity": {
+    "artifact_counts": {
+      "a": 1139,
+      "b": 1089
+    },
+    "native_rgb_reads": 33510,
+    "matched_initial_state_and_camera_pairs": 50,
+    "execution_prefixes": 100
+  },
+  "holds": {
+    "3": {
+      "state_path": "/root/wenbiao_zhao/dreamwam-sr/gpu-hold/h100-fiftypairs-after-gpu3.json",
+      "worker": {
+        "gpu": 3,
+        "pid": 3744714,
+        "start_ticks": "43698554",
+        "token": "bbe6e857cdc44f7c3e5a47caf1df97f5",
+        "script": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-hold-64471fb/scripts/sparse/gpu_hold.py",
+        "ready": "/root/wenbiao_zhao/dreamwam-sr/gpu-hold/17a88952032c7ccf/gpu3.json"
+      },
+      "owned_verified": true,
+      "ready": {
+        "pid": 3744714,
+        "gpu": 3,
+        "token": "bbe6e857cdc44f7c3e5a47caf1df97f5",
+        "status": "HOLDING",
+        "uuid": "GPU-c0af33a9-498c-ff7c-bb56-e9992ccded30",
+        "allocated_bytes": 67574431744,
+        "matrix": 32768,
+        "lease_seconds": 7200,
+        "ready_unix": 1789963343.903381
+      },
+      "ready_utc": "2026-09-21T04:02:23.903381+00:00",
+      "lease_ends_utc": "2026-09-21T06:02:23.903381+00:00",
+      "ready_delay_seconds": 2.459045171737671,
+      "old_hold_workers_stopped": true
+    },
+    "4": {
+      "state_path": "/root/wenbiao_zhao/dreamwam-sr/gpu-hold/h100-fiftypairs-after-gpu4.json",
+      "worker": {
+        "gpu": 4,
+        "pid": 3744349,
+        "start_ticks": "43693277",
+        "token": "055017ad0ee6334dc5baba6d40ebfdbe",
+        "script": "/root/wenbiao_zhao/dreamwam-sr/.trees/dido-hold-64471fb/scripts/sparse/gpu_hold.py",
+        "ready": "/root/wenbiao_zhao/dreamwam-sr/gpu-hold/2a3ccc023ba7b3b1/gpu4.json"
+      },
+      "owned_verified": true,
+      "ready": {
+        "pid": 3744349,
+        "gpu": 4,
+        "token": "055017ad0ee6334dc5baba6d40ebfdbe",
+        "status": "HOLDING",
+        "uuid": "GPU-3af22086-0ac4-4277-1486-96909b440d1c",
+        "allocated_bytes": 67000074240,
+        "matrix": 32768,
+        "lease_seconds": 7200,
+        "ready_unix": 1789963291.5560024
+      },
+      "ready_utc": "2026-09-21T04:01:31.556002+00:00",
+      "lease_ends_utc": "2026-09-21T06:01:31.556002+00:00",
+      "ready_delay_seconds": 2.7745704650878906,
+      "old_hold_workers_stopped": true
+    }
+  },
+  "sharing": {
+    "a": {
+      "samples": 475,
+      "process_rows_visible": 472,
+      "min_used_mib": 0,
+      "max_used_mib": 25435,
+      "max_utilization": 100,
+      "caution": "Shared host. nvidia-smi process rows may be hidden; no exclusive hardware claim."
+    },
+    "b": {
+      "samples": 462,
+      "process_rows_visible": 458,
+      "min_used_mib": 0,
+      "max_used_mib": 30349,
+      "max_utilization": 100,
+      "caution": "Shared host. nvidia-smi process rows may be hidden; no exclusive hardware claim."
+    }
+  },
+  "limitations": [
+    "Exploratory fixed cohort; observed SR and intervals do not alone certify the five-point population margin.",
+    "Closed-loop observations and lengths may differ; model latency ratio is descriptive, not same-input replay.",
+    "Model timing excludes model loading, IPC, physics and CPU rendering.",
+    "H100 GPUs3/4 with CPU OSMesa; no pooling with H200 or historical cohorts."
+  ],
+  "next_step": "Evaluation stopped at132 attempts. No tuning, further rollout, or hold renewal without a newly scoped user request.",
+  "artifact_hashes": {
+    "audit-4c1a2f8/report.json": "070da16340820ee142fc6bde1639622fdb7ca62dd137274bdb4eecf446e04b63",
+    "audit-4c1a2f8/lane-a-integrity.json": "620b0c1743c6c4782487fd2d67284bbea53940aaeda5df873a2e5be1980f7d39",
+    "audit-4c1a2f8/lane-b-integrity.json": "99ced0e9ffc69028480a1a0a3f4c2a6885003230da44621d16cdf8fa88a71065",
+    "run-registration.json": "22ad19b1f8b497f29a1c48e01ad9933ec0e1e7534eda00d8a03e0fc6d06e1c62",
+    "preflight-and-amendment.json": "b1f696d2b4b6396720f1a96599682ea4af0495b7e17d18ee7c156c801860b9f2",
+    "handoff-start.txt": "42a0659f2a51a0a8ba284a56ec0fda636037759df6117d16c1408e49c86f95f2",
+    "handoff-end.txt": "239c64ed0ad36be1b177ea58b5cb9230d49afa2ec8753ae0362490b983a07b50",
+    "handoff.launch.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "hold-release-gpu3.json": "c36b74fa17f95c307d6a60cca3d79df915266e2c2b81966ee7ceb1aa95a19805",
+    "hold-release-gpu4.json": "7f9529c9510d6685110e3775fb7de9c6f529d757486aed1a493cad6638f9e5fb",
+    "rehold-gpu3.log": "321911886720b3f9d4f0ef5d73965430fbdcc5d6e8a3ab7c562f9417c48380f6",
+    "rehold-gpu4.log": "98fd1acb38fca6f1fa7bd8c1bc9da0898c52517df675dda2da9eae1f8d85c63f"
+  }
+}

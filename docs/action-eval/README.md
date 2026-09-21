@@ -1,5 +1,12 @@
 # DreamWAM paper-evaluation handoff
 
+Latest [H100 50-pair comparison](../implementation/dido-sparse-profile/H100-FIFTYPAIRS-REPORT.md),
+2026-09-21: Dense50/50, candidate42/50; SR−16pp exceeds the allowed5pp.
+Warm prediction265.05→130.50ms (2.031×); episode29.90→41.56s (+39.00%).
+All100 attempts completed,0 errors/retries; cumulative132/132.50 initial pairs,
+2228 artifact hashes and33510 native reads verify. GPU3/4 auto-reheld for120minutes;
+evaluation has stopped. The following cohorts remain separate historical records.
+
 Latest [H100 ten-pair continuation](../implementation/dido-sparse-profile/H100-TENPAIRS-REPORT.md),
 2026-09-21: Dense9/10, frozen candidate8/10, observed loss10pp versus allowed5pp.
 Warm model latency improves1.994× while whole-episode time grows19.34%.

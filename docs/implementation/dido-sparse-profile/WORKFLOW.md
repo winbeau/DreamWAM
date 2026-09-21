@@ -1,5 +1,10 @@
 # DIDO-guided sparse-profile: isolated iteration chain
 
+Latest closeout, 2026-09-21 04:02 UTC: [50-pair report](H100-FIFTYPAIRS-REPORT.md).
+Dense50/50 versus candidate42/50; SR−16pp exceeds5pp. Warm prediction2.031×,
+episode39.00% slower.100 new attempts,0 errors/retries, cumulative132/132.
+Evaluation stopped; finite GPU3/4 holds restored. Prior scopes below are historical.
+
 New authorization, 2026-09-21 UTC: [50-pair H100 comparison](H100-FIFTYPAIRS-20260921.md),
 100 new attempts; cumulative ledger cap explicitly amended50→132 with32 retained.
 This supersedes the previous completed-cohort stop below only for this fixed run.
