@@ -2,11 +2,16 @@
 
 Current development: [M1/M2/M3 goal and evidence tracker](m1-m2-m3-goal-20260921.md).
 M1 adds an opt-in observation-history budget controller with M2/M3 frozen for its
-first factor test. Thresholds are uncalibrated; server verification, real execution
-visualizations, adaptive M3 and the new matched 50-episode/arm comparison remain
-pending. Historical results below retain their original configurations and scope.
+first factor test. Observation-only calibrated M1 and adaptive M3 now pass real
+checkpoint trace checks; 411 PNGs cover budget histories and actual token/attention
+captures. The user narrowed SR to **five matched episodes per arm** on H100 GPU 0
+with CPU OSMesa. The completed pilot gives **Dense 5/5, M1–M3 3/5**, with no
+errors and identical initial RGB/state hashes for all five pairs. Shared-load warm
+inference is 328.60 ms versus 321.67 ms (descriptive **1.022×**, not a controlled
+speed benchmark). The 50-pair comparison is not started. Historical results below
+retain their original configurations and scope.
 
-Latest [routing/profile expansion and lower-budget pilots](hybrid-routing-results-20260920.md): 57 configuration/dataset cases, 999 audited timings and 153 dependency interventions completed. The measured no-refresh uniform-anchor feature-cache candidate reaches **3/3 vs Dense 3/3 at nominal KV18.75 (56/294 rows)**, with **2.077× warm inference**; KV25 also succeeds 3/3 at 1.988×. Neither tiny pilot certifies SR preservation, and whole-episode CPU-rendered time does not improve. [V5 method interfaces](decision-support-method-20260920.md) now separate read value, refresh urgency, feature reuse and structure-only reuse. First-layer action/context routing has not shown a benefit; structure-only reuse reaches only 1.06–1.13×. Adaptive refresh remains unimplemented, and these results must not be labelled complete M1–M3 validation. All owned GPU jobs have exited; 50-pair testing remains unstarted.
+Earlier [routing/profile expansion and lower-budget pilots](hybrid-routing-results-20260920.md): 57 configuration/dataset cases, 999 audited timings and 153 dependency interventions completed. The measured no-refresh uniform-anchor feature-cache candidate reaches **3/3 vs Dense 3/3 at nominal KV18.75 (56/294 rows)**, with **2.077× warm inference**; KV25 also succeeds 3/3 at 1.988×. Neither tiny pilot certifies SR preservation, and whole-episode CPU-rendered time does not improve. [V5 method interfaces](decision-support-method-20260920.md) separate read value, refresh urgency, feature reuse and structure-only reuse. First-layer action/context routing had not shown a benefit; structure-only reuse reached only 1.06–1.13×. Adaptive refresh was unimplemented in that snapshot, and those results are not complete M1–M3 validation. Its owned GPU jobs exited; its 50-pair testing remains unstarted.
 
 Earlier [H100 / OSMesa hybrid pilots](hybrid-pilot3-osmesa-20260920.md) are complete: tasks 0/1/2 × init 0, with independent matched Dense runs. Compact KV25 is fast (1.865× warm inference) but fails 0/3 against Dense 3/3. Keeping 75% K/V succeeds 3/3 against Dense 3/3, with 1.821× warm inference and a separate same-input 36-request recheck at 1.775×. Cold-inclusive pilot inference is only 1.418× and CPU-rendered whole-episode time does not improve. These are tiny adaptive development pilots, not SR preservation or 50-pair completion; KV75 was retained before the follow-up above. All 12 episodes reached benchmark-owned terminal outcomes, with no errors or forced cleanup.
 
