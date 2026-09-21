@@ -184,13 +184,20 @@ def main():
         report.update(status="ERROR", exit_code=1, error=repr(exc), accepted_timings=len(rows))
         raise
     finally:
-        for runtime in runtimes.values():
-            runtime.__exit__(None, None, None); runtime.close_graphs()
-        if adapter is not None:
-            adapter.policy._hybrid_visual_runtime = adapter.policy._visual_cache_runtime = None
-            adapter.policy._chunk_budget_runtime = None
-            adapter.close()
-        report["end_utc"] = datetime.now(timezone.utc).isoformat(); save()
+        try:
+            # Each replay's context already restored its hooks, including on
+            # exceptions. Legacy Dense wrappers do not support a second exit.
+            for runtime in runtimes.values():
+                runtime.close_graphs()
+            if adapter is not None:
+                adapter.policy._hybrid_visual_runtime = adapter.policy._visual_cache_runtime = None
+                adapter.policy._chunk_budget_runtime = None
+                adapter.close()
+        except BaseException as exc:
+            report.update(status="ERROR", exit_code=1, cleanup_error=repr(exc))
+            raise
+        finally:
+            report["end_utc"] = datetime.now(timezone.utc).isoformat(); save()
     print(json.dumps(report["summary"], indent=2))
 
 
