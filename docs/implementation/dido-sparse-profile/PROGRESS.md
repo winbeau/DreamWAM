@@ -1,5 +1,11 @@
 # DIDO profile execution ledger
 
+H200 continuation, 2026-09-21 02:22 UTC: ten new pairs are authorized but
+remain unstarted. [GPU6 native rendering failed twice](H200-RENDERER-20260921.md)
+before its first image. GPU7's requested finite hold remains active; the
+conserved ledger stays at 12 actual attempts / 12 charges. The complete H100
+study described below remains a separate, unchanged cohort.
+
 Status: BOUNDED STUDY COMPLETE, 2026-09-20 UTC. The [final report](REPORT.md)
 and [verification](FINAL-VERIFICATION.json) distinguish delivered evidence from
 the unestablished scientific target. No training or checkpoint changes occurred.

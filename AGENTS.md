@@ -1,5 +1,19 @@
 # DreamWAM evaluation fork guidance
 
+## Latest H200 operational state (2026-09-21 02:22 UTC)
+
+The user subsequently selected GPU7 inference and shared GPU6 rendering.
+Two actual GPU6 renderer diagnostics failed at the first native RGB read,
+including the explicitly requested direct launch without a wall timeout.
+No new closed-loop or timing run started; the ledger remains 12/50.
+GPU7's requested finite hold remains PID1115695, with state
+`gpu-hold/dido-h200-gpu7-wait.json` under the H200 deployment root.
+Retain that hold until real work is ready or the user requests release;
+do not remove protections or signal foreign processes. The GPU6 failure is
+runtime evidence, not a resource-admission refusal. See
+`docs/implementation/dido-sparse-profile/H200-RENDERER-20260921.md`.
+The following original H200 allocation is historical and superseded.
+
 ## Authorized H200 continuation (2026-09-21 UTC)
 
 The user reopened a bounded continuation: **ten pairs, twenty new attempts**,
