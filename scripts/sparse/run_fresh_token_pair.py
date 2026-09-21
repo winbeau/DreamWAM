@@ -100,6 +100,17 @@ def fingerprint_matches(fingerprint, options, checkpoint_sha256):
     keys = ["action_horizon", "denoising_steps", "rng_mode", "prompt_cache"]
     methods = [key for key in ("visual_cache", "fresh_visual_tokens", "hybrid_visual") if key in options]
     expected = dict(options)
+    if ("chunk_budget" in options) != ("chunk_budget" in fingerprint):
+        return False
+    if "chunk_budget" in options:
+        if methods != ["hybrid_visual"]:
+            return False
+        from dreamwam.sparse.chunk_budget import ChunkBudgetConfig
+        try:
+            expected["chunk_budget"] = ChunkBudgetConfig.from_mapping(options["chunk_budget"]).describe()
+        except (ValueError, TypeError):
+            return False
+        keys.append("chunk_budget")
     if methods == ["hybrid_visual"]:
         # The adapter describes validated effective defaults, not raw YAML.
         # In particular new selector defaults and explicit reuse.mode=features

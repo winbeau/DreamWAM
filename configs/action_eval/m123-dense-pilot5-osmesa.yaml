@@ -1,0 +1,48 @@
+# New paired development pilot; never pool historical 3/50/500-episode results.
+schema_version: action-eval/v1
+experiment:
+  name: dreamwam-m123-dense-pilot5-osmesa
+  label: DreamWAM M1-M3 matched Dense H100 CPU OSMesa pilot (5 episodes)
+benchmark:
+  backend: libero
+  root: ${LIBERO_ROOT}
+  suite: libero_spatial
+  task_ids: [0, 1, 2, 3, 4]
+  initial_state_indices: [0]
+  repeats: 1
+protocol_file: ${EVAL_ROOT}/configs/protocols/dreamwam-release-v1.yaml
+policy:
+  repo_root: ${MODEL_ROOT}
+  python: ${MODEL_PYTHON}
+  entrypoint: evaluation/action_eval/infer.py:create_policy
+  model_config: configs/dreamwam_joint.yaml
+  checkpoint: checkpoints/dreamwam_joint.pt
+  options:
+    action_horizon: 32
+    denoising_steps: 10
+    rng_mode: fixed_per_predict
+    prompt_cache: {capacity: 8}
+    visual_cache:
+      refresh_every: 1
+      conditioned_frame_reuse: true
+      graph_dispatch: all_transformers
+runtime:
+  executor: local
+  policy_gpu_uuids: ["${GPU_UUID}"]
+  render_gpu_uuid: null
+  workers: 1
+  gpu_sharing: explicit
+  startup_timeout_s: 900
+  predict_timeout_s: 120
+  error_policy: stop
+  retries: 0
+simulator_env:
+  OMP_NUM_THREADS: "1"
+outputs:
+  root: ${PILOT_OUTPUT_ROOT}
+  video: none
+  save_actions: true
+  save_observations: true
+report:
+  uncertainty: wilson95
+  table_label: H100 CPU OSMesa M1-M3 matched Dense pilot 5

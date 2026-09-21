@@ -134,3 +134,22 @@ def test_cleanup_bounds_an_unresponsive_worker_without_touching_an_unrelated_pro
         owned.wait()
         unrelated.terminate()
         unrelated.wait()
+
+
+def test_m1_fingerprint_must_match_and_must_not_be_silently_omitted(admission):
+    from copy import deepcopy
+    from dreamwam.sparse.chunk_budget import ChunkBudgetConfig
+    from dreamwam.sparse.hybrid import HybridConfig
+    from test_hybrid_schedule import options as hybrid_options
+    options = dict(action_horizon=32, denoising_steps=10, rng_mode="fixed_per_predict",
+        prompt_cache={"capacity": 8}, hybrid_visual=hybrid_options(), chunk_budget={})
+    fingerprint = dict(options, hybrid_visual=HybridConfig.from_mapping(options["hybrid_visual"]).describe(),
+        chunk_budget=ChunkBudgetConfig().describe(), checkpoint_sha256="x")
+    assert admission.fingerprint_matches(fingerprint, options, "x")
+    changed = deepcopy(options)
+    changed["chunk_budget"]["thresholds"] = [1, 3]
+    assert not admission.fingerprint_matches(fingerprint, changed, "x")
+    del changed["chunk_budget"]
+    assert not admission.fingerprint_matches(fingerprint, changed, "x")
+    del fingerprint["chunk_budget"]
+    assert not admission.fingerprint_matches(fingerprint, options, "x")
