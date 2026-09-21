@@ -1,9 +1,12 @@
 """Chinese reading aids from verified trace tensors; never alter source captures."""
 
 import argparse
+from datetime import datetime, timezone
 import html
 import json
 from pathlib import Path
+import subprocess
+import sys
 
 import matplotlib
 matplotlib.use("Agg")
@@ -107,7 +110,11 @@ def render_explainer(source, destination, *, font):
         key_ids = set(arrays[record["visual_key_ids"]].tolist())
         av_max = max(float(actual.max()), float(av.max()) if av is not None else 0, 1e-12)
         vv_max = max(float(vv.max()), 1e-12) if vv is not None else 1
-        title = f"{meta['episode_id']}  chunk {meta['call_index']}  |  去噪步 {step}：{record['operation']}"
+        allocation = meta["diagnostics"]["hybrid_visual"]
+        level = meta["diagnostics"].get("chunk_budget", {}).get("level", "未启用")
+        title = (f"{meta['episode_id']}  chunk {meta['call_index']}  |  去噪步 {step}：{record['operation']}\n"
+                 f"M1 档位={level}；单次 Sparse 配额 Q/KV={meta['budget_label']}；"
+                 f"chunk 总 Q 上限={allocation.get('query_row_cap', '旧版未记录')} 行")
         if layer == 0:
             fig, axes = plt.subplots(2, 2, figsize=(14, 9.5), constrained_layout=True)
             ax = axes[0, 0]
@@ -172,6 +179,10 @@ def render_explainer(source, destination, *, font):
         '<p>首步 Dense 会读取并重算所有 token。未来 latent 没有输入真实 RGB，不能当作未来真实照片。'
         'patch 是名义空间格，VAE 感受野有重叠；热力图不是像素归因。</p>' + links, encoding="utf-8")
     report = dict(status="RENDERED_VERIFIED_TENSORS", source=str(source), source_commit=meta["commit"],
+                  utc=datetime.now(timezone.utc).isoformat(), exit_code=0, argv=sys.argv,
+                  renderer_commit=subprocess.check_output(["git", "rev-parse", "HEAD"],
+                      cwd=Path(__file__).resolve().parents[2], text=True).strip(),
+                  renderer_sha256=sha256(Path(__file__)),
                   source_trace_sha256=sha256(source / "trace.json"), tensors_sha256=meta["tensors_sha256"],
                   font_sha256=sha256(font), images=gallery,
                   artifacts={p.name: sha256(p) for p in sorted(destination.iterdir()) if p.is_file()})
