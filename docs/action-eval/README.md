@@ -1,17 +1,24 @@
 # DreamWAM paper-evaluation handoff
 
 Current development: [M1/M2/M3 goal and evidence tracker](m1-m2-m3-goal-20260921.md).
-See the [Chinese figure guide and evidence-based experiment narrative](m123-figure-reading-and-story-20260921.md)
-for the meaning of masks, attention colors, read/update markers and the remaining budget-interface gap.
-M1 adds an opt-in observation-history budget controller with M2/M3 frozen for its
-first factor test. Observation-only calibrated M1 and adaptive M3 now pass real
-checkpoint trace checks; 411 PNGs cover budget histories and actual token/attention
-captures. The user narrowed SR to **five matched episodes per arm** on H100 GPU 0
-with CPU OSMesa. The completed pilot gives **Dense 5/5, M1–M3 3/5**, with no
-errors and identical initial RGB/state hashes for all five pairs. Shared-load warm
-inference is 328.60 ms versus 321.67 ms (descriptive **1.022×**, not a controlled
-speed benchmark). The 50-pair comparison is not started. Historical results below
-retain their original configurations and scope.
+Latest: [whole-chunk M1 allocation, matched timings and two five-pair pilots](m123-total-budget-20260921.md).
+M1 now enforces actual total visual Q-row spending, with the M2 selector and M3
+rules preserved as controls. **725 matched-input timings** on H100 GPU 3 give
+263.72 ms strengthened Dense, 147.84 ms cap-only (**1.784×**) and 148.94 ms with
+a KV75 read floor (**1.771×**). Separate complete CPU-OSMesa pilots yield
+**Dense 5/5 versus cap-only 3/5**, and **Dense 5/5 versus KV75 5/5**, with identical
+initial RGB/state hashes and no errors. The KV75 drawer episode still takes
+367 versus 117 steps; mean whole-episode time worsens. Five successes do not
+establish SR preservation. The 50-pair comparison remains deferred.
+
+The [new Chinese reading guide](m123-reading-v2-zh.md) explains four-panel RGB/AV/VV/
+execution views, explicit outer rows/columns and missing-value hatching. The
+final galleries contain 180 Chinese PNG/PDF pairs from real, bitwise-checked
+captures of both new variants. The [older figure/story guide](m123-figure-reading-and-story-20260921.md)
+and 411 previously exported PNGs retain their original semantics and provenance.
+The earlier GPU-0 pilot remains Dense 5/5 versus candidate 3/5, with a descriptive
+shared-load 1.022× timing ratio. It is not pooled with this new comparison.
+Historical results below retain their original configurations and scope.
 
 Earlier [routing/profile expansion and lower-budget pilots](hybrid-routing-results-20260920.md): 57 configuration/dataset cases, 999 audited timings and 153 dependency interventions completed. The measured no-refresh uniform-anchor feature-cache candidate reaches **3/3 vs Dense 3/3 at nominal KV18.75 (56/294 rows)**, with **2.077× warm inference**; KV25 also succeeds 3/3 at 1.988×. Neither tiny pilot certifies SR preservation, and whole-episode CPU-rendered time does not improve. [V5 method interfaces](decision-support-method-20260920.md) separate read value, refresh urgency, feature reuse and structure-only reuse. First-layer action/context routing had not shown a benefit; structure-only reuse reached only 1.06–1.13×. Adaptive refresh was unimplemented in that snapshot, and those results are not complete M1–M3 validation. Its owned GPU jobs exited; its 50-pair testing remains unstarted.
 

@@ -1,6 +1,6 @@
 # DreamWAM evaluation fork guidance
 
-This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. CURRENT STATUS: the user resumed Sparse-WAM on 2026-09-20 and authorized GPUs **4–7**, asking for **10% visual tokens recomputed at every denoising step, without cross-step visual caches**. This supersedes the 06:21 UTC pause for this new experiment, but does not resume the old 500-episode queue. The earlier four-suite LIBERO baseline run has finished for Spatial/Object/Goal and is incomplete for Long.
+This fork maintains paper-evaluation integration on **main**, also the GitHub default branch. Preserve upstream code and attribution. Current work is the M1/M2/M3 continuation recorded at the end of this file and in [the latest evidence](docs/action-eval/m123-total-budget-20260921.md). Earlier fresh-token status: the user resumed Sparse-WAM on 2026-09-20 and authorized GPUs **4–7**, asking for **10% visual tokens recomputed at every denoising step, without cross-step visual caches**. This supersedes the 06:21 UTC pause for that experiment, but does not resume the old 500-episode queue. The earlier four-suite LIBERO baseline run has finished for Spatial/Object/Goal and is incomplete for Long.
 
 - Install and execute only on the evaluation server, never locally. The current user goal (renewed 2026-09-19) permits idle or lightly occupied GPUs for SR-constrained Sparse-WAM work, superseding the earlier GPU-7-only restriction. Recheck utilization and memory before each launch, declare sharing, and never signal another user's process. Follow action-eval's current shared-host rule to leave the last available card unused.
 - Preserve verified pyproject.toml and uv.lock byte-for-byte when compatible. Record source hashes and justify every necessary version change. Pin added dependencies and build tools exactly; lock on server, then use `uv sync --locked`. Never upgrade implicitly.
@@ -76,3 +76,31 @@ and was skipped. GPU 1/2 remain unused by this effort. H200 holds stay paused.
 H100 states: `gpu-hold/m123-h100-20260921-1225/gpu{0,4,5}.json` under the deployment
 root. Each lease is 120 minutes, expiring approximately 14:25 UTC. Use the
 identity-checking committed holder's stop/status commands for experiment handoff.
+
+## Latest M1/M2/M3 continuation, 2026-09-21 15:33 UTC
+
+The user requested continuing implementation, with **five matched episodes per
+arm first**. This narrows the current M1/M2/M3 screening runs; it does not resume
+50-pair or historical queues. H100 authorization remains **0 and 3–5** from the
+conversation above; GPU 1/2 were not used. GPU 0 was too occupied, so the new
+runs used GPU 3 for policy/timing and GPU 4 for separate trace capture, with a
+fresh unused spare at every admission. H200 holding remains paused.
+
+M1 now has an explicit whole-chunk query-row cap; M2 remains the AV→VV selector;
+M3 runs Dense/Sparse/Reuse under the cap. Visual caches clear between chunks.
+Source `9649228`, renderer `626c7ae`, evaluator `e5a5cc5` and the unchanged
+checkpoint/environment are documented in the latest evidence. The cap-only
+pilot is Dense 5/5 versus candidate 3/5. The separate KV75 read-floor control is
+5/5 versus 5/5, with 1.771× steady inference speed in the 725-call five-variant
+comparison. Its drawer episode takes 367 versus 117 steps, so overall task
+efficiency and broader SR preservation remain unestablished. Retain both results.
+M1 fixed-level and equal-budget M2 selector ablations remain incomplete.
+
+All evaluation/model jobs exited. GPU 3 alone was returned to a **40-minute**
+owned holder at 15:28:02 UTC, expiring approximately **16:08:02 UTC**; GPU 4 was
+left empty. State: `gpu-hold/m123-v2-final-20260921/gpu3.json`, under the H100
+deployment root. Use the existing identity-checking holder script for status or
+handoff; never treat the old PID or this timestamp as proof it is still alive.
+The previous 14:25 leases and failed 14:19 renewals are historical, not active
+reservations. New PNG/PDF galleries have explicit Chinese row/column labels;
+start with [the reading guide](docs/action-eval/m123-reading-v2-zh.md).
