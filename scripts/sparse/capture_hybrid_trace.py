@@ -64,7 +64,10 @@ def main():
     parser.add_argument("--options", type=Path, default=Path("configs/sparse/m1-fixed-m2-m3.json"))
     parser.add_argument("--out-dir", type=Path, required=True)
     parser.add_argument("--layers", default="0,29")
-    parser.add_argument("--steps", default="0,5,9")
+    parser.add_argument("--steps", default="0,5,9",
+                        help="comma-separated indices, or routed: anchor, actual refreshes, final step")
+    parser.add_argument("--gallery", choices=("research", "none"), default="research",
+                        help="skip research rendering when a separate explainer will render the saved tensors")
     parser.add_argument("--head", type=int, default=0)
     parser.add_argument("--query", type=int, default=0)
     args = parser.parse_args()
@@ -79,7 +82,7 @@ def main():
     options["hybrid_visual"]["execution"]["backend"] = "eager"
     options["hybrid_visual"]["diagnostics"] = {"level": "trace"}
     layers = tuple(map(int, args.layers.split(",")))
-    steps = tuple(map(int, args.steps.split(",")))
+    steps = None if args.steps == "routed" else tuple(map(int, args.steps.split(",")))
     args.out_dir.mkdir(parents=True, exist_ok=False)
     report = dict(status="RUNNING", start_utc=datetime.now(timezone.utc).isoformat(), argv=sys.argv,
         commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
@@ -122,7 +125,12 @@ def main():
             for index, ((entry, observation), (reference, reference_stats)) in enumerate(zip(sequence, refs)):
                 directory = args.out_dir / f"{episode_id}-c{entry['call_index']:04d}"
                 if index in chosen:
-                    with input_capture(adapter.policy, observation) as inputs, HybridTrace(runtime, layers=layers, steps=steps) as trace:
+                    captured_steps = steps
+                    if captured_steps is None:
+                        reference_steps = reference_stats["hybrid_visual"]["steps"]
+                        captured_steps = tuple(sorted({0, len(reference_steps) - 1} | {
+                            r["step_index"] for r in reference_steps if r["effective_op"] != "reuse"}))
+                    with input_capture(adapter.policy, observation) as inputs, HybridTrace(runtime, layers=layers, steps=captured_steps) as trace:
                         prediction = adapter.predict(observation)
                 else:
                     prediction = adapter.predict(observation)
@@ -147,6 +155,7 @@ def main():
                     budget = stats["hybrid_visual"]
                     metadata = dict(episode_id=episode_id, call_index=entry["call_index"], input=entry,
                         instruction=observation["instruction"], grid=trace.grid, records=trace.records,
+                        captured_attention_steps=list(captured_steps),
                         commit=report["commit"], checkpoint_sha256=checkpoint_hash,
                         budget_label=f"{budget['query_ratio']:.0%}/{budget['read_ratio']:.0%}",
                         diagnostics=stats, actual_vae_input_verified=True, bitwise_uninstrumented=True,
@@ -163,9 +172,10 @@ def main():
         adapter.close(); adapter = None
         for episode in report["episodes"]:
             for row in episode["calls"]:
-                if "capture" in row:
+                if "capture" in row and args.gallery == "research":
                     row["artifacts"] = render_capture(args.out_dir / row["capture"], head=args.head, query=args.query)
-        links = "\n".join(f'<li><a href="{row["capture"]}/index.html">{html.escape(row["capture"])}</a></li>'
+        target = "index.html" if args.gallery == "research" else "trace.json"
+        links = "\n".join(f'<li><a href="{row["capture"]}/{target}">{html.escape(row["capture"])}</a></li>'
             for episode in report["episodes"] for row in episode["calls"] if "capture" in row)
         (args.out_dir / "index.html").write_text('<!doctype html><meta charset="utf-8"><title>M1/M2/M3 evidence</title>'
             '<h1>Real execution traces</h1><p>Complete observation histories; instrumented eager capture, bitwise-checked actions. '
