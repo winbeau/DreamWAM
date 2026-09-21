@@ -32,3 +32,22 @@ reference H200 hashes. Preserve model and simulator versions. Keep required
 graphics libraries private to the deployment and matched to driver 590.48.01.
 H100 results form a new hardware/rendering cohort, with 50 episodes per arm;
 do not pool them with H200 timing or historical outcomes.
+
+## M1/M2/M3 H200 allocation (user authorization, 2026-09-21)
+
+The user explicitly requests that subsequent M1/M2/M3 experiments run on H200
+and confirms reserving the four empty physical GPUs **0, 1, 4, 5**. This replaces
+the H100 preference for this effort. GPUs 2/3 remain available to others; do not
+interfere with the external CUDA/graphics work on 6/7. The user authorizes the
+existing finite GPU-hold script: use separate state files per GPU, verify live
+worker identity, release only this effort's holder on a card immediately before
+its experiment, and respect lease expiry. Each experiment still needs fresh
+admission and a spare available host GPU. Holds are not exclusive reservations.
+
+Continue the full observation-budget/AV-VV/adaptive-routing goal in
+`docs/action-eval/m1-m2-m3-goal-20260921.md`. This allocation authorizes new
+experiments, not restarting historical H200 fresh-token SR or 500-episode queues.
+Record the new execution/rendering cohort explicitly and keep H100 and historical
+results separate. Model weights, dependency versions and benchmark protocol stay
+unchanged; source updates still use local commit/push, server fast-forward pull,
+and clean pinned worktrees.
