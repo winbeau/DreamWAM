@@ -1,6 +1,8 @@
 # DreamWAM paper-evaluation handoff
 
 Current development: [M1/M2/M3 goal and evidence tracker](m1-m2-m3-goal-20260921.md).
+See the [Chinese figure guide and evidence-based experiment narrative](m123-figure-reading-and-story-20260921.md)
+for the meaning of masks, attention colors, read/update markers and the remaining budget-interface gap.
 M1 adds an opt-in observation-history budget controller with M2/M3 frozen for its
 first factor test. Observation-only calibrated M1 and adaptive M3 now pass real
 checkpoint trace checks; 411 PNGs cover budget histories and actual token/attention
