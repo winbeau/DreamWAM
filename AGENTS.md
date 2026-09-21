@@ -1,5 +1,19 @@
 # DreamWAM evaluation fork guidance
 
+## Authorized H200 continuation (2026-09-21 UTC)
+
+The user reopened a bounded continuation: **ten pairs, twenty new attempts**,
+then redirected execution to H200-target-server after local add/commit/push.
+This overrides the completed-study hold only for this new cohort. Use policy
+GPUs3/5 and empty EGL renderers6/7, leaving GPU2 unused; recheck admission.
+Preserve frozen model41f515a, method/protocol and all historical outcomes.
+See `docs/implementation/dido-sparse-profile/H200-PAIRED10-20260921.md`.
+Use `bash deployment/h200/sync-dido-worktree.sh`; do not start this cohort on H100.
+Transfer the complete finalized12-charge ledger with hash/relocation receipts
+to H200's same relative outputs path; it becomes the sole writable authority.
+No resetting or refunding: this continuation stops at at most32 total attempts.
+All prior H100 cohort records and environment/foreign-process rules remain valid.
+
 ## Active DIDO goal amendments (2026-09-20)
 
 The user invoked the full `docs/implementation/dido-sparse-profile/GOAL.md`
