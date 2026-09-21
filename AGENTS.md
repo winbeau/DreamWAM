@@ -63,3 +63,16 @@ real validation/experiment work, record fresh memory/utilization and sharing,
 and leave GPU 0 unused by this effort. Never signal the external occupants.
 Keep the verified H100 environment, checkpoint and protocol unchanged, and keep
 new H100 shared-load evidence separate from the H200 capture and timing cohort.
+
+At 12:23 UTC the user corrected the requested policy placement to **H100 GPU 0**,
+and explicitly states that the previous owner agreed to stopping their jobs on
+**GPUs 3–5**. The six previously observed vision-benchmark PIDs had already
+exited; do not signal stale PIDs or reset a GPU with unidentified occupants.
+GPU 1 is no longer this effort's requested placement; its bounded verification
+finished. The user then explicitly requests immediately holding the available
+authorized cards. At 12:25:17 UTC, owned finite holders on **0, 4, 5** were
+verified `HOLDING`, approximately 65,165 MiB each; GPU 3 had new external load
+and was skipped. GPU 1/2 remain unused by this effort. H200 holds stay paused.
+H100 states: `gpu-hold/m123-h100-20260921-1225/gpu{0,4,5}.json` under the deployment
+root. Each lease is 120 minutes, expiring approximately 14:25 UTC. Use the
+identity-checking committed holder's stop/status commands for experiment handoff.
