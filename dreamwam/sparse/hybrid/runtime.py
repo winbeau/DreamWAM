@@ -1,6 +1,7 @@
 """One opt-in wrapper coordinating plans, selectors, math, and request state."""
 
 from functools import wraps
+from dataclasses import replace
 import inspect
 import time
 
@@ -25,6 +26,7 @@ def scheduler_hash(model):
 class HybridVisualRuntime:
     def __init__(self, model, config):
         self.config = config if isinstance(config, HybridConfig) else HybridConfig.from_mapping(config)
+        self.base_config = self.config
         if model.training or model.config.setting != "joint":
             raise ValueError("hybrid visual execution requires Joint inference")
         self.model = model
@@ -34,6 +36,19 @@ class HybridVisualRuntime:
         self._active = False
         self._request_id = 0
         self.last_stats = {}
+
+    def set_budget(self, query_ratio, read_ratio):
+        """M1 may alter only Q/KV budgets, between complete inference requests.
+
+        Selection, schedule, reuse semantics and execution backend stay frozen.
+        Graph dispatch remains bounded and keys include actual tensor shapes.
+        """
+        if self._active:
+            raise RuntimeError("cannot change a chunk budget during sampling")
+        if self.base_config.schedule.source == "profile":
+            raise ValueError("cannot change a hash-frozen profile budget")
+        self.config = replace(self.base_config, recompute_ratio=query_ratio, read_ratio=read_ratio)
+        self.dispatch.config = self.config
 
     def validate_num_steps(self, num_steps):
         return compile_plan(self.config, num_steps)
@@ -203,6 +218,8 @@ class HybridVisualRuntime:
             self._phases = []
             self._request_id += 1
             self._stats = dict(request_id=self._request_id, plan_hash=self.plan.plan_hash,
+                               base_policy_hash=self.base_config.policy_hash,
+                               query_ratio=self.config.recompute_ratio, read_ratio=self.config.read_ratio,
                                denoising_steps=0, dense_steps=0, sparse_steps=0, reuse_steps=0,
                                reuse_mode=self.config.reuse_mode,
                                action_layer_updates=0, computed_video_token_layers=0,
@@ -264,6 +281,8 @@ class HybridVisualRuntime:
         if self._active:
             raise RuntimeError("cannot reset during sampling")
         self.state.clear()
+        self.config = self.base_config
+        self.dispatch.config = self.config
 
     def close_graphs(self):
         self.reset()

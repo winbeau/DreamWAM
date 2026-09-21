@@ -208,7 +208,8 @@ class DreamWAMPolicy:
                                    visual_cache=options.get("visual_cache"),
                                    prompt_cache=options.get("prompt_cache"),
                                    fresh_visual_tokens=options.get("fresh_visual_tokens"),
-                                   hybrid_visual=options.get("hybrid_visual"))
+                                   hybrid_visual=options.get("hybrid_visual"),
+                                   chunk_budget=options.get("chunk_budget"))
         self._sparse_hash = config_hash(self.policy.sparse_config)
 
         # ``build_policy`` gives the policy its own reference to the release YAML's
@@ -280,8 +281,14 @@ class DreamWAMPolicy:
         if getattr(self.policy, "hybrid_visual_config", None) is not None:
             runtime = self.policy._hybrid_visual_runtime
             self._fingerprint["hybrid_visual"] = self.policy.hybrid_visual_config
-            self._fingerprint["hybrid_plan_hash"] = runtime.config.policy_hash
-            self._fingerprint["hybrid_operations"] = list(runtime.config.schedule.operations)
+            self._fingerprint["hybrid_plan_hash"] = runtime.base_config.policy_hash
+            self._fingerprint["hybrid_operations"] = list(runtime.base_config.schedule.operations)
+        if getattr(self.policy, "chunk_budget_config", None) is not None:
+            self._fingerprint["chunk_budget"] = self.policy.chunk_budget_config
+            self._fingerprint["chunk_budget_hash"] = self.policy._chunk_budget_runtime.config.policy_hash
+            self._fingerprint["chunk_budget_semantics"] = (
+                "causal RGB/proprio history; budget before denoising; reset per episode; "
+                "observable-change proxy, not validated task-phase recognition")
         notes = (
             "DreamWAM released checkpoint through its own build_policy; the benchmark "
             "flips the images and DreamWAM center-crops, resizes and concatenates them "
@@ -375,6 +382,8 @@ class DreamWAMPolicy:
             diagnostics["fresh_visual_tokens"] = dict(self.policy._fresh_visual_runtime.last_stats)
         if getattr(self.policy, "_hybrid_visual_runtime", None) is not None:
             diagnostics["hybrid_visual"] = dict(self.policy._hybrid_visual_runtime.last_stats)
+        if getattr(self.policy, "_chunk_budget_runtime", None) is not None:
+            diagnostics["chunk_budget"] = dict(self.policy._chunk_budget_runtime.last_stats)
         if self.policy.sparse_config.enabled:
             # Executed density, not the requested one: a budget can be clamped by the
             # structural floor or replaced by a fallback route.

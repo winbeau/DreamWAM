@@ -12,6 +12,7 @@ from .runtime import build_model, load_model_checkpoint
 from .sparse import SparseConfig
 from .sparse.action_guided_visual_token_cache import ActionGuidedVisualTokenCache
 from .sparse.conditioned_frame_cache import ConditionedFrameCache, GraphedConditionedFrameCache
+from .sparse.chunk_budget import ChunkBudgetConfig, ObservationBudget
 from .sparse.fresh_visual_tokens import FreshVisualTokenSparsity, fresh_visual_options
 from .sparse.hybrid import HybridConfig
 from .sparse.hybrid.runtime import HybridVisualRuntime
@@ -53,6 +54,7 @@ class DreamWAMPolicy:
         prompt_cache: dict | None = None,
         fresh_visual_tokens: dict | None = None,
         hybrid_visual: dict | None = None,
+        chunk_budget: dict | None = None,
     ):
         self.config = config
         self.evaluation = config.evaluation
@@ -68,6 +70,12 @@ class DreamWAMPolicy:
         self.fresh_visual_config = fresh_visual_options(fresh_visual_tokens)
         hybrid_config = HybridConfig.from_mapping(hybrid_visual) if hybrid_visual is not None else None
         self.hybrid_visual_config = hybrid_config.describe() if hybrid_config is not None else None
+        budget_config = ChunkBudgetConfig.from_mapping(chunk_budget) if chunk_budget is not None else None
+        self.chunk_budget_config = budget_config.describe() if budget_config is not None else None
+        self._chunk_budget_runtime = None
+        if budget_config is not None:
+            budget_config.hybrid_configs(hybrid_config)
+            self._chunk_budget_runtime = ObservationBudget(budget_config)
         self._hybrid_visual_runtime = None
         self._visual_cache_runtime = None
         self._prompt_cache_runtime = None
@@ -165,9 +173,13 @@ class DreamWAMPolicy:
             self._prompt_cache_runtime.clear()
         if self._hybrid_visual_runtime is not None:
             self._hybrid_visual_runtime.reset()
+        if self._chunk_budget_runtime is not None:
+            self._chunk_budget_runtime.reset()
 
     def close(self) -> None:
         """Remove inference wrappers before the adapter releases model modules."""
+        if self._chunk_budget_runtime is not None:
+            self._chunk_budget_runtime.reset()
         if self._hybrid_visual_runtime is not None:
             self._hybrid_visual_runtime.__exit__(None, None, None)
             self._hybrid_visual_runtime.close_graphs()
@@ -232,6 +244,13 @@ class DreamWAMPolicy:
             )
         if not np.isfinite(state).all():
             raise FloatingPointError("state contains non-finite values.")
+        # Pure observation decision BEFORE text encoding, VAE and denoising. Its
+        # bounded history is committed only after a valid action chunk is produced.
+        budget_decision = None
+        if self._chunk_budget_runtime is not None:
+            budget_decision = self._chunk_budget_runtime.propose(images, state)
+            level = self._chunk_budget_runtime.config.levels[budget_decision.level_index]
+            self._hybrid_visual_runtime.set_budget(level.query_ratio, level.read_ratio)
         prompt = PROMPT_TEMPLATE.format(task=instruction)
         context, context_mask = self.text_encoder([prompt])
         proprio = self.normalizer.normalize_state(
@@ -262,6 +281,15 @@ class DreamWAMPolicy:
             action[:, -1] = torch.sign(action[:, -1])
         if not torch.isfinite(action).all():
             raise FloatingPointError("DreamWAM produced non-finite actions.")
+        if budget_decision is not None:
+            self._chunk_budget_runtime.commit(budget_decision)
+            actual = self._hybrid_visual_runtime.last_stats
+            self._chunk_budget_runtime.last_stats["executed"] = {
+                key: actual[key] for key in ("plan_hash", "base_policy_hash", "query_ratio", "read_ratio",
+                    "denoising_steps", "dense_steps", "sparse_steps", "reuse_steps",
+                    "computed_video_token_layers", "total_video_token_layers",
+                    "read_video_token_layers", "action_probe_rows", "video_key_probe_rows",
+                    "video_query_probe_rows", "action_layer_updates")}
         return action.numpy()
 
 
@@ -274,10 +302,11 @@ def build_policy(
     prompt_cache: dict | None = None,
     fresh_visual_tokens: dict | None = None,
     hybrid_visual: dict | None = None,
+    chunk_budget: dict | None = None,
 ) -> DreamWAMPolicy:
     checkpoint = Path(config.paths.checkpoint)
     if not checkpoint.is_file():
         raise FileNotFoundError(f"Missing DreamWAM checkpoint: {checkpoint}")
     return DreamWAMPolicy(config, device=device, sparse=sparse, visual_cache=visual_cache,
                          prompt_cache=prompt_cache, fresh_visual_tokens=fresh_visual_tokens,
-                         hybrid_visual=hybrid_visual)
+                         hybrid_visual=hybrid_visual, chunk_budget=chunk_budget)
