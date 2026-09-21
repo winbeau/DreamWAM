@@ -5,7 +5,8 @@
 The user reopened a bounded continuation: **ten pairs, twenty new attempts**,
 then redirected execution to H200-target-server after local add/commit/push.
 This overrides the completed-study hold only for this new cohort. Use policy
-GPUs3/5 and empty EGL renderers6/7, leaving GPU2 unused; recheck admission.
+GPUs2/6 and empty EGL renderers3/7, leaving GPU5 unused; recheck admission.
+This applies the user's latest correction: use GPU groups2/3 and6/7.
 Preserve frozen model41f515a, method/protocol and all historical outcomes.
 See `docs/implementation/dido-sparse-profile/H200-PAIRED10-20260921.md`.
 Use `bash deployment/h200/sync-dido-worktree.sh`; do not start this cohort on H100.
