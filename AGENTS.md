@@ -51,3 +51,15 @@ Record the new execution/rendering cohort explicitly and keep H100 and historica
 results separate. Model weights, dependency versions and benchmark protocol stay
 unchanged; source updates still use local commit/push, server fast-forward pull,
 and clean pinned worktrees.
+
+## Latest allocation, 2026-09-21 12:20 UTC
+
+The user paused H200 holding at 12:12 UTC. All four owned holders on 0/1/4/5
+were identity-checked and released; do not restart them automatically. The user
+then explicitly requests **H100 physical GPU 1** for holding and running the
+current M1/M2/M3 work ("1卡占卡，先用1卡跑着"). GPU 1 has variable external
+occupancy and is a shared placement, not an empty or exclusive card. Use bounded
+real validation/experiment work, record fresh memory/utilization and sharing,
+and leave GPU 0 unused by this effort. Never signal the external occupants.
+Keep the verified H100 environment, checkpoint and protocol unchanged, and keep
+new H100 shared-load evidence separate from the H200 capture and timing cohort.

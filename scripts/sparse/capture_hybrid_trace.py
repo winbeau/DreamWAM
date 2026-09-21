@@ -86,7 +86,7 @@ def main():
         source_options=original_options, effective_capture_options=options,
         options_sha256=sha256(args.options), inputs_sha256=sha256(args.inputs),
         source_episode_split_sha256=manifest["episode_split_sha256"], split=manifest["split_role"],
-        cohort="H200 model replay of captured H100-rendered development observations",
+        cohort=f"{torch.cuda.get_device_name()} model replay; observed-input source preserved in manifest",
         torch=torch.__version__, cuda=torch.version.cuda, cuda_visible_devices=os.environ.get("CUDA_VISIBLE_DEVICES"),
         gpu_name=torch.cuda.get_device_name(), episodes=[], sr=None, latency_claim=None,
         limitations=["offline observed-input replay; not candidate closed-loop states or success",
