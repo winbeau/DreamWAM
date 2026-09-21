@@ -38,8 +38,8 @@ class HybridVisualRuntime:
         self._request_id = 0
         self.last_stats = {}
 
-    def set_budget(self, query_ratio, read_ratio):
-        """M1 may alter only Q/KV budgets, between complete inference requests.
+    def set_budget(self, query_ratio, read_ratio, *, chunk_extra_passes=None):
+        """M1 may alter Q/KV and whole-chunk Q budgets between requests.
 
         Selection, schedule, reuse semantics and execution backend stay frozen.
         Graph dispatch remains bounded and keys include actual tensor shapes.
@@ -48,7 +48,8 @@ class HybridVisualRuntime:
             raise RuntimeError("cannot change a chunk budget during sampling")
         if self.base_config.schedule.source == "profile":
             raise ValueError("cannot change a hash-frozen profile budget")
-        self.config = replace(self.base_config, recompute_ratio=query_ratio, read_ratio=read_ratio)
+        self.config = replace(self.base_config, recompute_ratio=query_ratio, read_ratio=read_ratio,
+            chunk_extra_passes=self.base_config.chunk_extra_passes if chunk_extra_passes is None else chunk_extra_passes)
         self.dispatch.config = self.config
 
     def validate_num_steps(self, num_steps):
@@ -108,11 +109,20 @@ class HybridVisualRuntime:
         action_length = action_state["tokens"].shape[1]
         self.state.check_layout(current, frame_size, action_length)
         q_count, kv_count = self.config.budgets(length, frame_size)
+        cap = self.config.query_row_cap(length, num_steps)
         if step_index == 0:
             compatibility = dict(video_length=length, tokens_per_frame=frame_size,
                                  scheduler_hash=scheduler_hash(self.model))
             self.plan = compile_plan(self.config, num_steps, compatibility=compatibility)
             self._stats["compatibility"] = compatibility
+            self._stats["query_row_cap"] = cap
+            if cap is not None and self.config.step_router is None:
+                # A fixed M3 control must never silently change its schedule to
+                # fit M1. Reject an infeasible allocation before any layer runs.
+                demand = sum(length if op == "dense" else kv_count if self.config.reuse_mode == "structure"
+                             else q_count if op == "sparse" else 0 for op in self.plan.schedule.operations)
+                if demand > cap:
+                    raise ValueError(f"fixed M3 schedule requires {demand} Q rows; chunk cap is {cap}")
             self.state.full_mask = self.model.mot.build_attention_mask(
                 video_length=length, action_length=action_length,
                 video_tokens_per_frame=frame_size, device=current.device)
@@ -122,7 +132,8 @@ class HybridVisualRuntime:
         if self.config.step_router is not None:
             operation, routing = self._measure("step_routing", lambda: observe_and_route(
                 self.config.step_router, current, self.state, step=step_index, num_steps=num_steps,
-                query_rows=q_count, spent_rows=self._stats["query_rows_spent"]))
+                query_rows=q_count, spent_rows=self._stats["query_rows_spent"], query_row_cap=cap,
+                skip_exhausted_probe=self.config.chunk_extra_passes is not None))
             decision = replace(decision, operation=operation,
                 read_mode="full" if operation == "dense" else self.config.read_mode,
                 requested_q_ratio=1.0 if operation == "dense" else self.config.recompute_ratio if operation == "sparse" else 0.0,
@@ -190,9 +201,8 @@ class HybridVisualRuntime:
         if routing is not None:
             self._stats["step_router_probe_rows"] += routing["probe_token_rows"]
             self._stats["step_router_seconds"] += routing["signal_seconds"]
-            self._stats["query_row_cap"] = routing["query_row_cap"]
-            if self._stats["query_rows_spent"] > routing["query_row_cap"]:
-                raise AssertionError("adaptive routing exceeded its visual Q-row cap")
+        if cap is not None and self._stats["query_rows_spent"] > cap:
+            raise AssertionError("execution exceeded its whole-chunk visual Q-row cap")
         self._stats["action_probe_rows"] += selection.action_probe_rows if selection else 0
         self._stats["video_key_probe_rows"] += selection.video_key_probe_rows if selection else 0
         self._stats["video_query_probe_rows"] += selection.video_query_probe_rows if selection else 0
@@ -240,6 +250,7 @@ class HybridVisualRuntime:
             self._stats = dict(request_id=self._request_id, plan_hash=self.plan.plan_hash,
                                base_policy_hash=self.base_config.policy_hash,
                                query_ratio=self.config.recompute_ratio, read_ratio=self.config.read_ratio,
+                               chunk_extra_passes=self.config.chunk_extra_passes, query_row_cap=None,
                                denoising_steps=0, dense_steps=0, sparse_steps=0, reuse_steps=0,
                                reuse_mode=self.config.reuse_mode,
                                action_layer_updates=0, computed_video_token_layers=0,
@@ -252,6 +263,8 @@ class HybridVisualRuntime:
                 if self._stats["denoising_steps"] != self.plan.schedule.num_steps:
                     raise RuntimeError("sampler did not execute the complete plan")
                 self._stats["status"] = "COMPLETE"
+                cap = self._stats["query_row_cap"]
+                self._stats["query_rows_unused"] = None if cap is None else cap - self._stats["query_rows_spent"]
                 return result
             except BaseException:
                 self._stats["status"] = "ERROR"

@@ -98,3 +98,44 @@ def test_seeded_random_is_equal_budget_and_does_not_touch_global_rng():
             assert all(len(row["route"]) == 6 for row in rows)
             routes.append([row["route"] for row in rows])
     assert routes[0] == routes[2] and routes[0] != routes[1]
+
+
+def test_fixed_schedule_cannot_silently_spend_beyond_chunk_allocation():
+    model, inputs = model_and_inputs()
+    # Two sparse refreshes of three rows need 18 total rows including the anchor.
+    config = replace(compact(), chunk_extra_passes=.25)
+    with HybridVisualRuntime(model, config) as runtime:
+        with pytest.raises(ValueError, match="fixed M3 schedule requires"):
+            model.sample_action(**inputs)
+        assert runtime.last_stats["action_layer_updates"] == 0
+        assert runtime.state.output is None and not runtime._active
+
+
+@pytest.mark.parametrize("extra,expected_sparse", [(0, 0), (.25, 1), (.5, 2), (.75, 3)])
+def test_m1_total_cap_overrides_m3_default_and_exhaustion_skips_probes(extra, expected_sparse):
+    model, inputs = model_and_inputs()
+    config = replace(compact(selection="action_context"), chunk_extra_passes=extra,
+        step_router=StepRouterConfig(sparse_drift=0, dense_drift=1000, extra_dense_budget=9))
+    with HybridVisualRuntime(model, config) as runtime:
+        action = model.sample_action(**inputs)
+        stats = runtime.last_stats
+    assert stats["query_row_cap"] == 12 + round(12 * extra)
+    assert stats["sparse_steps"] == expected_sparse
+    assert stats["query_rows_spent"] == stats["query_row_cap"]
+    assert stats["query_rows_unused"] == 0
+    assert stats["step_router_probe_rows"] == expected_sparse * 12
+    for row in stats["steps"][1 + expected_sparse:]:
+        assert row["step_routing"]["input_drift_mean"] is None
+        assert row["step_routing"]["probe_token_rows"] == 0
+        assert row["video_key_probe_rows"] == 0
+    # Independent fixed-plan execution validates the fast exhaustion path's math.
+    replay = replace(config, step_router=None, schedule=Schedule(4,
+        ("dense",) + ("sparse",) * expected_sparse + ("reuse",) * (3 - expected_sparse)))
+    with HybridVisualRuntime(model, replay):
+        assert torch.equal(action, model.sample_action(**inputs))
+
+
+@pytest.mark.parametrize("value", [-.1, True, float("nan"), "1"])
+def test_total_cap_rejects_invalid_numeric_allocations(value):
+    with pytest.raises(ValueError):
+        replace(compact(), chunk_extra_passes=value)

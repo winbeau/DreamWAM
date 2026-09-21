@@ -250,7 +250,8 @@ class DreamWAMPolicy:
         if self._chunk_budget_runtime is not None:
             budget_decision = self._chunk_budget_runtime.propose(images, state)
             level = self._chunk_budget_runtime.config.levels[budget_decision.level_index]
-            self._hybrid_visual_runtime.set_budget(level.query_ratio, level.read_ratio)
+            self._hybrid_visual_runtime.set_budget(level.query_ratio, level.read_ratio,
+                                                  chunk_extra_passes=level.chunk_extra_passes)
         prompt = PROMPT_TEMPLATE.format(task=instruction)
         context, context_mask = self.text_encoder([prompt])
         proprio = self.normalizer.normalize_state(
@@ -290,7 +291,8 @@ class DreamWAMPolicy:
                     "computed_video_token_layers", "total_video_token_layers",
                     "read_video_token_layers", "action_probe_rows", "video_key_probe_rows",
                     "video_query_probe_rows", "action_layer_updates", "query_rows_spent",
-                    "step_router_probe_rows", "step_router_seconds")}
+                    "step_router_probe_rows", "step_router_seconds", "chunk_extra_passes",
+                    "query_row_cap", "query_rows_unused")}
         return action.numpy()
 
 

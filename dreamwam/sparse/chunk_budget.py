@@ -27,6 +27,7 @@ class BudgetLevel:
     name: str
     query_ratio: float
     read_ratio: float
+    chunk_extra_passes: float | None = None
 
     def __post_init__(self):
         if not isinstance(self.name, str) or not self.name or not self.name.isidentifier():
@@ -35,10 +36,15 @@ class BudgetLevel:
         number(self.read_ratio, "read_ratio", 0, 1, open_low=True)
         if self.query_ratio > self.read_ratio:
             raise ValueError("query budget cannot exceed read budget")
+        if self.chunk_extra_passes is not None:
+            number(self.chunk_extra_passes, "chunk_extra_passes", 0)
 
     def describe(self):
-        return dict(name=self.name, query_ratio=float(self.query_ratio),
-                    read_ratio=float(self.read_ratio))
+        result = dict(name=self.name, query_ratio=float(self.query_ratio),
+                      read_ratio=float(self.read_ratio))
+        if self.chunk_extra_passes is not None:
+            result["chunk_extra_passes"] = float(self.chunk_extra_passes)
+        return result
 
 
 @dataclass(frozen=True)
@@ -61,9 +67,14 @@ class ChunkBudgetConfig:
             raise ValueError("levels must be validated BudgetLevel entries")
         if len({level.name for level in self.levels}) != len(self.levels):
             raise ValueError("duplicate budget level names")
+        caps = [level.chunk_extra_passes for level in self.levels]
+        if any(cap is None for cap in caps) and not all(cap is None for cap in caps):
+            raise ValueError("all levels must declare chunk_extra_passes, or none")
         for before, after in zip(self.levels, self.levels[1:]):
             if (after.query_ratio < before.query_ratio or after.read_ratio < before.read_ratio
-                    or (after.query_ratio, after.read_ratio) == (before.query_ratio, before.read_ratio)):
+                    or (before.chunk_extra_passes is not None and after.chunk_extra_passes < before.chunk_extra_passes)
+                    or (after.query_ratio, after.read_ratio, after.chunk_extra_passes)
+                    == (before.query_ratio, before.read_ratio, before.chunk_extra_passes)):
                 raise ValueError("budget levels must increase monotonically")
         if not isinstance(self.thresholds, tuple) or len(self.thresholds) != len(self.levels) - 1:
             raise ValueError("require one threshold between adjacent budget levels")
@@ -101,7 +112,7 @@ class ChunkBudgetConfig:
         if "levels" in p:
             if not isinstance(p["levels"], (list, tuple)):
                 raise ValueError("levels must be a sequence")
-            levels = tuple(BudgetLevel(**mapping(item, ("name", "query_ratio", "read_ratio"),
+            levels = tuple(BudgetLevel(**mapping(item, ("name", "query_ratio", "read_ratio", "chunk_extra_passes"),
                 "budget level", ("name", "query_ratio", "read_ratio"))) for item in p["levels"])
         thresholds = p.get("thresholds", defaults.thresholds)
         if not isinstance(thresholds, (list, tuple)):
@@ -128,7 +139,9 @@ class ChunkBudgetConfig:
         if base.schedule.source == "profile":
             raise ValueError("chunk_budget cannot change a hash-frozen profile budget")
         # Validation also enforces equal Q/KV for a structure-only reuse control.
-        return tuple(replace(base, recompute_ratio=level.query_ratio, read_ratio=level.read_ratio)
+        return tuple(replace(base, recompute_ratio=level.query_ratio, read_ratio=level.read_ratio,
+                             chunk_extra_passes=(base.chunk_extra_passes if level.chunk_extra_passes is None
+                                                 else level.chunk_extra_passes))
                      for level in self.levels)
 
 

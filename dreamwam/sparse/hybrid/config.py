@@ -35,6 +35,7 @@ class HybridConfig:
     reuse_mode: str = "features"
     step_router: StepRouterConfig | None = None
     random_seed: int = 17
+    chunk_extra_passes: float | None = None
 
     def __post_init__(self):
         if not isinstance(self.schedule, Schedule):
@@ -44,6 +45,8 @@ class HybridConfig:
         number(self.guidance_weight, "selection.guidance_weight", 0)
         number(self.context_weight, "selection.context_weight", 0)
         number(self.support_seed_ratio, "selection.support_seed_ratio", 0, 1, open_low=True)
+        if self.chunk_extra_passes is not None:
+            number(self.chunk_extra_passes, "recompute.chunk_extra_passes", 0)
         enums = ((self.read_mode, ("full", "compact"), "read.mode"),
                  (self.selection, ("uniform", "random", "drift", "action_drift", "action", "action_context", "visual_context"), "selection.method"),
                  (self.frame_quota, ("balanced", "none"), "selection.frame_quota"),
@@ -83,7 +86,7 @@ class HybridConfig:
         version = p.get("schema_version", 1)
         if type(version) is not int or version != 1:
             raise ValueError("unsupported hybrid_visual.schema_version")
-        recompute = mapping(p.get("recompute", {}), ("keep_ratio",), "recompute")
+        recompute = mapping(p.get("recompute", {}), ("keep_ratio", "chunk_extra_passes"), "recompute")
         read = mapping(p.get("read", {}), ("mode", "keep_ratio"), "read")
         select = mapping(p.get("selection", {}), ("method", "guidance_weight", "frame_quota",
                                                   "context_weight", "support_seed_ratio", "random_seed"), "selection")
@@ -99,7 +102,7 @@ class HybridConfig:
                    diagnostics.get("level", "counters"), select.get("context_weight", 1.0),
                    select.get("support_seed_ratio", 0.1), reuse.get("mode", "features"),
                    StepRouterConfig.from_mapping(p["step_router"]) if "step_router" in p else None,
-                   select.get("random_seed", 17))
+                   select.get("random_seed", 17), recompute.get("chunk_extra_passes"))
 
     def describe(self, *, canonical=False):
         result = dict(schema_version=1, schedule=self.schedule.describe(canonical=canonical),
@@ -111,6 +114,8 @@ class HybridConfig:
                                    max_graphs=self.max_graphs),
                     diagnostics=dict(level=self.diagnostics))
         # Preserve historical fingerprints when the new factor is unused.
+        if self.chunk_extra_passes is not None:
+            result["recompute"]["chunk_extra_passes"] = float(self.chunk_extra_passes)
         if self.selection in ("action", "action_context", "visual_context") or self.context_weight != 1 or self.support_seed_ratio != 0.1:
             result["selection"].update(context_weight=float(self.context_weight),
                                        support_seed_ratio=float(self.support_seed_ratio))
@@ -137,3 +142,18 @@ class HybridConfig:
         # Only read routes require frame coverage. Query selection may use any rows,
         # including no observed-frame rows, preserving the old drift-refresh behavior.
         return q, kv
+
+    def query_row_cap(self, length, num_steps):
+        """Per-sample visual Q rows over the WHOLE chunk, including its anchor.
+
+        Explicit M1 allocation rounds up to whole rows, like per-step quotas.
+        The legacy adaptive-router cap retains its original rounding when no
+        chunk allocation is supplied. This is a work cap, not a FLOP/time cap.
+        """
+        if self.chunk_extra_passes is not None:
+            extra = math.ceil(self.chunk_extra_passes * length)
+        elif self.step_router is not None:
+            extra = math.floor(self.step_router.extra_dense_budget * length)
+        else:
+            return None
+        return min(num_steps * length, length + extra)

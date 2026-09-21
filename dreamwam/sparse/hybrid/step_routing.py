@@ -59,11 +59,19 @@ class StepRouterConfig:
         return "reuse", "small_drift_and_young_cache"
 
 
-def observe_and_route(config, video, state, *, step, num_steps, query_rows, spent_rows):
+def observe_and_route(config, video, state, *, step, num_steps, query_rows, spent_rows,
+                      query_row_cap=None, skip_exhausted_probe=False):
     """One input-drift reduction; no Q/K probes, visual layer, or future tensor."""
     started = time.perf_counter()
     batch, length = video.shape[:2]
-    cap = min(num_steps * length, length + math.floor(config.extra_dense_budget * length))
+    cap = (min(num_steps * length, length + math.floor(config.extra_dense_budget * length))
+           if query_row_cap is None else query_row_cap)
+    if step and skip_exhausted_probe and cap - spent_rows < query_rows:
+        return "reuse", dict(reason="query_budget_exhausted", input_drift_mean=None,
+            route_age_before=step - state.route_step, retained_feature_age_max_before=None,
+            query_row_cap=cap, query_rows_spent_before=spent_rows, query_rows_remaining_before=cap - spent_rows,
+            probe_token_rows=0, signal_seconds=time.perf_counter() - started,
+            signal="not evaluated: no affordable visual refresh remains")
     if step == 0:
         score, feature_age, route_age = 0.0, 0, 0
     else:

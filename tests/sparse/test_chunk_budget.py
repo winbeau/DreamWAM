@@ -138,7 +138,7 @@ def test_frozen_config_only_changes_budgets_and_hashes_every_rule():
         budget.hybrid_configs(None)
 
 
-def install_adapter_fixture(monkeypatch, tmp_path, backend):
+def install_adapter_fixture(monkeypatch, tmp_path, backend, *, chunk_caps=False, adaptive=False):
     device = "cuda" if backend == "cuda_graph" else "cpu"
     dtype = torch.bfloat16 if device == "cuda" else torch.float32
     with torch.device(device):
@@ -175,14 +175,21 @@ def install_adapter_fixture(monkeypatch, tmp_path, backend):
     options["hybrid_visual"]["execution"]["backend"] = backend
     options["hybrid_visual"]["diagnostics"]["level"] = "trace"
     options["chunk_budget"]["downshift_after"] = 1
+    if chunk_caps:
+        for level in options["chunk_budget"]["levels"]:
+            level["chunk_extra_passes"] = level["query_ratio"]
+    if adaptive:
+        options["hybrid_visual"]["step_router"] = dict(kind="adaptive", sparse_drift=0,
+            dense_drift=1e-9, extra_dense_budget=9)
     return adapter.create_policy(dict(model_root=str(tmp_path), model_config=str(release_file), **options), device), inputs
 
 
 @pytest.mark.parametrize("backend", ["eager", "buffered", "cuda_graph"])
-def test_adapter_executes_each_budget_with_frozen_m2_m3_and_own_eager_parity(monkeypatch, tmp_path, backend):
+@pytest.mark.parametrize("chunk_caps,adaptive", [(False, False), (True, False), (True, True)])
+def test_adapter_executes_each_budget_with_frozen_m2_m3_and_own_eager_parity(monkeypatch, tmp_path, backend, chunk_caps, adaptive):
     if backend == "cuda_graph" and not torch.cuda.is_available():
         pytest.skip("CUDA graph verification runs only on admitted evaluation GPU")
-    adapter, inputs = install_adapter_fixture(monkeypatch, tmp_path, backend)
+    adapter, inputs = install_adapter_fixture(monkeypatch, tmp_path, backend, chunk_caps=chunk_caps, adaptive=adaptive)
     policy = adapter.policy
     runtime, controller = policy._hybrid_visual_runtime, policy._chunk_budget_runtime
     fingerprint = adapter.describe().fingerprint
@@ -198,10 +205,18 @@ def test_adapter_executes_each_budget_with_frozen_m2_m3_and_own_eager_parity(mon
             assert stats["chunk_budget"]["executed"]["query_ratio"] == level.query_ratio
             assert stats["chunk_budget"]["executed"]["read_ratio"] == level.read_ratio
             assert stats["hybrid_visual"]["action_layer_updates"] == 20
-            assert [s["effective_op"] for s in stats["hybrid_visual"]["steps"]] == list(runtime.base_config.schedule.operations)
-            sparse = stats["hybrid_visual"]["steps"][5]
+            work = stats["hybrid_visual"]
+            if not adaptive:
+                assert [s["effective_op"] for s in work["steps"]] == list(runtime.base_config.schedule.operations)
+            sparse = next(s for s in work["steps"] if s["effective_op"] == "sparse")
             assert sparse["q_rows"] == int(np.ceil(12 * level.query_ratio))
             assert sparse["kv_rows"] == int(np.ceil(12 * level.read_ratio))
+            if chunk_caps:
+                assert work["query_row_cap"] == 12 + int(np.ceil(12 * level.query_ratio))
+                assert work["query_rows_spent"] == work["query_row_cap"]
+                assert work["query_rows_unused"] == 0
+                assert work["dense_steps"] == work["sparse_steps"] == 1
+                assert work["computed_video_token_layers"] == 2 * work["query_row_cap"]
             assert not runtime.state.kv and not runtime._active
             assert adapter.describe().fingerprint == fingerprint, "worker identity cannot change with an online budget"
             config = replace(runtime.config, backend="eager")
@@ -248,3 +263,20 @@ def test_failed_policy_does_not_commit_observation(monkeypatch, tmp_path):
         assert actual.diagnostics["chunk_budget"]["history_length"] == 0
     finally:
         adapter.close()
+
+
+def test_chunk_allocations_are_canonical_and_distinct_from_per_refresh_quotas():
+    levels = tuple(BudgetLevel(name, .1, .75, cap) for name, cap in
+                   (("low", .1), ("medium", .4), ("high", .8)))
+    config = ChunkBudgetConfig(levels=levels)
+    assert ChunkBudgetConfig.from_mapping(config.describe()) == config
+    base = HybridConfig.from_mapping(json.loads(OPTIONS.read_text())["hybrid_visual"])
+    compiled = config.hybrid_configs(base)
+    assert [c.query_row_cap(294, 10) for c in compiled] == [324, 412, 530]
+    assert all(c.recompute_ratio == .1 and c.read_ratio == .75 for c in compiled)
+    assert len({c.policy_hash for c in compiled}) == 3
+    assert all(c.schedule is base.schedule for c in compiled)
+    with pytest.raises(ValueError, match="all levels"):
+        ChunkBudgetConfig(levels=(BudgetLevel("low", .1, .5), BudgetLevel("high", .2, .75, .5)))
+    with pytest.raises(ValueError, match="monotonically"):
+        ChunkBudgetConfig(levels=(BudgetLevel("low", .1, .5, .5), BudgetLevel("high", .2, .75, .1)), thresholds=(1,))
