@@ -203,7 +203,8 @@ def main():
                         help="use Dense first when establishing a new renderer baseline")
     parser.add_argument("--authorized-gpus", type=int, nargs="+", default=[4, 5, 6, 7],
                         help="explicitly authorized physical indices for this host, including an unused spare")
-    parser.add_argument("--wall-seconds", type=int, default=3600)
+    parser.add_argument("--wall-seconds", type=int, default=3600,
+                        help="wall limit per arm; 0 disables it for an explicit ledger-bounded pair")
     parser.add_argument("--admission-seconds", type=int, default=120)
     parser.add_argument("--stop-grace-seconds", type=int, default=180)
     parser.add_argument("--smoke-only", action="store_true",
@@ -215,8 +216,10 @@ def main():
         parser.error("non-50 pilots require explicit labelled configs and a positive episode count")
     if len(set(args.authorized_gpus)) < 3 or any(i < 0 for i in args.authorized_gpus):
         parser.error("authorize at least three distinct nonnegative GPU indices")
-    if min(args.wall_seconds, args.admission_seconds, args.stop_grace_seconds) <= 0:
-        parser.error("time limits must be positive")
+    if args.wall_seconds < 0 or min(args.admission_seconds, args.stop_grace_seconds) <= 0:
+        parser.error("wall limit must be nonnegative; admission and cleanup limits must be positive")
+    if args.wall_seconds == 0 and (not args.episode_ledger or not args.dense_config):
+        parser.error("unlimited wall time requires explicit configs and the effort episode ledger")
     if args.share_gpu5 and (args.render_backend != "osmesa" or not args.episode_ledger or not args.dense_config):
         parser.error("GPU 5 sharing requires CPU OSMesa, explicit pilot configs and the effort episode ledger")
     if args.max_shared_utilization != 10 and not args.share_gpu5:
@@ -325,7 +328,7 @@ def main():
                 entry["pid"] = proc.pid
                 meta["status"] = "RUNNING"
                 save()
-                deadline = time.monotonic() + args.wall_seconds
+                deadline = time.monotonic() + args.wall_seconds if args.wall_seconds else None
                 violation = None
                 try:
                     while proc.poll() is None:
@@ -335,7 +338,7 @@ def main():
                         if renderer and any("C" in x["type"] or x["pid"] not in allowed_graphics | {proc.pid} for x in renderer["processes"]):
                             violation = "renderer_resource_window_closed"
                             break
-                        if time.monotonic() >= deadline:
+                        if deadline is not None and time.monotonic() >= deadline:
                             violation = "wall_limit"
                             break
                         path = root / "run/provenance.json"

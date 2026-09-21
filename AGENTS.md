@@ -1,5 +1,18 @@
 # DreamWAM evaluation fork guidance
 
+## Resumed H100 continuation (2026-09-21 UTC)
+
+The user reserved H100 GPUs3/4 and explicitly redirects the still-unstarted ten
+pairs there. Use verified CPU OSMesa, GPU3 tasks0–4 / GPU4 tasks5–9, five episodes
+per arm per lane, unchanged frozen model41f515a. Prepare before releasing the
+holds; release and fork both controllers in one shell, then rapidly attempt to
+re-hold each card on completion. Preserve all foreign-process protections.
+The conserved finalized12-charge ledger returns from H200 to H100 with matching
+hash/relocation receipts; H100 becomes sole writer and stops at32 total charges.
+Use docs/implementation/dido-sparse-profile/H100-TENPAIRS-20260921.md and the
+committed deployment/h100/run-dido-tenpairs.sh from an immutable checkout.
+This explicit user request supersedes the historical H200-only placement below.
+
 ## Latest H200 operational state (2026-09-21 02:22 UTC)
 
 The user subsequently selected GPU7 inference and shared GPU6 rendering.

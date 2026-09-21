@@ -85,11 +85,12 @@ def test_explicit_gpu5_sharing_allows_last_card_but_keeps_strict_headroom(admiss
         admission.admit_shared_gpu5_cpu(gpus, "gpu-5", [0, 3, 4])
 
 
-def test_episode_budget_cli_refuses_oversized_pairs_before_any_model_or_evaluator_launch(admission, monkeypatch, tmp_path):
+@pytest.mark.parametrize("wall_seconds", [0, 3600])
+def test_episode_budget_cli_refuses_oversized_pairs_before_any_model_or_evaluator_launch(admission, monkeypatch, tmp_path, wall_seconds):
     monkeypatch.setattr(sys, "argv", ["launcher", "--eval-root", "/unused/eval", "--model-root", "/unused/model",
         "--out-dir", str(tmp_path / "out"), "--adapter-report", "/unused/report",
         "--dense-config", "/unused/dense", "--sparse-config", "/unused/sparse", "--planned-episodes", "26",
-        "--episode-ledger", str(tmp_path / "ledger.json")])
+        "--episode-ledger", str(tmp_path / "ledger.json"), "--wall-seconds", str(wall_seconds)])
     monkeypatch.setattr(subprocess, "Popen", lambda *a, **k: pytest.fail("over-budget pair started a process"))
     with pytest.raises(SystemExit) as error:
         admission.main()
