@@ -10,7 +10,7 @@ import subprocess
 
 from audit_dido_pilot import audit
 from audit_initial_inputs import read_inputs
-from paired_sr import load_episodes, load_manifest, mcnemar_exact, stratified_bootstrap, wilson
+from paired_sr import load_episodes, load_manifest, mcnemar_exact, wilson
 from summarize_policy_timings import distribution, inspect_run
 
 
@@ -89,7 +89,9 @@ def main():
         delta_percentage_points=10 * (successes['sparse'] - successes['dense']),
         sr_margin_established=False, paired=dict(dense_only=b, sparse_only=c, unchanged=10-b-c,
             mcnemar_two_sided_p=two, mcnemar_sparse_worse_p=one,
-            **stratified_bootstrap(per_task, resamples=10000, seed=42)),
+            delta_ci95=None, dense_sr_ci95=None, sparse_sr_ci95=None, resamples=0,
+            bootstrap_withheld_reason='one episode per task; within-task resampling would be degenerate',
+            bootstrap_degenerate=False),
         outcomes=outcomes, initial_inputs=inputs, timings=timings, lanes=lanes,
         descriptive_warm_model_speedup=timings['dense']['warm']['mean'] / timings['sparse']['warm']['mean'],
         descriptive_episode_balanced_warm_speedup=timings['dense']['episode_balanced_warm_mean'] / timings['sparse']['episode_balanced_warm_mean'],
