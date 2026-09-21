@@ -49,6 +49,12 @@ def test_actual_attention_probe_and_routes_are_separate_with_bitwise_parity(stru
             p = trace.arrays[record["joint_probabilities"]]
             direct = trace.arrays[record["direct"]]
             support = trace.arrays[record["support"]]
+            visible = trace.arrays[record["vv_visible_keys"]]
+            seeds = torch.from_numpy(trace.arrays[record["seeds"]])
+            native_mask = model.mot.build_attention_mask(video_length=12, action_length=4,
+                video_tokens_per_frame=4, device=seeds.device)
+            np.testing.assert_array_equal(visible, native_mask[:12, :12][seeds].any(0).numpy())
+            assert np.all(support[:, ~visible] == 0)
             expected = direct / direct.mean(-1, keepdims=True) + support / support.mean(-1, keepdims=True)
             np.testing.assert_allclose(trace.arrays[record["read_score"]], expected.mean(0), rtol=2e-6)
             assert p.shape[-1] == 16, "router probes full current K even when execution reads packed K"

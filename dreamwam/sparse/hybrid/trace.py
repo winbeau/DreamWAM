@@ -86,10 +86,12 @@ class HybridTrace:
                 weights = direct.index_select(1, seeds)
                 weights = weights / weights.sum(-1, keepdim=True).clamp_min(1e-8)
             query = project(model, selected_video_state(video, seeds), "q")
-            vv = joint_probabilities(query, key, state.full_mask[:length, :length].index_select(0, seeds), mot.num_heads)
+            vv_mask = state.full_mask[:length, :length].index_select(0, seeds)
+            vv = joint_probabilities(query, key, vv_mask, mot.num_heads)
             support = (vv.mean(1) * weights[:, :, None]).sum(1)
             record.update(seeds=self._save(prefix + "_seeds", seeds),
                 vv_probabilities=self._save(prefix + "_vv", vv),
+                vv_visible_keys=self._save(prefix + "_vv_visible", vv_mask.any(0)),
                 seed_weights=self._save(prefix + "_weights", weights),
                 support=self._save(prefix + "_support", support))
         self.records.append(record)
